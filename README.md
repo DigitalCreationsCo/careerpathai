@@ -117,3 +117,319 @@ While this template is intentionally minimal and to be used as a learning resour
 - https://makerkit.dev
 - https://zerotoshipped.com
 - https://turbostarter.dev
+
+// ===============================
+// CareerPath AI – Prompt Pack (TypeScript)
+// ===============================
+
+/**
+ * Install:
+ *   npm i zod
+ */
+
+import { z } from "zod";
+
+// ---------- 1) INPUT SCHEMA ----------
+export const UserProfileSchema = z.object({
+  current_role: z.string(),
+  industry: z.string().optional(),
+  years_experience: z.number().min(0).max(60),
+  skills_current: z.array(z.string()).min(1),
+  strengths: z.array(z.string()).optional().default([]),
+  interests: z.array(z.string()).optional().default([]),
+  constraints: z
+    .object({
+      geo: z.string().optional(),
+      visa: z.string().optional(),
+      salary_target: z.number().optional(),
+      timeline_months: z.number().optional(),
+      hours_per_week_learning: z.number().optional(),
+    })
+    .optional()
+    .default({}),
+  values_priorities: z
+    .object({
+      salary: z.number().min(0).max(5).default(3),
+      stability: z.number().min(0).max(5).default(3),
+      remote: z.number().min(0).max(5).default(3),
+      impact: z.number().min(0).max(5).default(3),
+      speed_to_switch: z.number().min(0).max(5).default(3),
+    })
+    .optional()
+    .default({
+      salary: 3,
+      stability: 3,
+      remote: 3,
+      impact: 3,
+      speed_to_switch: 3,
+    }),
+});
+
+export type UserProfile = z.infer<typeof UserProfileSchema>;
+
+// ---------- 2) OUTPUT SCHEMA ----------
+const SalarySchema = z.object({
+  currency: z.string().default("USD"),
+  p50: z.number().optional(),
+  p90: z.number().optional(),
+  note: z.string().optional(),
+});
+
+const MissingSkillSchema = z.object({
+  skill: z.string(),
+  why_it_matters: z.string(),
+  estimated_learning_hours: z.number().int().min(1),
+  learning_sequence_order: z.number().int().min(1),
+  resources: z
+    .array(
+      z.object({
+        type: z.enum(["course", "book", "yt", "project", "cert", "article", "doc"]),
+        title: z.string(),
+        provider: z.string().optional(),
+        est_hours: z.number().optional(),
+      })
+    )
+    .min(1),
+});
+
+const EntryPathSchema = z.object({
+  time_to_break_in_months: z.number().int().min(0).max(60),
+  starter_projects: z.array(z.string()).min(1),
+  certs: z.array(z.string()).optional().default([]),
+  proof_of_work_assets: z.array(z.string()).min(1),
+});
+
+const OutreachTemplatesSchema = z.object({
+  cold_dm: z.string(),
+  linkedin_about: z.string(),
+  resume_headline: z.string(),
+});
+
+const ScoreBreakdownSchema = z.object({
+  final: z.number().min(0).max(100),
+  automation_risk: z.number().min(0).max(100),
+  market_demand: z.number().min(0).max(100),
+  transferability: z.number().min(0).max(100),
+  salary_potential: z.number().min(0).max(100),
+  time_to_break_in: z.number().min(0).max(100), // normalized, higher is better (faster)
+  weights: z.object({
+    market_demand: z.number(),
+    de_risking_automation: z.number(),
+    transferability: z.number(),
+    salary_potential: z.number(),
+    time_to_break_in: z.number(),
+  }),
+});
+
+const PathSuggestionSchema = z.object({
+  title: z.string(),
+  short_pitch: z.string(),
+  why_future_proof: z.string(),
+  automation_risk: z.number().min(0).max(100), // lower is better
+  market_demand: z.number().min(0).max(100),
+  salary: SalarySchema,
+  transferable_skills: z.array(z.string()).min(1),
+  missing_skills: z.array(MissingSkillSchema).min(1),
+  entry_path: EntryPathSchema,
+  first_14_days: z.array(z.string()).min(7),
+  outreach_templates: OutreachTemplatesSchema,
+  score_breakdown: ScoreBreakdownSchema,
+  evidence: z
+    .array(
+      z.object({
+        claim: z.string(),
+        rationale: z.string(),
+      })
+    )
+    .min(1),
+});
+
+// ---------- METADATA SCHEMA ----------
+const MetadataSchema = z.object({
+  titles: z.array(z.string()).min(3).max(4),
+  highlights: z.array(z.string()).min(3).max(4),
+  best_path: z.string(), // career title with highest final score
+  summary: z.string(), // 1-2 sentences summarizing all paths
+  scores: z.array(
+    z.object({
+      title: z.string(),
+      score: z.number().min(0).max(100),
+    })
+  ),
+});
+
+// ---------- CAREER PATH RESPONSE WITH METADATA ----------
+export const CareerPathResponseSchema = z.object({
+  meta: z.object({
+    candidate_count: z.number().int().min(3).max(4),
+    generated_at: z.string(),
+    notes: z.string().optional(),
+  }),
+  metadata: MetadataSchema, // NEW quick preview block
+  decision_matrix: z.array(
+    z.object({
+      title: z.string(),
+      final_score: z.number().min(0).max(100),
+      automation_risk: z.number().min(0).max(100),
+      market_demand: z.number().min(0).max(100),
+      transferability: z.number().min(0).max(100),
+      salary_potential: z.number().min(0).max(100),
+      time_to_break_in: z.number().min(0).max(100),
+    })
+  ),
+  suggestions: z.array(
+    z.object({
+      title: z.string(),
+      short_pitch: z.string(),
+      why_future_proof: z.string(),
+      automation_risk: z.number().min(0).max(100),
+      market_demand: z.number().min(0).max(100),
+      salary: z.object({
+        currency: z.string().default("USD"),
+        p50: z.number().optional(),
+        p90: z.number().optional(),
+        note: z.string().optional(),
+      }),
+      transferable_skills: z.array(z.string()).min(1),
+      missing_skills: z.array(
+        z.object({
+          skill: z.string(),
+          why_it_matters: z.string(),
+          estimated_learning_hours: z.number().int().min(1),
+          learning_sequence_order: z.number().int().min(1),
+          resources: z
+            .array(
+              z.object({
+                type: z.enum([
+                  "course",
+                  "book",
+                  "yt",
+                  "project",
+                  "cert",
+                  "article",
+                  "doc",
+                ]),
+                title: z.string(),
+                provider: z.string().optional(),
+                est_hours: z.number().optional(),
+              })
+            )
+            .min(1),
+        })
+      ),
+      entry_path: z.object({
+        time_to_break_in_months: z.number().int().min(0).max(60),
+        starter_projects: z.array(z.string()).min(1),
+        certs: z.array(z.string()).optional().default([]),
+        proof_of_work_assets: z.array(z.string()).min(1),
+      }),
+      first_14_days: z.array(z.string()).min(7),
+      outreach_templates: z.object({
+        cold_dm: z.string(),
+        linkedin_about: z.string(),
+        resume_headline: z.string(),
+      }),
+      score_breakdown: z.object({
+        final: z.number().min(0).max(100),
+        automation_risk: z.number().min(0).max(100),
+        market_demand: z.number().min(0).max(100),
+        transferability: z.number().min(0).max(100),
+        salary_potential: z.number().min(0).max(100),
+        time_to_break_in: z.number().min(0).max(100),
+        weights: z.object({
+          market_demand: z.number(),
+          de_risking_automation: z.number(),
+          transferability: z.number(),
+          salary_potential: z.number(),
+          time_to_break_in: z.number(),
+        }),
+      }),
+      evidence: z.array(
+        z.object({
+          claim: z.string(),
+          rationale: z.string(),
+        })
+      ),
+    })
+  ).min(3).max(4),
+  global_rationale: z.string(),
+});
+
+export type CareerPathResponse = z.infer<typeof CareerPathResponseSchema>;
+
+
+// ---------- 3) SYSTEM PROMPT ----------
+export const SYSTEM_PROMPT = `
+You are CareerPath AI, a rigorous career strategist.
+Your job: Given a user's background, propose 3–4 **lucrative, low-automation-risk** career paths that:
+  - Leverage their existing skills (high transferability),
+  - Are realistically reachable within their time & learning constraints,
+  - Provide concrete, stepwise learning and proof-of-work plans,
+  - Include outreach templates to accelerate hiring.
+
+**Rules**
+- Think step-by-step **internally**. Output **only valid JSON** for the provided schema.
+- Do not propose roles with Automation Risk > 60 unless you justify why and show a resilient niche.
+- Each suggestion must include: why it's future-proof, exact missing skills, learning hours, and a 14-day action plan.
+- Always include a weighted decision matrix and explain the *global rationale* (still within JSON).
+- Be specific, measurable, and realistic. No fluff.
+
+**Scoring Weights (you must include in the output):**
+  market_demand = 0.30
+  de_risking_automation (100 - automation_risk) = 0.25
+  transferability = 0.20
+  salary_potential = 0.15
+  time_to_break_in (normalized, higher = faster) = 0.10
+
+**Normalize all sub-scores to 0–100.**
+
+**Return strictly the JSON described by CareerPathResponseSchema.**
+`;
+
+// ---------- 4) USER PROMPT BUILDER ----------
+export function buildUserPrompt(user: UserProfile) {
+  return `
+USER_PROFILE_JSON:
+${JSON.stringify(user, null, 2)}
+Return only JSON matching CareerPathResponseSchema.
+`;
+}
+
+// ---------- 5) EXAMPLE USAGE (pseudo – adapt to your LLM client) ----------
+/*
+import OpenAI from "openai";
+const client = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
+
+async function runCareerPath(user: UserProfile) {
+  const messages = [
+    { role: "system", content: SYSTEM_PROMPT },
+    { role: "user", content: buildUserPrompt(user) },
+  ];
+
+  const resp = await client.chat.completions.create({
+    model: "gpt-4o-mini",
+    messages,
+    temperature: 0.2,
+  });
+
+  const json = JSON.parse(resp.choices[0].message.content);
+  const parsed = CareerPathResponseSchema.parse(json);
+  return parsed;
+}
+
+(async () => {
+  const user: UserProfile = {
+    current_role: "Customer Support Specialist",
+    industry: "SaaS",
+    years_experience: 4,
+    skills_current: ["Communication", "SQL basics", "Zendesk", "Zapier", "Notion"],
+    strengths: ["Process design", "Empathy", "Documentation"],
+    interests: ["Automation", "Data", "Operations"],
+    constraints: { geo: "US", salary_target: 90000, timeline_months: 6, hours_per_week_learning: 10 },
+    values_priorities: { salary: 4, stability: 4, remote: 5, impact: 3, speed_to_switch: 4 },
+  };
+
+  const result = await runCareerPath(user);
+  console.log(JSON.stringify(result, null, 2));
+})();
+*/

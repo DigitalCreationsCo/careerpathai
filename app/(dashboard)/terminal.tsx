@@ -56,7 +56,7 @@ export function Terminal() {
           {terminalSteps.map((step, index) => (
             <div
               key={index}
-              className={`${index > terminalStep ? 'opacity-0' : 'opacity-100'} transition-opacity duration-300`}
+              className={`${index > terminalStep ? 'opacity-0' : 'opacity-100'} transition-opacity duration-100`}
             >
               <span className="text-green-400">$</span> {step}
             </div>

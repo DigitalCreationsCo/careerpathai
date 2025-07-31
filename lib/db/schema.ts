@@ -5,6 +5,9 @@ import {
   text,
   timestamp,
   integer,
+  json,
+  boolean,
+  decimal,
 } from 'drizzle-orm/pg-core';
 import { relations } from 'drizzle-orm';
 
@@ -112,6 +115,32 @@ export const activityLogsRelations = relations(activityLogs, ({ one }) => ({
   }),
 }));
 
+export const reports = pgTable('reports', {
+  id: serial('id').primaryKey(),
+  // userId: integer('user_id')
+  //   .notNull()
+  //   .references(() => users.id),
+  // teamId: integer('team_id')
+  //   .notNull()
+  //   .references(() => teams.id),
+  metadata: json('metadata').notNull(), // Metadata type
+  decisionMatrix: json('decision_matrix').notNull(), // DecisionRow[] type
+  suggestions: json('suggestions').notNull(), // Suggestion[] type
+  globalRationale: text('global_rationale').notNull(),
+});
+
+// export const reportsRelations = relations(reports, ({ one }) => ({
+//   user: one(users, {
+//     fields: [reports.userId],
+//     references: [users.id],
+//   }),
+//   // team: one(teams, {
+//   //   fields: [reports.teamId],
+//   //   references: [teams.id],
+//   // }),
+// }));
+
+
 export type User = typeof users.$inferSelect;
 export type NewUser = typeof users.$inferInsert;
 export type Team = typeof teams.$inferSelect;
@@ -127,6 +156,129 @@ export type TeamDataWithMembers = Team & {
     user: Pick<User, 'id' | 'name' | 'email'>;
   })[];
 };
+export type Report = typeof reports.$inferSelect & {
+  id: number;
+  metadata: Metadata;
+  decisionMatrix: DecisionRow[];
+  suggestions: Suggestion[];
+  globalRationale: string;
+};
+export type NewReport = typeof reports.$inferInsert;
+// export type ReportWithUser = Report & {
+//   user: Pick<User, 'id' | 'name' | 'email'>;
+// };
+
+/** =========================
+ *  Types (mirroring schema)
+ *  ========================= */
+
+type ScoreWeight = {
+  market_demand: number;
+  de_risking_automation: number;
+  transferability: number;
+  salary_potential: number;
+  time_to_break_in: number;
+};
+
+type ScoreBreakdown = {
+  final: number;
+  automation_risk: number;
+  market_demand: number;
+  transferability: number;
+  salary_potential: number;
+  time_to_break_in: number;
+  weights: ScoreWeight;
+};
+
+type Evidence = {
+  claim: string;
+  rationale: string;
+};
+
+type Resource = {
+  type: 'course' | 'book' | 'yt' | 'project' | 'cert' | 'article' | 'doc';
+  title: string;
+  provider?: string;
+  est_hours?: number;
+};
+
+type MissingSkill = {
+  skill: string;
+  why_it_matters: string;
+  estimated_learning_hours: number;
+  learning_sequence_order: number;
+  resources: Resource[];
+};
+
+type Salary = {
+  currency: string;
+  p50?: number;
+  p90?: number;
+  note?: string;
+};
+
+type EntryPath = {
+  time_to_break_in_months: number;
+  starter_projects: string[];
+  certs?: string[];
+  proof_of_work_assets: string[];
+};
+
+type OutreachTemplates = {
+  cold_dm: string;
+  linkedin_about: string;
+  resume_headline: string;
+};
+
+type Suggestion = {
+  title: string;
+  short_pitch: string;
+  why_future_proof: string;
+  automation_risk: number;
+  market_demand: number;
+  salary: Salary;
+  transferable_skills: string[];
+  missing_skills: MissingSkill[];
+  entry_path: EntryPath;
+  first_14_days: string[];
+  outreach_templates: OutreachTemplates;
+  score_breakdown: ScoreBreakdown;
+  evidence: Evidence[];
+};
+
+type DecisionRow = {
+  title: string;
+  final_score: number;
+  automation_risk: number;
+  market_demand: number;
+  transferability: number;
+  salary_potential: number;
+  time_to_break_in: number;
+};
+
+type Metadata = {
+  titles: string[];
+  highlights: string[];
+  best_path: string;
+  summary: string;
+  scores: { title: string; score: number }[];
+  candidate_count: number;
+  generated_at: string;
+  notes?: string;
+  user: {
+    id: number;
+    name: string;
+    email: string;
+  }
+};
+
+type CareerPathResponse = {
+  metadata: Metadata;
+  decision_matrix: DecisionRow[];
+  suggestions: Suggestion[];
+  global_rationale: string;
+};
+
 
 export enum ActivityType {
   SIGN_UP = 'SIGN_UP',

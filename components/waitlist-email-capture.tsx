@@ -1,11 +1,9 @@
-"use client"
+"use client";
 
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { toast } from "sonner";
-import { sendWaitlistConfirmationEmail } from '@/lib/email/waitlist';
-import { addToWaitlist } from '@/lib/db/queries/waitlist';
 
 export const WaitlistEmailCapture = ({
 
@@ -16,47 +14,43 @@ export const WaitlistEmailCapture = ({
   // buttonText = "Get Preview Sample + Early Access - $29",
   // loadingText = 'Sending Preview Sample...',
   // title = "Get Your FREE Preview Sample First"
-  
+
+  // WAITLIST TEXT
   emailPlaceholder = "Enter your email to join the waitlist",
   namePlaceholder = "Enter your first name",
   success = "You're on the waitlist! Check your email for confirmation.",
   buttonText = "Join the Waitlist",
   loadingText = "Adding you to the waitlist...",
   title = "Join the CareerPath AI Waitlist"
-}: {
-  emailPlaceholder?: string;
-  namePlaceholder?: string;
-  success?: string;
-  buttonText?: string;
-  loadingText?: string;
-  title?: string;
 }) => {
   const [email, setEmail] = useState('');
   const [firstName, setFirstName] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!email || !firstName) return;
+
+    setIsLoading(true);
+
     try {
-      e.preventDefault();
-      if (!email || !firstName) return;
+      const res = await fetch('/api/waitlist', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, username: firstName }),
+      });
 
-      setIsLoading(true);
-
-      const formData = new FormData();
-      formData.append('email', email);
-      formData.append('username', firstName);
-
-      // await addToWaitlist({ username: firstName, email });
-      // await sendWaitlistConfirmationEmail({ data: "", error: "" }, formData);
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || 'Something went wrong');
 
       toast(success);
-
       setEmail('');
       setFirstName('');
-      setIsLoading(false);
     } catch (error: any) {
-      console.error(`waitlist-email-capture: `, error);
-      toast(error.message);
+      console.error('waitlist-email-capture:', error);
+      toast(error.message || 'Error joining waitlist');
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -70,38 +64,32 @@ export const WaitlistEmailCapture = ({
           </p>
         </div>
       )}
-      
+
       <form onSubmit={handleSubmit} className="flex flex-col gap-3">
         <Input
           type="text"
           placeholder={namePlaceholder}
           value={firstName}
           onChange={(e) => setFirstName(e.target.value)}
-          className="flex-1 bg-muted/50 border-border text-foreground placeholder:text-muted-foreground rounded-sm"
           required
         />
-        
         <Input
           type="email"
           placeholder={emailPlaceholder}
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          className="flex-1 bg-muted/50 border-border text-foreground placeholder:text-muted-foreground rounded-sm"
           required
         />
-        
-        <Button 
-          type="submit" 
-          variant="cta" 
-          size="lg"
+        <Button
+          type="submit"
           disabled={isLoading || !email || !firstName}
-          className="sm:w-auto w-full bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white font-bold"
+          className="w-full"
         >
           {isLoading ? loadingText : buttonText}
         </Button>
       </form>
-      
-      <div className="text-center space-y-1">
+
+      <div className="text-center">
         <p className="text-xs text-muted-foreground">
           You’ll receive a confirmation email once you’re on the waitlist.
         </p>

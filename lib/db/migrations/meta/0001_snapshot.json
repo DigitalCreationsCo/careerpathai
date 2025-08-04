@@ -1,6 +1,6 @@
 {
-  "id": "1345e62d-2d1f-49ac-a3ca-0909c97334c5",
-  "prevId": "00000000-0000-0000-0000-000000000000",
+  "id": "021ab4c9-e38f-4be1-ae9f-c429054f6932",
+  "prevId": "1345e62d-2d1f-49ac-a3ca-0909c97334c5",
   "version": "7",
   "dialect": "postgresql",
   "tables": {
@@ -425,6 +425,52 @@
       "uniqueConstraints": {
         "users_email_unique": {
           "name": "users_email_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "email"
+          ]
+        }
+      },
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.waitlist": {
+      "name": "waitlist",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "username": {
+          "name": "username",
+          "type": "varchar(100)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "email": {
+          "name": "email",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {
+        "waitlist_email_unique": {
+          "name": "waitlist_email_unique",
           "nullsNotDistinct": false,
           "columns": [
             "email"

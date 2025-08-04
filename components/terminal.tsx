@@ -58,7 +58,7 @@ export function Terminal() {
               key={index}
               className={`${index > terminalStep ? 'opacity-0' : 'opacity-100'} transition-opacity duration-100`}
             >
-              <span className="text-green-400">$</span> {step}
+              <span className="text-success">$</span> {step}
             </div>
           ))}
         </div>

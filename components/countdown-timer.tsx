@@ -8,7 +8,7 @@ interface TimeLeft {
   seconds: number;
 }
 
-export const CountdownTimer = () => {
+export const CountdownTimer = ({ start = new Date(), remaining }:{start: Date; remaining: number; }) => {
   const [timeLeft, setTimeLeft] = useState<TimeLeft>({
     days: 0,
     hours: 0,
@@ -17,9 +17,8 @@ export const CountdownTimer = () => {
   });
 
   useEffect(() => {
-    // Set target date to 30 days from now
-    const targetDate = new Date();
-    targetDate.setDate(targetDate.getDate() + 30);
+    const targetDate = start
+    targetDate.setDate(targetDate.getDate() + remaining);
 
     const timer = setInterval(() => {
       const now = new Date().getTime();
@@ -36,7 +35,7 @@ export const CountdownTimer = () => {
     }, 1000);
 
     return () => clearInterval(timer);
-  }, []);
+  }, [start]);
 
   return (
     <div className="flex gap-4 justify-center items-center">

@@ -1,6 +1,6 @@
 import './globals.css';
 import type { Metadata, Viewport } from 'next';
-import { Manrope } from 'next/font/google';
+import { Manrope, Lato } from 'next/font/google';
 import { getUser, getTeamForUser } from '@/lib/db/queries/user';
 import { SWRConfig } from 'swr';
 
@@ -14,6 +14,7 @@ export const viewport: Viewport = {
 };
 
 const manrope = Manrope({ subsets: ['latin'] });
+const lato = Lato({ subsets: ['latin'], weight: "400" });
 
 export default function RootLayout({
   children

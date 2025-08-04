@@ -93,11 +93,27 @@
     font-family: "Manrope", Arial, Helvetica, sans-serif;
   }
   
+  .text-hero {
+    font-family: "Lato", Arial, Helvetica, sans-serif;
+    font-weight: 1000;
+  }
+  
   /* Custom Gradient Utilities as backup */
   .bg-gradient-primary {
     background-image: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--primary-glow)));
+    transition: all;
   }
   
+  .bg-gradient-primary-glow {
+    background-image: linear-gradient(135deg, hsl(var(--primary-glow)), hsl(217 91% 80%));
+    transition: all; 
+  }
+
+  .hover\:bg-gradient-primary-glow:hover {
+    background-image: linear-gradient(135deg, hsl(var(--primary-glow)), hsl(217 91% 75%));
+    transition: all;
+  }
+
   .bg-gradient-accent {
     background-image: linear-gradient(135deg, hsl(var(--accent)), hsl(var(--accent-glow)));
   }
@@ -108,6 +124,10 @@
   
   .bg-gradient-card {
     background-image: linear-gradient(145deg, hsl(var(--card)), hsl(var(--secondary)));
+  }
+ 
+  .bg-gradient-warning {
+    background-image: linear-gradient(145deg, hsl(var(--destructive)), hsl(var(--warning)));
   }
 }
 

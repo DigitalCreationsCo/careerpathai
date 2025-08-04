@@ -6,8 +6,6 @@ import {
   timestamp,
   integer,
   json,
-  boolean,
-  decimal,
 } from 'drizzle-orm/pg-core';
 import { relations } from 'drizzle-orm';
 
@@ -140,6 +138,12 @@ export const reports = pgTable('reports', {
 //   // }),
 // }));
 
+export const waitlist = pgTable('waitlist', {
+  id: serial("id").primaryKey(),
+  username: varchar("username", { length: 100 }).notNull(),
+  email: varchar("email", { length: 255 }).notNull().unique(),
+  createdAt: timestamp("created_at").notNull().defaultNow(),
+});
 
 export type User = typeof users.$inferSelect;
 export type NewUser = typeof users.$inferInsert;
@@ -164,9 +168,8 @@ export type Report = typeof reports.$inferSelect & {
   globalRationale: string;
 };
 export type NewReport = typeof reports.$inferInsert;
-// export type ReportWithUser = Report & {
-//   user: Pick<User, 'id' | 'name' | 'email'>;
-// };
+export type WaitlistRow = typeof waitlist.$inferSelect
+export type NewWaitlistRow = typeof waitlist.$inferInsert
 
 /** =========================
  *  Types (mirroring schema)
@@ -264,6 +267,8 @@ type Metadata = {
   scores: { title: string; score: number }[];
   candidate_count: number;
   generated_at: string;
+  createdAt: string;
+  updatedAt: string;
   notes?: string;
   user: {
     id: number;

@@ -1,6 +1,7 @@
+import { SAMPLE_DATA } from '@/lib/sample-data';
 import { stripe } from '../payments/stripe';
 import { db } from './drizzle';
-import { users, teams, teamMembers } from './schema';
+import { users, teams, teamMembers, reports } from './schema';
 import { hashPassword } from '@/lib/auth/session';
 
 async function createStripeProducts() {
@@ -40,8 +41,12 @@ async function createStripeProducts() {
 }
 
 async function seed() {
-  const email = 'test@test.com';
-  const password = 'admin123';
+
+  console.log('Seeding database...');
+  console.log('Seeding initial user...');
+  
+  const email = 'bryantmejia722@outlook.com';
+  const password = 'andresadmin234';
   const passwordHash = await hashPassword(password);
 
   const [user] = await db
@@ -60,7 +65,7 @@ async function seed() {
   const [team] = await db
     .insert(teams)
     .values({
-      name: 'Test Team',
+      name: 'Admin Team',
     })
     .returning();
 
@@ -70,6 +75,10 @@ async function seed() {
     role: 'owner',
   });
 
+  console.log('Seeding reports...');
+  await db.insert(reports).values(SAMPLE_DATA);
+
+  console.log('Seeding Stripe products and prices...');
   await createStripeProducts();
 }
 

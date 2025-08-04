@@ -4,7 +4,7 @@ import CareerPathReport from '@/components/report';
 import { Button } from '@/components/ui/button';
 import { ArrowLeft } from 'lucide-react';
 import Link from 'next/link';
-import { SAMPLE_DATA } from '../data';
+import { SAMPLE_DATA } from '@/lib/sample-data';
 
 interface ReportPageProps {
   params: {
@@ -21,17 +21,17 @@ export default async function ReportPage({ params }: ReportPageProps) {
 
 
     const report = SAMPLE_DATA;
-//   const report = await getReportById(reportId);
+  // const report = await getReportById(reportId);
   
-//   if (!report) {
-//     notFound();
-//   }
+  if (!report) {
+    notFound();
+  }
 
   return (
     <div className="flex-1 p-4 lg:p-8">
       {/* Header with back button */}
       <div className="mb-6">
-        <Link href="/dashboard/reports">
+        <Link href="/dashboard">
           <Button variant="ghost" className="mb-4">
             <ArrowLeft className="w-4 h-4 mr-2" />
             Back to Reports
@@ -39,7 +39,7 @@ export default async function ReportPage({ params }: ReportPageProps) {
         </Link>
         
         <div className="flex items-center justify-between">
-          <h1 className="text-lg lg:text-2xl font-medium text-gray-900">
+          <h1 className="text-lg lg:text-2xl font-medium text-foreground">
             Career Path Report #{report.id}
           </h1>
           <div className="text-sm text-gray-500">

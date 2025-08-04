@@ -5,8 +5,15 @@
     {
       "idx": 0,
       "version": "7",
-      "when": 1726443359662,
-      "tag": "0000_soft_the_anarchist",
+      "when": 1754172404017,
+      "tag": "0000_robust_grandmaster",
+      "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1754329247814,
+      "tag": "0001_loving_chronomancer",
       "breakpoints": true
     }
   ]

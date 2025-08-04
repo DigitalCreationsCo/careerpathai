@@ -80,7 +80,7 @@ const KeyValue: React.FC<{
 }> = ({ label, value }) => (
   <div className='flex justify-between gap-4 py-1'>
     <span className='font-medium text-gray-600'>{label}</span>
-    <span className='text-gray-900 text-right'>{value}</span>
+    <span className='text-foreground text-right'>{value}</span>
   </div>
 );
 
@@ -94,7 +94,7 @@ export default function CareerPathReport ({
     data;
 
   return (
-    <div className='min-h-screen bg-white text-gray-900 p-6 md:p-12 print:p-4'>
+    <div className='min-h-screen bg-white text-foreground p-6 md:p-12 print:p-4'>
       <style>{printStyles}</style>
 
       {/* Header */}

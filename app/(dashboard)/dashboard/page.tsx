@@ -1,287 +1,116 @@
-'use client';
+"use client"
+import React from 'react';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { FileText, Calendar, User, AlertCircle } from 'lucide-react';
+import { getReports } from '@/lib/db/queries/report';
+import Link from 'next/link';
+import { SAMPLE_DATA } from '@/lib/sample-data';
 
-import { Button } from '@/components/ui/button';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-  CardFooter
-} from '@/components/ui/card';
-import { customerPortalAction } from '@/lib/payments/actions';
-import { useActionState } from 'react';
-import { TeamDataWithMembers, User } from '@/lib/db/schema';
-import { removeTeamMember, inviteTeamMember } from '@/app/(login)/actions';
-import useSWR from 'swr';
-import { Suspense } from 'react';
-import { Input } from '@/components/ui/input';
-import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
-import { Label } from '@/components/ui/label';
-import { Loader2, PlusCircle } from 'lucide-react';
+function getRelativeTime(date: Date) {
+  const now = new Date();
+  const diffInSeconds = Math.floor((now.getTime() - date.getTime()) / 1000);
 
-type ActionState = {
-  error?: string;
-  success?: string;
-};
-
-const fetcher = (url: string) => fetch(url).then((res) => res.json());
-
-function SubscriptionSkeleton() {
-  return (
-    <Card className="mb-8 h-[140px]">
-      <CardHeader>
-        <CardTitle>Team Subscription</CardTitle>
-      </CardHeader>
-    </Card>
-  );
+  if (diffInSeconds < 60) return 'just now';
+  if (diffInSeconds < 3600)
+    return `${Math.floor(diffInSeconds / 60)} minutes ago`;
+  if (diffInSeconds < 86400)
+    return `${Math.floor(diffInSeconds / 3600)} hours ago`;
+  if (diffInSeconds < 604800)
+    return `${Math.floor(diffInSeconds / 86400)} days ago`;
+  return date.toLocaleDateString();
 }
 
-function ManageSubscription() {
-  const { data: teamData } = useSWR<TeamDataWithMembers>('/api/team', fetcher);
-
-  return (
-    <Card className="mb-8">
-      <CardHeader>
-        <CardTitle>Team Subscription</CardTitle>
-      </CardHeader>
-      <CardContent>
-        <div className="space-y-4">
-          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center">
-            <div className="mb-4 sm:mb-0">
-              <p className="font-medium">
-                Current Plan: {teamData?.planName || 'Free'}
-              </p>
-              <p className="text-sm text-muted-foreground">
-                {teamData?.subscriptionStatus === 'active'
-                  ? 'Billed monthly'
-                  : teamData?.subscriptionStatus === 'trialing'
-                  ? 'Trial period'
-                  : 'No active subscription'}
-              </p>
-            </div>
-            <form action={customerPortalAction}>
-              <Button type="submit" variant="outline">
-                Manage Subscription
-              </Button>
-            </form>
-          </div>
-        </div>
-      </CardContent>
-    </Card>
-  );
+function formatDate(isoString: string) {
+  return new Date(isoString).toLocaleDateString('en-US', {
+    year: 'numeric',
+    month: 'short',
+    day: '2-digit',
+  });
 }
 
-function TeamMembersSkeleton() {
-  return (
-    <Card className="mb-8 h-[140px]">
-      <CardHeader>
-        <CardTitle>Team Members</CardTitle>
-      </CardHeader>
-      <CardContent>
-        <div className="animate-pulse space-y-4 mt-1">
-          <div className="flex items-center space-x-4">
-            <div className="size-8 rounded-full bg-gray-200"></div>
-            <div className="space-y-2">
-              <div className="h-4 w-32 bg-gray-200 rounded"></div>
-              <div className="h-3 w-14 bg-gray-200 rounded"></div>
-            </div>
-          </div>
-        </div>
-      </CardContent>
-    </Card>
-  );
-}
+export default async function ReportPage() {
+  const reports = await getReports();
+  // const reports = [SAMPLE_DATA];
 
-function TeamMembers() {
-  const { data: teamData } = useSWR<TeamDataWithMembers>('/api/team', fetcher);
-  const [removeState, removeAction, isRemovePending] = useActionState<
-    ActionState,
-    FormData
-  >(removeTeamMember, {});
-
-  const getUserDisplayName = (user: Pick<User, 'id' | 'name' | 'email'>) => {
-    return user.name || user.email || 'Unknown User';
-  };
-
-  if (!teamData?.teamMembers?.length) {
-    return (
-      <Card className="mb-8">
-        <CardHeader>
-          <CardTitle>Team Members</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <p className="text-muted-foreground">No team members yet.</p>
-        </CardContent>
-      </Card>
-    );
-  }
-
-  return (
-    <Card className="mb-8">
-      <CardHeader>
-        <CardTitle>Team Members</CardTitle>
-      </CardHeader>
-      <CardContent>
-        <ul className="space-y-4">
-          {teamData.teamMembers.map((member, index) => (
-            <li key={member.id} className="flex items-center justify-between">
-              <div className="flex items-center space-x-4">
-                <Avatar>
-                  {/* 
-                    This app doesn't save profile images, but here
-                    is how you'd show them:
-
-                    <AvatarImage
-                      src={member.user.image || ''}
-                      alt={getUserDisplayName(member.user)}
-                    />
-                  */}
-                  <AvatarFallback>
-                    {getUserDisplayName(member.user)
-                      .split(' ')
-                      .map((n) => n[0])
-                      .join('')}
-                  </AvatarFallback>
-                </Avatar>
-                <div>
-                  <p className="font-medium">
-                    {getUserDisplayName(member.user)}
-                  </p>
-                  <p className="text-sm text-muted-foreground capitalize">
-                    {member.role}
-                  </p>
-                </div>
-              </div>
-              {index > 1 ? (
-                <form action={removeAction}>
-                  <input type="hidden" name="memberId" value={member.id} />
-                  <Button
-                    type="submit"
-                    variant="outline"
-                    size="sm"
-                    disabled={isRemovePending}
-                  >
-                    {isRemovePending ? 'Removing...' : 'Remove'}
-                  </Button>
-                </form>
-              ) : null}
-            </li>
-          ))}
-        </ul>
-        {removeState?.error && (
-          <p className="text-red-500 mt-4">{removeState.error}</p>
-        )}
-      </CardContent>
-    </Card>
-  );
-}
-
-function InviteTeamMemberSkeleton() {
-  return (
-    <Card className="h-[260px]">
-      <CardHeader>
-        <CardTitle>Invite Team Member</CardTitle>
-      </CardHeader>
-    </Card>
-  );
-}
-
-function InviteTeamMember() {
-  const { data: user } = useSWR<User>('/api/user', fetcher);
-  const isOwner = user?.role === 'owner';
-  const [inviteState, inviteAction, isInvitePending] = useActionState<
-    ActionState,
-    FormData
-  >(inviteTeamMember, {});
-
-  return (
-    <Card>
-      <CardHeader>
-        <CardTitle>Invite Team Member</CardTitle>
-      </CardHeader>
-      <CardContent>
-        <form action={inviteAction} className="space-y-4">
-          <div>
-            <Label htmlFor="email" className="mb-2">
-              Email
-            </Label>
-            <Input
-              id="email"
-              name="email"
-              type="email"
-              placeholder="Enter email"
-              required
-              disabled={!isOwner}
-            />
-          </div>
-          <div>
-            <Label>Role</Label>
-            <RadioGroup
-              defaultValue="member"
-              name="role"
-              className="flex space-x-4"
-              disabled={!isOwner}
-            >
-              <div className="flex items-center space-x-2 mt-2">
-                <RadioGroupItem value="member" id="member" />
-                <Label htmlFor="member">Member</Label>
-              </div>
-              <div className="flex items-center space-x-2 mt-2">
-                <RadioGroupItem value="owner" id="owner" />
-                <Label htmlFor="owner">Owner</Label>
-              </div>
-            </RadioGroup>
-          </div>
-          {inviteState?.error && (
-            <p className="text-red-500">{inviteState.error}</p>
-          )}
-          {inviteState?.success && (
-            <p className="text-green-500">{inviteState.success}</p>
-          )}
-          <Button
-            type="submit"
-            className="bg-orange-500 hover:bg-orange-600 text-white"
-            disabled={isInvitePending || !isOwner}
-          >
-            {isInvitePending ? (
-              <>
-                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                Inviting...
-              </>
-            ) : (
-              <>
-                <PlusCircle className="mr-2 h-4 w-4" />
-                Invite Member
-              </>
-            )}
-          </Button>
-        </form>
-      </CardContent>
-      {!isOwner && (
-        <CardFooter>
-          <p className="text-sm text-muted-foreground">
-            You must be a team owner to invite new members.
-          </p>
-        </CardFooter>
-      )}
-    </Card>
-  );
-}
-
-export default function SettingsPage() {
   return (
     <section className="flex-1 p-4 lg:p-8">
-      <h1 className="text-lg lg:text-2xl font-medium mb-6">Team Settings</h1>
-      <Suspense fallback={<SubscriptionSkeleton />}>
-        <ManageSubscription />
-      </Suspense>
-      <Suspense fallback={<TeamMembersSkeleton />}>
-        <TeamMembers />
-      </Suspense>
-      <Suspense fallback={<InviteTeamMemberSkeleton />}>
-        <InviteTeamMember />
-      </Suspense>
+      <h1 className="text-lg lg:text-2xl font-medium text-foreground mb-6">
+        Reports
+      </h1>
+      
+      {reports.length > 0 ? (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {reports.map((report) => {
+            const metadata = report.metadata as any;
+            const bestPath = metadata?.best_path || 'Career Path Analysis';
+            const candidateCount = metadata?.candidate_count || 0;
+            const generatedAt = metadata?.generated_at || metadata?.createdAt;
+            const userName = metadata?.user?.name || 'Unknown User';
+            
+            return (
+              <Link key={report.id} href={`/dashboard/reports/${report.id}`}>
+                <Card className="hover:shadow-lg transition-shadow cursor-pointer">
+                  <CardHeader>
+                    <div className="flex items-center justify-between">
+                      <div className="bg-blue-100 rounded-full p-2">
+                        <FileText className="w-5 h-5 text-blue-600" />
+                      </div>
+                      <span className="text-xs text-gray-500">
+                        #{report.id}
+                      </span>
+                    </div>
+                    <CardTitle className="text-lg font-semibold text-foreground line-clamp-2">
+                      {bestPath}
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="space-y-3">
+                      <div className="flex items-center text-sm text-gray-600">
+                        <User className="w-4 h-4 mr-2" />
+                        <span>{userName}</span>
+                      </div>
+                      
+                      <div className="flex items-center text-sm text-gray-600">
+                        <Calendar className="w-4 h-4 mr-2" />
+                        <span>
+                          {generatedAt ? formatDate(generatedAt) : 'Unknown date'}
+                        </span>
+                      </div>
+                      
+                      <div className="text-sm text-gray-600">
+                        <span className="font-medium">{candidateCount}</span> career paths analyzed
+                      </div>
+                      
+                      {metadata?.scores && metadata.scores.length > 0 && (
+                        <div className="pt-2 border-t">
+                          <div className="text-xs text-gray-500 mb-1">Top Score</div>
+                          <div className="text-lg font-bold text-blue-600">
+                            {metadata.scores[0]?.score || 0}%
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  </CardContent>
+                </Card>
+              </Link>
+            );
+          })}
+        </div>
+      ) : (
+        <Card>
+          <CardContent>
+            <div className="flex flex-col items-center justify-center text-center py-12">
+              <AlertCircle className="h-12 w-12 text-blue-500 mb-4" />
+              <h3 className="text-lg font-semibold text-foreground mb-2">
+                No reports yet
+              </h3>
+              <p className="text-sm text-gray-500 max-w-sm">
+                When you generate career path reports, they'll appear here for easy access and review.
+              </p>
+            </div>
+          </CardContent>
+        </Card>
+      )}
     </section>
   );
 }

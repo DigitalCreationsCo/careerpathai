@@ -9,7 +9,7 @@ export const SAMPLE_DATA: Report = {
     metadata: {
       user: {
         id: 1,
-        name: 'Edna',
+        name: 'Sample User',
         email: 'edna888@gmail.com'
       },
       candidate_count: 4,

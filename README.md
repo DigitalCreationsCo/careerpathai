@@ -1,9 +1,8 @@
 TO DO:
 - update landing page style w bg gradients: https://x.com/hewarsaber/status/1945394420607570295
-- add analytics
 - start a/b testing
 
-- adapt this 21 day pivot sprint into the product:
+- adapt 21 day pivot sprint into the product:
 The 21-Day Pivot Sprint
 A complete guide to pivot into a low-automation, high-value role fast.
 
@@ -140,6 +139,7 @@ A public proof-of-work asset.
 
 
 
+
 # Next.js SaaS Starter
 
 This is a starter template for building a SaaS application using **Next.js** with support for authentication, Stripe integration for payments, and a dashboard for logged-in users.
@@ -147,7 +147,8 @@ This is a starter template for building a SaaS application using **Next.js** wit
 **Demo: [https://next-saas-start.vercel.app/](https://next-saas-start.vercel.app/)**
 
 ## Features
-
+- EMAIL SENDING WITH RESEND: https://resend.com/onboarding
+- Analytics implemented using Google Tag Manager with Mixpanel integration
 - Marketing landing page (`/`) with animated Terminal element
 - Pricing page (`/pricing`) which connects to Stripe Checkout
 - Dashboard pages with CRUD operations on users/teams

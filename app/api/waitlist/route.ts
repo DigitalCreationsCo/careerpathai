@@ -10,13 +10,14 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
     }
 
-    // 1️⃣ Save to Postgres
+    const formdata = new FormData();
+    formdata.append('email', email);
+    formdata.append('username', username);
+    
     await addToWaitlist({ username, email });
-
-    // 2️⃣ Send confirmation email
     await sendWaitlistConfirmationEmail(
       { data: '', error: '' },
-      new FormData(Object.entries({ email, username }) as any)
+      formdata
     );
 
     return NextResponse.json({ success: true });

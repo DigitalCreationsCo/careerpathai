@@ -33,26 +33,36 @@ export const WaitlistEmailCapture = ({
 
     setIsLoading(true);
 
-    try {
-      const res = await fetch('/api/waitlist', {
+      const waitlistPromise = fetch('/api/waitlist', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, username: firstName }),
+      }).then(async (res) => {
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.error || 'Something went wrong');
+        return data;
+      }).catch((err:any) => { throw err; })
+
+      toast.promise(waitlistPromise, {
+        loading: "Adding you to the waitlist...",
+        success: () => {
+          setEmail('');
+          setFirstName('');
+          return success;
+        },
+        error: (error: any) => {
+          console.error('waitlist-email-capture:', error);
+          if (error.message.includes('duplicate')) {
+            return "You’re already on the waitlist. We’ll keep you updated."
+          }
+          return error.message || "Error joining waitlist";
+        }
       });
 
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.error || 'Something went wrong');
-
-      toast(success);
-      setEmail('');
-      setFirstName('');
-    } catch (error: any) {
-      console.error('waitlist-email-capture:', error);
-      toast(error.message || 'Error joining waitlist');
-    } finally {
-      setIsLoading(false);
-    }
+      waitlistPromise.finally(() => setIsLoading(false));
   };
+
+  
 
   return (
     <div className="max-w-md w-full mx-auto space-y-4">
@@ -85,7 +95,8 @@ export const WaitlistEmailCapture = ({
           disabled={isLoading || !email || !firstName}
           className="w-full"
         >
-          {isLoading ? loadingText : buttonText}
+          {/* {isLoading ? loadingText : buttonText} */}
+          {buttonText}
         </Button>
       </form>
 

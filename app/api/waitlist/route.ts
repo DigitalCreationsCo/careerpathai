@@ -15,10 +15,7 @@ export async function POST(req: Request) {
     formdata.append('username', username);
     
     await addToWaitlist({ username, email });
-    await sendWaitlistConfirmationEmail(
-      { data: '', error: '' },
-      formdata
-    );
+    await sendWaitlistConfirmationEmail(formdata);
 
     return NextResponse.json({ success: true });
   } catch (error: any) {

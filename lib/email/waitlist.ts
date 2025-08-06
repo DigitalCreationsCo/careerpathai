@@ -1,7 +1,7 @@
 import { resend, EmailState } from "./resend";
 import { WaitlistEmail } from "@/components/emails/waitlist-email";
 
-export async function sendWaitlistConfirmationEmail(prevState: EmailState, formData: FormData) {
+export async function sendWaitlistConfirmationEmail(formData: FormData):Promise<EmailState> {
   const email = formData.get("email") as string; 
   const username = formData.get("username") as string;
 
@@ -13,7 +13,8 @@ export async function sendWaitlistConfirmationEmail(prevState: EmailState, formD
   });
 
   if (error) {
-    return { error: error.message };
+    console.error('sendWaitlistConfirmationEmail: ', error);
+    throw error;
   }
 
   console.log(data);

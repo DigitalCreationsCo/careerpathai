@@ -1,14 +1,12 @@
 import '../landing.css'
 import { Button } from '@/components/ui/button';
 import { ArrowRight, Brain, TrendingUp, Shield, Target, Clock, Users, CheckCircle, CreditCard, Database } from 'lucide-react';
-// import { Terminal } from '../terminal';
 import { FeatureCard } from '@/components/feature-card';
 import { StepCard } from '@/components/step-card';
 import { CountdownTimer } from '@/components/countdown-timer';
-import { EmailCapture } from '@/components/waitlist-email-capture';
+import { WaitlistEmailCapture } from '@/components/waitlist-email-capture';
 import Link from 'next/link';
-// import heroImage from '@/assets/hero-bg.jpg';
-
+import { daysToLaunch, start } from '@/lib/launch-data';
 
 export default function LandingPage() {
   return (
@@ -96,7 +94,7 @@ export default function LandingPage() {
 
           <div className="space-y-4">
             <p className="text-lg font-semibold text-accent">Early Access: Only 100 Spots This Month</p>
-            <CountdownTimer />
+            <CountdownTimer start={start} remaining={daysToLaunch} />
             <p className="text-sm text-muted-foreground">
               First 500 users get lifetime discount
             </p>
@@ -204,7 +202,7 @@ export default function LandingPage() {
             </p>
           </div>
 
-          <EmailCapture />
+          <WaitlistEmailCapture />
 
           <div className="space-y-4">
             <Button variant="warning" size="lg">

@@ -5,18 +5,15 @@ import { Terminal } from '../../../components/terminal';
 import { FeatureCard } from '@/components/feature-card';
 import { StepCard } from '@/components/step-card';
 import { CountdownTimer } from '@/components/countdown-timer';
-import { EmailCapture } from '@/components/waitlist-email-capture';
+import { WaitlistEmailCapture } from '@/components/waitlist-email-capture';
 import Link from 'next/link';
 import { getReportsCount } from '@/lib/db/queries/report';
 import { Browser } from '../../../components/browser';
+import { daysToLaunch, start } from '@/lib/launch-data';
 
 export default async function EarlyAccessLandingPage() {
     const reservedSpots = await getReportsCount()
     const spotsRemaining = 100 - reservedSpots;
-
-    const start = new Date('2025-08-03T00:00:00');
-    console.log('start', start);
-    const daysToLaunch = 2;
     return (
         <main>
         <div className="min-h-screen bg-gradient-hero text-foreground overflow-hidden">
@@ -65,7 +62,7 @@ export default async function EarlyAccessLandingPage() {
         </div>
 
         <div className="flex flex-col items-center space-y-6">
-            <EmailCapture
+            <WaitlistEmailCapture
             title="Get Your Career Transition Report + 21-Day Action Sprint"
             emailPlaceholder="Enter your email for early access"
             buttonText="Get My Career Transition Report - $29"
@@ -300,7 +297,7 @@ export default async function EarlyAccessLandingPage() {
             <p className="text-success font-medium">+ FREE Resume Template Library ($47 value)</p>
             </div>
 
-            <EmailCapture
+            <WaitlistEmailCapture
             title="Get Your Career Transition Report + 21-Day Action Sprint"
             emailPlaceholder="Enter your email for early access"
             buttonText="Get My Career Transition Report - $29"

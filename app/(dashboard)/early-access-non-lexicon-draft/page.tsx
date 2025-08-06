@@ -5,7 +5,7 @@ import { Terminal } from '../../../components/terminal';
 import { FeatureCard } from '@/components/feature-card';
 import { StepCard } from '@/components/step-card';
 import { CountdownTimer } from '@/components/countdown-timer';
-import { EmailCapture } from '@/components/waitlist-email-capture';
+import { WaitlistEmailCapture } from '@/components/waitlist-email-capture';
 import Link from 'next/link';
 import { getReportsCount } from '@/lib/db/queries/report';
 import { Browser } from '../../../components/browser';
@@ -102,14 +102,14 @@ export default async function EarlyAccessLandingPage() {
             
 
             {/* A CTA */}
-            <EmailCapture
+            <WaitlistEmailCapture
             title="Get your AI-Proof Career Paths & Roadmap"
-            placeholder="Enter your email for early access"
+            emailPlaceholder="Enter your email for early access"
             buttonText="Get Early Access - $29 (Limited Time)"
             />
 
             {/* B CTA */}
-            {/* <EmailCapture 
+            {/* <WaitlistEmailCapture 
             placeholder="Enter email for preview + early access"
             buttonText="Get Preview + Early Access - $29"
             //   buttonClassName="bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 text-white font-bold px-6 md:px-8 py-3 md:py-4 text-base md:text-lg shadow-xl hover:shadow-2xl transform hover:scale-105 transition-all duration-200 w-full md:w-auto"
@@ -353,9 +353,9 @@ export default async function EarlyAccessLandingPage() {
             {/* <p className="text-success font-medium">+ FREE Resume Template</p> */}
             </div>
 
-            <EmailCapture
+            <WaitlistEmailCapture
             title="Get your 4 AI-Proof Career Paths & Roadmap (Early access $29)"
-            placeholder="Enter your email for early access"
+            emailPlaceholder="Enter your email for early access"
             buttonText="Get Early Access - $29 (Limited Time)"
             //   buttonClassName="bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 text-white font-bold px-8 py-4 text-lg shadow-xl hover:shadow-2xl transform hover:scale-105 transition-all duration-200 w-full md:w-auto"
             />

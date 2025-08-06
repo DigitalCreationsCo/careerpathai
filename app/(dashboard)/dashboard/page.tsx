@@ -1,10 +1,8 @@
-"use client"
 import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { FileText, Calendar, User, AlertCircle } from 'lucide-react';
 import { getReports } from '@/lib/db/queries/report';
 import Link from 'next/link';
-import { SAMPLE_DATA } from '@/lib/sample-data';
 
 function getRelativeTime(date: Date) {
   const now = new Date();
@@ -30,7 +28,6 @@ function formatDate(isoString: string) {
 
 export default async function ReportPage() {
   const reports = await getReports();
-  // const reports = [SAMPLE_DATA];
 
   return (
     <section className="flex-1 p-4 lg:p-8">

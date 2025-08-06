@@ -4,24 +4,28 @@ import CareerPathReport from '@/components/report';
 import { Button } from '@/components/ui/button';
 import { ArrowLeft } from 'lucide-react';
 import Link from 'next/link';
-import { SAMPLE_DATA } from '@/lib/sample-data';
 
-interface ReportPageProps {
-  params: {
+type ReportPageProps = {
+  params: Promise<{
     id: string;
-  };
+  }>
+};
+
+export async function generateMetadata(props: ReportPageProps) {
+  const params = await props.params
+  const id = params.id
 }
 
-export default async function ReportPage({ params }: ReportPageProps) {
+export default async function ReportPage(props: ReportPageProps) {
+  const params = await props.params;
+
   const reportId = parseInt(params.id);
   
   if (isNaN(reportId)) {
     notFound();
   }
 
-
-    const report = SAMPLE_DATA;
-  // const report = await getReportById(reportId);
+  const report = await getReportById(reportId);
   
   if (!report) {
     notFound();

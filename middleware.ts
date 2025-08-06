@@ -3,9 +3,10 @@ import type { NextRequest } from 'next/server';
 import { signToken, verifyToken } from '@/lib/auth/session';
 
 const protectedRoutes:string[] = [
-  // '/dashboard',
-  // '/launch',
+  '/dashboard',
+  '/launch',
   '/draft',
+  '/pricing',
 ];
 
 export async function middleware(request: NextRequest) {

@@ -4,8 +4,8 @@ import { Manrope, Lato } from 'next/font/google';
 import { getUser, getTeamForUser } from '@/lib/db/queries/user';
 import { SWRConfig } from 'swr';
 import { Toaster } from "@/components/ui/sonner"
-import Script from 'next/script';
 import { GoogleTagManager } from '@/lib/googletagmanager';
+import Head from 'next/head';
 
 export const metadata: Metadata = {
   title: 'Next.js SaaS Starter',
@@ -29,9 +29,9 @@ export default function RootLayout({
       lang="en"
       className={`bg-white dark:bg-gray-950 text-black dark:text-white ${manrope.className}`}
     >
-      <head>
+      <Head>
         <GoogleTagManager />
-      </head>
+      </Head>
       <body className="min-h-[100dvh] bg-background">
         {/* Google Tag Manager (noscript) */}
         <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-N5RPQTFM"

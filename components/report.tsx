@@ -109,7 +109,7 @@ export default function CareerPathReport ({
           </p>
         </div>
         <button
-          onClick={() => window.print()}
+          // onClick={() => window.print()}
           className='hidden md:inline-block px-4 py-2 rounded bg-blue-600 text-white hover:bg-blue-700 print:hidden'
         >
           Print / Save PDF

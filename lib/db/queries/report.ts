@@ -1,18 +1,12 @@
 import { count, desc, eq } from 'drizzle-orm';
 import { db } from '../drizzle';
 import { Report, reports, users } from '../schema';
-import { getUser } from './user';
+import { getUser } from '@/lib/db/queries/user';
 
 export async function getReports() {
-  const user = await getUser();
-  if (!user) {
-    throw new Error('User not authenticated');
-  }
-
   return await db
     .select()
     .from(reports)
-    // .leftJoin(users, eq(reports.userId, users.id)) // no users
     .orderBy(desc(reports.id))
     .limit(100)
 }

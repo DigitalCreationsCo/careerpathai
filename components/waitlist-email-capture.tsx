@@ -16,8 +16,8 @@ export const WaitlistEmailCapture = ({
   // title = "Get Your FREE Preview Sample First"
 
   // WAITLIST TEXT
-  emailPlaceholder = "Enter your email to join the waitlist",
-  namePlaceholder = "Enter your first name",
+  emailPlaceholder = "Enter your email",
+  namePlaceholder = "Enter your name",
   success = "You're on the waitlist! Check your email for confirmation.",
   buttonText = "Join the Waitlist",
   loadingText = "Adding you to the waitlist...",

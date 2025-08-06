@@ -1,4 +1,4 @@
-import { resend, EmailState } from "./resend";
+import { resend, EmailState, adminEmailAddress } from "./resend";
 import { WaitlistEmail } from "@/components/emails/waitlist-email";
 
 export async function sendWaitlistConfirmationEmail(formData: FormData):Promise<EmailState> {
@@ -6,9 +6,9 @@ export async function sendWaitlistConfirmationEmail(formData: FormData):Promise<
   const username = formData.get("username") as string;
 
   const { data, error } = await resend.emails.send({
-    from: "Bryant <bryantmejia722@outlook.com>",
+    from: `GoCareerPath <${adminEmailAddress}>`,
     to: [email],
-    subject: "🔥 Your Career Transition Report Spot is Reserved",
+    subject: "Your Career Transition Report Spot is Reserved",
     react: WaitlistEmail({ username }),
   });
 

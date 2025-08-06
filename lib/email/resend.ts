@@ -5,5 +5,7 @@ if (!process.env.RESEND_API_KEY)
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
+export const adminEmailAddress = 'support@gocareerpath.com'
+
 export { resend };
 export type EmailState = { error: string } | { data: string };

@@ -9,7 +9,7 @@ export default async function WaitlistLandingPage() {
       <div className="min-h-screen bg-gradient-hero text-foreground overflow-hidden">
 
         {/* Hero Section */}
-        <section className="relative min-h-screen flex items-center justify-center p-2 sm:px-6 lg:px-8">
+        <section className="bg-gradient-primary-glow relative min-h-screen flex items-center justify-center p-2 sm:px-6 lg:px-8">
           <div className="absolute inset-0 bg-gradient-to-b from-background/80 to-background" />
 
           <div className="relative z-10 max-w-5xl mx-auto text-center space-y-12 animate-slide-up">
@@ -28,7 +28,7 @@ export default async function WaitlistLandingPage() {
               </h1>
               
               <p className="text-lg md:text-xl text-muted-foreground max-w-lg lg:max-w-2xl mx-auto leading-snug">
-                Get your personalized Career Transition Report revealing 3–4 high-paying, AI-resistant career paths you can pivot to using your existing skills.
+                Get your personalized Career Transition Report revealing <span className='text-foreground font-semibold'>3–4 high-paying, AI-resistant career paths</span> you can pivot to using your <span className="text-foreground font-semibold">existing skills</span>.
               </p>
               <p className="text-sm text-muted-foreground">
                 Join <span className="text-accent font-semibold">1,000+</span> professionals preparing for the AI economy
@@ -76,7 +76,7 @@ export default async function WaitlistLandingPage() {
                       <h5 className="font-semibold text-primary">Revenue Operations Specialist</h5>
                       <div className="space-y-1 text-sm">
                         <div className="flex justify-between">
-                          <span className="text-muted-foreground">Salary Range:</span>
+                        <span className="text-muted-foreground">Salary Range:</span>
                           <span className="font-medium text-success">$75K - $120K</span>
                         </div>
                         <div className="flex justify-between">
@@ -147,7 +147,7 @@ export default async function WaitlistLandingPage() {
             </h2>
             
             <div className="grid md:grid-cols-2 gap-8">
-              <div className="bg-gradient-card rounded-xl p-6 border border-border">
+              <div className="bg-gradient-card rounded-xl p-6">
                 <div className="flex items-center mb-4">
                   {[...Array(5)].map((_, i) => (
                     <Star key={i} className="text-yellow-400 mr-1" size={16} fill="currentColor" />
@@ -159,7 +159,7 @@ export default async function WaitlistLandingPage() {
                 <p className="font-semibold">Sarah Chen</p>
               </div>
               
-              <div className="bg-muted/20 rounded-xl p-6 border border-border">
+              <div className="bg-muted/20 rounded-xl p-6">
                 <div className="flex items-center mb-4">
                   {[...Array(5)].map((_, i) => (
                     <Star key={i} className="text-yellow-400 mr-1" size={16} fill="currentColor" />

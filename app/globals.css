@@ -129,6 +129,10 @@
   .bg-gradient-warning {
     background-image: linear-gradient(145deg, hsl(var(--destructive)), hsl(var(--warning)));
   }
+  
+  .bg-gradient-radial-primary {
+    background-image: radial-gradient(145deg, hsl(var(--primary)), hsl(var(--primary-glow)));
+  }
 }
 
   :root {
@@ -220,7 +224,7 @@
     --popover-foreground: 210 40% 98%;
 
     --primary: 217 91% 60%;
-    --primary-foreground: 240 10% 3.9%;
+    --primary-foreground: 0 0% 100%;
     --primary-glow: 217 91% 70%;
     --primary-dark: 217 91% 45%;
 

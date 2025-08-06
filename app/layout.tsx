@@ -8,8 +8,8 @@ import { GoogleTagManager } from '@/lib/googletagmanager';
 import Head from 'next/head';
 
 export const metadata: Metadata = {
-  title: 'Next.js SaaS Starter',
-  description: 'Get started quickly with Next.js, Postgres, and Stripe.'
+  title: 'GoCareerPath — Pivot your skills to AI-resistant careers',
+  description: 'AI is eliminating 85M jobs by 2025. Get your personalized Career Transition Report.'
 };
 
 export const viewport: Viewport = {

@@ -371,7 +371,7 @@ export default async function EarlyAccessLandingPage() {
         {/* Footer */}
         <footer className="py-8 px-4 sm:px-6 lg:px-8 border-t border-border">
         <div className="max-w-6xl mx-auto text-center text-sm text-muted-foreground">
-        <p>© 2025 CareerPath AI. All rights reserved. • Upgrade Your Career for the AI Age</p>
+        <p>© 2025 GoCareerPath AI. All rights reserved. • Upgrade Your Career for the AI Age</p>
         </div>
         </footer>
         </div>

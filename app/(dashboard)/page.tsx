@@ -197,7 +197,7 @@ export default async function WaitlistLandingPage() {
         {/* Footer */}
         <footer className="py-8 px-4 sm:px-6 lg:px-8 border-t border-border">
           <div className="max-w-6xl mx-auto text-center text-sm text-muted-foreground">
-            <p>© 2025 CareerPath AI. All rights reserved.</p>
+            <p>© 2025 GoCareerPath. All rights reserved.</p>
           </div>
         </footer>
       </div>

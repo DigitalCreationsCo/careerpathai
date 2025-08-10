@@ -6,7 +6,7 @@ import { SWRConfig } from 'swr';
 import { Toaster } from "@/components/ui/sonner"
 import { GoogleTagManager } from '@/lib/googletagmanager';
 import Head from 'next/head';
-import { dateJobsDisplaced, numJobsDisplaced } from '@/lib/app-data';
+import { dateJobsDisplaced, numJobsDisplaced } from '@/lib/utils';
 
 export const metadata: Metadata = {
   title: 'GoCareerPath — Pivot your skills to AI-resistant careers',

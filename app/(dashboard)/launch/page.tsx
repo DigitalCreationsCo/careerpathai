@@ -6,7 +6,7 @@ import { StepCard } from '@/components/step-card';
 import { CountdownTimer } from '@/components/countdown-timer';
 import { WaitlistEmailCapture } from '@/components/waitlist-email-capture';
 import Link from 'next/link';
-import { copyright, dateJobsDisplaced, getHoursToLaunch(start), numJobsDisplaced, start } from '@/lib/app-data';
+import { copyright, dateJobsDisplaced, numJobsDisplaced, launch } from '@/lib/utils';
 
 export default function LandingPage() {
   return (
@@ -94,7 +94,7 @@ export default function LandingPage() {
 
           <div className="space-y-4">
             <p className="text-lg font-semibold text-accent">Early Access: Only 100 Spots This Month</p>
-            <CountdownTimer start={start} remaining={getHoursToLaunch(start)} />
+            <CountdownTimer launch={launch} />
             <p className="text-sm text-muted-foreground">
               First 500 users get lifetime discount
             </p>

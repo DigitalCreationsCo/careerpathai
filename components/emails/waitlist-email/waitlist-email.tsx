@@ -1,4 +1,4 @@
-import { dateJobsDisplaced, numJobsDisplaced } from "@/lib/app-data";
+import { dateJobsDisplaced, numJobsDisplaced } from "@/lib/utils";
 import {
   Body,
   Button,

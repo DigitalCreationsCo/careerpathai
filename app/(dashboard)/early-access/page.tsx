@@ -9,9 +9,13 @@ import { WaitlistEmailCapture } from '@/components/waitlist-email-capture';
 import Link from 'next/link';
 import { getReportsCount } from '@/lib/db/queries/report';
 import { Browser } from '../../../components/browser';
-import { copyright, dateJobsDisplaced, getHoursToLaunch, numJobsDisplaced, start } from '@/lib/app-data';
+import { copyright, dateJobsDisplaced, numJobsDisplaced, launch, calculateTimeRemaining } from '@/lib/utils';
 
 export default async function EarlyAccessLandingPage() {
+
+    const { days, hours } = calculateTimeRemaining(launch);
+    const totalHoursRemaining = days * 24 + hours;
+
     // const reservedSpots = await getReportsCount()
     const reservedSpots = 33
     const spotsRemaining = 100 - reservedSpots;
@@ -22,8 +26,8 @@ export default async function EarlyAccessLandingPage() {
         <div className="bg-gradient-warning text-white pt-4 pb-3 px-4 text-center text-sm font-medium">
         <div className="flex items-center justify-center space-x-2 animate-glow-pulse">
         <AlertCircle size={16} />
-        <span className="md:hidden">🔥 Early Access Discount: • {Math.floor(getHoursToLaunch(start)/24)} days {getHoursToLaunch(start)%24}h remaining</span>
-        <span className="hidden md:inline">Early Access Discount:  {Math.floor(getHoursToLaunch(start))} days {getHoursToLaunch(start)%24} hours left • {spotsRemaining} spots remaining</span>
+        <span className="md:hidden">Early Access Discount: • {days} days {hours%24}h remaining</span>
+        <span className="hidden md:inline">Early Access Discount:  {days} days {hours%24} hours left • {spotsRemaining} spots remaining</span>
         </div>
         </div>
 
@@ -117,7 +121,7 @@ export default async function EarlyAccessLandingPage() {
             <p className="text-xs text-warning font-medium">⚡ Filling fast • {spotsRemaining} spots remaining</p>
         </div>
 
-        <CountdownTimer start={start} remaining={getHoursToLaunch(start)} />
+        <CountdownTimer launch={launch} />
         </div>
         </section>
 
@@ -288,7 +292,7 @@ export default async function EarlyAccessLandingPage() {
                 style={{ width: `${reservedSpots}%` }}
             />
             </div>
-            <CountdownTimer start={start} remaining={getHoursToLaunch(start)} />
+            <CountdownTimer launch={launch} />
         </div>
 
         <div className="space-y-6">

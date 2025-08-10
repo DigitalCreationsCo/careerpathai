@@ -2,13 +2,12 @@ import './landing.css'
 import { CheckCircle, Star, Zap } from 'lucide-react';
 import { Browser } from '@/components/browser';
 import { WaitlistEmailCapture } from '@/components/waitlist-email-capture';
-import { copyright, dateJobsDisplaced, numJobsDisplaced } from '@/lib/app-data';
+import { copyright, dateJobsDisplaced, numJobsDisplaced } from '@/lib/utils';
 
 export default async function WaitlistLandingPage() {
   return (
     <main>
       <div className="min-h-screen bg-gradient-hero text-foreground overflow-hidden">
-
         {/* Hero Section */}
         <section className="bg-gradient-primary-glow relative min-h-screen flex items-center justify-center p-2 sm:px-6 lg:px-8">
           <div className="absolute inset-0 bg-gradient-to-b from-background/80 to-background" />

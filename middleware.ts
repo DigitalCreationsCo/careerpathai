@@ -3,10 +3,12 @@ import type { NextRequest } from 'next/server';
 import { signToken, verifyToken } from '@/lib/auth/session';
 
 const protectedRoutes:string[] = [
-  '/dashboard',
+  // '/dashboard',
   '/launch',
   '/draft',
   '/pricing',
+  // '/early-access',
+  '/early-access-non-lexicon-draft'
 ];
 
 export async function middleware(request: NextRequest) {
@@ -50,5 +52,4 @@ export async function middleware(request: NextRequest) {
 
 export const config = {
   matcher: ['/((?!api|_next/static|_next/image|favicon.ico).*)'],
-  runtime: 'nodejs'
 };

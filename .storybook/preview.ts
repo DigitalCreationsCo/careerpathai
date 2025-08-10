@@ -1,0 +1,21 @@
+import '../app/globals.css';
+import type { Preview } from '@storybook/nextjs'
+import { sb } from 'storybook/test';
+
+// Automatically spies on all exports
+sb.mock(import('../lib/db/drizzle'), { spy: true });
+sb.mock(import('../lib/db/queries/user'), { spy: true });
+
+
+const preview: Preview = {
+  parameters: {
+    controls: {
+      matchers: {
+       color: /(background|color)$/i,
+       date: /Date$/i,
+      },
+    },
+  },
+};
+
+export default preview;

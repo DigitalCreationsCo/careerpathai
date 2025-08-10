@@ -1,12 +1,12 @@
 import '../landing.css'
-import { Button } from '@/components/ui/button';
+import { Button } from '@/components/ui/button/button';
 import { ArrowRight, Brain, TrendingUp, Shield, Target, Clock, Users, CheckCircle, CreditCard, Database } from 'lucide-react';
 import { FeatureCard } from '@/components/feature-card';
 import { StepCard } from '@/components/step-card';
 import { CountdownTimer } from '@/components/countdown-timer';
 import { WaitlistEmailCapture } from '@/components/waitlist-email-capture';
 import Link from 'next/link';
-import { daysToLaunch, start } from '@/lib/launch-data';
+import { copyright, dateJobsDisplaced, getHoursToLaunch(start), numJobsDisplaced, start } from '@/lib/app-data';
 
 export default function LandingPage() {
   return (
@@ -85,7 +85,7 @@ export default function LandingPage() {
         <div className="max-w-4xl mx-auto text-center space-y-8">
           <div className="space-y-4">
             <h2 className="text-3xl md:text-4xl font-bold text-warning">
-              85M Jobs Will Be Displaced by 2025
+              {`${numJobsDisplaced} Jobs Will Be Displaced by ${dateJobsDisplaced}`}
             </h2>
             <p className="text-xl text-foreground">
               Don't wait to future-proof your career. AI won't wait — neither should you.
@@ -94,7 +94,7 @@ export default function LandingPage() {
 
           <div className="space-y-4">
             <p className="text-lg font-semibold text-accent">Early Access: Only 100 Spots This Month</p>
-            <CountdownTimer start={start} remaining={daysToLaunch} />
+            <CountdownTimer start={start} remaining={getHoursToLaunch(start)} />
             <p className="text-sm text-muted-foreground">
               First 500 users get lifetime discount
             </p>
@@ -219,7 +219,7 @@ export default function LandingPage() {
       {/* Footer */}
       <footer className="py-8 px-4 sm:px-6 lg:px-8 border-t border-border">
         <div className="max-w-6xl mx-auto text-center text-sm text-muted-foreground">
-          <p>© 2025 CareerPath AI. All rights reserved. • Upgrade Your Career for the AI Age</p>
+          <p>{copyright}</p>
         </div>
       </footer>
     </div>

@@ -1,9 +1,10 @@
 import { notFound } from 'next/navigation';
 import { getReportById } from '@/lib/db/queries/report';
 import CareerPathReport from '@/components/report';
-import { Button } from '@/components/ui/button';
+import { Button } from '@/components/ui/button/button';
 import { ArrowLeft } from 'lucide-react';
 import Link from 'next/link';
+import { SAMPLE_DATA } from '@/lib/sample-data';
 
 type ReportPageProps = {
   params: Promise<{
@@ -25,7 +26,8 @@ export default async function ReportPage(props: ReportPageProps) {
     notFound();
   }
 
-  const report = await getReportById(reportId);
+  // const report = await getReportById(reportId);
+  const report = SAMPLE_DATA
   
   if (!report) {
     notFound();

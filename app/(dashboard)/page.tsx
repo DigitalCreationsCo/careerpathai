@@ -2,6 +2,7 @@ import './landing.css'
 import { CheckCircle, Star, Zap } from 'lucide-react';
 import { Browser } from '@/components/browser';
 import { WaitlistEmailCapture } from '@/components/waitlist-email-capture';
+import { copyright, dateJobsDisplaced, numJobsDisplaced } from '@/lib/app-data';
 
 export default async function WaitlistLandingPage() {
   return (
@@ -17,7 +18,7 @@ export default async function WaitlistLandingPage() {
             <div className="space-y-4 md:pt-4">
               <div className="inline-flex items-center px-4 py-2 text-warning text-sm md:text-md font-medium mb-4">
                 <Zap className="mr-2" size={16} />
-                AI is eliminating 85M jobs by 2025 — Are you prepared?
+                {`AI is eliminating ${numJobsDisplaced} jobs by ${dateJobsDisplaced} — Are you prepared?`}
               </div>
               
               <h1 className="text-4xl md:text-5xl lg:text-7xl font-bold leading-tight">
@@ -179,7 +180,7 @@ export default async function WaitlistLandingPage() {
           <div className="max-w-4xl mx-auto text-center space-y-8">
             <div className="space-y-4">
               <h2 className="text-3xl md:text-4xl font-bold text-warning">
-                85M Jobs Will Be Displaced by 2025
+                {`${numJobsDisplaced} Jobs Will Be Displaced by ${dateJobsDisplaced}`}
               </h2>
               <p className="text-xl text-muted-foreground">
                 Don’t wait to AI-proof your career. Join the waitlist now and be first in line when we launch.
@@ -197,7 +198,7 @@ export default async function WaitlistLandingPage() {
         {/* Footer */}
         <footer className="py-8 px-4 sm:px-6 lg:px-8 border-t border-border">
           <div className="max-w-6xl mx-auto text-center text-sm text-muted-foreground">
-            <p>© 2025 GoCareerPath. All rights reserved.</p>
+            <p>{copyright}</p>
           </div>
         </footer>
       </div>

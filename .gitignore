@@ -43,3 +43,5 @@ postgres_data/
 # text files
 *.rtf
 *.txt
+*storybook.log
+storybook-static

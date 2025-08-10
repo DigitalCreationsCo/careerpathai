@@ -1,5 +1,5 @@
 import { resend, EmailState, adminEmailAddress } from "./resend";
-import { WaitlistEmail } from "@/components/emails/waitlist-email";
+import { WaitlistEmail } from "@/components/emails/waitlist-email/waitlist-email";
 
 export async function sendWaitlistConfirmationEmail(formData: FormData):Promise<EmailState> {
   const email = formData.get("email") as string; 

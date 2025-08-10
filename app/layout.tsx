@@ -6,10 +6,11 @@ import { SWRConfig } from 'swr';
 import { Toaster } from "@/components/ui/sonner"
 import { GoogleTagManager } from '@/lib/googletagmanager';
 import Head from 'next/head';
+import { dateJobsDisplaced, numJobsDisplaced } from '@/lib/app-data';
 
 export const metadata: Metadata = {
   title: 'GoCareerPath — Pivot your skills to AI-resistant careers',
-  description: 'AI is eliminating 85M jobs by 2025. Get your personalized Career Transition Report.'
+  description: `AI is eliminating ${numJobsDisplaced} jobs by ${dateJobsDisplaced}. Get your personalized Career Transition Report.`
 };
 
 export const viewport: Viewport = {

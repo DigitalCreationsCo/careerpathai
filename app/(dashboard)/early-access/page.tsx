@@ -1,5 +1,5 @@
 import '../landing.css'
-import { Button } from '@/components/ui/button';
+import { Button } from '@/components/ui/button/button';
 import { ArrowRight, Brain, TrendingUp, Shield, Target, Clock, Users, CheckCircle, Star, Download, FileText, Zap, AlertCircle, Award, Eye } from 'lucide-react';
 import { Terminal } from '../../../components/terminal';
 import { FeatureCard } from '@/components/feature-card';
@@ -9,10 +9,11 @@ import { WaitlistEmailCapture } from '@/components/waitlist-email-capture';
 import Link from 'next/link';
 import { getReportsCount } from '@/lib/db/queries/report';
 import { Browser } from '../../../components/browser';
-import { daysToLaunch, start } from '@/lib/launch-data';
+import { copyright, dateJobsDisplaced, getHoursToLaunch, numJobsDisplaced, start } from '@/lib/app-data';
 
 export default async function EarlyAccessLandingPage() {
-    const reservedSpots = await getReportsCount()
+    // const reservedSpots = await getReportsCount()
+    const reservedSpots = 33
     const spotsRemaining = 100 - reservedSpots;
     return (
         <main>
@@ -21,8 +22,8 @@ export default async function EarlyAccessLandingPage() {
         <div className="bg-gradient-warning text-white pt-4 pb-3 px-4 text-center text-sm font-medium">
         <div className="flex items-center justify-center space-x-2 animate-glow-pulse">
         <AlertCircle size={16} />
-        <span className="md:hidden">🔥 Early Access Discount: • {daysToLaunch*24}h remaining</span>
-        <span className="hidden md:inline">Early Access Discount: {daysToLaunch*24} hours left • {spotsRemaining} spots remaining</span>
+        <span className="md:hidden">🔥 Early Access Discount: • {Math.floor(getHoursToLaunch(start)/24)} days {getHoursToLaunch(start)%24}h remaining</span>
+        <span className="hidden md:inline">Early Access Discount:  {Math.floor(getHoursToLaunch(start))} days {getHoursToLaunch(start)%24} hours left • {spotsRemaining} spots remaining</span>
         </div>
         </div>
 
@@ -41,7 +42,7 @@ export default async function EarlyAccessLandingPage() {
         <div className="space-y-4 md:pt-4">
             <div className="inline-flex items-center px-4 py-2 text-warning text-sm md:text-md font-medium mb-4">
             <Zap className="mr-2" size={16} />
-            AI is eliminating 85M jobs by 2025 — Are you prepared?
+            {`AI is eliminating ${numJobsDisplaced} jobs by ${dateJobsDisplaced} — Are you prepared?`}
             </div>
             
             <h1 className="text-4xl md:text-5xl lg:text-7xl font-bold leading-tight ">
@@ -116,7 +117,7 @@ export default async function EarlyAccessLandingPage() {
             <p className="text-xs text-warning font-medium">⚡ Filling fast • {spotsRemaining} spots remaining</p>
         </div>
 
-        <CountdownTimer start={start} remaining={daysToLaunch} />
+        <CountdownTimer start={start} remaining={getHoursToLaunch(start)} />
         </div>
         </section>
 
@@ -267,7 +268,7 @@ export default async function EarlyAccessLandingPage() {
         <div className="max-w-4xl mx-auto text-center space-y-8">
         <div className="space-y-4">
             <h2 className="text-3xl md:text-4xl font-bold text-warning">
-            85M Jobs Will Be Displaced by 2025
+            {`${numJobsDisplaced} Jobs Will Be Displaced by ${dateJobsDisplaced}`}
             </h2>
 
             <p className="text-xl text-muted-foreground">
@@ -287,7 +288,7 @@ export default async function EarlyAccessLandingPage() {
                 style={{ width: `${reservedSpots}%` }}
             />
             </div>
-            <CountdownTimer start={start} remaining={daysToLaunch} />
+            <CountdownTimer start={start} remaining={getHoursToLaunch(start)} />
         </div>
 
         <div className="space-y-6">
@@ -313,7 +314,7 @@ export default async function EarlyAccessLandingPage() {
         {/* Footer */}
         <footer className="py-8 px-4 sm:px-6 lg:px-8 border-t border-border">
         <div className="max-w-6xl mx-auto text-center text-sm text-muted-foreground">
-        <p>© 2025 GoCareerPath AI. All rights reserved. • No refunds on digital products</p>
+        <p>{copyright}</p>
         </div>
         </footer>
         </div>

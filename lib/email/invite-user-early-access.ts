@@ -1,5 +1,5 @@
 import { resend, EmailState, adminEmailAddress } from "./resend";
-import { InviteUserEarlyAccessEmail } from "@/components/emails/invite-user-early-access-email";
+import { InviteUserEarlyAccessEmail } from "@/components/emails/invite-user-early-access-email/invite-user-early-access-email";
 
 export async function sendEarlyAccessInviteEmail(formData: FormData) {
   const email = formData.get("email") as string; 

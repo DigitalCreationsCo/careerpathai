@@ -42,7 +42,7 @@ export default async function WaitlistLandingPage() {
                 buttonText="Join Waitlist"
               />
               <p className="text-xs text-muted-foreground">
-                Be the first to get access when we launch • Expected launch price: <strong>$29</strong>
+                Be the first to get access when we launch • Expected launch price: <strong className='text-sm text-success'>$29</strong>
               </p>
             </div>
           </div>
@@ -57,7 +57,9 @@ export default async function WaitlistLandingPage() {
                 <span className="text-transparent bg-gradient-accent bg-clip-text">Career Transition Report</span>
               </h2>
               <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-                Here’s a real example of your personalized Career Transition Report: career strategy, skills gap analysis, and your 21-Day Pivot Sprint.
+                Here’s a real example of your personalized Career Transition Report: 
+                <br />
+                career strategy, skills gap analysis, and your 21-Day Pivot Sprint.
               </p>
             </div>
 

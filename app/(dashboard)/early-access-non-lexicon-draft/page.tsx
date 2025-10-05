@@ -84,7 +84,7 @@ export default async function EarlyAccessLandingPage() {
             
             {/* A subheadline */}
             {/* <p className="text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
-            Get a personalized Career Transition Report that reveals 3-4 high-paying, AI-resistant careers you can pivot to using your existing skills — plus the exact roadmap to get there.
+            Get a personalized Career Path Report that reveals 3-4 high-paying, AI-resistant careers you can pivot to using your existing skills — plus the exact roadmap to get there.
             </p> */}
             
             {/* B subheadline */}
@@ -174,7 +174,7 @@ export default async function EarlyAccessLandingPage() {
             See What You'll Get: <span className="text-transparent bg-gradient-accent bg-clip-text">Sample Career Report</span>
             </h2>
             <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-            Here's a real example of what your personalized Career Transition Report looks like. Define your career strategy → skills → proof → outreach.
+            Here's a real example of what your personalized Career Path Report looks like. Define your career strategy → skills → proof → outreach.
             </p>
         </div>
 
@@ -182,7 +182,7 @@ export default async function EarlyAccessLandingPage() {
         <Browser>
         <div className="bg-gradient-card rounded-2xl p-8 max-w-4xl mx-auto space-y-8">
             <div className="border-b border-border pb-6">
-            <h3 className="text-2xl font-bold text-primary mb-2">Career Transition Report</h3>
+            <h3 className="text-2xl font-bold text-primary mb-2">Career Path Report</h3>
             <p className="text-muted-foreground">For: Marketing Coordinator → AI-Resistant Career Paths</p>
             </div>
 

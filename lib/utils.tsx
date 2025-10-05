@@ -1,5 +1,7 @@
 import { clsx, type ClassValue } from "clsx"
 import { twMerge } from "tailwind-merge"
+import logoSm from '@/app/favicon-32x32.png'
+import logoLg from '@/app/android-chrome-192x192.png'
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
@@ -26,4 +28,10 @@ export const calculateTimeRemaining = (launch: Date): { days: number; hours: num
 export const numJobsDisplaced = '85M';
 export const dateJobsDisplaced = 2027;
 
-export const copyright = "© 2025 CareerPath AI. All rights reserved. • AI-Proof Your Career Today"
+export const copyright = "© 2025, GoCareerPath. All rights reserved. AI-Proof Your Career"
+
+export const Logo = ({size = "sm"}) => size === "sm" ? (
+  <img src={logoSm.src} className='pt-1' />
+) : (
+  <img src={logoLg.src} height={75} width={75} className='pt-1' />
+)

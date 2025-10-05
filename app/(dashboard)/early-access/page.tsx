@@ -59,7 +59,7 @@ export default async function EarlyAccessLandingPage() {
             </h1>
             
             <p className="text-lg md:text-xl text-muted-foreground max-w-lg lg:max-w-2xl mx-auto leading-snug">
-            Get your personalized Career Transition Report revealing 3-4 high-paying, AI-resistant career paths you can pivot to using your existing skills.
+            Get your personalized Career Path Report revealing 3-4 high-paying, AI-resistant career paths you can pivot to using your existing skills.
             </p>
             <p className="text-sm text-muted-foreground">
                 Join <span className="text-accent font-semibold">1,000+</span> professionals already AI-proofing their careers
@@ -68,9 +68,9 @@ export default async function EarlyAccessLandingPage() {
 
         <div className="flex flex-col items-center space-y-6">
             <WaitlistEmailCapture
-            title="Get Your Career Transition Report + 21-Day Action Sprint"
+            title="Get Your Career Path Report + 21-Day Action Sprint"
             emailPlaceholder="Enter your email for early access"
-            buttonText="Get My Career Transition Report - $29"
+            buttonText="Get My Career Path Report - $29"
             />
             
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs text-muted-foreground max-w-md">
@@ -132,10 +132,10 @@ export default async function EarlyAccessLandingPage() {
             <h2 className="text-3xl md:text-4xl font-bold mb-4">
             See What You'll Get: {' '}
             <br className="md:hidden" />
-            <span className="text-transparent bg-gradient-accent bg-clip-text">Career Transition Report</span>
+            <span className="text-transparent bg-gradient-accent bg-clip-text">Career Path Report</span>
             </h2>
             <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-            Here's a real example of what your personalized Career Transition Report looks like. Define your career strategy → skills gap analysis → 21-Day Action Sprint.
+            Here's a real example of what your personalized Career Path Report looks like. Define your career strategy → skills gap analysis → 21-Day Action Sprint.
             </p>
         </div>
 
@@ -143,7 +143,7 @@ export default async function EarlyAccessLandingPage() {
         <Browser>
         <div className="bg-gradient-card rounded-2xl p-8 max-w-4xl mx-auto space-y-8">
             <div className="border-b border-border pb-6">
-            <h3 className="text-2xl font-bold text-primary mb-2">Career Transition Report</h3>
+            <h3 className="text-2xl font-bold text-primary mb-2">Career Path Report</h3>
             <p className="text-muted-foreground">For: Marketing Coordinator → AI-Resistant Career Paths</p>
             </div>
 
@@ -207,12 +207,12 @@ export default async function EarlyAccessLandingPage() {
         </Browser>
 
         <div className="text-center mt-8">
-            <p className="text-muted-foreground mb-4">This is just 1 of 3-4 career paths in your complete Career Transition Report</p>
+            <p className="text-muted-foreground mb-4">This is just 1 of 3-4 career paths in your complete Career Path Report</p>
             <Button 
             variant="warning" 
             size="lg"
             >
-            Get My Career Transition Report - $29
+            Get My Career Path Report - $29
             </Button>
         </div>
         </div>
@@ -234,7 +234,7 @@ export default async function EarlyAccessLandingPage() {
                 ))}
             </div>
             <p className="text-muted-foreground mb-4">
-                "The Career Transition Report was incredibly detailed. The 21-Day Action Sprint got me moving immediately, and now I'm earning $95K in cybersecurity!"
+                "The Career Path Report was incredibly detailed. The 21-Day Action Sprint got me moving immediately, and now I'm earning $95K in cybersecurity!"
             </p>
             <p className="font-semibold"> Sarah Chen, Early Access Customer</p>
             <p className="text-xs text-success">✅ Verified Purchase</p>
@@ -247,7 +247,7 @@ export default async function EarlyAccessLandingPage() {
                 ))}
             </div>
             <p className="text-muted-foreground mb-4">
-                "The Skills Gap Analysis in my Career Transition Report was spot-on. Transitioned from support to RevOps in 4 months using the Career Pivot Toolkit!"
+                "The Skills Gap Analysis in my Career Path Report was spot-on. Transitioned from support to RevOps in 4 months using the Career Pivot Toolkit!"
             </p>
             <p className="font-semibold"> Marcus Rodriguez, Early Access Customer</p>
             <p className="text-xs text-success">✅ Verified Purchase</p>
@@ -276,7 +276,7 @@ export default async function EarlyAccessLandingPage() {
             </h2>
 
             <p className="text-xl text-muted-foreground">
-            Don't wait to AI-proof your career. Get your personalized Career Transition Report with 21-Day Action Sprint now.
+            Don't wait to AI-proof your career. Get your personalized Career Path Report with 21-Day Action Sprint now.
             </p>
         </div>
 
@@ -303,9 +303,9 @@ export default async function EarlyAccessLandingPage() {
             </div>
 
             <WaitlistEmailCapture
-            title="Get Your Career Transition Report + 21-Day Action Sprint"
+            title="Get Your Career Path Report + 21-Day Action Sprint"
             emailPlaceholder="Enter your email for early access"
-            buttonText="Get My Career Transition Report - $29"
+            buttonText="Get My Career Path Report - $29"
             />
 
             <p className="text-sm text-muted-foreground">

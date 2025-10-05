@@ -10,7 +10,7 @@ export const WaitlistEmailCapture = ({
   // EARLY ACCESS AND PREVIEW SAMPLE TEXT
   // emailPlaceholder = "Enter your email for Preview Sample",
   // namePlaceholder = "Enter your first name",
-  // success = "Preview Sample sent! Check your email for your free career path example, then secure your full Career Transition Report.",
+  // success = "Preview Sample sent! Check your email for your free career path example, then secure your full Career Path Report.",
   // buttonText = "Get Preview Sample + Early Access - $29",
   // loadingText = 'Sending Preview Sample...',
   // title = "Get Your FREE Preview Sample First"

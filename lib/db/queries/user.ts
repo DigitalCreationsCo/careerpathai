@@ -1,8 +1,38 @@
 import { desc, and, eq, isNull } from 'drizzle-orm';
 import { db } from '../drizzle';
-import { activityLogs, teamMembers, teams, users } from '../schema';
+import { activityLogs, teamMembers, teams, User, users } from '../schema';
 import { cookies } from 'next/headers';
-import { verifyToken } from '@/lib/auth/session';
+import { hashPassword, verifyToken } from '@/lib/auth/session';
+
+export async function createUser(email: string, password: string, name: string) {
+  try {
+    const passwordHash = await hashPassword(password);
+    const newUser = await db.insert(users).values({ email, passwordHash, name });
+    console.log('Created new user in database: ', newUser);
+    return newUser;
+  } catch (error) {
+    console.error("Failed to create user in database");
+    throw error;
+  }
+}
+
+export async function getUserById(id: string): Promise<User | undefined> {
+  try {
+    return (await db.select().from(users).where(eq(users.id, id))).shift();
+  } catch (error) {
+    console.error("Failed to get user by email from database");
+    throw error;
+  }
+}
+
+export async function getUserByEmail(email: string): Promise<User | undefined> {
+  try {
+    return (await db.select().from(users).where(eq(users.email, email))).shift();
+  } catch (error) {
+    console.error("Failed to get user by email from database");
+    throw error;
+  }
+}
 
 export async function getUser() {
   const sessionCookie = (await cookies()).get('session');

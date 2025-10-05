@@ -6,11 +6,12 @@ import {
   timestamp,
   integer,
   json,
+  uuid,
 } from 'drizzle-orm/pg-core';
 import { relations } from 'drizzle-orm';
 
 export const users = pgTable('users', {
-  id: serial('id').primaryKey(),
+  id: uuid("id").primaryKey().notNull().defaultRandom(),
   name: varchar('name', { length: 100 }),
   email: varchar('email', { length: 255 }).notNull().unique(),
   passwordHash: text('password_hash').notNull(),
@@ -21,7 +22,7 @@ export const users = pgTable('users', {
 });
 
 export const teams = pgTable('teams', {
-  id: serial('id').primaryKey(),
+  id: uuid("id").primaryKey().notNull().defaultRandom(),
   name: varchar('name', { length: 100 }).notNull(),
   createdAt: timestamp('created_at').notNull().defaultNow(),
   updatedAt: timestamp('updated_at').notNull().defaultNow(),
@@ -33,7 +34,7 @@ export const teams = pgTable('teams', {
 });
 
 export const teamMembers = pgTable('team_members', {
-  id: serial('id').primaryKey(),
+  id: uuid("id").primaryKey().notNull().defaultRandom(),
   userId: integer('user_id')
     .notNull()
     .references(() => users.id),
@@ -45,7 +46,7 @@ export const teamMembers = pgTable('team_members', {
 });
 
 export const activityLogs = pgTable('activity_logs', {
-  id: serial('id').primaryKey(),
+  id: uuid("id").primaryKey().notNull().defaultRandom(),
   teamId: integer('team_id')
     .notNull()
     .references(() => teams.id),
@@ -56,7 +57,7 @@ export const activityLogs = pgTable('activity_logs', {
 });
 
 export const invitations = pgTable('invitations', {
-  id: serial('id').primaryKey(),
+  id: uuid("id").primaryKey().notNull().defaultRandom(),
   teamId: integer('team_id')
     .notNull()
     .references(() => teams.id),
@@ -114,10 +115,10 @@ export const activityLogsRelations = relations(activityLogs, ({ one }) => ({
 }));
 
 export const reports = pgTable('reports', {
-  id: serial('id').primaryKey(),
-  // userId: integer('user_id')
-  //   .notNull()
-  //   .references(() => users.id),
+  id: uuid("id").primaryKey().notNull().defaultRandom(),
+  userId: uuid('user_id')
+    .notNull()
+    .references(() => users.id),
   // teamId: integer('team_id')
   //   .notNull()
   //   .references(() => teams.id),
@@ -127,19 +128,19 @@ export const reports = pgTable('reports', {
   globalRationale: text('global_rationale').notNull(),
 });
 
-// export const reportsRelations = relations(reports, ({ one }) => ({
-//   user: one(users, {
-//     fields: [reports.userId],
-//     references: [users.id],
-//   }),
-//   // team: one(teams, {
-//   //   fields: [reports.teamId],
-//   //   references: [teams.id],
-//   // }),
-// }));
+export const reportsRelations = relations(reports, ({ one }) => ({
+  user: one(users, {
+    fields: [reports.userId],
+    references: [users.id],
+  }),
+  // team: one(teams, {
+  //   fields: [reports.teamId],
+  //   references: [teams.id],
+  // }),
+}));
 
 export const waitlist = pgTable('waitlist', {
-  id: serial("id").primaryKey(),
+  id: uuid("id").primaryKey().notNull().defaultRandom(),
   username: varchar("username", { length: 100 }).notNull(),
   email: varchar("email", { length: 255 }).notNull().unique(),
   createdAt: timestamp("created_at").notNull().defaultNow(),

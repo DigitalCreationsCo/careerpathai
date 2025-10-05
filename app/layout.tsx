@@ -7,10 +7,11 @@ import { Toaster } from "@/components/ui/sonner"
 import { GoogleTagManager } from '@/lib/googletagmanager';
 import Head from 'next/head';
 import { dateJobsDisplaced, numJobsDisplaced } from '@/lib/utils';
+import { Header } from '@/components/ui/header/header';
 
 export const metadata: Metadata = {
   title: 'GoCareerPath — Pivot your skills to AI-resistant careers',
-  description: `AI is eliminating ${numJobsDisplaced} jobs by ${dateJobsDisplaced}. Get your personalized Career Transition Report.`
+  description: `AI is eliminating ${numJobsDisplaced} jobs by ${dateJobsDisplaced}. Get your personalized Career Path Report.`
 };
 
 export const viewport: Viewport = {
@@ -49,6 +50,7 @@ export default function RootLayout({
           }}
         >
           <Toaster position="bottom-center" />
+          <Header />
           {children}
         </SWRConfig>
       </body>

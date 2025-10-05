@@ -28,7 +28,7 @@ export const WaitlistEmail = ({
   spotNumber = Math.floor(Math.random() * 73) + 1,
 }: WaitlistEmailProps) => {
   const previewText =
-    "Spot #" + spotNumber + " confirmed. We'll notify you when Career Transition Reports launch.";
+    "Spot #" + spotNumber + " confirmed. We'll notify you when Career Path Reports launch.";
 
   return (
     <Html>
@@ -67,7 +67,7 @@ export const WaitlistEmail = ({
             {/* Simple Confirmation */}
             <Text className="text-black text-sm leading-[22px]">
               Your spot on the <strong>GoCareerPath </strong> waitlist is confirmed. 
-              We'll email you as soon as <strong>Career Transition Reports</strong> are available.
+              We'll email you as soon as <strong>Career Path Reports</strong> are available.
             </Text>
 
             {/* What to Expect */}

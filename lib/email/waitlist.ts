@@ -8,7 +8,7 @@ export async function sendWaitlistConfirmationEmail(formData: FormData):Promise<
   const { data, error } = await resend.emails.send({
     from: `GoCareerPath <${adminEmailAddress}>`,
     to: [email],
-    subject: "Your Career Transition Report Spot is Reserved",
+    subject: "Your Career Path Report Spot is Reserved",
     react: WaitlistEmail({ username }),
   });
 

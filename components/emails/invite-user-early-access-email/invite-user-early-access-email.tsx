@@ -73,7 +73,7 @@ export const InviteUserEarlyAccessEmail = ({
 
             <Text className="text-black text-sm leading-[22px] mt-[12px]">
               As a waitlist member, you get <strong>first access</strong> to your personalized 
-              <strong> Career Transition Report</strong> at our early access price.
+              <strong> Career Path Report</strong> at our early access price.
             </Text>
 
             {/* Discount Box */}
@@ -88,7 +88,7 @@ export const InviteUserEarlyAccessEmail = ({
 
             {/* What they get */}
             <Text className="text-black text-sm leading-[22px] mt-[16px]">
-              <strong>Your Career Transition Report includes:</strong>
+              <strong>Your Career Path Report includes:</strong>
             </Text>
 
             <ul className="text-black text-sm leading-[22px] list-decimal list-inside m-0 mt-2 p-0">
@@ -163,7 +163,7 @@ export const InviteUserEarlyAccessEmail = ({
             </Text>
             
             <Text className="text-[#666666] text-[12px] leading-[20px] mt-[8px]">
-              Questions about your Career Transition Report? Just reply to this email and we'll get back to you.
+              Questions about your Career Path Report? Just reply to this email and we'll get back to you.
             </Text>
           </Container>
         </Body>

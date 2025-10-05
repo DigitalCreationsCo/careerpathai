@@ -10,8 +10,48 @@ import { dateJobsDisplaced, numJobsDisplaced } from '@/lib/utils';
 import { Header } from '@/components/ui/header/header';
 
 export const metadata: Metadata = {
-  title: 'GoCareerPath — Pivot your skills to AI-resistant careers',
-  description: `AI is eliminating ${numJobsDisplaced} jobs by ${dateJobsDisplaced}. Get your personalized Career Path Report.`
+  title: 'GoCareerPath — Find & Pivot to Your AI-Proof Career Path',
+  description:
+    'AI is disrupting the job market. Protect your future with a personalized AI-proof Career Transition Report. Identify high-demand, low-automation roles and map your pivot in 14 days.',
+  keywords: [
+    'AI-proof careers',
+    'career path finder',
+    'AI job disruption',
+    'future of work',
+    'job automation risk',
+    'career pivot tool',
+    'AI career advice',
+    'personalized career report',
+    'career change in AI age',
+    'GoCareerPath'
+  ],
+  openGraph: {
+    title: 'GoCareerPath — Find & Pivot Your Skills To An AI-Resistant Career Path',
+    description:
+      'Get your AI-proof Career Transition Report. Discover high-demand, low-automation jobs and learn how to pivot in 14 days.',
+    url: 'https://gocareerpath.com',
+    siteName: 'GoCareerPath',
+    images: [
+      {
+        url: 'https://gocareerpath.com/og-image.jpg',
+        width: 1200,
+        height: 630,
+        alt: 'GoCareerPath Career Transition Tool'
+      }
+    ],
+    locale: 'en_US',
+    type: 'website'
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'GoCareerPath — Find & Pivot to Your AI-Proof Career Path',
+    description:
+      'AI is changing work forever. Discover AI-resistant careers and get your personalized pivot plan.',
+    images: ['https://gocareerpath.com/og-image.jpg']
+  },
+  alternates: {
+    canonical: 'https://gocareerpath.com'
+  }
 };
 
 export const viewport: Viewport = {

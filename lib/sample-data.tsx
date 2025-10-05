@@ -5,7 +5,8 @@
 import { Report } from "@/lib/db/schema";
 
 export const SAMPLE_DATA: Report = {
-    id: 1,
+    id: "1",
+    userId: "1",
     metadata: {
       user: {
         id: 1,

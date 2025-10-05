@@ -1,7 +1,6 @@
 import './landing.css'
 import { ArrowRight, CheckCircle, Star, Zap } from 'lucide-react';
 import { Browser } from '@/components/browser';
-import { WaitlistEmailCapture } from '@/components/waitlist-email-capture';
 import { copyright, dateJobsDisplaced, numJobsDisplaced } from '@/lib/utils';
 import { Button } from '@/components/ui/button/button';
 import Link from 'next/link';
@@ -19,7 +18,7 @@ export default async function WaitlistLandingPage() {
             <div className="space-y-4 md:pt-4">
               <div className="inline-flex items-center px-4 py-2 text-warning text-sm md:text-md font-medium mb-4">
                 <Zap className="mr-2" size={16} />
-                {`AI is eliminating ${numJobsDisplaced} jobs by ${dateJobsDisplaced} — Are you prepared?`}
+                <p className="shiny-text">{`AI is eliminating ${numJobsDisplaced} jobs by ${dateJobsDisplaced} — Are you prepared?`}</p>
               </div>
               
               <h1 className="text-4xl md:text-5xl lg:text-7xl font-bold leading-tight">

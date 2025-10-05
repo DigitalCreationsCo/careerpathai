@@ -1,6 +1,8 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 
+@source "../node_modules/streamdown/dist/index.js";
+
 @custom-variant dark (&:is(.dark *));
 @variant dark (&:is(.dark *));
 
@@ -133,6 +135,33 @@
   .bg-gradient-radial-primary {
     background-image: radial-gradient(145deg, hsl(var(--primary)), hsl(var(--primary-glow)));
   }
+
+  @keyframes shine {
+  0% {
+    background-position: 100% center;
+  }
+  50% {
+    background-position: 100% center;
+  }
+  100% {
+    background-position: -100% center;
+  }
+}
+
+.shiny-text {
+  @apply relative inline-block text-transparent bg-clip-text;
+  background-image: linear-gradient(
+    110deg,
+    rgb(var(--warning)),
+    rgb(var(--warning-foreground)),
+    rgb(var(--warning)),
+    rgb(var(--warning)),
+    rgb(var(--warning)),
+    rgb(var(--warning))
+  );
+  background-size: 200% auto;
+  animation: shine 2.5s linear infinite;
+}
 }
 
   :root {

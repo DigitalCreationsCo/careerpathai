@@ -7,8 +7,14 @@ import {
   integer,
   json,
   uuid,
+  jsonb,
+  boolean,
+  primaryKey,
+  foreignKey,
 } from 'drizzle-orm/pg-core';
-import { relations } from 'drizzle-orm';
+import { InferSelectModel, relations } from 'drizzle-orm';
+import { AppUsage } from '../usage';
+import { CareerPathSuggestion, DecisionRow, Metadata } from '../types';
 
 export const users = pgTable('users', {
   id: uuid("id").primaryKey().notNull().defaultRandom(),
@@ -20,6 +26,42 @@ export const users = pgTable('users', {
   updatedAt: timestamp('updated_at').notNull().defaultNow(),
   deletedAt: timestamp('deleted_at'),
 });
+
+export const usersRelations = relations(users, ({ many }) => ({
+  teamMembers: many(teamMembers),
+  invitationsSent: many(invitations),
+}));
+
+export type User = typeof users.$inferSelect;
+export type NewUser = typeof users.$inferInsert;
+
+export const chat = pgTable("Chat", {
+  id: uuid("id").primaryKey().notNull().defaultRandom(),
+  createdAt: timestamp("createdAt").notNull(),
+  title: text("title").notNull(),
+  userId: uuid("userId")
+    .notNull()
+    .references(() => users.id),
+  visibility: varchar("visibility", { enum: ["public", "private"] })
+    .notNull()
+    .default("private"),
+  lastContext: jsonb("lastContext").$type<AppUsage | null>(),
+});
+
+export type Chat = InferSelectModel<typeof chat>;
+
+export const message = pgTable("Message_v2", {
+  id: uuid("id").primaryKey().notNull().defaultRandom(),
+  chatId: uuid("chatId")
+    .notNull()
+    .references(() => chat.id),
+  role: varchar("role").notNull(),
+  parts: json("parts").notNull(),
+  attachments: json("attachments").notNull(),
+  createdAt: timestamp("createdAt").notNull(),
+});
+
+export type DBMessage = InferSelectModel<typeof message>;
 
 export const teams = pgTable('teams', {
   id: uuid("id").primaryKey().notNull().defaultRandom(),
@@ -33,64 +75,26 @@ export const teams = pgTable('teams', {
   subscriptionStatus: varchar('subscription_status', { length: 20 }),
 });
 
-export const teamMembers = pgTable('team_members', {
-  id: uuid("id").primaryKey().notNull().defaultRandom(),
-  userId: integer('user_id')
-    .notNull()
-    .references(() => users.id),
-  teamId: integer('team_id')
-    .notNull()
-    .references(() => teams.id),
-  role: varchar('role', { length: 50 }).notNull(),
-  joinedAt: timestamp('joined_at').notNull().defaultNow(),
-});
-
-export const activityLogs = pgTable('activity_logs', {
-  id: uuid("id").primaryKey().notNull().defaultRandom(),
-  teamId: integer('team_id')
-    .notNull()
-    .references(() => teams.id),
-  userId: integer('user_id').references(() => users.id),
-  action: text('action').notNull(),
-  timestamp: timestamp('timestamp').notNull().defaultNow(),
-  ipAddress: varchar('ip_address', { length: 45 }),
-});
-
-export const invitations = pgTable('invitations', {
-  id: uuid("id").primaryKey().notNull().defaultRandom(),
-  teamId: integer('team_id')
-    .notNull()
-    .references(() => teams.id),
-  email: varchar('email', { length: 255 }).notNull(),
-  role: varchar('role', { length: 50 }).notNull(),
-  invitedBy: integer('invited_by')
-    .notNull()
-    .references(() => users.id),
-  invitedAt: timestamp('invited_at').notNull().defaultNow(),
-  status: varchar('status', { length: 20 }).notNull().default('pending'),
-});
-
 export const teamsRelations = relations(teams, ({ many }) => ({
   teamMembers: many(teamMembers),
   activityLogs: many(activityLogs),
   invitations: many(invitations),
 }));
 
-export const usersRelations = relations(users, ({ many }) => ({
-  teamMembers: many(teamMembers),
-  invitationsSent: many(invitations),
-}));
+export type Team = typeof teams.$inferSelect;
+export type NewTeam = typeof teams.$inferInsert;
 
-export const invitationsRelations = relations(invitations, ({ one }) => ({
-  team: one(teams, {
-    fields: [invitations.teamId],
-    references: [teams.id],
-  }),
-  invitedBy: one(users, {
-    fields: [invitations.invitedBy],
-    references: [users.id],
-  }),
-}));
+export const teamMembers = pgTable('team_members', {
+  id: uuid("id").primaryKey().notNull().defaultRandom(),
+  userId: integer('user_id')
+  .notNull()
+  .references(() => users.id),
+  teamId: integer('team_id')
+  .notNull()
+  .references(() => teams.id),
+  role: varchar('role', { length: 50 }).notNull(),
+  joinedAt: timestamp('joined_at').notNull().defaultNow(),
+});
 
 export const teamMembersRelations = relations(teamMembers, ({ one }) => ({
   user: one(users, {
@@ -103,6 +107,20 @@ export const teamMembersRelations = relations(teamMembers, ({ one }) => ({
   }),
 }));
 
+export type TeamMember = typeof teamMembers.$inferSelect;
+export type NewTeamMember = typeof teamMembers.$inferInsert;
+
+export const activityLogs = pgTable('activity_logs', {
+  id: uuid("id").primaryKey().notNull().defaultRandom(),
+  teamId: integer('team_id')
+    .notNull()
+    .references(() => teams.id),
+  userId: integer('user_id').references(() => users.id),
+  action: text('action').notNull(),
+  timestamp: timestamp('timestamp').notNull().defaultNow(),
+  ipAddress: varchar('ip_address', { length: 45 }),
+});
+
 export const activityLogsRelations = relations(activityLogs, ({ one }) => ({
   team: one(teams, {
     fields: [activityLogs.teamId],
@@ -113,6 +131,60 @@ export const activityLogsRelations = relations(activityLogs, ({ one }) => ({
     references: [users.id],
   }),
 }));
+
+export type ActivityLog = typeof activityLogs.$inferSelect;
+export type NewActivityLog = typeof activityLogs.$inferInsert;
+
+export const invitations = pgTable('invitations', {
+  id: uuid("id").primaryKey().notNull().defaultRandom(),
+  teamId: integer('team_id')
+  .notNull()
+  .references(() => teams.id),
+  email: varchar('email', { length: 255 }).notNull(),
+  role: varchar('role', { length: 50 }).notNull(),
+  invitedBy: integer('invited_by')
+  .notNull()
+  .references(() => users.id),
+  invitedAt: timestamp('invited_at').notNull().defaultNow(),
+  status: varchar('status', { length: 20 }).notNull().default('pending'),
+});
+
+export const invitationsRelations = relations(invitations, ({ one }) => ({
+  team: one(teams, {
+    fields: [invitations.teamId],
+    references: [teams.id],
+  }),
+  invitedBy: one(users, {
+    fields: [invitations.invitedBy],
+    references: [users.id],
+  }),
+}));
+
+export type Invitation = typeof invitations.$inferSelect;
+export type NewInvitation = typeof invitations.$inferInsert;
+
+// export const document = pgTable(
+//   "Document",
+//   {
+//     id: uuid("id").notNull().defaultRandom(),
+//     createdAt: timestamp("createdAt").notNull(),
+//     title: text("title").notNull(),
+//     content: text("content"),
+//     kind: varchar("text", { enum: ["text", "code", "image", "sheet"] })
+//       .notNull()
+//       .default("text"),
+//     userId: uuid("userId")
+//       .notNull()
+//       .references(() => user.id),
+//   },
+//   (table) => {
+//     return {
+//       pk: primaryKey({ columns: [table.id, table.createdAt] }),
+//     };
+//   }
+// );
+
+// export type Document = InferSelectModel<typeof document>;
 
 export const reports = pgTable('reports', {
   id: uuid("id").primaryKey().notNull().defaultRandom(),
@@ -139,6 +211,14 @@ export const reportsRelations = relations(reports, ({ one }) => ({
   // }),
 }));
 
+export type Report = typeof reports.$inferSelect & {
+  metadata: Metadata;
+  decisionMatrix: DecisionRow[];
+  suggestions: CareerPathSuggestion[];
+  globalRationale: string;
+};
+export type NewReport = typeof reports.$inferInsert;
+
 export const waitlist = pgTable('waitlist', {
   id: uuid("id").primaryKey().notNull().defaultRandom(),
   username: varchar("username", { length: 100 }).notNull(),
@@ -146,155 +226,55 @@ export const waitlist = pgTable('waitlist', {
   createdAt: timestamp("created_at").notNull().defaultNow(),
 });
 
-export type User = typeof users.$inferSelect;
-export type NewUser = typeof users.$inferInsert;
-export type Team = typeof teams.$inferSelect;
-export type NewTeam = typeof teams.$inferInsert;
-export type TeamMember = typeof teamMembers.$inferSelect;
-export type NewTeamMember = typeof teamMembers.$inferInsert;
-export type ActivityLog = typeof activityLogs.$inferSelect;
-export type NewActivityLog = typeof activityLogs.$inferInsert;
-export type Invitation = typeof invitations.$inferSelect;
-export type NewInvitation = typeof invitations.$inferInsert;
+export type WaitlistRow = typeof waitlist.$inferSelect
+export type NewWaitlistRow = typeof waitlist.$inferInsert
+
 export type TeamDataWithMembers = Team & {
   teamMembers: (TeamMember & {
     user: Pick<User, 'id' | 'name' | 'email'>;
   })[];
 };
-export type Report = typeof reports.$inferSelect & {
-  id: number;
-  metadata: Metadata;
-  decisionMatrix: DecisionRow[];
-  suggestions: Suggestion[];
-  globalRationale: string;
-};
-export type NewReport = typeof reports.$inferInsert;
-export type WaitlistRow = typeof waitlist.$inferSelect
-export type NewWaitlistRow = typeof waitlist.$inferInsert
 
-/** =========================
- *  Types (mirroring schema)
- *  ========================= */
+// export const suggestion = pgTable(
+//   "Suggestion",
+//   {
+//     id: uuid("id").notNull().defaultRandom(),
+//     documentId: uuid("documentId").notNull(),
+//     documentCreatedAt: timestamp("documentCreatedAt").notNull(),
+//     originalText: text("originalText").notNull(),
+//     suggestedText: text("suggestedText").notNull(),
+//     description: text("description"),
+//     isResolved: boolean("isResolved").notNull().default(false),
+//     userId: uuid("userId")
+//       .notNull()
+//       .references(() => users.id),
+//     createdAt: timestamp("createdAt").notNull(),
+//   },
+//   // (table) => ({
+//   //   pk: primaryKey({ columns: [table.id] }),
+//   //   documentRef: foreignKey({
+//   //     columns: [table.documentId, table.documentCreatedAt],
+//   //     foreignColumns: [document.id, document.createdAt],
+//   //   }),
+//   // })
+// );
 
-type ScoreWeight = {
-  market_demand: number;
-  de_risking_automation: number;
-  transferability: number;
-  salary_potential: number;
-  time_to_break_in: number;
-};
+// export type Suggestion = InferSelectModel<typeof suggestion>;
 
-type ScoreBreakdown = {
-  final: number;
-  automation_risk: number;
-  market_demand: number;
-  transferability: number;
-  salary_potential: number;
-  time_to_break_in: number;
-  weights: ScoreWeight;
-};
+export const stream = pgTable(
+  "Stream",
+  {
+    id: uuid("id").notNull().defaultRandom(),
+    chatId: uuid("chatId").notNull(),
+    createdAt: timestamp("createdAt").notNull(),
+  },
+  // (table) => ({
+  //   pk: primaryKey({ columns: [table.id] }),
+  //   chatRef: foreignKey({
+  //     columns: [table.chatId],
+  //     foreignColumns: [chat.id],
+  //   }),
+  // })
+);
 
-type Evidence = {
-  claim: string;
-  rationale: string;
-};
-
-type Resource = {
-  type: 'course' | 'book' | 'yt' | 'project' | 'cert' | 'article' | 'doc';
-  title: string;
-  provider?: string;
-  est_hours?: number;
-};
-
-type MissingSkill = {
-  skill: string;
-  why_it_matters: string;
-  estimated_learning_hours: number;
-  learning_sequence_order: number;
-  resources: Resource[];
-};
-
-type Salary = {
-  currency: string;
-  p50?: number;
-  p90?: number;
-  note?: string;
-};
-
-type EntryPath = {
-  time_to_break_in_months: number;
-  starter_projects: string[];
-  certs?: string[];
-  proof_of_work_assets: string[];
-};
-
-type OutreachTemplates = {
-  cold_dm: string;
-  linkedin_about: string;
-  resume_headline: string;
-};
-
-type Suggestion = {
-  title: string;
-  short_pitch: string;
-  why_future_proof: string;
-  automation_risk: number;
-  market_demand: number;
-  salary: Salary;
-  transferable_skills: string[];
-  missing_skills: MissingSkill[];
-  entry_path: EntryPath;
-  first_14_days: string[];
-  outreach_templates: OutreachTemplates;
-  score_breakdown: ScoreBreakdown;
-  evidence: Evidence[];
-};
-
-type DecisionRow = {
-  title: string;
-  final_score: number;
-  automation_risk: number;
-  market_demand: number;
-  transferability: number;
-  salary_potential: number;
-  time_to_break_in: number;
-};
-
-type Metadata = {
-  titles: string[];
-  highlights: string[];
-  best_path: string;
-  summary: string;
-  scores: { title: string; score: number }[];
-  candidate_count: number;
-  generated_at: string;
-  createdAt: string;
-  updatedAt: string;
-  notes?: string;
-  user: {
-    id: number;
-    name: string;
-    email: string;
-  }
-};
-
-type CareerPathResponse = {
-  metadata: Metadata;
-  decision_matrix: DecisionRow[];
-  suggestions: Suggestion[];
-  global_rationale: string;
-};
-
-
-export enum ActivityType {
-  SIGN_UP = 'SIGN_UP',
-  SIGN_IN = 'SIGN_IN',
-  SIGN_OUT = 'SIGN_OUT',
-  UPDATE_PASSWORD = 'UPDATE_PASSWORD',
-  DELETE_ACCOUNT = 'DELETE_ACCOUNT',
-  UPDATE_ACCOUNT = 'UPDATE_ACCOUNT',
-  CREATE_TEAM = 'CREATE_TEAM',
-  REMOVE_TEAM_MEMBER = 'REMOVE_TEAM_MEMBER',
-  INVITE_TEAM_MEMBER = 'INVITE_TEAM_MEMBER',
-  ACCEPT_INVITATION = 'ACCEPT_INVITATION',
-}
+export type Stream = InferSelectModel<typeof stream>;

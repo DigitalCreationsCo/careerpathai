@@ -238,7 +238,7 @@ export default async function EarlyAccessLandingPage() {
             </div>
 
             <div className="bg-gradient-to-r from-blue-500/10 to-purple-500/10 border border-blue-500/20 rounded-lg p-4">
-            <h4 className="font-bold text-blue-400 mb-2">14-Day Action Sprint</h4>
+            <h4 className="font-bold text-blue-400 mb-2">21-Day Sprint Plan</h4>
             <p className="text-sm text-muted-foreground">Week 1: Complete Salesforce Trailhead basics, update LinkedIn headline...</p>
             <p className="text-xs text-blue-300 mt-2">+ Outreach templates, salary negotiation scripts, and more!</p>
             </div>

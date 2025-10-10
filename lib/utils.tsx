@@ -37,11 +37,16 @@ export const dateJobsDisplaced = 2027;
 
 export const copyright = "© 2025, GoCareerPath. All rights reserved. AI-Proof Your Career"
 
-export const Logo = ({size = "sm"}) => size === "sm" ? (
-  <img src={logoSm.src} className='pt-1' />
-) : (
-  <img src={logoLg.src} height={60} width={60} className='pt-1' />
-)
+export const Logo = ({size = "md"}) => {
+  switch(size) {
+    case "sm":
+      return <img src={logoSm.src} height={24} width={24} className='pt-1' />;
+    case "md":
+      return <img src={logoSm.src} className='pt-1' />;
+    case "lg":
+      return <img src={logoLg.src} height={60} width={60} className='pt-1' />;
+  };
+};
 
 export const fetcher = async (url: string) => {
   const response = await fetch(url);

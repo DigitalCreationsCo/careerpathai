@@ -1,16 +1,11 @@
 import {
   pgTable,
-  serial,
   varchar,
   text,
   timestamp,
-  integer,
   json,
   uuid,
   jsonb,
-  boolean,
-  primaryKey,
-  foreignKey,
 } from 'drizzle-orm/pg-core';
 import { InferSelectModel, relations } from 'drizzle-orm';
 import { AppUsage } from '../usage';
@@ -86,10 +81,10 @@ export type NewTeam = typeof teams.$inferInsert;
 
 export const teamMembers = pgTable('team_members', {
   id: uuid("id").primaryKey().notNull().defaultRandom(),
-  userId: integer('user_id')
+  userId: uuid('user_id')
   .notNull()
   .references(() => users.id),
-  teamId: integer('team_id')
+  teamId: uuid('team_id')
   .notNull()
   .references(() => teams.id),
   role: varchar('role', { length: 50 }).notNull(),
@@ -112,10 +107,10 @@ export type NewTeamMember = typeof teamMembers.$inferInsert;
 
 export const activityLogs = pgTable('activity_logs', {
   id: uuid("id").primaryKey().notNull().defaultRandom(),
-  teamId: integer('team_id')
+  teamId: uuid('team_id')
     .notNull()
     .references(() => teams.id),
-  userId: integer('user_id').references(() => users.id),
+  userId: uuid('user_id').references(() => users.id),
   action: text('action').notNull(),
   timestamp: timestamp('timestamp').notNull().defaultNow(),
   ipAddress: varchar('ip_address', { length: 45 }),
@@ -137,12 +132,12 @@ export type NewActivityLog = typeof activityLogs.$inferInsert;
 
 export const invitations = pgTable('invitations', {
   id: uuid("id").primaryKey().notNull().defaultRandom(),
-  teamId: integer('team_id')
+  teamId: uuid('team_id')
   .notNull()
   .references(() => teams.id),
   email: varchar('email', { length: 255 }).notNull(),
   role: varchar('role', { length: 50 }).notNull(),
-  invitedBy: integer('invited_by')
+  invitedBy: uuid('invited_by')
   .notNull()
   .references(() => users.id),
   invitedAt: timestamp('invited_at').notNull().defaultNow(),
@@ -191,7 +186,7 @@ export const reports = pgTable('reports', {
   userId: uuid('user_id')
     .notNull()
     .references(() => users.id),
-  // teamId: integer('team_id')
+  // teamId: uuid('team_id')
   //   .notNull()
   //   .references(() => teams.id),
   metadata: json('metadata').notNull(), // Metadata type

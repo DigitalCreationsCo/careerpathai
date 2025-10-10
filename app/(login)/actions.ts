@@ -13,9 +13,9 @@ import {
   type NewTeam,
   type NewTeamMember,
   type NewActivityLog,
-  ActivityType,
   invitations
 } from '@/lib/db/schema';
+import { ActivityType } from '@/lib/types';
 import { comparePasswords, hashPassword, setSession } from '@/lib/auth/session';
 import { redirect } from 'next/navigation';
 import { cookies } from 'next/headers';
@@ -27,8 +27,8 @@ import {
 } from '@/lib/auth/middleware';
 
 async function logActivity(
-  teamId: number | null | undefined,
-  userId: number,
+  teamId: string | null | undefined,
+  userId: string,
   type: ActivityType,
   ipAddress?: string
 ) {
@@ -141,7 +141,7 @@ export const signUp = validatedAction(signUpSchema, async (data, formData) => {
     };
   }
 
-  let teamId: number;
+  let teamId: string;
   let userRole: string;
   let createdTeam: typeof teams.$inferSelect | null = null;
 
@@ -152,7 +152,7 @@ export const signUp = validatedAction(signUpSchema, async (data, formData) => {
       .from(invitations)
       .where(
         and(
-          eq(invitations.id, parseInt(inviteId)),
+          eq(invitations.id, inviteId),
           eq(invitations.email, email),
           eq(invitations.status, 'pending')
         )
@@ -359,7 +359,7 @@ export const updateAccount = validatedActionWithUser(
 );
 
 const removeTeamMemberSchema = z.object({
-  memberId: z.number()
+  memberId: z.string()
 });
 
 export const removeTeamMember = validatedActionWithUser(

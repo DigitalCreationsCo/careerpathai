@@ -4,7 +4,7 @@ import { Manrope, Lato } from 'next/font/google';
 import { getUser, getTeamForUser } from '@/lib/db/queries/user';
 import { SWRConfig } from 'swr';
 import { Toaster } from "@/components/ui/sonner"
-import { GoogleTagManager } from '@/lib/googletagmanager';
+import { GoogleTagManager } from '@/lib/initGTM';
 import Head from 'next/head';
 import { dateJobsDisplaced, numJobsDisplaced } from '@/lib/utils';
 import { Header } from '@/components/ui/header/header';

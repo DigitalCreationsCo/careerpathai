@@ -14,7 +14,7 @@ import { signOut } from '@/app/(login)/actions';
 import { useRouter } from 'next/navigation';
 import { User } from '@/lib/db/schema';
 import useSWR, { mutate } from 'swr';
-import { Logo } from '@/lib/utils';
+import { Logo } from '@/components/logo';
   
 const fetcher = (url: string) => fetch(url).then((res) => res.json());
   

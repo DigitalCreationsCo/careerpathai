@@ -5,11 +5,3 @@ const initGoogleTagManager = () => typeof window !== undefined && ((function(w,d
     j=d.createElement(s) as any,dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     'https://www.googletagmanager.com/gtm.js?id='+i+dl;f?.parentNode?.insertBefore(j,f);
     })(window as any, document,'script','dataLayer','GTM-N5RPQTFM'));
-
-export const GoogleTagManager = () => {
-    return (
-        <script>
-            <>{initGoogleTagManager()}</>
-        </script>
-    )
-}

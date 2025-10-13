@@ -1,4 +1,4 @@
-import { Logo } from '@/lib/utils';
+import { Logo } from '@/components/logo';
 import GoogleButton from 'react-google-button';
 
 export function Login() {

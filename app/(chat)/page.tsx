@@ -1,7 +1,8 @@
 import './landing.css'
 import { ArrowRight, CheckCircle, Star, Zap } from 'lucide-react';
 import { Browser } from '@/components/browser';
-import { copyright, dateJobsDisplaced, Logo, numJobsDisplaced } from '@/lib/utils';
+import { copyright, dateJobsDisplaced, numJobsDisplaced } from '@/lib/utils';
+import { Logo } from '@/components/logo';
 import { Button } from '@/components/ui/button/button';
 import Link from 'next/link';
 

@@ -1,16 +1,45 @@
 import type {
-  CoreAssistantMessage,
-  CoreToolMessage,
   UIMessage,
   UIMessagePart,
-} from 'ai';
-import { type ClassValue, clsx } from 'clsx';
-import { twMerge } from 'tailwind-merge';
-import { ChatSDKError, type ErrorCode } from './errors';
-import type { ChatMessage, ChatTools, CustomUIDataTypes } from './types';
+  AssistantModelMessage,
+  ToolModelMessage } from "ai";
 import { formatISO } from 'date-fns';
-import logoSm from '@/app/favicon-32x32.png'
-import logoLg from '@/app/android-chrome-192x192.png'
+import { ChatSDKError, type ErrorCode } from './errors';
+import { clsx, type ClassValue } from "clsx";
+import { twMerge } from "tailwind-merge";
+
+export function sanitizeUIMessages(messages: Array<Message>): Array<Message> {
+  const messagesBySanitizedToolInvocations = messages.map((message) => {
+    if (message.role !== "assistant") return message;
+
+    if (!message.toolInvocations) return message;
+
+    const toolResultIds: Array<string> = [];
+
+    for (const toolInvocation of message.toolInvocations) {
+      if (toolInvocation.state === "result") {
+        toolResultIds.push(toolInvocation.toolCallId);
+      }
+    }
+
+    const sanitizedToolInvocations = message.toolInvocations.filter(
+      (toolInvocation) =>
+        toolInvocation.state === "result" ||
+        toolResultIds.includes(toolInvocation.toolCallId),
+    );
+
+    return {
+      ...message,
+      toolInvocations: sanitizedToolInvocations,
+    };
+  });
+
+  return messagesBySanitizedToolInvocations.filter(
+    (message) =>
+      message.content.length > 0 ||
+      (message.toolInvocations && message.toolInvocations.length > 0),
+  );
+}
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
@@ -36,17 +65,6 @@ export const numJobsDisplaced = '85M';
 export const dateJobsDisplaced = 2027;
 
 export const copyright = "© 2025, GoCareerPath. All rights reserved. AI-Proof Your Career"
-
-export const Logo = ({size = "md"}) => {
-  switch(size) {
-    case "sm":
-      return <img src={logoSm.src} height={24} width={24} className='pt-1' />;
-    case "md":
-      return <img src={logoSm.src} className='pt-1' />;
-    case "lg":
-      return <img src={logoLg.src} height={60} width={60} className='pt-1' />;
-  };
-};
 
 export const fetcher = async (url: string) => {
   const response = await fetch(url);
@@ -96,7 +114,8 @@ export function generateUUID(): string {
   });
 }
 
-type ResponseMessageWithoutId = CoreToolMessage | CoreAssistantMessage;
+
+type ResponseMessageWithoutId = ToolModelMessage | AssistantModelMessage;
 type ResponseMessage = ResponseMessageWithoutId & { id: string };
 
 export function getMostRecentUserMessage(messages: UIMessage[]) {
@@ -122,7 +141,7 @@ export function getTrailingMessageId({
   const trailingMessage = messages.at(-1);
 
   if (!trailingMessage) { return null; }
-
+ 
   return trailingMessage.id;
 }
 

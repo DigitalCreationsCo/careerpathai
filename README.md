@@ -1,436 +1,192 @@
-# Next.js SaaS Starter
+# AI SDK Python Streaming Preview
 
-This is a starter template for building a SaaS application using **Next.js** with support for authentication, Stripe integration for payments, and a dashboard for logged-in users.
+This template demonstrates the usage of [Data Stream Protocol](https://sdk.vercel.ai/docs/ai-sdk-ui/stream-protocol#data-stream-protocol) to stream chat completions from a Python endpoint ([FastAPI](https://fastapi.tiangolo.com)) and display them using the [useChat](https://sdk.vercel.ai/docs/ai-sdk-ui/chatbot#chatbot) hook in your Next.js application.
 
-**Demo: [https://next-saas-start.vercel.app/](https://next-saas-start.vercel.app/)**
+## Deploy your own
 
-## Features
-- EMAIL SENDING WITH RESEND: https://resend.com/onboarding
-- Analytics implemented using Google Tag Manager with Mixpanel integration
-- Marketing landing page (`/`) with animated Terminal element
-- Pricing page (`/pricing`) which connects to Stripe Checkout
-- Dashboard pages with CRUD operations on users/teams
-- Basic RBAC with Owner and Member roles
-- Subscription management with Stripe Customer Portal
-- Email/password authentication with JWTs stored to cookies
-- Global middleware to protect logged-in routes
-- Local middleware to protect Server Actions or validate Zod schemas
-- Activity logging system for any user events
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fvercel-labs%2Fai-sdk-preview-python-streaming&env=OPENAI_API_KEY&envDescription=API%20keys%20needed%20for%20application&envLink=https%3A%2F%2Fgithub.com%2Fvercel-labs%2Fai-sdk-preview-python-streaming%2Fblob%2Fmain%2F.env.example)
 
-## Tech Stack
+## How to use
 
-- **Framework**: [Next.js](https://nextjs.org/)
-- **Database**: [Postgres](https://www.postgresql.org/)
-- **ORM**: [Drizzle](https://orm.drizzle.team/)
-- **Payments**: [Stripe](https://stripe.com/)
-- **UI Library**: [shadcn/ui](https://ui.shadcn.com/)
-
-## Getting Started
+Run [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app) with [npm](https://docs.npmjs.com/cli/init), [Yarn](https://yarnpkg.com/lang/en/docs/cli/create/), or [pnpm](https://pnpm.io) to bootstrap the example:
 
 ```bash
-git clone https://github.com/nextjs/saas-starter
-cd saas-starter
-pnpm install
+npx create-next-app --example https://github.com/vercel-labs/ai-sdk-preview-python-streaming ai-sdk-preview-python-streaming-example
 ```
-
-## Running Locally
-
-[Install](https://docs.stripe.com/stripe-cli) and log in to your Stripe account:
 
 ```bash
-stripe login
+yarn create next-app --example https://github.com/vercel-labs/ai-sdk-preview-python-streaming ai-sdk-preview-python-streaming-example
 ```
-
-Use the included setup script to create your `.env` file:
 
 ```bash
-pnpm db:setup
+pnpm create next-app --example https://github.com/vercel-labs/ai-sdk-preview-python-streaming ai-sdk-preview-python-streaming-example
 ```
 
-Run the database migrations and seed the database with a default user and team:
+To run the example locally you need to:
+
+1. Sign up for accounts with the AI providers you want to use (e.g., OpenAI, Anthropic).
+2. Obtain API keys for each provider.
+3. Set the required environment variables as shown in the `.env.example` file, but in a new file called `.env`.
+4. `pnpm install` to install the required Node dependencies.
+5. `virtualenv venv` to create a virtual environment.
+6. `source venv/bin/activate` to activate the virtual environment.
+7. `pip install -r requirements.txt` to install the required Python dependencies.
+8. `pnpm dev` to launch the development server.
+
+## Learn More
+
+To learn more about the AI SDK or Next.js by Vercel, take a look at the following resources:
+
+- [AI SDK Documentation](https://sdk.vercel.ai/docs)
+- [Next.js Documentation](https://nextjs.org/docs)
+
+
+# 🔬 Open Deep Research
+
+<img width="1388" height="298" alt="full_diagram" src="https://github.com/user-attachments/assets/12a2371b-8be2-4219-9b48-90503eb43c69" />
+
+Deep research has broken out as one of the most popular agent applications. This is a simple, configurable, fully open source deep research agent that works across many model providers, search tools, and MCP servers. It's performance is on par with many popular deep research agents ([see Deep Research Bench leaderboard](https://huggingface.co/spaces/Ayanami0730/DeepResearch-Leaderboard)).
+
+<img width="817" height="666" alt="Screenshot 2025-07-13 at 11 21 12 PM" src="https://github.com/user-attachments/assets/052f2ed3-c664-4a4f-8ec2-074349dcaa3f" />
+
+### 🔥 Recent Updates
+
+**August 14, 2025**: See our free course [here](https://academy.langchain.com/courses/deep-research-with-langgraph) (and course repo [here](https://github.com/langchain-ai/deep_research_from_scratch)) on building open deep research.
+
+**August 7, 2025**: Added GPT-5 and updated the Deep Research Bench evaluation w/ GPT-5 results.
+
+**August 2, 2025**: Achieved #6 ranking on the [Deep Research Bench Leaderboard](https://huggingface.co/spaces/Ayanami0730/DeepResearch-Leaderboard) with an overall score of 0.4344. 
+
+**July 30, 2025**: Read about the evolution from our original implementations to the current version in our [blog post](https://rlancemartin.github.io/2025/07/30/bitter_lesson/).
+
+**July 16, 2025**: Read more in our [blog](https://blog.langchain.com/open-deep-research/) and watch our [video](https://www.youtube.com/watch?v=agGiWUpxkhg) for a quick overview.
+
+### 🚀 Quickstart
+
+1. Clone the repository and activate a virtual environment:
+```bash
+git clone https://github.com/langchain-ai/open_deep_research.git
+cd open_deep_research
+uv venv
+source .venv/bin/activate  # On Windows: .venv\Scripts\activate
+```
+
+2. Install dependencies:
+```bash
+uv sync
+# or
+uv pip install -r pyproject.toml
+```
+
+3. Set up your `.env` file to customize the environment variables (for model selection, search tools, and other configuration settings):
+```bash
+cp .env.example .env
+```
+
+4. Launch agent with the LangGraph server locally:
 
 ```bash
-pnpm db:migrate
-pnpm db:seed
+# Install dependencies and start the LangGraph server
+uvx --refresh --from "langgraph-cli[inmem]" --with-editable . --python 3.11 langgraph dev --allow-blocking
 ```
 
-This will create the following user and team:
+This will open the LangGraph Studio UI in your browser.
 
-- User: `test@test.com`
-- Password: `admin123`
+```
+- 🚀 API: http://127.0.0.1:2024
+- 🎨 Studio UI: https://smith.langchain.com/studio/?baseUrl=http://127.0.0.1:2024
+- 📚 API Docs: http://127.0.0.1:2024/docs
+```
 
-You can also create new users through the `/sign-up` route.
+Ask a question in the `messages` input field and click `Submit`. Select different configuration in the "Manage Assistants" tab.
 
-Finally, run the Next.js development server:
+### ⚙️ Configurations
+
+#### LLM :brain:
+
+Open Deep Research supports a wide range of LLM providers via the [init_chat_model() API](https://python.langchain.com/docs/how_to/chat_models_universal_init/). It uses LLMs for a few different tasks. See the below model fields in the [configuration.py](https://github.com/langchain-ai/open_deep_research/blob/main/src/open_deep_research/configuration.py) file for more details. This can be accessed via the LangGraph Studio UI. 
+
+- **Summarization** (default: `openai:gpt-4.1-mini`): Summarizes search API results
+- **Research** (default: `openai:gpt-4.1`): Power the search agent
+- **Compression** (default: `openai:gpt-4.1`): Compresses research findings
+- **Final Report Model** (default: `openai:gpt-4.1`): Write the final report
+
+> Note: the selected model will need to support [structured outputs](https://python.langchain.com/docs/integrations/chat/) and [tool calling](https://python.langchain.com/docs/how_to/tool_calling/).
+
+> Note: For OpenRouter: Follow [this guide](https://github.com/langchain-ai/open_deep_research/issues/75#issuecomment-2811472408) and for local models via Ollama  see [setup instructions](https://github.com/langchain-ai/open_deep_research/issues/65#issuecomment-2743586318).
+
+#### Search API :mag:
+
+Open Deep Research supports a wide range of search tools. By default it uses the [Tavily](https://www.tavily.com/) search API. Has full MCP compatibility and work native web search for Anthropic and OpenAI. See the `search_api` and `mcp_config` fields in the [configuration.py](https://github.com/langchain-ai/open_deep_research/blob/main/src/open_deep_research/configuration.py) file for more details. This can be accessed via the LangGraph Studio UI. 
+
+#### Other 
+
+See the fields in the [configuration.py](https://github.com/langchain-ai/open_deep_research/blob/main/src/open_deep_research/configuration.py) for various other settings to customize the behavior of Open Deep Research. 
+
+### 📊 Evaluation
+
+Open Deep Research is configured for evaluation with [Deep Research Bench](https://huggingface.co/spaces/Ayanami0730/DeepResearch-Leaderboard). This benchmark has 100 PhD-level research tasks (50 English, 50 Chinese), crafted by domain experts across 22 fields (e.g., Science & Tech, Business & Finance) to mirror real-world deep-research needs. It has 2 evaluation metrics, but the leaderboard is based on the RACE score. This uses LLM-as-a-judge (Gemini) to evaluate research reports against a golden set of reports compiled by experts across a set of metrics.
+
+#### Usage
+
+> Warning: Running across the 100 examples can cost ~$20-$100 depending on the model selection.
+
+The dataset is available on [LangSmith via this link](https://smith.langchain.com/public/c5e7a6ad-fdba-478c-88e6-3a388459ce8b/d). To kick off evaluation, run the following command:
 
 ```bash
-pnpm dev
+# Run comprehensive evaluation on LangSmith datasets
+python tests/run_evaluate.py
 ```
 
-Open [http://localhost:3000](http://localhost:3000) in your browser to see the app in action.
-
-You can listen for Stripe webhooks locally through their CLI to handle subscription change events:
+This will provide a link to a LangSmith experiment, which will have a name `YOUR_EXPERIMENT_NAME`. Once this is done, extract the results to a JSONL file that can be submitted to the Deep Research Bench.
 
 ```bash
-stripe listen --forward-to localhost:3000/api/stripe/webhook
+python tests/extract_langsmith_data.py --project-name "YOUR_EXPERIMENT_NAME" --model-name "you-model-name" --dataset-name "deep_research_bench"
 ```
 
-## Testing Payments
+This creates `tests/expt_results/deep_research_bench_model-name.jsonl` with the required format. Move the generated JSONL file to a local clone of the Deep Research Bench repository and follow their [Quick Start guide](https://github.com/Ayanami0730/deep_research_bench?tab=readme-ov-file#quick-start) for evaluation submission.
 
-To test Stripe payments, use the following test card details:
+#### Results 
 
-- Card Number: `4242 4242 4242 4242`
-- Expiration: Any future date
-- CVC: Any 3-digit number
+| Name | Commit | Summarization | Research | Compression | Total Cost | Total Tokens | RACE Score | Experiment |
+|------|--------|---------------|----------|-------------|------------|--------------|------------|------------|
+| GPT-5 | [ca3951d](https://github.com/langchain-ai/open_deep_research/pull/168/commits) | openai:gpt-4.1-mini | openai:gpt-5 | openai:gpt-4.1 |  | 204,640,896 | 0.4943 | [Link](https://smith.langchain.com/o/ebbaf2eb-769b-4505-aca2-d11de10372a4/datasets/6e4766ca-613c-4bda-8bde-f64f0422bbf3/compare?selectedSessions=4d5941c8-69ce-4f3d-8b3e-e3c99dfbd4cc&baseline=undefined) |
+| Defaults | [6532a41](https://github.com/langchain-ai/open_deep_research/commit/6532a4176a93cc9bb2102b3d825dcefa560c85d9) | openai:gpt-4.1-mini | openai:gpt-4.1 | openai:gpt-4.1 | $45.98 | 58,015,332 | 0.4309 | [Link](https://smith.langchain.com/o/ebbaf2eb-769b-4505-aca2-d11de10372a4/datasets/6e4766ca-6[…]ons=cf4355d7-6347-47e2-a774-484f290e79bc&baseline=undefined) |
+| Claude Sonnet 4 | [f877ea9](https://github.com/langchain-ai/open_deep_research/pull/163/commits/f877ea93641680879c420ea991e998b47aab9bcc) | openai:gpt-4.1-mini | anthropic:claude-sonnet-4-20250514 | openai:gpt-4.1 | $187.09 | 138,917,050 | 0.4401 | [Link](https://smith.langchain.com/o/ebbaf2eb-769b-4505-aca2-d11de10372a4/datasets/6e4766ca-6[…]ons=04f6002d-6080-4759-bcf5-9a52e57449ea&baseline=undefined) |
+| Deep Research Bench Submission | [c0a160b](https://github.com/langchain-ai/open_deep_research/commit/c0a160b57a9b5ecd4b8217c3811a14d8eff97f72) | openai:gpt-4.1-nano | openai:gpt-4.1 | openai:gpt-4.1 | $87.83 | 207,005,549 | 0.4344 | [Link](https://smith.langchain.com/o/ebbaf2eb-769b-4505-aca2-d11de10372a4/datasets/6e4766ca-6[…]ons=e6647f74-ad2f-4cb9-887e-acb38b5f73c0&baseline=undefined) |
 
-## Going to Production
+### 🚀 Deployments and Usage
 
-When you're ready to deploy your SaaS application to production, follow these steps:
+#### LangGraph Studio
 
-### Set up a production Stripe webhook
+Follow the [quickstart](#-quickstart) to start LangGraph server locally and test the agent out on LangGraph Studio.
 
-1. Go to the Stripe Dashboard and create a new webhook for your production environment.
-2. Set the endpoint URL to your production API route (e.g., `https://yourdomain.com/api/stripe/webhook`).
-3. Select the events you want to listen for (e.g., `checkout.session.completed`, `customer.subscription.updated`).
+#### Hosted deployment
+ 
+You can easily deploy to [LangGraph Platform](https://langchain-ai.github.io/langgraph/concepts/#deployment-options). 
 
-### Deploy to Vercel
+#### Open Agent Platform
 
-1. Push your code to a GitHub repository.
-2. Connect your repository to [Vercel](https://vercel.com/) and deploy it.
-3. Follow the Vercel deployment process, which will guide you through setting up your project.
+Open Agent Platform (OAP) is a UI from which non-technical users can build and configure their own agents. OAP is great for allowing users to configure the Deep Researcher with different MCP tools and search APIs that are best suited to their needs and the problems that they want to solve.
 
-### Add environment variables
+We've deployed Open Deep Research to our public demo instance of OAP. All you need to do is add your API Keys, and you can test out the Deep Researcher for yourself! Try it out [here](https://oap.langchain.com)
 
-In your Vercel project settings (or during deployment), add all the necessary environment variables. Make sure to update the values for the production environment, including:
+You can also deploy your own instance of OAP, and make your own custom agents (like Deep Researcher) available on it to your users.
+1. [Deploy Open Agent Platform](https://docs.oap.langchain.com/quickstart)
+2. [Add Deep Researcher to OAP](https://docs.oap.langchain.com/setup/agents)
 
-1. `BASE_URL`: Set this to your production domain.
-2. `STRIPE_SECRET_KEY`: Use your Stripe secret key for the production environment.
-3. `STRIPE_WEBHOOK_SECRET`: Use the webhook secret from the production webhook you created in step 1.
-4. `POSTGRES_URL`: Set this to your production database URL.
-5. `AUTH_SECRET`: Set this to a random string. `openssl rand -base64 32` will generate one.
+### Legacy Implementations 🏛️
 
-## Other Templates
+The `src/legacy/` folder contains two earlier implementations that provide alternative approaches to automated research. They are less performant than the current implementation, but provide alternative ideas understanding the different approaches to deep research.
 
-While this template is intentionally minimal and to be used as a learning resource, there are other paid versions in the community which are more full-featured:
+#### 1. Workflow Implementation (`legacy/graph.py`)
+- **Plan-and-Execute**: Structured workflow with human-in-the-loop planning
+- **Sequential Processing**: Creates sections one by one with reflection
+- **Interactive Control**: Allows feedback and approval of report plans
+- **Quality Focused**: Emphasizes accuracy through iterative refinement
 
-- https://achromatic.dev
-- https://shipfa.st
-- https://makerkit.dev
-- https://zerotoshipped.com
-- https://turbostarter.dev
-
-// ===============================
-// CareerPath AI – Prompt Pack (TypeScript)
-// ===============================
-
-/**
- * Install:
- *   npm i zod
- */
-
-import { z } from "zod";
-
-// ---------- 1) INPUT SCHEMA ----------
-export const UserProfileSchema = z.object({
-  current_role: z.string(),
-  industry: z.string().optional(),
-  years_experience: z.number().min(0).max(60),
-  skills_current: z.array(z.string()).min(1),
-  strengths: z.array(z.string()).optional().default([]),
-  interests: z.array(z.string()).optional().default([]),
-  constraints: z
-    .object({
-      geo: z.string().optional(),
-      visa: z.string().optional(),
-      salary_target: z.number().optional(),
-      timeline_months: z.number().optional(),
-      hours_per_week_learning: z.number().optional(),
-    })
-    .optional()
-    .default({}),
-  values_priorities: z
-    .object({
-      salary: z.number().min(0).max(5).default(3),
-      stability: z.number().min(0).max(5).default(3),
-      remote: z.number().min(0).max(5).default(3),
-      impact: z.number().min(0).max(5).default(3),
-      speed_to_switch: z.number().min(0).max(5).default(3),
-    })
-    .optional()
-    .default({
-      salary: 3,
-      stability: 3,
-      remote: 3,
-      impact: 3,
-      speed_to_switch: 3,
-    }),
-});
-
-export type UserProfile = z.infer<typeof UserProfileSchema>;
-
-// ---------- 2) OUTPUT SCHEMA ----------
-const SalarySchema = z.object({
-  currency: z.string().default("USD"),
-  p50: z.number().optional(),
-  p90: z.number().optional(),
-  note: z.string().optional(),
-});
-
-const MissingSkillSchema = z.object({
-  skill: z.string(),
-  why_it_matters: z.string(),
-  estimated_learning_hours: z.number().int().min(1),
-  learning_sequence_order: z.number().int().min(1),
-  resources: z
-    .array(
-      z.object({
-        type: z.enum(["course", "book", "yt", "project", "cert", "article", "doc"]),
-        title: z.string(),
-        provider: z.string().optional(),
-        est_hours: z.number().optional(),
-      })
-    )
-    .min(1),
-});
-
-const EntryPathSchema = z.object({
-  time_to_break_in_months: z.number().int().min(0).max(60),
-  starter_projects: z.array(z.string()).min(1),
-  certs: z.array(z.string()).optional().default([]),
-  proof_of_work_assets: z.array(z.string()).min(1),
-});
-
-const OutreachTemplatesSchema = z.object({
-  cold_dm: z.string(),
-  linkedin_about: z.string(),
-  resume_headline: z.string(),
-});
-
-const ScoreBreakdownSchema = z.object({
-  final: z.number().min(0).max(100),
-  automation_risk: z.number().min(0).max(100),
-  market_demand: z.number().min(0).max(100),
-  transferability: z.number().min(0).max(100),
-  salary_potential: z.number().min(0).max(100),
-  time_to_break_in: z.number().min(0).max(100), // normalized, higher is better (faster)
-  weights: z.object({
-    market_demand: z.number(),
-    de_risking_automation: z.number(),
-    transferability: z.number(),
-    salary_potential: z.number(),
-    time_to_break_in: z.number(),
-  }),
-});
-
-const PathSuggestionSchema = z.object({
-  title: z.string(),
-  short_pitch: z.string(),
-  why_future_proof: z.string(),
-  automation_risk: z.number().min(0).max(100), // lower is better
-  market_demand: z.number().min(0).max(100),
-  salary: SalarySchema,
-  transferable_skills: z.array(z.string()).min(1),
-  missing_skills: z.array(MissingSkillSchema).min(1),
-  entry_path: EntryPathSchema,
-  first_14_days: z.array(z.string()).min(7),
-  outreach_templates: OutreachTemplatesSchema,
-  score_breakdown: ScoreBreakdownSchema,
-  evidence: z
-    .array(
-      z.object({
-        claim: z.string(),
-        rationale: z.string(),
-      })
-    )
-    .min(1),
-});
-
-// ---------- METADATA SCHEMA ----------
-const MetadataSchema = z.object({
-  titles: z.array(z.string()).min(3).max(4),
-  highlights: z.array(z.string()).min(3).max(4),
-  best_path: z.string(), // career title with highest final score
-  summary: z.string(), // 1-2 sentences summarizing all paths
-  scores: z.array(
-    z.object({
-      title: z.string(),
-      score: z.number().min(0).max(100),
-    })
-  ),
-});
-
-// ---------- CAREER PATH RESPONSE WITH METADATA ----------
-export const CareerPathResponseSchema = z.object({
-  meta: z.object({
-    candidate_count: z.number().int().min(3).max(4),
-    generated_at: z.string(),
-    notes: z.string().optional(),
-  }),
-  metadata: MetadataSchema, // NEW quick preview block
-  decision_matrix: z.array(
-    z.object({
-      title: z.string(),
-      final_score: z.number().min(0).max(100),
-      automation_risk: z.number().min(0).max(100),
-      market_demand: z.number().min(0).max(100),
-      transferability: z.number().min(0).max(100),
-      salary_potential: z.number().min(0).max(100),
-      time_to_break_in: z.number().min(0).max(100),
-    })
-  ),
-  suggestions: z.array(
-    z.object({
-      title: z.string(),
-      short_pitch: z.string(),
-      why_future_proof: z.string(),
-      automation_risk: z.number().min(0).max(100),
-      market_demand: z.number().min(0).max(100),
-      salary: z.object({
-        currency: z.string().default("USD"),
-        p50: z.number().optional(),
-        p90: z.number().optional(),
-        note: z.string().optional(),
-      }),
-      transferable_skills: z.array(z.string()).min(1),
-      missing_skills: z.array(
-        z.object({
-          skill: z.string(),
-          why_it_matters: z.string(),
-          estimated_learning_hours: z.number().int().min(1),
-          learning_sequence_order: z.number().int().min(1),
-          resources: z
-            .array(
-              z.object({
-                type: z.enum([
-                  "course",
-                  "book",
-                  "yt",
-                  "project",
-                  "cert",
-                  "article",
-                  "doc",
-                ]),
-                title: z.string(),
-                provider: z.string().optional(),
-                est_hours: z.number().optional(),
-              })
-            )
-            .min(1),
-        })
-      ),
-      entry_path: z.object({
-        time_to_break_in_months: z.number().int().min(0).max(60),
-        starter_projects: z.array(z.string()).min(1),
-        certs: z.array(z.string()).optional().default([]),
-        proof_of_work_assets: z.array(z.string()).min(1),
-      }),
-      first_14_days: z.array(z.string()).min(7),
-      outreach_templates: z.object({
-        cold_dm: z.string(),
-        linkedin_about: z.string(),
-        resume_headline: z.string(),
-      }),
-      score_breakdown: z.object({
-        final: z.number().min(0).max(100),
-        automation_risk: z.number().min(0).max(100),
-        market_demand: z.number().min(0).max(100),
-        transferability: z.number().min(0).max(100),
-        salary_potential: z.number().min(0).max(100),
-        time_to_break_in: z.number().min(0).max(100),
-        weights: z.object({
-          market_demand: z.number(),
-          de_risking_automation: z.number(),
-          transferability: z.number(),
-          salary_potential: z.number(),
-          time_to_break_in: z.number(),
-        }),
-      }),
-      evidence: z.array(
-        z.object({
-          claim: z.string(),
-          rationale: z.string(),
-        })
-      ),
-    })
-  ).min(3).max(4),
-  global_rationale: z.string(),
-});
-
-export type CareerPathResponse = z.infer<typeof CareerPathResponseSchema>;
-
-
-// ---------- 3) SYSTEM PROMPT ----------
-export const SYSTEM_PROMPT = `
-You are CareerPath AI, a rigorous career strategist.
-Your job: Given a user's background, propose 3–4 **lucrative, low-automation-risk** career paths that:
-  - Leverage their existing skills (high transferability),
-  - Are realistically reachable within their time & learning constraints,
-  - Provide concrete, stepwise learning and proof-of-work plans,
-  - Include outreach templates to accelerate hiring.
-
-**Rules**
-- Think step-by-step **internally**. Output **only valid JSON** for the provided schema.
-- Do not propose roles with Automation Risk > 60 unless you justify why and show a resilient niche.
-- Each suggestion must include: why it's future-proof, exact missing skills, learning hours, and a 14-day action plan.
-- Always include a weighted decision matrix and explain the *global rationale* (still within JSON).
-- Be specific, measurable, and realistic. No fluff.
-
-**Scoring Weights (you must include in the output):**
-  market_demand = 0.30
-  de_risking_automation (100 - automation_risk) = 0.25
-  transferability = 0.20
-  salary_potential = 0.15
-  time_to_break_in (normalized, higher = faster) = 0.10
-
-**Normalize all sub-scores to 0–100.**
-
-**Return strictly the JSON described by CareerPathResponseSchema.**
-`;
-
-// ---------- 4) USER PROMPT BUILDER ----------
-export function buildUserPrompt(user: UserProfile) {
-  return `
-USER_PROFILE_JSON:
-${JSON.stringify(user, null, 2)}
-Return only JSON matching CareerPathResponseSchema.
-`;
-}
-
-// ---------- 5) EXAMPLE USAGE (pseudo – adapt to your LLM client) ----------
-/*
-import OpenAI from "openai";
-const client = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
-
-async function runCareerPath(user: UserProfile) {
-  const messages = [
-    { role: "system", content: SYSTEM_PROMPT },
-    { role: "user", content: buildUserPrompt(user) },
-  ];
-
-  const resp = await client.chat.completions.create({
-    model: "gpt-4o-mini",
-    messages,
-    temperature: 0.2,
-  });
-
-  const json = JSON.parse(resp.choices[0].message.content);
-  const parsed = CareerPathResponseSchema.parse(json);
-  return parsed;
-}
-
-(async () => {
-  const user: UserProfile = {
-    current_role: "Customer Support Specialist",
-    industry: "SaaS",
-    years_experience: 4,
-    skills_current: ["Communication", "SQL basics", "Zendesk", "Zapier", "Notion"],
-    strengths: ["Process design", "Empathy", "Documentation"],
-    interests: ["Automation", "Data", "Operations"],
-    constraints: { geo: "US", salary_target: 90000, timeline_months: 6, hours_per_week_learning: 10 },
-    values_priorities: { salary: 4, stability: 4, remote: 5, impact: 3, speed_to_switch: 4 },
-  };
-
-  const result = await runCareerPath(user);
-  console.log(JSON.stringify(result, null, 2));
-})();
-*/
+#### 2. Multi-Agent Implementation (`legacy/multi_agent.py`)  
+- **Supervisor-Researcher Architecture**: Coordinated multi-agent system
+- **Parallel Processing**: Multiple researchers work simultaneously
+- **Speed Optimized**: Faster report generation through concurrency
+- **MCP Support**: Extensive Model Context Protocol integration

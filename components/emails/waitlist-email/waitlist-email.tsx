@@ -78,7 +78,7 @@ export const WaitlistEmail = ({
             <ul className="text-black text-sm leading-[22px] list-none m-0 mt-2 p-0">
               <li className="mb-2">🎯 3-4 AI-resistant career paths matched to your skills</li>
               <li className="mb-2">📊 Complete automation risk analysis for each role</li>
-              <li className="mb-2">🚀 21-Day Pivot Sprint with step-by-step actions</li>
+              <li className="mb-2">🚀 30-Day Sprint with step-by-step actions</li>
               <li className="mb-2">📋 Skills Gap Analysis with learning resources</li>
               <li className="mb-2">💼 Career Pivot Toolkit (outreach templates + salary negotiation script)</li>
             </ul>
@@ -108,7 +108,7 @@ export const WaitlistEmail = ({
 
             <Hr className="border border-solid border-[#eaeaea] mb-[20px] w-full" />
 
-            <Text className="text-center text-gray-600 text-xs leading-[20px] mt-[12px]">
+            <Text className="text-center text-gray-600 text-sm leading-[20px] mt-[12px]">
               Questions? Just reply to this email and we'll get back to you.
             </Text>
 

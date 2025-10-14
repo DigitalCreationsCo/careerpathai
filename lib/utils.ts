@@ -64,7 +64,7 @@ export const calculateTimeRemaining = (launch: Date): { days: number; hours: num
 export const numJobsDisplaced = '85M';
 export const dateJobsDisplaced = 2027;
 
-export const copyright = "© 2025, GoCareerPath. All rights reserved. AI-Proof Your Career"
+export const copyright = `© ${new Date().getFullYear()} GoCareerPath. All rights reserved.`
 
 export const fetcher = async (url: string) => {
   const response = await fetch(url);

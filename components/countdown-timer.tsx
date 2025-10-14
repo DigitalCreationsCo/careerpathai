@@ -53,7 +53,7 @@ export const CountdownTimer: React.FC<CountdownTimerProps> = React.memo(({ launc
           <div className="text-2xl font-bold text-accent">
             {value.toString().padStart(2, '0')}
           </div>
-          <div className="text-xs uppercase text-muted-foreground">{unit}</div>
+          <div className="text-sm uppercase text-muted-foreground">{unit}</div>
         </div>
       ))}
     </div>

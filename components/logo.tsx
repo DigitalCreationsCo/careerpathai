@@ -6,7 +6,7 @@ export const Logo = ({size = "md"}) => {
       case "sm":
         return <img src={logoSm.src} height={24} width={24} className='pt-1' />;
       case "md":
-        return <img src={logoSm.src} className='pt-1' />;
+        return <img src={logoSm.src} height={30} width={30} className='pt-1' />;
       case "lg":
         return <img src={logoLg.src} height={60} width={60} className='pt-1' />;
     };

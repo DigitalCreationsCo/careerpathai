@@ -101,7 +101,7 @@ export const WaitlistEmailCapture = ({
       </form>
 
       <div className="text-center">
-        <p className="text-xs text-muted-foreground">
+        <p className="text-sm text-muted-foreground">
           You’ll receive a confirmation email once you’re on the waitlist.
         </p>
       </div>

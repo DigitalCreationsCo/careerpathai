@@ -40,7 +40,7 @@ export default async function EarlyAccessLandingPage() {
         </div> */}
 
         <div className="space-y-4 md:pt-4">
-            <div className="inline-flex items-center px-4 py-2 text-warning text-sm md:text-md font-medium mb-4">
+            <div className="inline-flex items-center px-4 py-2 text-warning text-sm md:text-base font-medium mb-4">
             <Zap className="mr-2" size={16} />
             {`AI is eliminating ${numJobsDisplaced} jobs by ${dateJobsDisplaced} — Are you prepared?`}
             </div>
@@ -113,7 +113,7 @@ export default async function EarlyAccessLandingPage() {
             //   buttonClassName="bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 text-white font-bold px-6 md:px-8 py-3 md:py-4 text-base md:text-lg shadow-xl hover:shadow-2xl transform hover:scale-105 transition-all duration-200 w-full md:w-auto"
             /> */}
             
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs text-muted-foreground max-w-md">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm text-muted-foreground max-w-md">
             <div className="flex items-center justify-center md:justify-start">
                 <AlertCircle className="mr-1 text-red-400" size={14} />
                 <span className="text-red-400">No refunds</span>
@@ -159,7 +159,7 @@ export default async function EarlyAccessLandingPage() {
                 style={{ width: `${reservedSpots}%` }}
             />
             </div>
-            <p className="text-xs text-warning font-medium">⚡ Filling fast • {spotsRemaining} spots remaining</p>
+            <p className="text-sm text-warning font-medium">⚡ Filling fast • {spotsRemaining} spots remaining</p>
         </div>
 
         <CountdownTimer launch={launch} />
@@ -238,9 +238,9 @@ export default async function EarlyAccessLandingPage() {
             </div>
 
             <div className="bg-gradient-to-r from-blue-500/10 to-purple-500/10 border border-blue-500/20 rounded-lg p-4">
-            <h4 className="font-bold text-blue-400 mb-2">21-Day Sprint Plan</h4>
+            <h4 className="font-bold text-blue-400 mb-2">30-Day Sprint</h4>
             <p className="text-sm text-muted-foreground">Week 1: Complete Salesforce Trailhead basics, update LinkedIn headline...</p>
-            <p className="text-xs text-blue-300 mt-2">+ Outreach templates, salary negotiation scripts, and more!</p>
+            <p className="text-sm text-blue-300 mt-2">+ Outreach templates, salary negotiation scripts, and more!</p>
             </div>
         </div>
         </Browser>
@@ -276,7 +276,7 @@ export default async function EarlyAccessLandingPage() {
                 "I was skeptical about early access, but the preview convinced me. Now I'm earning $95K in cybersecurity!"
             </p>
             <p className="font-semibold"> Sarah Chen, Early Access Customer</p>
-            <p className="text-xs text-success">✅ Verified Purchase</p>
+            <p className="text-sm text-success">✅ Verified Purchase</p>
             </div>
             
             <div className="bg-muted/20 rounded-xl p-6 border border-border">
@@ -289,7 +289,7 @@ export default async function EarlyAccessLandingPage() {
                 "The roadmap was incredibly detailed. Transitioned from support to RevOps in 4 months!"
             </p>
             <p className="font-semibold"> Marcus Rodriguez, Early Access Customer</p>
-            <p className="text-xs text-success">✅ Verified Purchase</p>
+            <p className="text-sm text-success">✅ Verified Purchase</p>
             </div>
         </div>
 

@@ -423,7 +423,7 @@ function PureModelSelectorCompact({
         type="button"
       >
         <CpuIcon size={16} />
-        <span className="hidden font-medium text-xs sm:block">
+        <span className="hidden font-medium text-sm sm:block">
           {selectedModel?.name}
         </span>
         <ChevronDownIcon size={16} />
@@ -432,7 +432,7 @@ function PureModelSelectorCompact({
         <div className="flex flex-col gap-px">
           {chatModels.map((model) => (
             <SelectItem key={model.id} value={model.name}>
-              <div className="truncate font-medium text-xs">{model.name}</div>
+              <div className="truncate font-medium text-sm">{model.name}</div>
               <div className="mt-px truncate text-[10px] text-muted-foreground leading-tight">
                 {model.description}
               </div>

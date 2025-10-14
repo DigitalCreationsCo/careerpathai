@@ -74,7 +74,7 @@ export default function RootLayout({
       <Head>
         <GoogleTagManager />
       </Head>
-      <body className="min-h-[100dvh] bg-background">
+      <body className="min-h-[100dvh] relative bg-background">
         {/* Google Tag Manager (noscript) */}
         <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-N5RPQTFM"
         height="0" width="0" style={{display:'none',visibility:'hidden'}}></iframe></noscript>
@@ -89,9 +89,9 @@ export default function RootLayout({
             }
           }}
         >
-          <Toaster position="bottom-center" />
           <Header />
           {children}
+          <Toaster position="bottom-center" />
         </SWRConfig>
       </body>
     </html>

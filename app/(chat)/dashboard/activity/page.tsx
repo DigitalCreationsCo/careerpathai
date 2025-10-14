@@ -99,7 +99,7 @@ export default async function ActivityPage() {
                         {formattedAction}
                         {log.ipAddress && ` from IP ${log.ipAddress}`}
                       </p>
-                      <p className="text-xs text-gray-500">
+                      <p className="text-sm text-gray-500">
                         {getRelativeTime(new Date(log.timestamp))}
                       </p>
                     </div>

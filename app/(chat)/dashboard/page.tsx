@@ -52,7 +52,7 @@ export default async function ReportPage() {
                       <div className="bg-blue-100 rounded-full p-2">
                         <FileText className="w-5 h-5 text-blue-600" />
                       </div>
-                      <span className="text-xs text-gray-500">
+                      <span className="text-sm text-gray-500">
                         #{report.id}
                       </span>
                     </div>
@@ -80,7 +80,7 @@ export default async function ReportPage() {
                       
                       {metadata?.scores && metadata.scores.length > 0 && (
                         <div className="pt-2 border-t">
-                          <div className="text-xs text-gray-500 mb-1">Top Score</div>
+                          <div className="text-sm text-gray-500 mb-1">Top Score</div>
                           <div className="text-lg font-bold text-blue-600">
                             {metadata.scores[0]?.score || 0}%
                           </div>

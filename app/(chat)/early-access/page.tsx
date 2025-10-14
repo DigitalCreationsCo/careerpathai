@@ -44,7 +44,7 @@ export default async function EarlyAccessLandingPage() {
         </div> */}
 
         <div className="space-y-4 md:pt-4">
-            <div className="inline-flex items-center px-4 py-2 text-warning text-sm md:text-md font-medium mb-4">
+            <div className="inline-flex items-center px-4 py-2 text-warning text-sm md:text-base font-medium mb-4">
             <Zap className="mr-2" size={16} />
             {`AI is eliminating ${numJobsDisplaced} jobs by ${dateJobsDisplaced} — Are you prepared?`}
             </div>
@@ -68,12 +68,12 @@ export default async function EarlyAccessLandingPage() {
 
         <div className="flex flex-col items-center space-y-6">
             <WaitlistEmailCapture
-            title="Get Your Career Path Report + 21-Day Action Sprint"
+            title="Get Your Career Path Report + 30-Day Sprint"
             emailPlaceholder="Enter your email for early access"
             buttonText="Get My Career Path Report - $29"
             />
             
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs text-muted-foreground max-w-md">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm text-muted-foreground max-w-md">
             <div className="flex items-center justify-center md:justify-start">
                 <AlertCircle className="mr-1 text-red-400" size={14} />
                 <span className="text-red-400">No refunds</span>
@@ -118,7 +118,7 @@ export default async function EarlyAccessLandingPage() {
                 style={{ width: `${reservedSpots}%` }}
             />
             </div>
-            <p className="text-xs text-warning font-medium">⚡ Filling fast • {spotsRemaining} spots remaining</p>
+            <p className="text-sm text-warning font-medium">⚡ Filling fast • {spotsRemaining} spots remaining</p>
         </div>
 
         <CountdownTimer launch={launch} />
@@ -135,7 +135,7 @@ export default async function EarlyAccessLandingPage() {
             <span className="text-transparent bg-gradient-accent bg-clip-text">Career Path Report</span>
             </h2>
             <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-            Here's a real example of what your personalized Career Path Report looks like. Define your career strategy → skills gap analysis → 21-Day Action Sprint.
+            Here's a real example of what your personalized Career Path Report looks like. Define your career strategy → skills gap analysis → 30-Day Sprint.
             </p>
         </div>
 
@@ -199,9 +199,9 @@ export default async function EarlyAccessLandingPage() {
             </div>
 
             <div className="bg-gradient-to-r from-blue-500/10 to-purple-500/10 border border-blue-500/20 rounded-lg p-4">
-            <h4 className="font-bold text-blue-400 mb-2">21-Day Action Sprint</h4>
+            <h4 className="font-bold text-blue-400 mb-2">30-Day Sprint</h4>
             <p className="text-sm text-muted-foreground">Week 1: Complete Salesforce Trailhead basics, update LinkedIn headline...</p>
-            <p className="text-xs text-blue-300 mt-2">+ Outreach Templates, Salary Negotiation Scripts, and more!</p>
+            <p className="text-sm text-blue-300 mt-2">+ Outreach Templates, Salary Negotiation Scripts, and more!</p>
             </div>
         </div>
         </Browser>
@@ -234,10 +234,10 @@ export default async function EarlyAccessLandingPage() {
                 ))}
             </div>
             <p className="text-muted-foreground mb-4">
-                "The Career Path Report was incredibly detailed. The 21-Day Action Sprint got me moving immediately, and now I'm earning $95K in cybersecurity!"
+                "The Career Path Report was incredibly detailed. The 30-Day Sprint got me moving immediately, and now I'm earning $95K in cybersecurity!"
             </p>
             <p className="font-semibold"> Sarah Chen, Early Access Customer</p>
-            <p className="text-xs text-success">✅ Verified Purchase</p>
+            <p className="text-sm text-success">✅ Verified Purchase</p>
             </div>
             
             <div className="bg-muted/20 rounded-xl p-6 border border-border">
@@ -250,7 +250,7 @@ export default async function EarlyAccessLandingPage() {
                 "The Skills Gap Analysis in my Career Path Report was spot-on. Transitioned from support to RevOps in 4 months using the Career Pivot Toolkit!"
             </p>
             <p className="font-semibold"> Marcus Rodriguez, Early Access Customer</p>
-            <p className="text-xs text-success">✅ Verified Purchase</p>
+            <p className="text-sm text-success">✅ Verified Purchase</p>
             </div>
         </div>
 
@@ -276,7 +276,7 @@ export default async function EarlyAccessLandingPage() {
             </h2>
 
             <p className="text-xl text-muted-foreground">
-            Don't wait to AI-proof your career. Get your personalized Career Path Report with 21-Day Action Sprint now.
+            Don't wait to AI-proof your career. Get your personalized Career Path Report with 30-Day Sprint now.
             </p>
         </div>
 
@@ -303,7 +303,7 @@ export default async function EarlyAccessLandingPage() {
             </div>
 
             <WaitlistEmailCapture
-            title="Get Your Career Path Report + 21-Day Action Sprint"
+            title="Get Your Career Path Report + 30-Day Sprint"
             emailPlaceholder="Enter your email for early access"
             buttonText="Get My Career Path Report - $29"
             />

@@ -81,7 +81,7 @@ function InfoRow({
   costText?: string;
 }) {
   return (
-    <div className="flex items-center justify-between text-xs">
+    <div className="flex items-center justify-between text-sm">
       <span className="text-muted-foreground">{label}</span>
       <div className="flex items-center gap-2 font-mono">
         <span className="min-w-[4ch] text-right">
@@ -166,7 +166,7 @@ export const Context = ({ className, usage, ...props }: ContextProps) => {
             {usage?.costUSD?.totalUSD !== undefined && (
               <>
                 <Separator className="mt-1" />
-                <div className="flex items-center justify-between pt-1 text-xs">
+                <div className="flex items-center justify-between pt-1 text-sm">
                   <span className="text-muted-foreground">Total cost</span>
                   <div className="flex items-center gap-2 font-mono">
                     <span className="min-w-[4ch] text-right" />

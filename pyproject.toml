@@ -3,8 +3,8 @@ name = "open_deep_research_fast_api"
 version = "0.0.16"
 description = "Open Deep Reasearch planning, research, and report generation agent with FastAPI integration."
 authors = [
-    { name = "Lance Martin", }
-    { name = "Andres Bryant", }
+    { name = "Lance Martin" },
+    { name = "Andres Bryant" }
 ]
 readme = "README.md"
 license = { text = "MIT" }
@@ -55,11 +55,10 @@ requires = ["setuptools>=73.0.0", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [tool.setuptools]
-packages = ["open_deep_research", "utils"]
+packages = ["open_deep_research"]
 
 [tool.setuptools.package-dir]
 "open_deep_research" = "api/open_deep_research"
-"utils" = "api/utils"
 
 [tool.setuptools.package-data]
 "*" = ["py.typed"]

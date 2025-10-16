@@ -1,13 +1,14 @@
 import os
 import json
 from typing import List
+from langchain_core.messages import AIMessage, HumanMessage, SystemMessage
 from openai.types.chat.chat_completion_message_param import ChatCompletionMessageParam
 from pydantic import BaseModel
 from fastapi import APIRouter, Query
 from fastapi.responses import StreamingResponse
 from openai import OpenAI
-from .utils.prompt import ClientMessage, convert_to_openai_messages
-from .utils.tools import get_current_weather
+from open_deep_research.utils import get_current_weather, convert_to_openai_messages
+from api.logger import logger
 
 router = APIRouter()
 
@@ -15,6 +16,10 @@ client = OpenAI(
     api_key=os.environ.get("OPENAI_API_KEY"),
 )
 
+class ClientMessage(BaseModel):
+    """Client message format for chat requests."""
+    role: str
+    content: str
 
 class Request(BaseModel):
     messages: List[ClientMessage]
@@ -139,9 +144,37 @@ def stream_text(messages: List[ChatCompletionMessageParam], protocol: str = 'dat
 
 @router.post("/api/chat")
 async def handle_chat_data(request: Request, protocol: str = Query('data')):
-    messages = request.messages
-    openai_messages = convert_to_openai_messages(messages)
+    logger.debug("handle_chat_data called")
+    logger.debug(f"Protocol parameter received: {protocol}")
+    try:
+        messages = request.messages
+        logger.debug(f"Received messages: {messages}")
+    except AttributeError as e:
+        logger.error(f"Request does not contain 'messages': {e}")
+        raise
 
-    response = StreamingResponse(stream_text(openai_messages, protocol))
-    response.headers['x-vercel-ai-data-stream'] = 'v1'
+    try:
+        openai_messages = convert_to_openai_messages(messages)
+        logger.debug(f"Converted to OpenAI message format: {openai_messages}")
+    except Exception as e:
+        logger.error(f"Error in converting messages: {e}")
+        raise
+
+    try:
+        gen = stream_text(openai_messages, protocol)
+        logger.debug("stream_text generator created successfully")
+    except Exception as e:
+        logger.error(f"Error creating stream_text generator: {e}")
+        raise
+
+    try:
+        response = StreamingResponse(gen)
+        logger.debug("StreamingResponse created")
+        response.headers['x-vercel-ai-data-stream'] = 'v1'
+        logger.debug("Header x-vercel-ai-data-stream set to v1")
+    except Exception as e:
+        logger.error(f"Error preparing StreamingResponse: {e}")
+        raise
+
+    logger.debug("StreamingResponse ready to be returned")
     return response

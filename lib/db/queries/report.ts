@@ -1,6 +1,7 @@
 import { count, desc, eq } from 'drizzle-orm';
 import { db } from '../drizzle';
-import { Report, reports, users } from '../schema';
+import { reports, users } from '@/lib/db/schema';
+import { Report } from '@/lib/types';
 import { getUser } from '@/lib/db/queries/user';
 
 export async function getReports() {

@@ -40,6 +40,7 @@ For the verification message when no clarification is needed:
 - Keep the message concise and professional
 """
 
+
 transform_messages_into_research_topic_prompt = """You will be given a set of messages that have been exchanged so far between yourself and the user. 
 Your job is to turn these messages into a more detailed and concrete career research question that will be used to guide the research.
 
@@ -73,6 +74,7 @@ Guidelines:
 - For profiles of companies or professionals, link directly to company career pages, professional LinkedIn profiles, or official employer information.
 - If the query is in a specific language, prioritize sources in that language.
 """
+
 
 lead_researcher_prompt = """You are a career research supervisor. Your job is to conduct research by calling the "ConductResearch" tool. For context, today's date is {date}.
 
@@ -180,6 +182,7 @@ After each search tool call, use think_tool to analyze the results:
 - Should I search more or provide my answer?
 </Show Your Thinking>
 """
+
 
 compress_research_system_prompt = """You are a research assistant who has conducted career research on a topic by calling several tools and web searches. Your job is now to clean up the findings, but preserve all of the relevant statements and information that the researcher has gathered. For context, today's date is {date}.
 

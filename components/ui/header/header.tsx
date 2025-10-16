@@ -12,16 +12,16 @@ DropdownMenuTrigger
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar/avatar';
 import { signOut } from '@/app/(login)/actions';
 import { useRouter } from 'next/navigation';
-import { User } from '@/lib/db/schema';
+import { User } from '@/lib/types';
 import useSWR, { mutate } from 'swr';
 import { Logo } from '@/components/logo';
 
 // --- fetcher and UserMenu (unchanged) ---
 const fetcher = (url: string) => fetch(url).then((res) => res.json());
 
-function UserMenu() {
+function UserMenu({ session }: any) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const { data: user } = useSWR<User>('/api/user', fetcher);
+  // const { data: user } = useSWR<User>('/api/user', fetcher);
   const router = useRouter();
 
   async function handleSignOut() {
@@ -30,7 +30,7 @@ function UserMenu() {
     router.push('/');
   }
 
-  if (!user) {
+  if (!session?.user) {
     return (
       <>
         {/* <Link
@@ -51,16 +51,17 @@ function UserMenu() {
     <DropdownMenu open={isMenuOpen} onOpenChange={setIsMenuOpen}>
       <DropdownMenuTrigger>
         <Avatar className="cursor-pointer size-9">
-          <AvatarImage alt={user.name || ''} />
+          <AvatarImage alt={session?.user.name || ''} />
           <AvatarFallback>
-            {user.email
+            {session?.user.name
               .split(' ')
-              .map((n) => n[0])
-              .join('')}
+              .map((n: any) => n[0])
+              .join('')
+              .toUpperCase()}
           </AvatarFallback>
         </Avatar>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="end" className="flex flex-col gap-1">
+      <DropdownMenuContent align="end" className="flex flex-col bg-background">
         <DropdownMenuItem className="cursor-pointer">
           <Link href="/dashboard" className="flex w-full items-center">
             <Home className="mr-2 h-4 w-4" />
@@ -80,17 +81,17 @@ function UserMenu() {
   );
 }
 
-export function Header() {
+export function Header({ session }: any) {
   return (
     <header className="absolute w-full z-10 transition-all duration-300">
       <div className="mx-auto p-2 flex justify-between items-center">
         <Link href="/" className="flex items-center">
           <Logo />
-          <span className="ml-2 font-semibold text-muted-foreground">GoCareerPath</span>
+          <span className="ml-2 font-semibold text-muted-foreground text-lg">GoCareerPath</span>
         </Link>
         <div className="flex items-center space-x-4">
           <Suspense fallback={<div className="h-9" />}>
-            <UserMenu />
+            <UserMenu session={session} />
           </Suspense>
         </div>
       </div>

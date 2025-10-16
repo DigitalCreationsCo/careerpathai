@@ -4,17 +4,19 @@ import { z } from 'zod';
 import { and, eq, sql } from 'drizzle-orm';
 import { db } from '@/lib/db/drizzle';
 import {
-  User,
   users,
   teams,
   teamMembers,
   activityLogs,
-  type NewUser,
-  type NewTeam,
-  type NewTeamMember,
-  type NewActivityLog,
   invitations
 } from '@/lib/db/schema';
+import type { 
+  User, 
+  NewUser,
+  NewTeam,
+  NewTeamMember,
+  NewActivityLog 
+} from '@/lib/types';
 import { ActivityType } from '@/lib/types';
 import { comparePasswords, hashPassword, setSession } from '@/lib/auth/session';
 import { redirect } from 'next/navigation';
@@ -25,6 +27,7 @@ import {
   validatedAction,
   validatedActionWithUser
 } from '@/lib/auth/middleware';
+import { signIn } from 'auth';
 
 async function logActivity(
   teamId: string | null | undefined,
@@ -49,7 +52,11 @@ const signInSchema = z.object({
   password: z.string().min(8).max(100)
 });
 
-export const signIn = validatedAction(signInSchema, async (data, formData) => {
+export const signInWithGoogle = async () => {
+  await signIn('google', { redirectTo: "/chat" });
+};
+
+export const signInWithEmail = validatedAction(signInSchema, async (data, formData) => {
   const { email, password } = data;
 
   const userWithTeam = await db
@@ -225,7 +232,7 @@ export async function signOut() {
   const user = (await getUser()) as User;
   const userWithTeam = await getUserWithTeam(user.id);
   await logActivity(userWithTeam?.teamId, user.id, ActivityType.SIGN_OUT);
-  (await cookies()).delete('session');
+  (await cookies()).delete('authjs.session-token');
 }
 
 const updatePasswordSchema = z.object({
@@ -333,7 +340,7 @@ export const deleteAccount = validatedActionWithUser(
         );
     }
 
-    (await cookies()).delete('session');
+    (await cookies()).delete('authjs.session-token');
     redirect('/sign-in');
   }
 );

@@ -1,12 +1,13 @@
 """Utility functions and helpers for the Deep Research agent."""
 
 import asyncio
+import json
 import logging
 import os
 import warnings
 from datetime import datetime, timedelta, timezone
 from typing import Annotated, Any, Dict, List, Literal, Optional
-
+import requests
 import aiohttp
 from langchain.chat_models import init_chat_model
 from langchain_core.language_models import BaseChatModel
@@ -28,6 +29,7 @@ from langchain_mcp_adapters.client import MultiServerMCPClient
 from langgraph.config import get_store
 from mcp import McpError
 from tavily import AsyncTavilyClient
+from openai.types.chat.chat_completion_message_param import ChatCompletionMessageParam
 
 from open_deep_research.configuration import Configuration, SearchAPI
 from open_deep_research.prompts import summarize_webpage_prompt
@@ -211,6 +213,29 @@ async def summarize_webpage(model: BaseChatModel, webpage_content: str) -> str:
         # Other errors during summarization - log and return original content
         logging.warning(f"Summarization failed with error: {str(e)}, returning original content")
         return webpage_content
+
+##########################
+# Weather Tool Utils
+##########################
+@tool(description="Get the current weather at a given latitude and longitude using the open-meteo API. Useful when you need to retrieve real-time temperature, sunrise, and sunset information for any specific location.")
+def get_current_weather(latitude, longitude):
+    # Format the URL with proper parameter substitution
+    url = f"https://api.open-meteo.com/v1/forecast?latitude={latitude}&longitude={longitude}&current=temperature_2m&hourly=temperature_2m&daily=sunrise,sunset&timezone=auto"
+
+    try:
+        # Make the API call
+        response = requests.get(url)
+
+        # Raise an exception for bad status codes
+        response.raise_for_status()
+
+        # Return the JSON response
+        return response.json()
+
+    except requests.RequestException as e:
+        # Handle any errors that occur during the request
+        print(f"Error fetching weather data: {e}")
+        return None
 
 ##########################
 # Reflection Tool Utils
@@ -923,3 +948,62 @@ def get_tavily_api_key(config: RunnableConfig):
         return api_keys.get("TAVILY_API_KEY")
     else:
         return os.getenv("TAVILY_API_KEY")
+
+def convert_to_openai_messages(messages: List[AIMessage]) -> List[ChatCompletionMessageParam]:
+    openai_messages = []
+
+    for message in messages:
+        parts = []
+        tool_calls = []
+
+        parts.append({
+            'type': 'text',
+            'text': message.content
+        })
+
+        if (message.experimental_attachments):
+            for attachment in message.experimental_attachments:
+                if (attachment.contentType.startswith('image')):
+                    parts.append({
+                        'type': 'image_url',
+                        'image_url': {
+                            'url': attachment.url
+                        }
+                    })
+
+                elif (attachment.contentType.startswith('text')):
+                    parts.append({
+                        'type': 'text',
+                        'text': attachment.url
+                    })
+
+        if(message.toolInvocations):
+            for toolInvocation in message.toolInvocations:
+                tool_calls.append({
+                    "id": toolInvocation.toolCallId,
+                    "type": "function",
+                    "function": {
+                        "name": toolInvocation.toolName,
+                        "arguments": json.dumps(toolInvocation.args)
+                    }
+                })
+
+        tool_calls_dict = {"tool_calls": tool_calls} if tool_calls else {"tool_calls": None}
+
+        openai_messages.append({
+            "role": message.role,
+            "content": parts,
+            **tool_calls_dict,
+        })
+
+        if(message.toolInvocations):
+            for toolInvocation in message.toolInvocations:
+                tool_message = {
+                    "role": "tool",
+                    "tool_call_id": toolInvocation.toolCallId,
+                    "content": json.dumps(toolInvocation.result),
+                }
+
+                openai_messages.append(tool_message)
+
+    return openai_messages

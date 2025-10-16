@@ -2,7 +2,7 @@
  *  Example careerpathresponse
  *  ========================= */
 
-import { Report } from "@/lib/db/schema";
+import { Report } from "@/lib/types";
 
 export const SAMPLE_DATA: Report = {
     id: "1",

@@ -1,9 +1,14 @@
+"use server";
+
 import { compare, hash } from 'bcryptjs';
 import { SignJWT, jwtVerify } from 'jose';
 import { cookies } from 'next/headers';
-import { NewUser } from '@/lib/db/schema';
+import { NewUser } from '@/lib/types';
 
+console.log('AUTH_SECRET length:', process.env.AUTH_SECRET?.length);
+console.log('AUTH_SECRET sample:', process.env.AUTH_SECRET?.slice(0, 5));
 const key = new TextEncoder().encode(process.env.AUTH_SECRET);
+
 const SALT_ROUNDS = 10;
 
 export async function hashPassword(password: string) {
@@ -31,6 +36,10 @@ export async function signToken(payload: SessionData) {
 }
 
 export async function verifyToken(input: string) {
+  console.log('token input:', input);
+  if (!input.includes('.')) {
+    console.error("Malformed token, missing sections:", input);
+  }
   const { payload } = await jwtVerify(input, key, {
     algorithms: ['HS256'],
   });
@@ -38,7 +47,7 @@ export async function verifyToken(input: string) {
 }
 
 export async function getSession() {
-  const session = (await cookies()).get('session')?.value;
+  const session = (await cookies()).get('authjs.session-token')?.value;
   if (!session) return null;
   return await verifyToken(session);
 }
@@ -50,7 +59,7 @@ export async function setSession(user: NewUser) {
     expires: expiresInOneDay.toISOString(),
   };
   const encryptedSession = await signToken(session);
-  (await cookies()).set('session', encryptedSession, {
+  (await cookies()).set('authjs.session-token', encryptedSession, {
     expires: expiresInOneDay,
     httpOnly: true,
     secure: true,

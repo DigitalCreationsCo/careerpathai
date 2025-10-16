@@ -4,10 +4,11 @@ import { Manrope, Lato } from 'next/font/google';
 import { getUser, getTeamForUser } from '@/lib/db/queries/user';
 import { SWRConfig } from 'swr';
 import { Toaster } from "@/components/ui/sonner"
-import { GoogleTagManager } from '@/lib/initGTM';
+import { GoogleTagManager } from '@/components/googletagmanager';
 import Head from 'next/head';
 import { dateJobsDisplaced, numJobsDisplaced } from '@/lib/utils';
 import { Header } from '@/components/ui/header/header';
+import { auth } from '@/auth';
 
 export const metadata: Metadata = {
   title: 'GoCareerPath — Find & Pivot to Your AI-Proof Career Path',
@@ -61,11 +62,12 @@ export const viewport: Viewport = {
 const manrope = Manrope({ subsets: ['latin'] });
 const lato = Lato({ subsets: ['latin'], weight: "400" });
 
-export default function RootLayout({
+export default async function RootLayout({
   children
 }: {
   children: React.ReactNode;
 }) {
+  const session = await auth();
   return (
     <html
       lang="en"
@@ -84,12 +86,12 @@ export default function RootLayout({
             fallback: {
               // We do NOT await here
               // Only components that read this data will suspend
-              '/api/user': getUser(),
-              '/api/team': getTeamForUser()
+              // '/api/user': getUser(),
+              // '/api/team': getTeamForUser()
             }
           }}
         >
-          <Header />
+          <Header session={session} />
           {children}
           <Toaster position="bottom-center" />
         </SWRConfig>

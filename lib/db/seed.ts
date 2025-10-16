@@ -1,7 +1,7 @@
 import { SAMPLE_DATA } from '@/lib/sample-data';
 import { stripe } from '../payments/stripe';
 import { db } from './drizzle';
-import { users, teams, teamMembers, reports } from './schema';
+import { users, teams, teamMembers, reports } from '@/lib/db/schema';
 import { hashPassword } from '@/lib/auth/session';
 
 async function createStripeProducts() {

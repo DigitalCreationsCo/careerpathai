@@ -1,6 +1,6 @@
 "use client"
 import React, { ReactElement } from 'react';
-import { Report } from '@/lib/db/schema';
+import { Report } from '@/lib/types';
 
 
 /** =========================

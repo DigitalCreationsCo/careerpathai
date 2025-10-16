@@ -1,6 +1,7 @@
 import { desc, and, eq, isNull } from 'drizzle-orm';
 import { db } from '../drizzle';
-import { activityLogs, teamMembers, teams, User, users } from '../schema';
+import { activityLogs, teamMembers, teams, users } from '@/lib/db/schema';
+import { User } from '@/lib/types';
 import { cookies } from 'next/headers';
 import { hashPassword, verifyToken } from '@/lib/auth/session';
 
@@ -35,7 +36,7 @@ export async function getUserByEmail(email: string): Promise<User | undefined> {
 }
 
 export async function getUser() {
-  const sessionCookie = (await cookies()).get('session');
+  const sessionCookie = (await cookies()).get('authjs.session-token');
   if (!sessionCookie || !sessionCookie.value) {
     return null;
   }

@@ -35,13 +35,11 @@ import { toast } from "sonner";
 export function Chat({
   id,
   initialMessages,
-  initialChatModel,
   autoResume,
   initialLastContext,
 }: {
   id: string;
   initialMessages: ChatMessage[];
-  initialChatModel: string;
   autoResume: boolean;
   initialLastContext?: AppUsage;
 }) {
@@ -50,12 +48,6 @@ export function Chat({
   const [input, setInput] = useState<string>("");
   const [usage, setUsage] = useState<AppUsage | undefined>(initialLastContext);
   const [showCreditCardAlert, setShowCreditCardAlert] = useState(false);
-  const [currentModelId, setCurrentModelId] = useState(initialChatModel);
-  const currentModelIdRef = useRef(currentModelId);
-
-  useEffect(() => {
-    currentModelIdRef.current = currentModelId;
-  }, [currentModelId]);
 
   const {
     messages,
@@ -69,35 +61,29 @@ export function Chat({
     id,
     messages: initialMessages,
     experimental_throttle: 100,
-    generateId: generateUUID,
     transport: new DefaultChatTransport({
-      api: "/api/chat",
+      api: "/api/research/start",
       fetch: fetchWithErrorHandlers,
       prepareSendMessagesRequest(request) {
         return {
           body: {
             id: request.id,
             message: request.messages.at(-1),
-            selectedChatModel: currentModelIdRef.current,
             ...request.body,
           },
         };
       },
     }),
+    generateId: generateUUID,
     onData: (dataPart) => {
+      console.log('useChat onData: ', dataPart);
     },
     onFinish: () => {
     },
     onError: (error) => {
+      console.error('use Chat Error: ', error);
       if (error instanceof ChatSDKError) {
-        // Check if it's a credit card error
-        if (
-          error.message?.includes("AI Gateway requires a valid credit card")
-        ) {
-          setShowCreditCardAlert(true);
-        } else {
-          toast.error(error.message);
-        }
+        toast.error(error.message);
       }
     },
   });
@@ -107,17 +93,17 @@ export function Chat({
 
   const [hasAppendedQuery, setHasAppendedQuery] = useState(false);
 
-  useEffect(() => {
-    if (query && !hasAppendedQuery) {
-      sendMessage({
-        role: "user" as const,
-        parts: [{ type: "text", text: query }],
-      });
+  // useEffect(() => {
+  //   if (query && !hasAppendedQuery) {
+  //     sendMessage({
+  //       role: "user" as const,
+  //       parts: [{ type: "text", text: query }],
+  //     });
 
-      setHasAppendedQuery(true);
-      window.history.replaceState({}, "", `/chat/${id}`);
-    }
-  }, [query, sendMessage, hasAppendedQuery, id]);
+  //     setHasAppendedQuery(true);
+  //     // window.history.replaceState({}, "", `/chat/${id}`);
+  //   }
+  // }, [query, sendMessage, hasAppendedQuery, id]);
 
 //   const [attachments, setAttachments] = useState<Attachment[]>([]);
 //   const isArtifactVisible = useArtifactSelector((state) => state.isVisible);
@@ -136,7 +122,6 @@ export function Chat({
           chatId={id}
           messages={messages}
           regenerate={regenerate}
-          selectedModelId={initialChatModel}
           setMessages={setMessages}
           status={status}
         />
@@ -147,8 +132,6 @@ export function Chat({
               chatId={id}
               input={input}
               messages={messages}
-              onModelChange={setCurrentModelId}
-              selectedModelId={currentModelId}
               sendMessage={sendMessage}
             //   setAttachments={setAttachments}
               setInput={setInput}

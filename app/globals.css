@@ -219,7 +219,7 @@
   }
 
   .subtitle {
-    @apply text-lg md:text-xl text-muted-foreground max-w-[70%] mx-auto leading-snug;
+    @apply text-lg md:text-xl text-muted-foreground mx-auto leading-snug md:max-w-2xl;
   }
 
   .subtext {

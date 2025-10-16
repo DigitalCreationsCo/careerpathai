@@ -14,7 +14,6 @@ type MessagesProps = {
   messages: ChatMessage[];
   setMessages: UseChatHelpers<ChatMessage>["setMessages"];
   regenerate: UseChatHelpers<ChatMessage>["regenerate"];
-  selectedModelId: string;
 };
 
 function PureMessages({
@@ -23,7 +22,6 @@ function PureMessages({
   messages,
   setMessages,
   regenerate,
-  selectedModelId,
 }: MessagesProps) {
   const {
     containerRef: messagesContainerRef,
@@ -77,8 +75,7 @@ function PureMessages({
 
           {status === "submitted" &&
             messages.length > 0 &&
-            messages.at(-1)?.role === "user" &&
-            selectedModelId !== "chat-model-reasoning" && <ThinkingMessage />}
+            messages.at(-1)?.role === "user" && <ThinkingMessage />}
 
           <div
             className="min-h-[24px] min-w-[24px] shrink-0"
@@ -105,9 +102,9 @@ export const Messages = memo(PureMessages, (prevProps, nextProps) => {
   if (prevProps.status !== nextProps.status) {
     return false;
   }
-  if (prevProps.selectedModelId !== nextProps.selectedModelId) {
-    return false;
-  }
+  // if (prevProps.selectedModelId !== nextProps.selectedModelId) {
+  //   return false;
+  // }
   if (prevProps.messages.length !== nextProps.messages.length) {
     return false;
   }

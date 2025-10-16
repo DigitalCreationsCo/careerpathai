@@ -1,0 +1,1173 @@
+2025-10-14 13:57:13 | INFO     | api.debug_middleware | 🔵 POST /api/chat
+2025-10-14 13:57:13 | DEBUG    | api.debug_middleware | Headers: {'cookie': 'authjs.callback-url=http%3A%2F%2Flocalhost%3A3000%2Fsign-in; authjs.csrf-token=ef5102a41bf57b6f9473de775792a0ac2221e557540d2b15ab9d431b6c951df5%7Cbe86e02b8db8bd6e308f6d7c1c9f01266ba5b546f4dd023d2280570c12cfabd7; authjs.session-token=eyJhbGciOiJkaXIiLCJlbmMiOiJBMjU2Q0JDLUhTNTEyIiwia2lkIjoiS3JUWmxld3NScWlYM1pHQ3NHTWc1OWk1NjRLc0JRXzJMRThqWkFwUEtmbTREQ3RyT0sweFlvVC0waW15cXQ0bnlWQ1poY1pCOVpUMTRRNDN3UUxJNGcifQ..PEHhVVjvL_tIwkXoHEP5Iw.qO3tjCI9CXEEc-vemxR1MqL0UMa-XB5VZbWZp9CIC_xpsgJQTxWpEhUQlIHh-2X5ATTuviWGaMZW4Pz2vCGHR3hUPg7rvX6KkpTcKtsFG7m3B4-_u3ts54UpLuiI-oe0l1wZKEnWzyQehRwcInkZ3vqjG-nV2UuWSIV8BUsGFmgzo1SVTojEGjx1bLnIBAgy8rC-AUjnt4CMDhhfAmo3z_D_tXr3U1dk9-1s-iTcoyzdPaKo-44XLmPcs6bucDe8P6HxzB-kD7LY_f5t0mJpsNSUDPboB_g-zYoS8HTqZpl2dhjjTB3KvUlsE44i29_T2lcwAeOjO-RfUW1ReEd-2LIvaTzBM0uZfsiJpr3YtczHlBbkpa4wh15KjAH_HwHMsrHMO-KAhtNRR-GotB9G9w.KVuBJdawVVUgZeBjm5VsPwbwGVhVj_3uEGLfgTcVBdo; __next_hmr_refresh_hash__=8bdbac0d553eb9ccea327eef55d52cebb0cff87f573eeb20', 'accept-language': 'en-US,en;q=0.9', 'accept-encoding': 'gzip, deflate, br, zstd', 'referer': 'http://localhost:3000/chat', 'sec-fetch-dest': 'empty', 'sec-fetch-mode': 'cors', 'sec-fetch-site': 'same-origin', 'origin': 'http://localhost:3000', 'accept': '*/*', 'sec-ch-ua-mobile': '?0', 'content-type': 'application/json', 'sec-ch-ua': '"Google Chrome";v="141", "Not?A_Brand";v="8", "Chromium";v="141"', 'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36', 'sec-ch-ua-platform': '"macOS"', 'content-length': '171', 'connection': 'close', 'host': '127.0.0.1:8000', 'x-forwarded-host': 'localhost:3000'}
+2025-10-14 13:57:13 | DEBUG    | api.debug_middleware | Query params: {}
+2025-10-14 13:57:13 | DEBUG    | api.debug_middleware | Request body: {
+  "id": "4b8d6ca8-25ae-4e9a-bc12-ba8907418362",
+  "messages": [
+    {
+      "role": "user",
+      "parts": [
+        {
+          "type": "text",
+          "text": "Hello chat"
+        }
+      ],
+      "id": "Nez8quyUkQdIBFmW"
+    }
+  ],
+  "trigger": "submit-message"
+}
+2025-10-14 13:57:13 | ERROR    | api.exception_handlers | Validation error on POST /api/chat
+2025-10-14 13:57:13 | ERROR    | api.exception_handlers | Validation error on POST /api/chat
+2025-10-14 13:57:13 | ERROR    | api.exception_handlers | Validation errors: [{'type': 'missing', 'loc': ('body', 'messages', 0, 'content'), 'msg': 'Field required', 'input': {'role': 'user', 'parts': [{'type': 'text', 'text': 'Hello chat'}], 'id': 'Nez8quyUkQdIBFmW'}}]
+2025-10-14 13:57:13 | ERROR    | api.exception_handlers | Validation errors: [{'type': 'missing', 'loc': ('body', 'messages', 0, 'content'), 'msg': 'Field required', 'input': {'role': 'user', 'parts': [{'type': 'text', 'text': 'Hello chat'}], 'id': 'Nez8quyUkQdIBFmW'}}]
+2025-10-14 13:57:13 | INFO     | api.debug_middleware | 🟢 POST /api/chat - 422 (0.016s)
+2025-10-14 18:43:06 | INFO     | api.debug_middleware | 🔵 POST /api/chat
+2025-10-14 18:43:06 | DEBUG    | api.debug_middleware | Headers: {'cookie': 'authjs.callback-url=http%3A%2F%2Flocalhost%3A3000%2Fsign-in; authjs.csrf-token=ef5102a41bf57b6f9473de775792a0ac2221e557540d2b15ab9d431b6c951df5%7Cbe86e02b8db8bd6e308f6d7c1c9f01266ba5b546f4dd023d2280570c12cfabd7; authjs.session-token=eyJhbGciOiJkaXIiLCJlbmMiOiJBMjU2Q0JDLUhTNTEyIiwia2lkIjoiS3JUWmxld3NScWlYM1pHQ3NHTWc1OWk1NjRLc0JRXzJMRThqWkFwUEtmbTREQ3RyT0sweFlvVC0waW15cXQ0bnlWQ1poY1pCOVpUMTRRNDN3UUxJNGcifQ..PEHhVVjvL_tIwkXoHEP5Iw.qO3tjCI9CXEEc-vemxR1MqL0UMa-XB5VZbWZp9CIC_xpsgJQTxWpEhUQlIHh-2X5ATTuviWGaMZW4Pz2vCGHR3hUPg7rvX6KkpTcKtsFG7m3B4-_u3ts54UpLuiI-oe0l1wZKEnWzyQehRwcInkZ3vqjG-nV2UuWSIV8BUsGFmgzo1SVTojEGjx1bLnIBAgy8rC-AUjnt4CMDhhfAmo3z_D_tXr3U1dk9-1s-iTcoyzdPaKo-44XLmPcs6bucDe8P6HxzB-kD7LY_f5t0mJpsNSUDPboB_g-zYoS8HTqZpl2dhjjTB3KvUlsE44i29_T2lcwAeOjO-RfUW1ReEd-2LIvaTzBM0uZfsiJpr3YtczHlBbkpa4wh15KjAH_HwHMsrHMO-KAhtNRR-GotB9G9w.KVuBJdawVVUgZeBjm5VsPwbwGVhVj_3uEGLfgTcVBdo; __next_hmr_refresh_hash__=390dffd699a4df5924d90d074b83b71fb0cff87f573eeb20', 'accept-language': 'en-US,en;q=0.9', 'accept-encoding': 'gzip, deflate, br, zstd', 'referer': 'http://localhost:3000/chat', 'sec-fetch-dest': 'empty', 'sec-fetch-mode': 'cors', 'sec-fetch-site': 'same-origin', 'origin': 'http://localhost:3000', 'accept': '*/*', 'sec-ch-ua-mobile': '?0', 'content-type': 'application/json', 'sec-ch-ua': '"Google Chrome";v="141", "Not?A_Brand";v="8", "Chromium";v="141"', 'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36', 'sec-ch-ua-platform': '"macOS"', 'content-length': '166', 'connection': 'close', 'host': '127.0.0.1:8000', 'x-forwarded-host': 'localhost:3000'}
+2025-10-14 18:43:06 | DEBUG    | api.debug_middleware | Query params: {}
+2025-10-14 18:43:06 | DEBUG    | api.debug_middleware | Request body: {
+  "id": "7cf2f3c2-f98d-4329-862d-a4e552be4b0d",
+  "messages": [
+    {
+      "role": "user",
+      "parts": [
+        {
+          "type": "text",
+          "text": "Hello"
+        }
+      ],
+      "id": "by5NMCfnN8tbcKXe"
+    }
+  ],
+  "trigger": "submit-message"
+}
+2025-10-14 18:43:06 | ERROR    | api.exception_handlers | Validation error on POST /api/chat
+2025-10-14 18:43:06 | ERROR    | api.exception_handlers | Validation error on POST /api/chat
+2025-10-14 18:43:06 | ERROR    | api.exception_handlers | Validation errors: [{'type': 'missing', 'loc': ('body', 'messages', 0, 'content'), 'msg': 'Field required', 'input': {'role': 'user', 'parts': [{'type': 'text', 'text': 'Hello'}], 'id': 'by5NMCfnN8tbcKXe'}}]
+2025-10-14 18:43:06 | ERROR    | api.exception_handlers | Validation errors: [{'type': 'missing', 'loc': ('body', 'messages', 0, 'content'), 'msg': 'Field required', 'input': {'role': 'user', 'parts': [{'type': 'text', 'text': 'Hello'}], 'id': 'by5NMCfnN8tbcKXe'}}]
+2025-10-14 18:43:06 | INFO     | api.debug_middleware | 🟢 POST /api/chat - 422 (0.035s)
+2025-10-14 19:28:43 | INFO     | api.debug_middleware | 🔵 POST /api/chat
+2025-10-14 19:28:43 | DEBUG    | api.debug_middleware | Headers: {'cookie': 'authjs.callback-url=http%3A%2F%2Flocalhost%3A3000%2Fsign-in; authjs.csrf-token=ef5102a41bf57b6f9473de775792a0ac2221e557540d2b15ab9d431b6c951df5%7Cbe86e02b8db8bd6e308f6d7c1c9f01266ba5b546f4dd023d2280570c12cfabd7; authjs.session-token=eyJhbGciOiJkaXIiLCJlbmMiOiJBMjU2Q0JDLUhTNTEyIiwia2lkIjoiS3JUWmxld3NScWlYM1pHQ3NHTWc1OWk1NjRLc0JRXzJMRThqWkFwUEtmbTREQ3RyT0sweFlvVC0waW15cXQ0bnlWQ1poY1pCOVpUMTRRNDN3UUxJNGcifQ..PEHhVVjvL_tIwkXoHEP5Iw.qO3tjCI9CXEEc-vemxR1MqL0UMa-XB5VZbWZp9CIC_xpsgJQTxWpEhUQlIHh-2X5ATTuviWGaMZW4Pz2vCGHR3hUPg7rvX6KkpTcKtsFG7m3B4-_u3ts54UpLuiI-oe0l1wZKEnWzyQehRwcInkZ3vqjG-nV2UuWSIV8BUsGFmgzo1SVTojEGjx1bLnIBAgy8rC-AUjnt4CMDhhfAmo3z_D_tXr3U1dk9-1s-iTcoyzdPaKo-44XLmPcs6bucDe8P6HxzB-kD7LY_f5t0mJpsNSUDPboB_g-zYoS8HTqZpl2dhjjTB3KvUlsE44i29_T2lcwAeOjO-RfUW1ReEd-2LIvaTzBM0uZfsiJpr3YtczHlBbkpa4wh15KjAH_HwHMsrHMO-KAhtNRR-GotB9G9w.KVuBJdawVVUgZeBjm5VsPwbwGVhVj_3uEGLfgTcVBdo; __next_hmr_refresh_hash__=ef1779ef566dd967a6b87f482e265b46b0cff87f573eeb20', 'accept-language': 'en-US,en;q=0.9', 'accept-encoding': 'gzip, deflate, br, zstd', 'referer': 'http://localhost:3000/chat', 'sec-fetch-dest': 'empty', 'sec-fetch-mode': 'cors', 'sec-fetch-site': 'same-origin', 'origin': 'http://localhost:3000', 'accept': '*/*', 'sec-ch-ua-mobile': '?0', 'content-type': 'application/json', 'sec-ch-ua': '"Google Chrome";v="141", "Not?A_Brand";v="8", "Chromium";v="141"', 'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36', 'sec-ch-ua-platform': '"macOS"', 'content-length': '167', 'connection': 'close', 'host': '127.0.0.1:8000', 'x-forwarded-host': 'localhost:3000'}
+2025-10-14 19:28:43 | DEBUG    | api.debug_middleware | Query params: {}
+2025-10-14 19:28:43 | DEBUG    | api.debug_middleware | Request body: {
+  "id": "ca6e15df-af07-4f10-a079-0da22a1af437",
+  "messages": [
+    {
+      "role": "user",
+      "parts": [
+        {
+          "type": "text",
+          "text": "heello"
+        }
+      ],
+      "id": "rHYcI3VEAbUaXpYV"
+    }
+  ],
+  "trigger": "submit-message"
+}
+2025-10-14 19:28:43 | ERROR    | api.exception_handlers | Validation error on POST /api/chat
+2025-10-14 19:28:43 | ERROR    | api.exception_handlers | Validation error on POST /api/chat
+2025-10-14 19:28:43 | ERROR    | api.exception_handlers | Validation errors: [{'type': 'missing', 'loc': ('body', 'messages', 0, 'content'), 'msg': 'Field required', 'input': {'role': 'user', 'parts': [{'type': 'text', 'text': 'heello'}], 'id': 'rHYcI3VEAbUaXpYV'}}]
+2025-10-14 19:28:43 | ERROR    | api.exception_handlers | Validation errors: [{'type': 'missing', 'loc': ('body', 'messages', 0, 'content'), 'msg': 'Field required', 'input': {'role': 'user', 'parts': [{'type': 'text', 'text': 'heello'}], 'id': 'rHYcI3VEAbUaXpYV'}}]
+2025-10-14 19:28:43 | INFO     | api.debug_middleware | 🟢 POST /api/chat - 422 (0.030s)
+2025-10-14 19:29:01 | INFO     | api.debug_middleware | 🔵 POST /api/chat
+2025-10-14 19:29:01 | DEBUG    | api.debug_middleware | Headers: {'cookie': 'authjs.callback-url=http%3A%2F%2Flocalhost%3A3000%2Fsign-in; authjs.csrf-token=ef5102a41bf57b6f9473de775792a0ac2221e557540d2b15ab9d431b6c951df5%7Cbe86e02b8db8bd6e308f6d7c1c9f01266ba5b546f4dd023d2280570c12cfabd7; authjs.session-token=eyJhbGciOiJkaXIiLCJlbmMiOiJBMjU2Q0JDLUhTNTEyIiwia2lkIjoiS3JUWmxld3NScWlYM1pHQ3NHTWc1OWk1NjRLc0JRXzJMRThqWkFwUEtmbTREQ3RyT0sweFlvVC0waW15cXQ0bnlWQ1poY1pCOVpUMTRRNDN3UUxJNGcifQ..PEHhVVjvL_tIwkXoHEP5Iw.qO3tjCI9CXEEc-vemxR1MqL0UMa-XB5VZbWZp9CIC_xpsgJQTxWpEhUQlIHh-2X5ATTuviWGaMZW4Pz2vCGHR3hUPg7rvX6KkpTcKtsFG7m3B4-_u3ts54UpLuiI-oe0l1wZKEnWzyQehRwcInkZ3vqjG-nV2UuWSIV8BUsGFmgzo1SVTojEGjx1bLnIBAgy8rC-AUjnt4CMDhhfAmo3z_D_tXr3U1dk9-1s-iTcoyzdPaKo-44XLmPcs6bucDe8P6HxzB-kD7LY_f5t0mJpsNSUDPboB_g-zYoS8HTqZpl2dhjjTB3KvUlsE44i29_T2lcwAeOjO-RfUW1ReEd-2LIvaTzBM0uZfsiJpr3YtczHlBbkpa4wh15KjAH_HwHMsrHMO-KAhtNRR-GotB9G9w.KVuBJdawVVUgZeBjm5VsPwbwGVhVj_3uEGLfgTcVBdo; __next_hmr_refresh_hash__=ef1779ef566dd967a6b87f482e265b46b0cff87f573eeb20', 'accept-language': 'en-US,en;q=0.9', 'accept-encoding': 'gzip, deflate, br, zstd', 'referer': 'http://localhost:3000/chat', 'sec-fetch-dest': 'empty', 'sec-fetch-mode': 'cors', 'sec-fetch-site': 'same-origin', 'origin': 'http://localhost:3000', 'accept': '*/*', 'sec-ch-ua-mobile': '?0', 'content-type': 'application/json', 'sec-ch-ua': '"Google Chrome";v="141", "Not?A_Brand";v="8", "Chromium";v="141"', 'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36', 'sec-ch-ua-platform': '"macOS"', 'content-length': '165', 'connection': 'close', 'host': '127.0.0.1:8000', 'x-forwarded-host': 'localhost:3000'}
+2025-10-14 19:29:01 | DEBUG    | api.debug_middleware | Query params: {}
+2025-10-14 19:29:01 | DEBUG    | api.debug_middleware | Request body: {
+  "id": "6c5dc49e-0e7b-492e-baa9-835783e302b6",
+  "messages": [
+    {
+      "role": "user",
+      "parts": [
+        {
+          "type": "text",
+          "text": "test"
+        }
+      ],
+      "id": "apTmEFEYrhIg5O94"
+    }
+  ],
+  "trigger": "submit-message"
+}
+2025-10-14 19:29:01 | ERROR    | api.exception_handlers | Validation error on POST /api/chat
+2025-10-14 19:29:01 | ERROR    | api.exception_handlers | Validation error on POST /api/chat
+2025-10-14 19:29:01 | ERROR    | api.exception_handlers | Validation errors: [{'type': 'missing', 'loc': ('body', 'messages', 0, 'content'), 'msg': 'Field required', 'input': {'role': 'user', 'parts': [{'type': 'text', 'text': 'test'}], 'id': 'apTmEFEYrhIg5O94'}}]
+2025-10-14 19:29:01 | ERROR    | api.exception_handlers | Validation errors: [{'type': 'missing', 'loc': ('body', 'messages', 0, 'content'), 'msg': 'Field required', 'input': {'role': 'user', 'parts': [{'type': 'text', 'text': 'test'}], 'id': 'apTmEFEYrhIg5O94'}}]
+2025-10-14 19:29:01 | INFO     | api.debug_middleware | 🟢 POST /api/chat - 422 (0.011s)
+2025-10-15 00:07:13 | INFO     | api.debug_middleware | 🔵 POST /api/chat
+2025-10-15 00:07:13 | DEBUG    | api.debug_middleware | Headers: {'cookie': 'authjs.callback-url=http%3A%2F%2Flocalhost%3A3000%2Fsign-in; authjs.csrf-token=ef5102a41bf57b6f9473de775792a0ac2221e557540d2b15ab9d431b6c951df5%7Cbe86e02b8db8bd6e308f6d7c1c9f01266ba5b546f4dd023d2280570c12cfabd7; authjs.session-token=eyJhbGciOiJkaXIiLCJlbmMiOiJBMjU2Q0JDLUhTNTEyIiwia2lkIjoiS3JUWmxld3NScWlYM1pHQ3NHTWc1OWk1NjRLc0JRXzJMRThqWkFwUEtmbTREQ3RyT0sweFlvVC0waW15cXQ0bnlWQ1poY1pCOVpUMTRRNDN3UUxJNGcifQ..PEHhVVjvL_tIwkXoHEP5Iw.qO3tjCI9CXEEc-vemxR1MqL0UMa-XB5VZbWZp9CIC_xpsgJQTxWpEhUQlIHh-2X5ATTuviWGaMZW4Pz2vCGHR3hUPg7rvX6KkpTcKtsFG7m3B4-_u3ts54UpLuiI-oe0l1wZKEnWzyQehRwcInkZ3vqjG-nV2UuWSIV8BUsGFmgzo1SVTojEGjx1bLnIBAgy8rC-AUjnt4CMDhhfAmo3z_D_tXr3U1dk9-1s-iTcoyzdPaKo-44XLmPcs6bucDe8P6HxzB-kD7LY_f5t0mJpsNSUDPboB_g-zYoS8HTqZpl2dhjjTB3KvUlsE44i29_T2lcwAeOjO-RfUW1ReEd-2LIvaTzBM0uZfsiJpr3YtczHlBbkpa4wh15KjAH_HwHMsrHMO-KAhtNRR-GotB9G9w.KVuBJdawVVUgZeBjm5VsPwbwGVhVj_3uEGLfgTcVBdo; __next_hmr_refresh_hash__=944ac4997cf8acf3a6b87f482e265b46b0cff87f573eeb20', 'accept-language': 'en-US,en;q=0.9', 'accept-encoding': 'gzip, deflate, br, zstd', 'referer': 'http://localhost:3000/chat', 'sec-fetch-dest': 'empty', 'sec-fetch-mode': 'cors', 'sec-fetch-site': 'same-origin', 'origin': 'http://localhost:3000', 'accept': '*/*', 'sec-ch-ua-mobile': '?0', 'content-type': 'application/json', 'sec-ch-ua': '"Google Chrome";v="141", "Not?A_Brand";v="8", "Chromium";v="141"', 'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36', 'sec-ch-ua-platform': '"macOS"', 'content-length': '175', 'connection': 'close', 'host': '127.0.0.1:8000', 'x-forwarded-host': 'localhost:3000'}
+2025-10-15 00:07:13 | DEBUG    | api.debug_middleware | Query params: {}
+2025-10-15 00:07:13 | DEBUG    | api.debug_middleware | Request body: {
+  "id": "6e53beec-4605-477c-918c-3996aefa9932",
+  "messages": [
+    {
+      "role": "user",
+      "parts": [
+        {
+          "type": "text",
+          "text": "Hello, testing"
+        }
+      ],
+      "id": "HUj8uxoxhtLNnLoB"
+    }
+  ],
+  "trigger": "submit-message"
+}
+2025-10-15 00:07:13 | ERROR    | api.exception_handlers | Validation error on POST /api/chat
+2025-10-15 00:07:13 | ERROR    | api.exception_handlers | Validation error on POST /api/chat
+2025-10-15 00:07:13 | ERROR    | api.exception_handlers | Validation errors: [{'type': 'missing', 'loc': ('body', 'messages', 0, 'content'), 'msg': 'Field required', 'input': {'role': 'user', 'parts': [{'type': 'text', 'text': 'Hello, testing'}], 'id': 'HUj8uxoxhtLNnLoB'}}]
+2025-10-15 00:07:13 | ERROR    | api.exception_handlers | Validation errors: [{'type': 'missing', 'loc': ('body', 'messages', 0, 'content'), 'msg': 'Field required', 'input': {'role': 'user', 'parts': [{'type': 'text', 'text': 'Hello, testing'}], 'id': 'HUj8uxoxhtLNnLoB'}}]
+2025-10-15 00:07:13 | INFO     | api.debug_middleware | 🟢 POST /api/chat - 422 (0.017s)
+2025-10-15 00:23:19 | INFO     | api.debug_middleware | 🔵 POST /api/research
+2025-10-15 00:23:19 | DEBUG    | api.debug_middleware | Headers: {'cookie': 'authjs.callback-url=http%3A%2F%2Flocalhost%3A3000%2Fsign-in; authjs.csrf-token=ef5102a41bf57b6f9473de775792a0ac2221e557540d2b15ab9d431b6c951df5%7Cbe86e02b8db8bd6e308f6d7c1c9f01266ba5b546f4dd023d2280570c12cfabd7; authjs.session-token=eyJhbGciOiJkaXIiLCJlbmMiOiJBMjU2Q0JDLUhTNTEyIiwia2lkIjoiS3JUWmxld3NScWlYM1pHQ3NHTWc1OWk1NjRLc0JRXzJMRThqWkFwUEtmbTREQ3RyT0sweFlvVC0waW15cXQ0bnlWQ1poY1pCOVpUMTRRNDN3UUxJNGcifQ..PEHhVVjvL_tIwkXoHEP5Iw.qO3tjCI9CXEEc-vemxR1MqL0UMa-XB5VZbWZp9CIC_xpsgJQTxWpEhUQlIHh-2X5ATTuviWGaMZW4Pz2vCGHR3hUPg7rvX6KkpTcKtsFG7m3B4-_u3ts54UpLuiI-oe0l1wZKEnWzyQehRwcInkZ3vqjG-nV2UuWSIV8BUsGFmgzo1SVTojEGjx1bLnIBAgy8rC-AUjnt4CMDhhfAmo3z_D_tXr3U1dk9-1s-iTcoyzdPaKo-44XLmPcs6bucDe8P6HxzB-kD7LY_f5t0mJpsNSUDPboB_g-zYoS8HTqZpl2dhjjTB3KvUlsE44i29_T2lcwAeOjO-RfUW1ReEd-2LIvaTzBM0uZfsiJpr3YtczHlBbkpa4wh15KjAH_HwHMsrHMO-KAhtNRR-GotB9G9w.KVuBJdawVVUgZeBjm5VsPwbwGVhVj_3uEGLfgTcVBdo; __next_hmr_refresh_hash__=944ac4997cf8acf3a6b87f482e265b46b0cff87f573eeb20', 'accept-language': 'en-US,en;q=0.9', 'accept-encoding': 'gzip, deflate, br, zstd', 'referer': 'http://localhost:3000/chat', 'sec-fetch-dest': 'empty', 'sec-fetch-mode': 'cors', 'sec-fetch-site': 'same-origin', 'origin': 'http://localhost:3000', 'accept': '*/*', 'sec-ch-ua-mobile': '?0', 'content-type': 'application/json', 'sec-ch-ua': '"Google Chrome";v="141", "Not?A_Brand";v="8", "Chromium";v="141"', 'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36', 'sec-ch-ua-platform': '"macOS"', 'content-length': '158', 'connection': 'close', 'host': '127.0.0.1:8000', 'x-forwarded-host': 'localhost:3000'}
+2025-10-15 00:23:19 | DEBUG    | api.debug_middleware | Query params: {}
+2025-10-15 00:23:19 | DEBUG    | api.debug_middleware | Request body: {
+  "id": "dd0744ef-da54-4acc-9181-a4c3b8e09234",
+  "message": {
+    "role": "user",
+    "parts": [
+      {
+        "type": "text",
+        "text": "Hi Chat"
+      }
+    ],
+    "id": "94ebe0bf-429c-4de4-8069-02c82e6da7a5"
+  }
+}
+2025-10-15 00:23:19 | INFO     | api.debug_middleware | 🟢 POST /api/research - 404 (0.007s)
+2025-10-15 00:27:25 | INFO     | api.debug_middleware | 🔵 POST /api/research/start
+2025-10-15 00:27:25 | DEBUG    | api.debug_middleware | Headers: {'cookie': 'authjs.callback-url=http%3A%2F%2Flocalhost%3A3000%2Fsign-in; authjs.csrf-token=ef5102a41bf57b6f9473de775792a0ac2221e557540d2b15ab9d431b6c951df5%7Cbe86e02b8db8bd6e308f6d7c1c9f01266ba5b546f4dd023d2280570c12cfabd7; authjs.session-token=eyJhbGciOiJkaXIiLCJlbmMiOiJBMjU2Q0JDLUhTNTEyIiwia2lkIjoiS3JUWmxld3NScWlYM1pHQ3NHTWc1OWk1NjRLc0JRXzJMRThqWkFwUEtmbTREQ3RyT0sweFlvVC0waW15cXQ0bnlWQ1poY1pCOVpUMTRRNDN3UUxJNGcifQ..PEHhVVjvL_tIwkXoHEP5Iw.qO3tjCI9CXEEc-vemxR1MqL0UMa-XB5VZbWZp9CIC_xpsgJQTxWpEhUQlIHh-2X5ATTuviWGaMZW4Pz2vCGHR3hUPg7rvX6KkpTcKtsFG7m3B4-_u3ts54UpLuiI-oe0l1wZKEnWzyQehRwcInkZ3vqjG-nV2UuWSIV8BUsGFmgzo1SVTojEGjx1bLnIBAgy8rC-AUjnt4CMDhhfAmo3z_D_tXr3U1dk9-1s-iTcoyzdPaKo-44XLmPcs6bucDe8P6HxzB-kD7LY_f5t0mJpsNSUDPboB_g-zYoS8HTqZpl2dhjjTB3KvUlsE44i29_T2lcwAeOjO-RfUW1ReEd-2LIvaTzBM0uZfsiJpr3YtczHlBbkpa4wh15KjAH_HwHMsrHMO-KAhtNRR-GotB9G9w.KVuBJdawVVUgZeBjm5VsPwbwGVhVj_3uEGLfgTcVBdo; __next_hmr_refresh_hash__=944ac4997cf8acf3a6b87f482e265b46b0cff87f573eeb20', 'accept-language': 'en-US,en;q=0.9', 'accept-encoding': 'gzip, deflate, br, zstd', 'referer': 'http://localhost:3000/chat', 'sec-fetch-dest': 'empty', 'sec-fetch-mode': 'cors', 'sec-fetch-site': 'same-origin', 'origin': 'http://localhost:3000', 'accept': '*/*', 'sec-ch-ua-mobile': '?0', 'content-type': 'application/json', 'sec-ch-ua': '"Google Chrome";v="141", "Not?A_Brand";v="8", "Chromium";v="141"', 'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36', 'sec-ch-ua-platform': '"macOS"', 'content-length': '161', 'connection': 'close', 'host': '127.0.0.1:8000', 'x-forwarded-host': 'localhost:3000'}
+2025-10-15 00:27:25 | DEBUG    | api.debug_middleware | Query params: {}
+2025-10-15 00:27:25 | DEBUG    | api.debug_middleware | Request body: {
+  "id": "e98c2ba4-c95c-4100-a360-bf8d8ebce6d4",
+  "message": {
+    "role": "user",
+    "parts": [
+      {
+        "type": "text",
+        "text": "Hello chat"
+      }
+    ],
+    "id": "e5b31887-33fd-4e82-acae-45cb82d23cbd"
+  }
+}
+2025-10-15 00:27:25 | WARNING  | api.exception_handlers | HTTP 401 on POST /api/research/start: Authentication required
+2025-10-15 00:27:25 | INFO     | api.debug_middleware | 🟢 POST /api/research/start - 401 (0.026s)
+2025-10-15 00:29:16 | INFO     | api.debug_middleware | 🔵 POST /api/research/start
+2025-10-15 00:29:16 | DEBUG    | api.debug_middleware | Headers: {'cookie': 'authjs.callback-url=http%3A%2F%2Flocalhost%3A3000%2Fsign-in; authjs.csrf-token=ef5102a41bf57b6f9473de775792a0ac2221e557540d2b15ab9d431b6c951df5%7Cbe86e02b8db8bd6e308f6d7c1c9f01266ba5b546f4dd023d2280570c12cfabd7; authjs.session-token=eyJhbGciOiJkaXIiLCJlbmMiOiJBMjU2Q0JDLUhTNTEyIiwia2lkIjoiS3JUWmxld3NScWlYM1pHQ3NHTWc1OWk1NjRLc0JRXzJMRThqWkFwUEtmbTREQ3RyT0sweFlvVC0waW15cXQ0bnlWQ1poY1pCOVpUMTRRNDN3UUxJNGcifQ..PEHhVVjvL_tIwkXoHEP5Iw.qO3tjCI9CXEEc-vemxR1MqL0UMa-XB5VZbWZp9CIC_xpsgJQTxWpEhUQlIHh-2X5ATTuviWGaMZW4Pz2vCGHR3hUPg7rvX6KkpTcKtsFG7m3B4-_u3ts54UpLuiI-oe0l1wZKEnWzyQehRwcInkZ3vqjG-nV2UuWSIV8BUsGFmgzo1SVTojEGjx1bLnIBAgy8rC-AUjnt4CMDhhfAmo3z_D_tXr3U1dk9-1s-iTcoyzdPaKo-44XLmPcs6bucDe8P6HxzB-kD7LY_f5t0mJpsNSUDPboB_g-zYoS8HTqZpl2dhjjTB3KvUlsE44i29_T2lcwAeOjO-RfUW1ReEd-2LIvaTzBM0uZfsiJpr3YtczHlBbkpa4wh15KjAH_HwHMsrHMO-KAhtNRR-GotB9G9w.KVuBJdawVVUgZeBjm5VsPwbwGVhVj_3uEGLfgTcVBdo; __next_hmr_refresh_hash__=944ac4997cf8acf3a6b87f482e265b46b0cff87f573eeb20', 'accept-language': 'en-US,en;q=0.9', 'accept-encoding': 'gzip, deflate, br, zstd', 'referer': 'http://localhost:3000/chat', 'sec-fetch-dest': 'empty', 'sec-fetch-mode': 'cors', 'sec-fetch-site': 'same-origin', 'origin': 'http://localhost:3000', 'accept': '*/*', 'sec-ch-ua-mobile': '?0', 'content-type': 'application/json', 'sec-ch-ua': '"Google Chrome";v="141", "Not?A_Brand";v="8", "Chromium";v="141"', 'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36', 'sec-ch-ua-platform': '"macOS"', 'content-length': '158', 'connection': 'close', 'host': '127.0.0.1:8000', 'x-forwarded-host': 'localhost:3000'}
+2025-10-15 00:29:16 | DEBUG    | api.debug_middleware | Query params: {}
+2025-10-15 00:29:16 | DEBUG    | api.debug_middleware | Request body: {
+  "id": "bbac2f0d-e4a4-46cc-83cd-7b18b90c6777",
+  "message": {
+    "role": "user",
+    "parts": [
+      {
+        "type": "text",
+        "text": "testing"
+      }
+    ],
+    "id": "023cc303-4318-497b-900c-d3a6939a55a2"
+  }
+}
+2025-10-15 00:29:16 | WARNING  | api.exception_handlers | HTTP 401 on POST /api/research/start: Authentication required
+2025-10-15 00:29:16 | INFO     | api.debug_middleware | 🟢 POST /api/research/start - 401 (0.010s)
+2025-10-15 00:30:39 | INFO     | api.debug_middleware | 🔵 POST /api/research/start
+2025-10-15 00:30:39 | DEBUG    | api.debug_middleware | Headers: {'cookie': 'authjs.callback-url=http%3A%2F%2Flocalhost%3A3000%2Fsign-in; authjs.csrf-token=ef5102a41bf57b6f9473de775792a0ac2221e557540d2b15ab9d431b6c951df5%7Cbe86e02b8db8bd6e308f6d7c1c9f01266ba5b546f4dd023d2280570c12cfabd7; authjs.session-token=eyJhbGciOiJkaXIiLCJlbmMiOiJBMjU2Q0JDLUhTNTEyIiwia2lkIjoiS3JUWmxld3NScWlYM1pHQ3NHTWc1OWk1NjRLc0JRXzJMRThqWkFwUEtmbTREQ3RyT0sweFlvVC0waW15cXQ0bnlWQ1poY1pCOVpUMTRRNDN3UUxJNGcifQ..PEHhVVjvL_tIwkXoHEP5Iw.qO3tjCI9CXEEc-vemxR1MqL0UMa-XB5VZbWZp9CIC_xpsgJQTxWpEhUQlIHh-2X5ATTuviWGaMZW4Pz2vCGHR3hUPg7rvX6KkpTcKtsFG7m3B4-_u3ts54UpLuiI-oe0l1wZKEnWzyQehRwcInkZ3vqjG-nV2UuWSIV8BUsGFmgzo1SVTojEGjx1bLnIBAgy8rC-AUjnt4CMDhhfAmo3z_D_tXr3U1dk9-1s-iTcoyzdPaKo-44XLmPcs6bucDe8P6HxzB-kD7LY_f5t0mJpsNSUDPboB_g-zYoS8HTqZpl2dhjjTB3KvUlsE44i29_T2lcwAeOjO-RfUW1ReEd-2LIvaTzBM0uZfsiJpr3YtczHlBbkpa4wh15KjAH_HwHMsrHMO-KAhtNRR-GotB9G9w.KVuBJdawVVUgZeBjm5VsPwbwGVhVj_3uEGLfgTcVBdo; __next_hmr_refresh_hash__=944ac4997cf8acf3a6b87f482e265b46b0cff87f573eeb20', 'accept-language': 'en-US,en;q=0.9', 'accept-encoding': 'gzip, deflate, br, zstd', 'referer': 'http://localhost:3000/chat', 'sec-fetch-dest': 'empty', 'sec-fetch-mode': 'cors', 'sec-fetch-site': 'same-origin', 'origin': 'http://localhost:3000', 'accept': '*/*', 'sec-ch-ua-mobile': '?0', 'content-type': 'application/json', 'sec-ch-ua': '"Google Chrome";v="141", "Not?A_Brand";v="8", "Chromium";v="141"', 'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36', 'sec-ch-ua-platform': '"macOS"', 'content-length': '158', 'connection': 'close', 'host': '127.0.0.1:8000', 'x-forwarded-host': 'localhost:3000'}
+2025-10-15 00:30:39 | DEBUG    | api.debug_middleware | Query params: {}
+2025-10-15 00:30:39 | DEBUG    | api.debug_middleware | Request body: {
+  "id": "438a143f-154c-48ae-ab00-00b11e0bd741",
+  "message": {
+    "role": "user",
+    "parts": [
+      {
+        "type": "text",
+        "text": "testing"
+      }
+    ],
+    "id": "60430204-d230-4ab0-85ac-1756fd9c1cc3"
+  }
+}
+2025-10-15 00:30:39 | WARNING  | api.exception_handlers | HTTP 401 on POST /api/research/start: Authentication required
+2025-10-15 00:30:39 | INFO     | api.debug_middleware | 🟢 POST /api/research/start - 401 (0.006s)
+2025-10-15 00:39:10 | INFO     | api.debug_middleware | 🔵 POST /api/research/start
+2025-10-15 00:39:10 | DEBUG    | api.debug_middleware | Headers: {'cookie': 'authjs.callback-url=http%3A%2F%2Flocalhost%3A3000%2Fsign-in; authjs.csrf-token=ef5102a41bf57b6f9473de775792a0ac2221e557540d2b15ab9d431b6c951df5%7Cbe86e02b8db8bd6e308f6d7c1c9f01266ba5b546f4dd023d2280570c12cfabd7; authjs.session-token=eyJhbGciOiJkaXIiLCJlbmMiOiJBMjU2Q0JDLUhTNTEyIiwia2lkIjoiS3JUWmxld3NScWlYM1pHQ3NHTWc1OWk1NjRLc0JRXzJMRThqWkFwUEtmbTREQ3RyT0sweFlvVC0waW15cXQ0bnlWQ1poY1pCOVpUMTRRNDN3UUxJNGcifQ..PEHhVVjvL_tIwkXoHEP5Iw.qO3tjCI9CXEEc-vemxR1MqL0UMa-XB5VZbWZp9CIC_xpsgJQTxWpEhUQlIHh-2X5ATTuviWGaMZW4Pz2vCGHR3hUPg7rvX6KkpTcKtsFG7m3B4-_u3ts54UpLuiI-oe0l1wZKEnWzyQehRwcInkZ3vqjG-nV2UuWSIV8BUsGFmgzo1SVTojEGjx1bLnIBAgy8rC-AUjnt4CMDhhfAmo3z_D_tXr3U1dk9-1s-iTcoyzdPaKo-44XLmPcs6bucDe8P6HxzB-kD7LY_f5t0mJpsNSUDPboB_g-zYoS8HTqZpl2dhjjTB3KvUlsE44i29_T2lcwAeOjO-RfUW1ReEd-2LIvaTzBM0uZfsiJpr3YtczHlBbkpa4wh15KjAH_HwHMsrHMO-KAhtNRR-GotB9G9w.KVuBJdawVVUgZeBjm5VsPwbwGVhVj_3uEGLfgTcVBdo; __next_hmr_refresh_hash__=944ac4997cf8acf3a6b87f482e265b46b0cff87f573eeb20', 'accept-language': 'en-US,en;q=0.9', 'accept-encoding': 'gzip, deflate, br, zstd', 'referer': 'http://localhost:3000/chat', 'sec-fetch-dest': 'empty', 'sec-fetch-mode': 'cors', 'sec-fetch-site': 'same-origin', 'origin': 'http://localhost:3000', 'accept': '*/*', 'sec-ch-ua-mobile': '?0', 'content-type': 'application/json', 'sec-ch-ua': '"Google Chrome";v="141", "Not?A_Brand";v="8", "Chromium";v="141"', 'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36', 'sec-ch-ua-platform': '"macOS"', 'content-length': '161', 'connection': 'close', 'host': '127.0.0.1:8000', 'x-forwarded-host': 'localhost:3000'}
+2025-10-15 00:39:10 | DEBUG    | api.debug_middleware | Query params: {}
+2025-10-15 00:39:10 | DEBUG    | api.debug_middleware | Request body: {
+  "id": "e718dda1-3a50-49d4-8e11-5429404c7467",
+  "message": {
+    "role": "user",
+    "parts": [
+      {
+        "type": "text",
+        "text": "hello chat"
+      }
+    ],
+    "id": "55feb9ca-bb2c-44d2-a6a6-67cd43736db1"
+  }
+}
+2025-10-15 00:39:10 | WARNING  | api.exception_handlers | HTTP 401 on POST /api/research/start: Authentication required
+2025-10-15 00:39:10 | INFO     | api.debug_middleware | 🟢 POST /api/research/start - 401 (0.017s)
+2025-10-15 00:42:30 | DEBUG    | api | [auth_middleware] Instantiating NextAuthMiddleware...
+2025-10-15 00:42:30 | DEBUG    | api | [NextAuthMiddleware.__init__] AUTH_SECRET set: True
+2025-10-15 00:42:30 | DEBUG    | api | [NextAuthMiddleware.__init__] HTTPBearer initialized with auto_error=False
+2025-10-15 00:42:36 | DEBUG    | api | [auth_middleware] Instantiating NextAuthMiddleware...
+2025-10-15 00:42:36 | DEBUG    | api | [NextAuthMiddleware.__init__] AUTH_SECRET set: True
+2025-10-15 00:42:36 | DEBUG    | api | [NextAuthMiddleware.__init__] HTTPBearer initialized with auto_error=False
+2025-10-15 00:46:07 | INFO     | api.debug_middleware | 🔵 POST /api/research/start
+2025-10-15 00:46:07 | DEBUG    | api.debug_middleware | Headers: {'cookie': 'authjs.callback-url=http%3A%2F%2Flocalhost%3A3000%2Fsign-in; authjs.csrf-token=ef5102a41bf57b6f9473de775792a0ac2221e557540d2b15ab9d431b6c951df5%7Cbe86e02b8db8bd6e308f6d7c1c9f01266ba5b546f4dd023d2280570c12cfabd7; authjs.session-token=eyJhbGciOiJkaXIiLCJlbmMiOiJBMjU2Q0JDLUhTNTEyIiwia2lkIjoiS3JUWmxld3NScWlYM1pHQ3NHTWc1OWk1NjRLc0JRXzJMRThqWkFwUEtmbTREQ3RyT0sweFlvVC0waW15cXQ0bnlWQ1poY1pCOVpUMTRRNDN3UUxJNGcifQ..PEHhVVjvL_tIwkXoHEP5Iw.qO3tjCI9CXEEc-vemxR1MqL0UMa-XB5VZbWZp9CIC_xpsgJQTxWpEhUQlIHh-2X5ATTuviWGaMZW4Pz2vCGHR3hUPg7rvX6KkpTcKtsFG7m3B4-_u3ts54UpLuiI-oe0l1wZKEnWzyQehRwcInkZ3vqjG-nV2UuWSIV8BUsGFmgzo1SVTojEGjx1bLnIBAgy8rC-AUjnt4CMDhhfAmo3z_D_tXr3U1dk9-1s-iTcoyzdPaKo-44XLmPcs6bucDe8P6HxzB-kD7LY_f5t0mJpsNSUDPboB_g-zYoS8HTqZpl2dhjjTB3KvUlsE44i29_T2lcwAeOjO-RfUW1ReEd-2LIvaTzBM0uZfsiJpr3YtczHlBbkpa4wh15KjAH_HwHMsrHMO-KAhtNRR-GotB9G9w.KVuBJdawVVUgZeBjm5VsPwbwGVhVj_3uEGLfgTcVBdo; __next_hmr_refresh_hash__=944ac4997cf8acf3a6b87f482e265b46b0cff87f573eeb20', 'accept-language': 'en-US,en;q=0.9', 'accept-encoding': 'gzip, deflate, br, zstd', 'referer': 'http://localhost:3000/chat', 'sec-fetch-dest': 'empty', 'sec-fetch-mode': 'cors', 'sec-fetch-site': 'same-origin', 'origin': 'http://localhost:3000', 'accept': '*/*', 'sec-ch-ua-mobile': '?0', 'content-type': 'application/json', 'sec-ch-ua': '"Google Chrome";v="141", "Not?A_Brand";v="8", "Chromium";v="141"', 'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36', 'sec-ch-ua-platform': '"macOS"', 'content-length': '161', 'connection': 'close', 'host': '127.0.0.1:8000', 'x-forwarded-host': 'localhost:3000'}
+2025-10-15 00:46:07 | DEBUG    | api.debug_middleware | Query params: {}
+2025-10-15 00:46:07 | DEBUG    | api.debug_middleware | Request body: {
+  "id": "e973597c-3c0c-471f-abcd-816b1adb71ef",
+  "message": {
+    "role": "user",
+    "parts": [
+      {
+        "type": "text",
+        "text": "hello chat"
+      }
+    ],
+    "id": "9ee93a0e-e305-43a1-bf03-54cd7be21a68"
+  }
+}
+2025-10-15 00:46:07 | INFO     | api | [get_current_user] Attempting to get user from cookie...
+2025-10-15 00:46:07 | DEBUG    | api | [NextAuthMiddleware.get_user_from_cookie] session_token found: yes
+2025-10-15 00:46:07 | DEBUG    | api | [NextAuthMiddleware.get_user_from_token] Getting user from token: eyJhbGciOi... (truncated)
+2025-10-15 00:46:07 | DEBUG    | api | [NextAuthMiddleware.verify_token] Verifying token: eyJhbGciOi... (truncated)
+2025-10-15 00:46:07 | WARNING  | api | [NextAuthMiddleware.verify_token] Invalid token: The specified alg value is not allowed
+2025-10-15 00:46:07 | WARNING  | api | [NextAuthMiddleware.get_user_from_cookie] Failed to get user from cookie token: Invalid token: The specified alg value is not allowed
+2025-10-15 00:46:07 | INFO     | api | [get_current_user] Attempting to get user from Authorization header...
+2025-10-15 00:46:07 | DEBUG    | api | [NextAuthMiddleware.get_user_from_header] credentials present: no
+2025-10-15 00:46:07 | INFO     | api | [NextAuthMiddleware.get_user_from_header] No Authorization header provided
+2025-10-15 00:46:07 | ERROR    | api | [get_current_user] Authentication required, no valid user found
+2025-10-15 00:46:07 | ERROR    | api | [get_current_user] Authentication required, no valid user found
+2025-10-15 00:46:07 | WARNING  | api.exception_handlers | HTTP 401 on POST /api/research/start: Authentication required
+2025-10-15 00:46:07 | INFO     | api.debug_middleware | 🟢 POST /api/research/start - 401 (0.009s)
+2025-10-15 00:47:03 | DEBUG    | api | [auth_middleware] Instantiating NextAuthMiddleware...
+2025-10-15 00:47:03 | DEBUG    | api | [NextAuthMiddleware.__init__] AUTH_SECRET set: True
+2025-10-15 00:47:03 | DEBUG    | api | [NextAuthMiddleware.__init__] HTTPBearer initialized with auto_error=False
+2025-10-15 00:48:17 | INFO     | api.debug_middleware | 🔵 POST /api/research/start
+2025-10-15 00:48:17 | DEBUG    | api.debug_middleware | Headers: {'cookie': 'authjs.callback-url=http%3A%2F%2Flocalhost%3A3000%2Fsign-in; authjs.csrf-token=ef5102a41bf57b6f9473de775792a0ac2221e557540d2b15ab9d431b6c951df5%7Cbe86e02b8db8bd6e308f6d7c1c9f01266ba5b546f4dd023d2280570c12cfabd7; authjs.session-token=eyJhbGciOiJkaXIiLCJlbmMiOiJBMjU2Q0JDLUhTNTEyIiwia2lkIjoiS3JUWmxld3NScWlYM1pHQ3NHTWc1OWk1NjRLc0JRXzJMRThqWkFwUEtmbTREQ3RyT0sweFlvVC0waW15cXQ0bnlWQ1poY1pCOVpUMTRRNDN3UUxJNGcifQ..PEHhVVjvL_tIwkXoHEP5Iw.qO3tjCI9CXEEc-vemxR1MqL0UMa-XB5VZbWZp9CIC_xpsgJQTxWpEhUQlIHh-2X5ATTuviWGaMZW4Pz2vCGHR3hUPg7rvX6KkpTcKtsFG7m3B4-_u3ts54UpLuiI-oe0l1wZKEnWzyQehRwcInkZ3vqjG-nV2UuWSIV8BUsGFmgzo1SVTojEGjx1bLnIBAgy8rC-AUjnt4CMDhhfAmo3z_D_tXr3U1dk9-1s-iTcoyzdPaKo-44XLmPcs6bucDe8P6HxzB-kD7LY_f5t0mJpsNSUDPboB_g-zYoS8HTqZpl2dhjjTB3KvUlsE44i29_T2lcwAeOjO-RfUW1ReEd-2LIvaTzBM0uZfsiJpr3YtczHlBbkpa4wh15KjAH_HwHMsrHMO-KAhtNRR-GotB9G9w.KVuBJdawVVUgZeBjm5VsPwbwGVhVj_3uEGLfgTcVBdo; __next_hmr_refresh_hash__=944ac4997cf8acf3a6b87f482e265b46b0cff87f573eeb20', 'accept-language': 'en-US,en;q=0.9', 'accept-encoding': 'gzip, deflate, br, zstd', 'referer': 'http://localhost:3000/chat', 'sec-fetch-dest': 'empty', 'sec-fetch-mode': 'cors', 'sec-fetch-site': 'same-origin', 'origin': 'http://localhost:3000', 'accept': '*/*', 'sec-ch-ua-mobile': '?0', 'content-type': 'application/json', 'sec-ch-ua': '"Google Chrome";v="141", "Not?A_Brand";v="8", "Chromium";v="141"', 'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36', 'sec-ch-ua-platform': '"macOS"', 'content-length': '158', 'connection': 'close', 'host': '127.0.0.1:8000', 'x-forwarded-host': 'localhost:3000'}
+2025-10-15 00:48:17 | DEBUG    | api.debug_middleware | Query params: {}
+2025-10-15 00:48:17 | DEBUG    | api.debug_middleware | Request body: {
+  "id": "d18f0912-376e-4ef8-af59-d66bcd64bbc3",
+  "message": {
+    "role": "user",
+    "parts": [
+      {
+        "type": "text",
+        "text": "hi chat"
+      }
+    ],
+    "id": "1139b9ee-7cbb-4827-84f5-64028cb88b5d"
+  }
+}
+2025-10-15 00:48:17 | INFO     | api | [get_current_user] Attempting to get user from cookie...
+2025-10-15 00:48:17 | DEBUG    | api | [NextAuthMiddleware.get_user_from_cookie] session_token found: yes
+2025-10-15 00:48:17 | DEBUG    | api | [NextAuthMiddleware.get_user_from_token] Getting user from token: eyJhbGciOi... (truncated)
+2025-10-15 00:48:17 | DEBUG    | api | [NextAuthMiddleware.verify_token] Verifying token: eyJhbGciOi... (truncated)
+2025-10-15 00:48:17 | WARNING  | api | [NextAuthMiddleware.verify_token] Invalid token: The specified alg value is not allowed
+2025-10-15 00:48:17 | WARNING  | api | [NextAuthMiddleware.get_user_from_cookie] Failed to get user from cookie token: Invalid token: The specified alg value is not allowed
+2025-10-15 00:48:17 | INFO     | api | [get_current_user] Attempting to get user from Authorization header...
+2025-10-15 00:48:17 | DEBUG    | api | [NextAuthMiddleware.get_user_from_header] credentials present: no
+2025-10-15 00:48:17 | INFO     | api | [NextAuthMiddleware.get_user_from_header] No Authorization header provided
+2025-10-15 00:48:17 | ERROR    | api | [get_current_user] Authentication required, no valid user found
+2025-10-15 00:48:17 | ERROR    | api | [get_current_user] Authentication required, no valid user found
+2025-10-15 00:48:17 | WARNING  | api.exception_handlers | HTTP 401 on POST /api/research/start: Authentication required
+2025-10-15 00:48:17 | INFO     | api.debug_middleware | 🟢 POST /api/research/start - 401 (0.005s)
+2025-10-15 00:54:38 | DEBUG    | api | [auth_middleware] Instantiating NextAuthMiddleware...
+2025-10-15 00:54:38 | DEBUG    | api | [NextAuthMiddleware.__init__] AUTH_SECRET set: True
+2025-10-15 00:54:38 | DEBUG    | api | [NextAuthMiddleware.__init__] HTTPBearer initialized with auto_error=False
+2025-10-15 00:56:30 | INFO     | api.debug_middleware | 🔵 POST /api/research/start
+2025-10-15 00:56:30 | DEBUG    | api.debug_middleware | Headers: {'cookie': 'authjs.callback-url=http%3A%2F%2Flocalhost%3A3000%2Fsign-in; authjs.csrf-token=ef5102a41bf57b6f9473de775792a0ac2221e557540d2b15ab9d431b6c951df5%7Cbe86e02b8db8bd6e308f6d7c1c9f01266ba5b546f4dd023d2280570c12cfabd7; authjs.session-token=eyJhbGciOiJkaXIiLCJlbmMiOiJBMjU2Q0JDLUhTNTEyIiwia2lkIjoiS3JUWmxld3NScWlYM1pHQ3NHTWc1OWk1NjRLc0JRXzJMRThqWkFwUEtmbTREQ3RyT0sweFlvVC0waW15cXQ0bnlWQ1poY1pCOVpUMTRRNDN3UUxJNGcifQ..PEHhVVjvL_tIwkXoHEP5Iw.qO3tjCI9CXEEc-vemxR1MqL0UMa-XB5VZbWZp9CIC_xpsgJQTxWpEhUQlIHh-2X5ATTuviWGaMZW4Pz2vCGHR3hUPg7rvX6KkpTcKtsFG7m3B4-_u3ts54UpLuiI-oe0l1wZKEnWzyQehRwcInkZ3vqjG-nV2UuWSIV8BUsGFmgzo1SVTojEGjx1bLnIBAgy8rC-AUjnt4CMDhhfAmo3z_D_tXr3U1dk9-1s-iTcoyzdPaKo-44XLmPcs6bucDe8P6HxzB-kD7LY_f5t0mJpsNSUDPboB_g-zYoS8HTqZpl2dhjjTB3KvUlsE44i29_T2lcwAeOjO-RfUW1ReEd-2LIvaTzBM0uZfsiJpr3YtczHlBbkpa4wh15KjAH_HwHMsrHMO-KAhtNRR-GotB9G9w.KVuBJdawVVUgZeBjm5VsPwbwGVhVj_3uEGLfgTcVBdo; __next_hmr_refresh_hash__=49', 'accept-language': 'en-US,en;q=0.9', 'accept-encoding': 'gzip, deflate, br, zstd', 'referer': 'http://localhost:3000/chat', 'sec-fetch-dest': 'empty', 'sec-fetch-mode': 'cors', 'sec-fetch-site': 'same-origin', 'origin': 'http://localhost:3000', 'accept': '*/*', 'sec-ch-ua-mobile': '?0', 'content-type': 'application/json', 'sec-ch-ua': '"Google Chrome";v="141", "Not?A_Brand";v="8", "Chromium";v="141"', 'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36', 'sec-ch-ua-platform': '"macOS"', 'content-length': '162', 'connection': 'close', 'host': '127.0.0.1:8000', 'x-forwarded-host': 'localhost:3000'}
+2025-10-15 00:56:30 | DEBUG    | api.debug_middleware | Query params: {}
+2025-10-15 00:56:30 | DEBUG    | api.debug_middleware | Request body: {
+  "id": "7fb9fc98-0a29-4925-8e98-d4194ba2f039",
+  "message": {
+    "role": "user",
+    "parts": [
+      {
+        "type": "text",
+        "text": "hello there"
+      }
+    ],
+    "id": "ceef3a62-cc33-4a22-966e-f6bcb5b0412f"
+  }
+}
+2025-10-15 00:56:30 | INFO     | api | [get_current_user] Attempting to get user from cookie...
+2025-10-15 00:56:30 | DEBUG    | api | [NextAuthMiddleware.get_user_from_cookie] session_token found: yes
+2025-10-15 00:56:30 | DEBUG    | api | [NextAuthMiddleware.get_user_from_token] Getting user from token: eyJhbGciOi... (truncated)
+2025-10-15 00:56:30 | DEBUG    | api | [NextAuthMiddleware.verify_token] Verifying token: eyJhbGciOi... (truncated)
+2025-10-15 00:56:30 | WARNING  | api | [NextAuthMiddleware.verify_token] Invalid token: The specified alg value is not allowed
+2025-10-15 00:56:30 | WARNING  | api | [NextAuthMiddleware.get_user_from_cookie] Failed to get user from cookie token: Invalid token: The specified alg value is not allowed
+2025-10-15 00:56:30 | INFO     | api | [get_current_user] Attempting to get user from Authorization header...
+2025-10-15 00:56:30 | DEBUG    | api | [NextAuthMiddleware.get_user_from_header] credentials present: no
+2025-10-15 00:56:30 | INFO     | api | [NextAuthMiddleware.get_user_from_header] No Authorization header provided
+2025-10-15 00:56:30 | ERROR    | api | [get_current_user] Authentication required, no valid user found
+2025-10-15 00:56:30 | ERROR    | api | [get_current_user] Authentication required, no valid user found
+2025-10-15 00:56:30 | WARNING  | api.exception_handlers | HTTP 401 on POST /api/research/start: Authentication required
+2025-10-15 00:56:30 | INFO     | api.debug_middleware | 🟢 POST /api/research/start - 401 (0.006s)
+2025-10-15 00:58:56 | DEBUG    | api | [auth_middleware] Instantiating NextAuthMiddleware...
+2025-10-15 00:58:56 | DEBUG    | api | [NextAuthMiddleware.__init__] AUTH_SECRET set: True
+2025-10-15 00:58:56 | DEBUG    | api | [NextAuthMiddleware.__init__] HTTPBearer initialized with auto_error=False
+2025-10-15 03:08:37 | INFO     | api.debug_middleware | 🔵 POST /api/research/start
+2025-10-15 03:08:37 | DEBUG    | api.debug_middleware | Headers: {'set-cookie': 'authjs.session-token=eyJhbGciOiJkaXIiLCJlbmMiOiJBMjU2Q0JDLUhTNTEyIiwia2lkIjoiSEpHZEdTUlBuRHJjQlk2dDZFdjN1WWlsMHltWElBSEl6Ri1KbThJYkgxRVltYzZFMkUyX0tuZFFTa29qMGo0MUlRQWZrdHRGRXl3RE43Mzg1aUk1QWcifQ..DR_PbB0LxEdo8lu4hI6r_Q.Hh1tNyaQqKTrJD4oc9FggQPQFL-uKm7A1pLfoUjNoVCKR0SantQpD5wQiTvn7fcIoa6u5NlGRtBhuakkQvO_Vg_q4Qs0sE8DqBUmxblajkxiSNyirPNQInbRRRj9NTM0MxoIP_lNDkZ7RKGU8_AV2auPg46auo1zNgbwRZGKjIdW6_SPTTapWWXRYkIPapl_f_BZhAvMR_TqDEMtNQryRMEQ8KMyZAYNc5JpyNbKPoGtNOfHxRl4Pzhos7TvewAKcwUvEcSYdJDh8Qh0naKDjPhq15ZdH9cFEurI0PaecgSzIV_wBqRTeH16cb2Gpu8AKklJgjbDskARQ7x9wrwQHYaV3Azkub-Fwith_lDDNOQU3ZYOZo7zVFnB1viiIixUOPFJoinUOtaikbcmAccp9g.8F68l8hSI6-OuBxomHkLudGVRQy7uaWJ7JF7gui0qSQ; Path=/; Expires=Fri, 14 Nov 2025 07:08:37 GMT; HttpOnly; SameSite=Lax', 'x-forwarded-for': '::1', 'x-forwarded-proto': 'http', 'x-forwarded-port': '3000', 'x-forwarded-host': 'localhost:3000', 'cookie': 'authjs.csrf-token=492dc562d151bb8d3f1546ae32a6e10fba67ef363a722f8d24f501b8be44ea98%7C50c05b0269ee8151165cd48ee58b4e7b28d06b1459f608e6b4d00ecfe1bf2266; __next_hmr_refresh_hash__=61; authjs.callback-url=http%3A%2F%2Flocalhost%3A3000%2Fchat; authjs.session-token=eyJhbGciOiJkaXIiLCJlbmMiOiJBMjU2Q0JDLUhTNTEyIiwia2lkIjoiSEpHZEdTUlBuRHJjQlk2dDZFdjN1WWlsMHltWElBSEl6Ri1KbThJYkgxRVltYzZFMkUyX0tuZFFTa29qMGo0MUlRQWZrdHRGRXl3RE43Mzg1aUk1QWcifQ..v-ecXU5LD9p3dfducejLLg.6JfdbclNo0ELJ3JBwtLgHx2wisvnSQqXj2awb8l11DuD6MYdG358LtwQGDNybY928SeGiMl2LDp9Vx9tCeIMW3ECxUmRxrQDK882snDLD7mehOhZXlJavoO5EaVaahMkkd7Iui5QENbuDElrIHiMucO2OL9-10Lr_q82eMZ9KLxoOdL-OZVxUHdwrOCnYIJyKyU2BEmvOj4Z0fOvYyMgmDiXLraLEywDF_w-GsZ3rV9WNDZNKmfra6qKZbCoQpsUc3SPoZ_LsGwazk5xGaeyUxRQmQRw30JIgCCmOdgYT0TTeB3tpzqUA0RAzHR2XBEfKp6TUoUTO_D6vEnC4xXdmK8cacUSWl_gA1c__uKSFEuOLNsblhWW8XkGpYG4htB0ogUhovsncH4q4zc_r3WH4w.XJBsXZoJZh2WAEcKlpG75ByqD_N7sqMkMQJyXlAoyJ4', 'accept-language': 'en-US,en;q=0.9', 'accept-encoding': 'gzip, deflate, br, zstd', 'referer': 'http://localhost:3000/chat', 'sec-fetch-dest': 'empty', 'sec-fetch-mode': 'cors', 'sec-fetch-site': 'same-origin', 'origin': 'http://localhost:3000', 'accept': '*/*', 'sec-ch-ua-mobile': '?0', 'content-type': 'application/json', 'sec-ch-ua': '"Google Chrome";v="141", "Not?A_Brand";v="8", "Chromium";v="141"', 'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36', 'sec-ch-ua-platform': '"macOS"', 'content-length': '156', 'connection': 'close', 'host': '127.0.0.1:8000'}
+2025-10-15 03:08:37 | DEBUG    | api.debug_middleware | Query params: {}
+2025-10-15 03:08:37 | DEBUG    | api.debug_middleware | Request body: {
+  "id": "0ae4d90c-36e0-4418-8e60-f151ed4d3f97",
+  "message": {
+    "role": "user",
+    "parts": [
+      {
+        "type": "text",
+        "text": "Hello"
+      }
+    ],
+    "id": "015ab27f-9da8-427e-b618-1af98a2b87e5"
+  }
+}
+2025-10-15 03:08:37 | INFO     | api | [get_current_user] Attempting to get user from cookie...
+2025-10-15 03:08:37 | DEBUG    | api | [NextAuthMiddleware.get_user_from_cookie] session_token found: yes
+2025-10-15 03:08:37 | DEBUG    | api | [NextAuthMiddleware.get_user_from_token] Getting user from token: eyJhbGciOi... (truncated)
+2025-10-15 03:08:37 | DEBUG    | api | [NextAuthMiddleware.verify_token] Verifying token: eyJhbGciOi... (truncated)
+2025-10-15 03:08:37 | WARNING  | api | [NextAuthMiddleware.verify_token] Invalid token: The specified alg value is not allowed
+2025-10-15 03:08:37 | WARNING  | api | [NextAuthMiddleware.get_user_from_cookie] Failed to get user from cookie token: Invalid token: The specified alg value is not allowed
+2025-10-15 03:08:37 | INFO     | api | [get_current_user] Attempting to get user from Authorization header...
+2025-10-15 03:08:37 | DEBUG    | api | [NextAuthMiddleware.get_user_from_header] credentials present: no
+2025-10-15 03:08:37 | INFO     | api | [NextAuthMiddleware.get_user_from_header] No Authorization header provided
+2025-10-15 03:08:37 | ERROR    | api | [get_current_user] Authentication required, no valid user found
+2025-10-15 03:08:37 | ERROR    | api | [get_current_user] Authentication required, no valid user found
+2025-10-15 03:08:37 | WARNING  | api.exception_handlers | HTTP 401 on POST /api/research/start: Authentication required
+2025-10-15 03:08:37 | INFO     | api.debug_middleware | 🟢 POST /api/research/start - 401 (0.038s)
+2025-10-15 03:27:32 | DEBUG    | api | [auth_middleware] Instantiating NextAuthMiddleware...
+2025-10-15 03:27:32 | DEBUG    | api | [NextAuthMiddleware.__init__] AUTH_SECRET set: True
+2025-10-15 03:27:32 | DEBUG    | api | [NextAuthMiddleware.__init__] HTTPBearer initialized with auto_error=False
+2025-10-15 03:28:06 | DEBUG    | api | [auth_middleware] Instantiating NextAuthMiddleware...
+2025-10-15 03:28:06 | DEBUG    | api | [NextAuthMiddleware.__init__] AUTH_SECRET set: True
+2025-10-15 03:28:06 | DEBUG    | api | [NextAuthMiddleware.__init__] HTTPBearer initialized with auto_error=False
+2025-10-15 03:28:18 | DEBUG    | api | [auth_middleware] Instantiating NextAuthMiddleware...
+2025-10-15 03:28:18 | DEBUG    | api | [NextAuthMiddleware.__init__] AUTH_SECRET set: True
+2025-10-15 03:28:18 | DEBUG    | api | [NextAuthMiddleware.__init__] HTTPBearer initialized with auto_error=False
+2025-10-15 03:28:31 | DEBUG    | api | [auth_middleware] Instantiating NextAuthMiddleware...
+2025-10-15 03:28:31 | DEBUG    | api | [NextAuthMiddleware.__init__] AUTH_SECRET set: True
+2025-10-15 03:28:31 | DEBUG    | api | [NextAuthMiddleware.__init__] HTTPBearer initialized with auto_error=False
+2025-10-15 03:28:38 | DEBUG    | api | [auth_middleware] Instantiating NextAuthMiddleware...
+2025-10-15 03:28:38 | DEBUG    | api | [NextAuthMiddleware.__init__] AUTH_SECRET set: True
+2025-10-15 03:28:38 | DEBUG    | api | [NextAuthMiddleware.__init__] HTTPBearer initialized with auto_error=False
+2025-10-15 03:28:43 | DEBUG    | api | [auth_middleware] Instantiating NextAuthMiddleware...
+2025-10-15 03:28:43 | DEBUG    | api | [NextAuthMiddleware.__init__] AUTH_SECRET set: True
+2025-10-15 03:28:43 | DEBUG    | api | [NextAuthMiddleware.__init__] HTTPBearer initialized with auto_error=False
+2025-10-15 03:29:12 | DEBUG    | api | [auth_middleware] Instantiating NextAuthMiddleware...
+2025-10-15 03:29:12 | DEBUG    | api | [NextAuthMiddleware.__init__] AUTH_SECRET set: True
+2025-10-15 03:29:12 | DEBUG    | api | [NextAuthMiddleware.__init__] HTTPBearer initialized with auto_error=False
+2025-10-15 03:29:19 | DEBUG    | api | [auth_middleware] Instantiating NextAuthMiddleware...
+2025-10-15 03:29:19 | DEBUG    | api | [NextAuthMiddleware.__init__] AUTH_SECRET set: True
+2025-10-15 03:29:19 | DEBUG    | api | [NextAuthMiddleware.__init__] HTTPBearer initialized with auto_error=False
+2025-10-15 03:29:35 | DEBUG    | api | [auth_middleware] Instantiating NextAuthMiddleware...
+2025-10-15 03:29:35 | DEBUG    | api | [NextAuthMiddleware.__init__] AUTH_SECRET set: True
+2025-10-15 03:29:35 | DEBUG    | api | [NextAuthMiddleware.__init__] HTTPBearer initialized with auto_error=False
+2025-10-15 03:29:51 | DEBUG    | api | [auth_middleware] Instantiating NextAuthMiddleware...
+2025-10-15 03:29:51 | DEBUG    | api | [NextAuthMiddleware.__init__] AUTH_SECRET set: True
+2025-10-15 03:29:51 | DEBUG    | api | [NextAuthMiddleware.__init__] HTTPBearer initialized with auto_error=False
+2025-10-15 03:30:00 | DEBUG    | api | [auth_middleware] Instantiating NextAuthMiddleware...
+2025-10-15 03:30:00 | DEBUG    | api | [NextAuthMiddleware.__init__] AUTH_SECRET set: True
+2025-10-15 03:30:00 | DEBUG    | api | [NextAuthMiddleware.__init__] HTTPBearer initialized with auto_error=False
+2025-10-15 03:30:49 | DEBUG    | api | [auth_middleware] Instantiating NextAuthMiddleware...
+2025-10-15 03:30:49 | DEBUG    | api | [NextAuthMiddleware.__init__] AUTH_SECRET set: True
+2025-10-15 03:30:49 | DEBUG    | api | [NextAuthMiddleware.__init__] HTTPBearer initialized with auto_error=False
+2025-10-15 03:30:56 | DEBUG    | api | [auth_middleware] Instantiating NextAuthMiddleware...
+2025-10-15 03:30:56 | DEBUG    | api | [NextAuthMiddleware.__init__] AUTH_SECRET set: True
+2025-10-15 03:30:56 | DEBUG    | api | [NextAuthMiddleware.__init__] HTTPBearer initialized with auto_error=False
+2025-10-15 03:31:01 | DEBUG    | api | [auth_middleware] Instantiating NextAuthMiddleware...
+2025-10-15 03:31:01 | DEBUG    | api | [NextAuthMiddleware.__init__] AUTH_SECRET set: True
+2025-10-15 03:31:01 | DEBUG    | api | [NextAuthMiddleware.__init__] HTTPBearer initialized with auto_error=False
+2025-10-15 03:31:07 | DEBUG    | api | [auth_middleware] Instantiating NextAuthMiddleware...
+2025-10-15 03:31:07 | DEBUG    | api | [NextAuthMiddleware.__init__] AUTH_SECRET set: True
+2025-10-15 03:31:07 | DEBUG    | api | [NextAuthMiddleware.__init__] HTTPBearer initialized with auto_error=False
+2025-10-15 03:31:12 | DEBUG    | api | [auth_middleware] Instantiating NextAuthMiddleware...
+2025-10-15 03:31:12 | DEBUG    | api | [NextAuthMiddleware.__init__] AUTH_SECRET set: True
+2025-10-15 03:31:12 | DEBUG    | api | [NextAuthMiddleware.__init__] HTTPBearer initialized with auto_error=False
+2025-10-15 03:31:53 | DEBUG    | api | [auth_middleware] Instantiating NextAuthMiddleware...
+2025-10-15 03:31:53 | DEBUG    | api | [NextAuthMiddleware.__init__] AUTH_SECRET set: True
+2025-10-15 03:31:53 | DEBUG    | api | [NextAuthMiddleware.__init__] HTTPBearer initialized with auto_error=False
+2025-10-15 03:32:01 | DEBUG    | api | [auth_middleware] Instantiating NextAuthMiddleware...
+2025-10-15 03:32:01 | DEBUG    | api | [NextAuthMiddleware.__init__] AUTH_SECRET set: True
+2025-10-15 03:32:01 | DEBUG    | api | [NextAuthMiddleware.__init__] HTTPBearer initialized with auto_error=False
+2025-10-15 03:32:09 | DEBUG    | api | [auth_middleware] Instantiating NextAuthMiddleware...
+2025-10-15 03:32:09 | DEBUG    | api | [NextAuthMiddleware.__init__] AUTH_SECRET set: True
+2025-10-15 03:32:09 | DEBUG    | api | [NextAuthMiddleware.__init__] HTTPBearer initialized with auto_error=False
+2025-10-15 03:32:14 | DEBUG    | api | [auth_middleware] Instantiating NextAuthMiddleware...
+2025-10-15 03:32:14 | DEBUG    | api | [NextAuthMiddleware.__init__] AUTH_SECRET set: True
+2025-10-15 03:32:14 | DEBUG    | api | [NextAuthMiddleware.__init__] HTTPBearer initialized with auto_error=False
+2025-10-15 03:32:50 | INFO     | api.debug_middleware | 🔵 POST /api/research/start
+2025-10-15 03:32:50 | DEBUG    | api.debug_middleware | Headers: {'set-cookie': 'authjs.session-token=eyJhbGciOiJkaXIiLCJlbmMiOiJBMjU2Q0JDLUhTNTEyIiwia2lkIjoiSEpHZEdTUlBuRHJjQlk2dDZFdjN1WWlsMHltWElBSEl6Ri1KbThJYkgxRVltYzZFMkUyX0tuZFFTa29qMGo0MUlRQWZrdHRGRXl3RE43Mzg1aUk1QWcifQ..RV60N7GQk6d6SNQRwhdmuQ.qOe1606y9-KrC9LVc8lrIDkpUXADFeQsZx_hgvjRBVU06vxV9x81OfH2o3HPdnR9KV9YDkq3Xx81QzoX-P24HsQU58XXvRfrz8ZyA7-txL9DcpollaPHpLOIDWBK4GIkEluZhHGNA-aq9_r47IauiwoxTwg954JTsxk64RFylKkbXhW4u74-yzAVLBnZGhSRu4GXlsHdCUYyjGmbuaLuKMcM7CtEkDqIPA892KZXzWOqaLTiCFI-kphviTC5VDmS9I5xK_2ujAK4n1BiEkB_t8K7i_s17cUBFosN5u17RgE-KIMgrVDLaXVVhEICCpucCidkBuyz1Yy1fE1UKo10La8toW1J8YD5d_KO4Wq10YcHgBxCyS4jdVUQQBihNjaawmhIeqbqKiDmT6ETyUn5TA.3Tso-0MpYdYtyvUTwe0mH58BzwGoBIqRv71jaqFue58; Path=/; Expires=Fri, 14 Nov 2025 07:32:50 GMT; HttpOnly; SameSite=Lax', 'x-forwarded-for': '::1', 'x-forwarded-proto': 'http', 'x-forwarded-port': '3000', 'x-forwarded-host': 'localhost:3000', 'cookie': 'authjs.csrf-token=492dc562d151bb8d3f1546ae32a6e10fba67ef363a722f8d24f501b8be44ea98%7C50c05b0269ee8151165cd48ee58b4e7b28d06b1459f608e6b4d00ecfe1bf2266; __next_hmr_refresh_hash__=61; authjs.callback-url=http%3A%2F%2Flocalhost%3A3000%2Fchat; authjs.session-token=eyJhbGciOiJkaXIiLCJlbmMiOiJBMjU2Q0JDLUhTNTEyIiwia2lkIjoiSEpHZEdTUlBuRHJjQlk2dDZFdjN1WWlsMHltWElBSEl6Ri1KbThJYkgxRVltYzZFMkUyX0tuZFFTa29qMGo0MUlRQWZrdHRGRXl3RE43Mzg1aUk1QWcifQ..js59ByNLIlX8tKB7EFoxEQ.MTDeV4jRuj0se0aYQ0ybkERdEXuqatJNoujHoKhsmmzjakEoxeo45-gf43vqoT6S2SFzvw7JFlJsB0ap83UpAABCJ_wkiSclx7EYy1QErcStu4Oq-LxfRnp8WUvqyMS5v9PSjl_uPJoPwSk0-jKcZiacQ6MB0ftYTI0dTPOfYr0idEk-wS3LflGVUCKWEnlMPAXkGKGu0X9E-gOCNK0ZWjE9sjtxu5_KJ_YTOSlr8483fgc5frTwFOoWer4Ya3vsMcP3FMLdzAIZPux05xxClTQIME6LHvDAzZb-inoi351KmbksKvbVUd2MvP5Yh9I22Qau20r98hsllJg5pgp_r5sY52COEd45n2C_GjpEY4tblNaq7-JPzb67n1iOpSt90sWFH6fqyajsWuquRU1VJw.rRXwjngTro3v7ulp9_6XAt2oIVHkg3uL9ZrMo7s19Go', 'accept-language': 'en-US,en;q=0.9', 'accept-encoding': 'gzip, deflate, br, zstd', 'referer': 'http://localhost:3000/chat', 'sec-fetch-dest': 'empty', 'sec-fetch-mode': 'cors', 'sec-fetch-site': 'same-origin', 'origin': 'http://localhost:3000', 'accept': '*/*', 'sec-ch-ua-mobile': '?0', 'content-type': 'application/json', 'sec-ch-ua': '"Google Chrome";v="141", "Not?A_Brand";v="8", "Chromium";v="141"', 'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36', 'sec-ch-ua-platform': '"macOS"', 'content-length': '161', 'connection': 'close', 'host': '127.0.0.1:8000'}
+2025-10-15 03:32:50 | DEBUG    | api.debug_middleware | Query params: {}
+2025-10-15 03:32:50 | DEBUG    | api.debug_middleware | Request body: {
+  "id": "f807170d-0b06-4ce0-9dc2-36f56e41f08a",
+  "message": {
+    "role": "user",
+    "parts": [
+      {
+        "type": "text",
+        "text": "Hello chat"
+      }
+    ],
+    "id": "1511fe60-b063-4e13-aa7b-07bb6c25f04f"
+  }
+}
+2025-10-15 03:32:50 | INFO     | api | [get_current_user] Attempting to get user from cookie...
+2025-10-15 03:32:50 | DEBUG    | api | [NextAuthMiddleware.get_user_from_cookie] session_token found: yes
+2025-10-15 03:32:50 | DEBUG    | api | [NextAuthMiddleware.get_user_from_token] Getting user from token: eyJhbGciOi... (truncated)
+2025-10-15 03:32:50 | WARNING  | api | [NextAuthMiddleware.get_user_from_cookie] Failed to get user from cookie token: Invalid token: decrypt() got an unexpected keyword argument 'algorithms'
+2025-10-15 03:32:50 | INFO     | api | [get_current_user] Attempting to get user from Authorization header...
+2025-10-15 03:32:50 | DEBUG    | api | [NextAuthMiddleware.get_user_from_header] credentials present: no
+2025-10-15 03:32:50 | INFO     | api | [NextAuthMiddleware.get_user_from_header] No Authorization header provided
+2025-10-15 03:32:50 | ERROR    | api | [get_current_user] Authentication required, no valid user found
+2025-10-15 03:32:50 | ERROR    | api | [get_current_user] Authentication required, no valid user found
+2025-10-15 03:32:50 | WARNING  | api.exception_handlers | HTTP 401 on POST /api/research/start: Authentication required
+2025-10-15 03:32:50 | INFO     | api.debug_middleware | 🟢 POST /api/research/start - 401 (0.015s)
+2025-10-15 03:33:35 | DEBUG    | api | [auth_middleware] Instantiating NextAuthMiddleware...
+2025-10-15 03:33:35 | DEBUG    | api | [NextAuthMiddleware.__init__] AUTH_SECRET set: True
+2025-10-15 03:33:35 | DEBUG    | api | [NextAuthMiddleware.__init__] HTTPBearer initialized with auto_error=False
+2025-10-15 03:33:39 | DEBUG    | api | [auth_middleware] Instantiating NextAuthMiddleware...
+2025-10-15 03:33:39 | DEBUG    | api | [NextAuthMiddleware.__init__] AUTH_SECRET set: True
+2025-10-15 03:33:39 | DEBUG    | api | [NextAuthMiddleware.__init__] HTTPBearer initialized with auto_error=False
+2025-10-15 03:34:01 | INFO     | api.debug_middleware | 🔵 POST /api/research/start
+2025-10-15 03:34:01 | DEBUG    | api.debug_middleware | Headers: {'set-cookie': 'authjs.session-token=eyJhbGciOiJkaXIiLCJlbmMiOiJBMjU2Q0JDLUhTNTEyIiwia2lkIjoiSEpHZEdTUlBuRHJjQlk2dDZFdjN1WWlsMHltWElBSEl6Ri1KbThJYkgxRVltYzZFMkUyX0tuZFFTa29qMGo0MUlRQWZrdHRGRXl3RE43Mzg1aUk1QWcifQ..zrXCW53DdKpVUQ8gdWSBOg.Djik8Y3Am2gnmo39bUA33ZXk8e-WX6Fu-NGZSJQTZf0c2_n_jLu8oZiXa8cuUx1hNQwDOIeucFwcaigb5ywAk4vR246wPAzH0SxUB52jdPIJXiz4zbWfE2ZzcnFNA6f4vdPNM2h3mW9ojA3bXFuwBKTVOswGSLoBVf6mRnfwW5tRXOGF8b5JvChc-L49tgNW0tpQoQY-hLpCmrbTdYeyQ3Qmi9hrs2s8PJ5nPtyS6l81FOjAz2iQdMRvasGWD4vNYE9v0Pe0zJ4zgaZgXm56O93YmRn16DU4_KyKAdp11520PAcmwl78zmU6T4RLXWg8tu1Nch9C0ogcF7XOJD9cpfpsk-WyXmYEte6jn2WciXRcdh9Ir_F3qgTS9id92vkRJhm1n1aRHkFmxYLi3-H0hQ.eKAsjBlFEe7aKhPMy54omuR-qjmjIA3EBXfEfi1frF0; Path=/; Expires=Fri, 14 Nov 2025 07:34:01 GMT; HttpOnly; SameSite=Lax', 'x-forwarded-for': '::1', 'x-forwarded-proto': 'http', 'x-forwarded-port': '3000', 'x-forwarded-host': 'localhost:3000', 'cookie': 'authjs.csrf-token=492dc562d151bb8d3f1546ae32a6e10fba67ef363a722f8d24f501b8be44ea98%7C50c05b0269ee8151165cd48ee58b4e7b28d06b1459f608e6b4d00ecfe1bf2266; __next_hmr_refresh_hash__=61; authjs.callback-url=http%3A%2F%2Flocalhost%3A3000%2Fchat; authjs.session-token=eyJhbGciOiJkaXIiLCJlbmMiOiJBMjU2Q0JDLUhTNTEyIiwia2lkIjoiSEpHZEdTUlBuRHJjQlk2dDZFdjN1WWlsMHltWElBSEl6Ri1KbThJYkgxRVltYzZFMkUyX0tuZFFTa29qMGo0MUlRQWZrdHRGRXl3RE43Mzg1aUk1QWcifQ..V0Dwf1j-9L4MniuOPkDVmw.zocflgUruhdZJaWmYBkXuAjsJ5-mv1C9W-yrRpg0135ich72ecJjrYW085h9DMbBlB1lT5CfAcawLIaHcf0T7R57CRn3243sxyafWJCFdhWxKPFinS0Mx4YYRpN-ejXava-ZeZOMwpyxRfjmgGyJyo1uNy6MPyMVRQD4rvLesDvMClnDboV-lZ0WbgntTkAG1nvlVBmt3R3TtP59KnQjotTakgqXFaKoVGb9QSmUtPVv-1pzwr0rWiqnKUqOCkGOvvdXwQpL4CtYZkH8Zimie9DvbH-TGMS_NVDFHk3WW_UlF_eQBXfQsUfU4w_03Y3DPpsBehxJYcaHenrKHcsvVN6Y76WbNOuF48OP_r_BDtpc18svQhTKhsvJs5WPEEupddH4mvixa3JH2IsP33Y0gA._bZPRkbu3xCx7NmnIqdIOw7eS4_wiU7DBOWFlAXZ18g', 'accept-language': 'en-US,en;q=0.9', 'accept-encoding': 'gzip, deflate, br, zstd', 'referer': 'http://localhost:3000/chat', 'sec-fetch-dest': 'empty', 'sec-fetch-mode': 'cors', 'sec-fetch-site': 'same-origin', 'origin': 'http://localhost:3000', 'accept': '*/*', 'sec-ch-ua-mobile': '?0', 'content-type': 'application/json', 'sec-ch-ua': '"Google Chrome";v="141", "Not?A_Brand";v="8", "Chromium";v="141"', 'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36', 'sec-ch-ua-platform': '"macOS"', 'content-length': '165', 'connection': 'close', 'host': '127.0.0.1:8000'}
+2025-10-15 03:34:01 | DEBUG    | api.debug_middleware | Query params: {}
+2025-10-15 03:34:01 | DEBUG    | api.debug_middleware | Request body: {
+  "id": "99896f75-1816-4702-8e34-beef0eb4c91e",
+  "message": {
+    "role": "user",
+    "parts": [
+      {
+        "type": "text",
+        "text": "Hello, testing"
+      }
+    ],
+    "id": "8b953843-3932-4e8a-9bf3-f9fa026d4db4"
+  }
+}
+2025-10-15 03:34:01 | INFO     | api | [get_current_user] Attempting to get user from cookie...
+2025-10-15 03:34:01 | DEBUG    | api | [NextAuthMiddleware.get_user_from_cookie] session_token found: yes
+2025-10-15 03:34:01 | DEBUG    | api | [NextAuthMiddleware.get_user_from_token] Getting user from token: eyJhbGciOi... (truncated)
+2025-10-15 03:34:01 | WARNING  | api | [NextAuthMiddleware.get_user_from_cookie] Failed to get user from cookie token: Invalid token: Key must be 256 bit for alg A256CBC
+2025-10-15 03:34:01 | INFO     | api | [get_current_user] Attempting to get user from Authorization header...
+2025-10-15 03:34:01 | DEBUG    | api | [NextAuthMiddleware.get_user_from_header] credentials present: no
+2025-10-15 03:34:01 | INFO     | api | [NextAuthMiddleware.get_user_from_header] No Authorization header provided
+2025-10-15 03:34:01 | ERROR    | api | [get_current_user] Authentication required, no valid user found
+2025-10-15 03:34:01 | ERROR    | api | [get_current_user] Authentication required, no valid user found
+2025-10-15 03:34:01 | WARNING  | api.exception_handlers | HTTP 401 on POST /api/research/start: Authentication required
+2025-10-15 03:34:01 | INFO     | api.debug_middleware | 🟢 POST /api/research/start - 401 (0.005s)
+2025-10-15 03:44:33 | DEBUG    | api | [auth_middleware] Instantiating NextAuthMiddleware...
+2025-10-15 03:44:33 | DEBUG    | api | [NextAuthMiddleware.__init__] AUTH_SECRET set: True
+2025-10-15 03:44:33 | DEBUG    | api | [NextAuthMiddleware.__init__] HTTPBearer initialized with auto_error=False
+2025-10-15 03:44:39 | DEBUG    | api | [auth_middleware] Instantiating NextAuthMiddleware...
+2025-10-15 03:44:39 | DEBUG    | api | [NextAuthMiddleware.__init__] AUTH_SECRET set: True
+2025-10-15 03:44:39 | DEBUG    | api | [NextAuthMiddleware.__init__] HTTPBearer initialized with auto_error=False
+2025-10-15 03:44:53 | DEBUG    | api | [auth_middleware] Instantiating NextAuthMiddleware...
+2025-10-15 03:44:53 | DEBUG    | api | [NextAuthMiddleware.__init__] AUTH_SECRET set: True
+2025-10-15 03:44:53 | DEBUG    | api | [NextAuthMiddleware.__init__] HTTPBearer initialized with auto_error=False
+2025-10-15 03:45:05 | DEBUG    | api | [auth_middleware] Instantiating NextAuthMiddleware...
+2025-10-15 03:45:05 | DEBUG    | api | [NextAuthMiddleware.__init__] AUTH_SECRET set: True
+2025-10-15 03:45:05 | DEBUG    | api | [NextAuthMiddleware.__init__] HTTPBearer initialized with auto_error=False
+2025-10-15 03:45:10 | DEBUG    | api | [auth_middleware] Instantiating NextAuthMiddleware...
+2025-10-15 03:45:10 | DEBUG    | api | [NextAuthMiddleware.__init__] AUTH_SECRET set: True
+2025-10-15 03:45:10 | DEBUG    | api | [NextAuthMiddleware.__init__] AUTH_SECRET set: True
+2025-10-15 03:45:10 | DEBUG    | api | [NextAuthMiddleware.__init__] HTTPBearer initialized with auto_error=False
+2025-10-15 03:45:19 | DEBUG    | api | [auth_middleware] Instantiating NextAuthMiddleware...
+2025-10-15 03:45:19 | DEBUG    | api | [NextAuthMiddleware.__init__] AUTH_SECRET set: True
+2025-10-15 03:45:19 | DEBUG    | api | [NextAuthMiddleware.__init__] auth_secret_bytes set: True
+2025-10-15 03:45:19 | DEBUG    | api | [NextAuthMiddleware.__init__] HTTPBearer initialized with auto_error=False
+2025-10-15 03:45:26 | DEBUG    | api | [auth_middleware] Instantiating NextAuthMiddleware...
+2025-10-15 03:45:26 | DEBUG    | api | [NextAuthMiddleware.__init__] AUTH_SECRET set: True
+2025-10-15 03:45:26 | DEBUG    | api | [NextAuthMiddleware.__init__] auth_secret_bytes set: True
+2025-10-15 03:45:26 | DEBUG    | api | [NextAuthMiddleware.__init__] HTTPBearer initialized with auto_error=False
+2025-10-15 03:55:30 | DEBUG    | api | [auth_middleware] Instantiating NextAuthMiddleware...
+2025-10-15 04:11:46 | DEBUG    | api | [auth_middleware] Instantiating NextAuthMiddleware...
+2025-10-15 04:11:52 | DEBUG    | api | [auth_middleware] Instantiating NextAuthMiddleware...
+2025-10-15 04:11:59 | DEBUG    | api | [auth_middleware] Instantiating NextAuthMiddleware...
+2025-10-15 22:45:56 | DEBUG    | api | [auth_middleware] Instantiating NextAuthMiddleware...
+2025-10-15 22:51:08 | DEBUG    | api | [auth_middleware] Instantiating NextAuthMiddleware...
+2025-10-15 22:51:08 | DEBUG    | api | [NextAuthMiddleware.__init__] AUTH_SECRET successfully loaded and validated (32 bytes)
+2025-10-15 22:51:13 | DEBUG    | api | [auth_middleware] Instantiating NextAuthMiddleware...
+2025-10-15 22:51:13 | DEBUG    | api | [NextAuthMiddleware.__init__] AUTH_SECRET successfully loaded and validated (32 bytes)
+2025-10-15 22:51:40 | INFO     | api.debug_middleware | 🔵 POST /api/research/start
+2025-10-15 22:51:40 | DEBUG    | api.debug_middleware | Headers: {'set-cookie': 'authjs.session-token=eyJhbGciOiJkaXIiLCJlbmMiOiJBMjU2Q0JDLUhTNTEyIiwia2lkIjoiczBqVUw3TGRxQmNicFZvaUJWZVJSZmFuTThyV29IUlNmWV9WTG5WS25HS0FJdFM5aDNRLXNXc3JQazF0MDJ3MTUxWnp4RzhycDV1WDEtbWJWUS1ydXcifQ..R_SDIgjsMCc9X0yIDt1JqQ.Rp1V5kvsIrR9T3WA56FRxt1I2u0EFbxw-Kfa14V_oXqByxOeJ-1otb5_orRoQ3ZJeKhr9qZubhRiUs0B41PLDzzdI-3NRx3g0gZ8bQoahdWAkmmC4Eacpn9Xy2zPcvH75L4DMSsXTZApHDq_KfnIe3499-JAS7w2cQB_JpuvS6LnHKlblh5-xomVmHwDG862QuZfJWgkt6TShjAXWF_uXqNeQEBIaZNoSC58dQ4u22OJdI8rLL5KeoRZcLNL51jRU8aFqp1Bjf4E60t3s7lKEogX4pGtFUvqMnE5uRGNt9GKPNzMuXXJYT_EXi1HTbcBh5OIiZFvIHdAV8JVMTyIuREUKhgUXGiBAlnelgtfvkXVG98XyA_ui8W-QiYNsmTWppySeCTTG8eiSXRP1xmNUA.hQWY4eCYbB6grJsmQQa3l7LN0EuXDChPmSu1lB7x6Bg; Path=/; Expires=Sat, 15 Nov 2025 02:51:40 GMT; HttpOnly; SameSite=Lax', 'x-forwarded-for': '::1', 'x-forwarded-proto': 'http', 'x-forwarded-port': '3000', 'x-forwarded-host': 'localhost:3000', 'cookie': 'authjs.csrf-token=af1a76fff5dc1f821e8acfcb3e249bab791366856f72d6bd29b74b5c6a166155%7C0b0c9022975f1bc3b9d59e148048b505f7a696a90ed4764c1c65edd80b9a069c; authjs.callback-url=http%3A%2F%2Flocalhost%3A3000; authjs.session-token=eyJhbGciOiJkaXIiLCJlbmMiOiJBMjU2Q0JDLUhTNTEyIiwia2lkIjoiczBqVUw3TGRxQmNicFZvaUJWZVJSZmFuTThyV29IUlNmWV9WTG5WS25HS0FJdFM5aDNRLXNXc3JQazF0MDJ3MTUxWnp4RzhycDV1WDEtbWJWUS1ydXcifQ..OPP8IX_GgpmILr5igg5nTA.e5c-_lTggnc9D9-E_Ry2UCJB94lMh4RadgYz3si0TQ4ya4jYfXDypj___2RYNwtuYps3hDtoyLU-i7B3bDwTMKKOCq-gfV05gQ8pepKKpPiOcOiqi97Pv90lzJ0is6DOfy0dN7fC95B1_CFULJoV9wEuDt35PpMImfnWATnk0Hj-Q2nyzfHXuUDQ9sTbjR_OIAeM4IqwP9oH8OyDFCd333hB0qICiCrFnYWS0BpZ9vtI3HQTY_ARlHRSazLi2xPFkKc4rWeYWlOUi2b6PPCU284nSkEPCt8a8AFkQKgazPSMa3183wacspt3eU5htQ7vspnwQRmIabLBteHhS_a_KSqdaEULxhrWyi8xjc01el-x1ellFFbyRHLheYDrwBlTpL2vP3sj0nIkcL0FM35kHw.lsZeP63NLh6HKAtPjCmtjGsMYzTcvooy5HFG_UnXSdA', 'accept-language': 'en-US,en;q=0.9', 'accept-encoding': 'gzip, deflate, br, zstd', 'referer': 'http://localhost:3000/chat', 'sec-fetch-dest': 'empty', 'sec-fetch-mode': 'cors', 'sec-fetch-site': 'same-origin', 'origin': 'http://localhost:3000', 'accept': '*/*', 'sec-ch-ua-mobile': '?0', 'content-type': 'application/json', 'sec-ch-ua': '"Google Chrome";v="141", "Not?A_Brand";v="8", "Chromium";v="141"', 'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36', 'sec-ch-ua-platform': '"macOS"', 'content-length': '161', 'connection': 'close', 'host': '127.0.0.1:8000'}
+2025-10-15 22:51:40 | DEBUG    | api.debug_middleware | Query params: {}
+2025-10-15 22:51:40 | DEBUG    | api.debug_middleware | Request body: {
+  "id": "0e206889-111c-48e0-b4be-9ec1c997d767",
+  "message": {
+    "role": "user",
+    "parts": [
+      {
+        "type": "text",
+        "text": "hello chat"
+      }
+    ],
+    "id": "929408de-6e53-464d-9959-84303ed66549"
+  }
+}
+2025-10-15 22:51:40 | INFO     | api | [get_current_user] Attempting to get user from cookie...
+2025-10-15 22:51:40 | DEBUG    | api | [NextAuthMiddleware.get_user_from_cookie] session_token found: yes
+2025-10-15 22:51:40 | DEBUG    | api | [NextAuthMiddleware.get_user_from_token] Getting user from token: eyJhbGciOi... (truncated)
+2025-10-15 22:51:40 | WARNING  | api | [NextAuthMiddleware.decrypt_token] Failed to decrypt token: Key must be 256 bit for alg A256CBC
+2025-10-15 22:51:40 | WARNING  | api | [NextAuthMiddleware.get_user_from_cookie] Failed to get user from cookie token: Invalid token: Key must be 256 bit for alg A256CBC
+2025-10-15 22:51:40 | INFO     | api | [get_current_user] Attempting to get user from Authorization header...
+2025-10-15 22:51:40 | DEBUG    | api | [NextAuthMiddleware.get_user_from_header] credentials present: no
+2025-10-15 22:51:40 | INFO     | api | [NextAuthMiddleware.get_user_from_header] No Authorization header provided
+2025-10-15 22:51:40 | ERROR    | api | [get_current_user] Authentication required, no valid user found
+2025-10-15 22:51:40 | ERROR    | api | [get_current_user] Authentication required, no valid user found
+2025-10-15 22:51:40 | WARNING  | api.exception_handlers | HTTP 401 on POST /api/research/start: Authentication required
+2025-10-15 22:51:40 | INFO     | api.debug_middleware | 🟢 POST /api/research/start - 401 (0.008s)
+2025-10-15 22:55:29 | DEBUG    | api | [auth_middleware] Instantiating NextAuthMiddleware...
+2025-10-15 22:55:29 | DEBUG    | api | [NextAuthMiddleware.__init__] AUTH_SECRET successfully loaded and validated (32 bytes)
+2025-10-15 22:55:35 | DEBUG    | api | [auth_middleware] Instantiating NextAuthMiddleware...
+2025-10-15 22:55:35 | DEBUG    | api | [NextAuthMiddleware.__init__] AUTH_SECRET successfully loaded and validated (32 bytes)
+2025-10-15 22:56:09 | DEBUG    | api | [auth_middleware] Instantiating NextAuthMiddleware...
+2025-10-15 22:56:09 | DEBUG    | api | [NextAuthMiddleware.__init__] AUTH_SECRET successfully loaded and validated (32 bytes)
+2025-10-15 22:56:15 | DEBUG    | api | [auth_middleware] Instantiating NextAuthMiddleware...
+2025-10-15 22:56:15 | DEBUG    | api | [NextAuthMiddleware.__init__] AUTH_SECRET successfully loaded and validated (32 bytes)
+2025-10-15 22:56:20 | DEBUG    | api | [auth_middleware] Instantiating NextAuthMiddleware...
+2025-10-15 22:56:20 | DEBUG    | api | [NextAuthMiddleware.__init__] AUTH_SECRET successfully loaded and validated (32 bytes)
+2025-10-15 22:56:27 | DEBUG    | api | [auth_middleware] Instantiating NextAuthMiddleware...
+2025-10-15 22:56:27 | DEBUG    | api | [NextAuthMiddleware.__init__] AUTH_SECRET successfully loaded and validated (32 bytes)
+2025-10-15 22:57:17 | INFO     | api.debug_middleware | 🔵 POST /api/research/start
+2025-10-15 22:57:17 | DEBUG    | api.debug_middleware | Headers: {'set-cookie': 'authjs.session-token=eyJhbGciOiJkaXIiLCJlbmMiOiJBMjU2Q0JDLUhTNTEyIiwia2lkIjoiczBqVUw3TGRxQmNicFZvaUJWZVJSZmFuTThyV29IUlNmWV9WTG5WS25HS0FJdFM5aDNRLXNXc3JQazF0MDJ3MTUxWnp4RzhycDV1WDEtbWJWUS1ydXcifQ..ua9XNxF7ybOssLLQDT72lA.GH6JT7ujCtLWgfyapFQxTxAC3mC1QphtDzrX9qRoF9TOvJd19vXJpkTZnnW41MeuEsnySBupccNHSgVnsK_N-CEXYLfV1JPZxoG2nQfyZ6LH0eBSiDLFL-VhXJDhmbcpbGi6ScPlopE4uDAgVNwt7rbX5m3i98nEVbTavpqtQed7yDBEGWX1343jkvRELQ3s3rluKEiASPs73ZwBrS7zLOuGNXKC1elxJsvfXxzyaPCjGaXPbmi9_cA1mLofPoZkw07DY7W4akd1SkVYtp0srg4O_2Z0jxfI65cG_9UpKbEBd-hH5XA6O-iMd-aHLrq4miQ5Qn5yrK4ORAvCjBBVomM4Pi-XOK2eDbuQmwLY69Uh5Z93-XGVIGYIFXRXY8lBVr0JWApoSy5Dx0fAbgxLxw.l9Nh5Ah_ncmvG8xl6PF6J2t7Xp5zOZMm6TnScgEQddQ; Path=/; Expires=Sat, 15 Nov 2025 02:57:17 GMT; HttpOnly; SameSite=Lax', 'x-forwarded-for': '::1', 'x-forwarded-proto': 'http', 'x-forwarded-port': '3000', 'x-forwarded-host': 'localhost:3000', 'cookie': 'authjs.csrf-token=af1a76fff5dc1f821e8acfcb3e249bab791366856f72d6bd29b74b5c6a166155%7C0b0c9022975f1bc3b9d59e148048b505f7a696a90ed4764c1c65edd80b9a069c; authjs.callback-url=http%3A%2F%2Flocalhost%3A3000; authjs.session-token=eyJhbGciOiJkaXIiLCJlbmMiOiJBMjU2Q0JDLUhTNTEyIiwia2lkIjoiczBqVUw3TGRxQmNicFZvaUJWZVJSZmFuTThyV29IUlNmWV9WTG5WS25HS0FJdFM5aDNRLXNXc3JQazF0MDJ3MTUxWnp4RzhycDV1WDEtbWJWUS1ydXcifQ..MLBowsQoCtFe6nbOqwNv6A.4RALLSDagoz7U85nLJtORTh_4eLIgeKa6c-arCjcSBKz3i1yxsjMjNEYmDMYApro3Q6iHWyAbrWWkIqWV3PZwSUwigNtWlS7ZAamUZLG_fQB5GWjt0zpOcFg7_fPVPbKnFYSeWOOCSgD0we41BH4YzTUJMSMUFq5klMugk4UmdQ6OIUGamYS_-kl_ude0G3ycGbtpfVqafqpANlMA2-nffi5Ksb4gIgepMRO6fH0MBQDAkOYCHceQYuISmiOUwmcONrAYhAfif0bnR2C4EizvRx-T6VQ5l6cpAb2hrBO6x53b-HeM8H-On6Zob6ZhokI80F-Fx9-igjQ9-OsjawY1AqW4AGURyeoTpVsytpuA9DJb5P8Qa6up1Kck39HKN0pCiPuhW3bDNhmujMSZ8uD-w.9u0qOoCdIbjI_kRiTNUhZ2b2e4yYQRqpN5KD8gQzlDU', 'accept-language': 'en-US,en;q=0.9', 'accept-encoding': 'gzip, deflate, br, zstd', 'referer': 'http://localhost:3000/chat', 'sec-fetch-dest': 'empty', 'sec-fetch-mode': 'cors', 'sec-fetch-site': 'same-origin', 'origin': 'http://localhost:3000', 'accept': '*/*', 'sec-ch-ua-mobile': '?0', 'content-type': 'application/json', 'sec-ch-ua': '"Google Chrome";v="141", "Not?A_Brand";v="8", "Chromium";v="141"', 'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36', 'sec-ch-ua-platform': '"macOS"', 'content-length': '161', 'connection': 'close', 'host': '127.0.0.1:8000'}
+2025-10-15 22:57:17 | DEBUG    | api.debug_middleware | Query params: {}
+2025-10-15 22:57:17 | DEBUG    | api.debug_middleware | Request body: {
+  "id": "052be114-3829-4f3f-ae6c-0597c3f89423",
+  "message": {
+    "role": "user",
+    "parts": [
+      {
+        "type": "text",
+        "text": "Hello chat"
+      }
+    ],
+    "id": "0931bb0e-19ce-4483-bd4f-45290bba7602"
+  }
+}
+2025-10-15 22:57:17 | INFO     | api | [get_current_user] Attempting to get user from cookie...
+2025-10-15 22:57:17 | DEBUG    | api | [NextAuthMiddleware.get_user_from_cookie] session_token found: yes
+2025-10-15 22:57:17 | DEBUG    | api | [NextAuthMiddleware.get_user_from_token] Getting user from token: eyJhbGciOi... (truncated)
+2025-10-15 22:57:17 | WARNING  | api | [NextAuthMiddleware.decrypt_token] Failed to decrypt token: Key must be 256 bit for alg A256CBC
+2025-10-15 22:57:17 | WARNING  | api | [NextAuthMiddleware.get_user_from_cookie] Failed to get user from cookie token: Invalid token: Key must be 256 bit for alg A256CBC
+2025-10-15 22:57:17 | INFO     | api | [get_current_user] Attempting to get user from Authorization header...
+2025-10-15 22:57:17 | DEBUG    | api | [NextAuthMiddleware.get_user_from_header] credentials present: no
+2025-10-15 22:57:17 | INFO     | api | [NextAuthMiddleware.get_user_from_header] No Authorization header provided
+2025-10-15 22:57:17 | ERROR    | api | [get_current_user] Authentication required, no valid user found
+2025-10-15 22:57:17 | ERROR    | api | [get_current_user] Authentication required, no valid user found
+2025-10-15 22:57:17 | WARNING  | api.exception_handlers | HTTP 401 on POST /api/research/start: Authentication required
+2025-10-15 22:57:17 | INFO     | api.debug_middleware | 🟢 POST /api/research/start - 401 (0.038s)
+2025-10-15 22:59:08 | DEBUG    | api | [auth_middleware] Instantiating NextAuthMiddleware...
+2025-10-15 22:59:08 | DEBUG    | api | [NextAuthMiddleware.__init__] AUTH_SECRET successfully loaded and validated (32 bytes)
+2025-10-15 22:59:16 | DEBUG    | api | [auth_middleware] Instantiating NextAuthMiddleware...
+2025-10-15 22:59:16 | DEBUG    | api | [NextAuthMiddleware.__init__] AUTH_SECRET successfully loaded and validated (32 bytes)
+2025-10-15 22:59:23 | DEBUG    | api | [auth_middleware] Instantiating NextAuthMiddleware...
+2025-10-15 22:59:23 | DEBUG    | api | [NextAuthMiddleware.__init__] AUTH_SECRET successfully loaded and validated (32 bytes)
+2025-10-15 22:59:38 | DEBUG    | api | [auth_middleware] Instantiating NextAuthMiddleware...
+2025-10-15 22:59:38 | DEBUG    | api | [NextAuthMiddleware.__init__] AUTH_SECRET successfully loaded and validated (32 bytes)
+2025-10-15 22:59:46 | DEBUG    | api | [auth_middleware] Instantiating NextAuthMiddleware...
+2025-10-15 22:59:46 | DEBUG    | api | [NextAuthMiddleware.__init__] AUTH_SECRET successfully loaded and validated (32 bytes)
+2025-10-15 23:00:03 | DEBUG    | api | [auth_middleware] Instantiating NextAuthMiddleware...
+2025-10-15 23:00:03 | DEBUG    | api | [NextAuthMiddleware.__init__] AUTH_SECRET successfully loaded and validated (32 bytes)
+2025-10-15 23:00:09 | DEBUG    | api | [auth_middleware] Instantiating NextAuthMiddleware...
+2025-10-15 23:00:09 | DEBUG    | api | [NextAuthMiddleware.__init__] AUTH_SECRET successfully loaded and validated (32 bytes)
+2025-10-15 23:00:16 | DEBUG    | api | [auth_middleware] Instantiating NextAuthMiddleware...
+2025-10-15 23:00:16 | DEBUG    | api | [NextAuthMiddleware.__init__] AUTH_SECRET successfully loaded and validated (32 bytes)
+2025-10-15 23:00:31 | DEBUG    | api | [auth_middleware] Instantiating NextAuthMiddleware...
+2025-10-15 23:00:31 | DEBUG    | api | [NextAuthMiddleware.__init__] AUTH_SECRET successfully loaded and validated (32 bytes)
+2025-10-15 23:00:39 | DEBUG    | api | [auth_middleware] Instantiating NextAuthMiddleware...
+2025-10-15 23:00:39 | DEBUG    | api | [NextAuthMiddleware.__init__] AUTH_SECRET successfully loaded and validated (32 bytes)
+2025-10-15 23:00:47 | DEBUG    | api | [auth_middleware] Instantiating NextAuthMiddleware...
+2025-10-15 23:00:47 | DEBUG    | api | [NextAuthMiddleware.__init__] AUTH_SECRET successfully loaded and validated (32 bytes)
+2025-10-15 23:00:57 | DEBUG    | api | [auth_middleware] Instantiating NextAuthMiddleware...
+2025-10-15 23:00:57 | DEBUG    | api | [NextAuthMiddleware.__init__] AUTH_SECRET successfully loaded and validated (32 bytes)
+2025-10-15 23:01:02 | INFO     | api.debug_middleware | 🔵 POST /api/research/start
+2025-10-15 23:01:02 | DEBUG    | api.debug_middleware | Headers: {'set-cookie': 'authjs.session-token=eyJhbGciOiJkaXIiLCJlbmMiOiJBMjU2Q0JDLUhTNTEyIiwia2lkIjoiczBqVUw3TGRxQmNicFZvaUJWZVJSZmFuTThyV29IUlNmWV9WTG5WS25HS0FJdFM5aDNRLXNXc3JQazF0MDJ3MTUxWnp4RzhycDV1WDEtbWJWUS1ydXcifQ..zQi9qZn0HgQklQQQ2kmEdg.DTwa7x5Gzd1dS085dLkRye08xWqNvT0lg8KU3dlyO80vVJ4Kuq72q2yL0nRjBKPSZt_hItEelwz6RVapsrqS5zmzM-cjuwIufvV8ZdKs3Q66QB2L10NvRCiEgOAeRZEeZJXBb5e7Zs6F4q92nIcb4j8KgUWc2mjRJa_WgeME9G3QciQ9BtACdoxtMETLY57kgengta2IWLLT59Wl50pvm-uikrxeHyQDT9RArJmiIUjvJo4vod18oRfuNia00MvWOdyr7v5XkacZ4AOLIjfn_K3atzQwHDhjzhock6vVqIHymg75ETlS0iKXDPflwdgwIk-zZ2PAeGkoSAvvZlqhqZPJb2EVQdCg1ZKC2lEakXby0XVLIXbLu5YHnz4zo0ycw0aQYwLdMLLfeTssohlRzg.GUxJIx5yUbE_j_FiORyr7azpcEA0wzvxiG8QWbZ-tmw; Path=/; Expires=Sat, 15 Nov 2025 03:01:02 GMT; HttpOnly; SameSite=Lax', 'x-forwarded-for': '::1', 'x-forwarded-proto': 'http', 'x-forwarded-port': '3000', 'x-forwarded-host': 'localhost:3000', 'cookie': 'authjs.csrf-token=af1a76fff5dc1f821e8acfcb3e249bab791366856f72d6bd29b74b5c6a166155%7C0b0c9022975f1bc3b9d59e148048b505f7a696a90ed4764c1c65edd80b9a069c; authjs.callback-url=http%3A%2F%2Flocalhost%3A3000; authjs.session-token=eyJhbGciOiJkaXIiLCJlbmMiOiJBMjU2Q0JDLUhTNTEyIiwia2lkIjoiczBqVUw3TGRxQmNicFZvaUJWZVJSZmFuTThyV29IUlNmWV9WTG5WS25HS0FJdFM5aDNRLXNXc3JQazF0MDJ3MTUxWnp4RzhycDV1WDEtbWJWUS1ydXcifQ..B1QH1SidjoflPDVN_RxrMQ.g_R_M8TgdoJ9y_mxmaZ_qXGKr-TauBl0Ec8O7lhgNEDpCXiBH0XqWCOiVoGxJNVRiWgTSqbo7CtgBq6nRicddGOGzS15iHHuZ0Eu8EBYw5nclqWitReZ61BguRVcYGTCUQ_EVHGuqszqtl35ibH3s31bAAkkwSAgWzAip764UilpM4ZnB40LrZb0TqLcglzN9qRYfFY4hnXM2kqD6nfX6Hx-oWIx3UTYo62_SCOlCqS-zJ3UaLvyM9btxZAEWQ8w5X5T0Im0kHtJ3spWX4ERnpg1WXvleYdV2Dwu3nG7sABmAuH3ir7CNdFhJuoTiLcJcZOy5deVQopZxk1JWHJ4-GVU7yzIOhjIe0WOBsOA_VcEIAMhQSlw95IUtZgpNFsLTLG-MAO6KHB6XrJawfh67w.ePJ6PPgsiFYcNiAP9GIM9HTHURUqvw_sKumV4QQuFzY', 'accept-language': 'en-US,en;q=0.9', 'accept-encoding': 'gzip, deflate, br, zstd', 'referer': 'http://localhost:3000/chat', 'sec-fetch-dest': 'empty', 'sec-fetch-mode': 'cors', 'sec-fetch-site': 'same-origin', 'origin': 'http://localhost:3000', 'accept': '*/*', 'sec-ch-ua-mobile': '?0', 'content-type': 'application/json', 'sec-ch-ua': '"Google Chrome";v="141", "Not?A_Brand";v="8", "Chromium";v="141"', 'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36', 'sec-ch-ua-platform': '"macOS"', 'content-length': '161', 'connection': 'close', 'host': '127.0.0.1:8000'}
+2025-10-15 23:01:02 | DEBUG    | api.debug_middleware | Query params: {}
+2025-10-15 23:01:02 | DEBUG    | api.debug_middleware | Request body: {
+  "id": "a63c8b8e-601b-476d-af1d-fdab80d2a944",
+  "message": {
+    "role": "user",
+    "parts": [
+      {
+        "type": "text",
+        "text": "hello chat"
+      }
+    ],
+    "id": "06fd4495-d40f-4153-a2c0-2f7af6a37749"
+  }
+}
+2025-10-15 23:01:02 | INFO     | api | [get_current_user] Attempting to get user from cookie...
+2025-10-15 23:01:02 | DEBUG    | api | [NextAuthMiddleware.get_user_from_cookie] session_token found: yes
+2025-10-15 23:01:02 | DEBUG    | api | [NextAuthMiddleware.get_user_from_token] Getting user from token: eyJhbGciOi... (truncated)
+2025-10-15 23:01:02 | WARNING  | api | [NextAuthMiddleware.decrypt_token] Failed to decrypt token: The specified alg value is not allowed
+2025-10-15 23:01:02 | WARNING  | api | [NextAuthMiddleware.get_user_from_cookie] Failed to get user from cookie token: Invalid token: The specified alg value is not allowed
+2025-10-15 23:01:02 | INFO     | api | [get_current_user] Attempting to get user from Authorization header...
+2025-10-15 23:01:02 | DEBUG    | api | [NextAuthMiddleware.get_user_from_header] credentials present: no
+2025-10-15 23:01:02 | INFO     | api | [NextAuthMiddleware.get_user_from_header] No Authorization header provided
+2025-10-15 23:01:02 | ERROR    | api | [get_current_user] Authentication required, no valid user found
+2025-10-15 23:01:02 | ERROR    | api | [get_current_user] Authentication required, no valid user found
+2025-10-15 23:01:02 | WARNING  | api.exception_handlers | HTTP 401 on POST /api/research/start: Authentication required
+2025-10-15 23:01:02 | INFO     | api.debug_middleware | 🟢 POST /api/research/start - 401 (0.005s)
+2025-10-15 23:15:03 | DEBUG    | api | [auth_middleware] Instantiating NextAuthMiddleware...
+2025-10-15 23:15:08 | DEBUG    | api | [auth_middleware] Instantiating NextAuthMiddleware...
+2025-10-15 23:15:29 | DEBUG    | api | [auth_middleware] Instantiating NextAuthMiddleware...
+2025-10-15 23:17:09 | DEBUG    | api | [auth_middleware] Instantiating NextAuthMiddleware...
+2025-10-15 23:17:24 | DEBUG    | api | [auth_middleware] Instantiating NextAuthMiddleware...
+2025-10-15 23:17:44 | INFO     | api.debug_middleware | 🔵 POST /api/research/start
+2025-10-15 23:17:44 | DEBUG    | api.debug_middleware | Headers: {'set-cookie': 'authjs.session-token=eyJhbGciOiJkaXIiLCJlbmMiOiJBMjU2Q0JDLUhTNTEyIiwia2lkIjoiczBqVUw3TGRxQmNicFZvaUJWZVJSZmFuTThyV29IUlNmWV9WTG5WS25HS0FJdFM5aDNRLXNXc3JQazF0MDJ3MTUxWnp4RzhycDV1WDEtbWJWUS1ydXcifQ..rW5SZRgs11luV1uZBsfAlg.IN16UXjJvKWh57fpPnOzxA_BDP8jZGN4RwBLmBBxweQer78S3WF5__z7HRuK00Zsejq1Gq8ZL78axK6zeJU2SqM6Q9ZHHfodTwUHQqaZQokQeHl6VHcgR6ieyntB52CWT_hJIMIjkmTW4U4Cf-DyKBlgrqAF3vagj_m1zzSnqYeSYciLTbGihcdEUP6bZCY6x2xzaMS6jft0LFQUao8pG_12U_H4ch6fEaxAi_yU3wpfUFVTxVmScYudZIbFc-ibuuTFFGxrspsTu0d0xreIGF_kYa9e_f15XST7pcxhZoiAgp0enUXuvRqXBSjt9ZEtWoGmraCMi3CUNFGGpS2Rfulrlutb_FnzH_h9VCwNp1Avrv_Kfz5zagZYHYpiOpXLj-3FPumF_ysEvSJ0zQrgSQ.Xw6tg24U3FFmmDKj9fkaxMx6TmgV1uC8gwyEKuBMK-o; Path=/; Expires=Sat, 15 Nov 2025 03:17:44 GMT; HttpOnly; SameSite=Lax', 'x-forwarded-for': '::1', 'x-forwarded-proto': 'http', 'x-forwarded-port': '3000', 'x-forwarded-host': 'localhost:3000', 'cookie': 'authjs.csrf-token=af1a76fff5dc1f821e8acfcb3e249bab791366856f72d6bd29b74b5c6a166155%7C0b0c9022975f1bc3b9d59e148048b505f7a696a90ed4764c1c65edd80b9a069c; authjs.callback-url=http%3A%2F%2Flocalhost%3A3000; authjs.session-token=eyJhbGciOiJkaXIiLCJlbmMiOiJBMjU2Q0JDLUhTNTEyIiwia2lkIjoiczBqVUw3TGRxQmNicFZvaUJWZVJSZmFuTThyV29IUlNmWV9WTG5WS25HS0FJdFM5aDNRLXNXc3JQazF0MDJ3MTUxWnp4RzhycDV1WDEtbWJWUS1ydXcifQ..1jK_bz3ZUyUQPwTpR63Dlw.b48fuuSVYnCP2B31pLrA7HrWtPJhpszrZUGCrPrkZjIwCQox5sRJzK6ouDgHztb-llePrfxOFXpDRmwoJXska6zMcK4f3fs2TzV_jDAkiK0eRbGKPPPYQr5E5pk10E9C93pvZAoIJDKfLlAzElQaYj2HbFmznpSBWh72pVjo5sZEghcGvGsY-Ke09oCUryRv8xUKNtewCC2eDeh6eMgf7sRmblPK5DMVdDLWXyDQhultrKT1tgtr41NnKP-glMfL14cqI2vr7xuKININ0nAu1BgO950ld8rW6adz4WapkxQDBxXgcdWqvwXh_N75kh9oxpvf-MuE7yNNPcSIFP-RXlEzAv7ODtdQcvUn7VQyvrwGi-HL-sJSGdN7n9iT7JjHQYSCJ8g_co9jOxt3Xl51Ug.Q1KD6R5QP0gMwJK8fsd0eOflH02lCCYnmd7pVpat1ys', 'accept-language': 'en-US,en;q=0.9', 'accept-encoding': 'gzip, deflate, br, zstd', 'referer': 'http://localhost:3000/chat', 'sec-fetch-dest': 'empty', 'sec-fetch-mode': 'cors', 'sec-fetch-site': 'same-origin', 'origin': 'http://localhost:3000', 'accept': '*/*', 'sec-ch-ua-mobile': '?0', 'content-type': 'application/json', 'sec-ch-ua': '"Google Chrome";v="141", "Not?A_Brand";v="8", "Chromium";v="141"', 'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36', 'sec-ch-ua-platform': '"macOS"', 'content-length': '161', 'connection': 'close', 'host': '127.0.0.1:8000'}
+2025-10-15 23:17:44 | DEBUG    | api.debug_middleware | Query params: {}
+2025-10-15 23:17:44 | DEBUG    | api.debug_middleware | Request body: {
+  "id": "6ab75df3-e241-4015-9cf8-be7ebf6b4c6a",
+  "message": {
+    "role": "user",
+    "parts": [
+      {
+        "type": "text",
+        "text": "Hello chat"
+      }
+    ],
+    "id": "3b44a842-b92f-4f4b-ba2b-7a1d9b8ed1a9"
+  }
+}
+2025-10-15 23:17:44 | INFO     | api | [get_current_user] Attempting to get user from cookie...
+2025-10-15 23:17:44 | DEBUG    | api | [NextAuthMiddleware.get_user_from_cookie] session_token found: yes
+2025-10-15 23:17:44 | DEBUG    | api | [NextAuthMiddleware.get_user_from_token] Getting user from token: eyJhbGciOi... (truncated)
+2025-10-15 23:17:44 | WARNING  | api | [NextAuthMiddleware.verify_token] Invalid token: Invalid payload string: 'utf-8' codec can't decode byte 0xd6 in position 0: invalid continuation byte
+2025-10-15 23:17:44 | WARNING  | api | [NextAuthMiddleware.get_user_from_cookie] Failed to get user from cookie token: Invalid token: Invalid payload string: 'utf-8' codec can't decode byte 0xd6 in position 0: invalid continuation byte
+2025-10-15 23:17:44 | INFO     | api | [get_current_user] Attempting to get user from Authorization header...
+2025-10-15 23:17:44 | DEBUG    | api | [NextAuthMiddleware.get_user_from_header] credentials present: no
+2025-10-15 23:17:44 | INFO     | api | [NextAuthMiddleware.get_user_from_header] No Authorization header provided
+2025-10-15 23:17:44 | ERROR    | api | [get_current_user] Authentication required, no valid user found
+2025-10-15 23:17:44 | ERROR    | api | [get_current_user] Authentication required, no valid user found
+2025-10-15 23:17:44 | WARNING  | api.exception_handlers | HTTP 401 on POST /api/research/start: Authentication required
+2025-10-15 23:17:44 | INFO     | api.debug_middleware | 🟢 POST /api/research/start - 401 (0.009s)
+2025-10-15 23:20:31 | DEBUG    | api | [auth_middleware] Instantiating NextAuthMiddleware...
+2025-10-15 23:20:38 | DEBUG    | api | [auth_middleware] Instantiating NextAuthMiddleware...
+2025-10-15 23:20:54 | DEBUG    | api | [auth_middleware] Instantiating NextAuthMiddleware...
+2025-10-15 23:20:59 | DEBUG    | api | [auth_middleware] Instantiating NextAuthMiddleware...
+2025-10-15 23:21:25 | INFO     | api.debug_middleware | 🔵 POST /api/research/start
+2025-10-15 23:21:25 | DEBUG    | api.debug_middleware | Headers: {'set-cookie': 'authjs.session-token=eyJhbGciOiJkaXIiLCJlbmMiOiJBMjU2Q0JDLUhTNTEyIiwia2lkIjoiczBqVUw3TGRxQmNicFZvaUJWZVJSZmFuTThyV29IUlNmWV9WTG5WS25HS0FJdFM5aDNRLXNXc3JQazF0MDJ3MTUxWnp4RzhycDV1WDEtbWJWUS1ydXcifQ..1yzhmwBWnydZkDoUYRdxWA.t_PwYkKOvrABMrl_6uzht7Piyxdgh_1V0eL8JdI2_Sx57Zsm5Vi61VwHMdvqwkpkq6B8MC7bsCfhWOb59REmk4pumoVtXSkGLRHZP1KSSZVC6mXdXC1uXvSczm0avm20bF8DNHqhruK5yO_e-5HPmnIw6maqlRbpfPw07_WhV7QJN5dzHRSk5GAMOx0wwHQTFBDuQUDOzugM_NPIO3dKEDttbHC_aO8Qrv9fkmMtkSEautVZPt92FA02gQt3Vnz9z8GvNx4VTeyuItokqnxMX9mOAGXHNoZyQQaK_i0OS1ZOxoY-RO_wURHaTi2wamTp5Rpx2ulVpHmU7ztlmESFcFPIz3EZUb25Q0Ssu48JXuY16nJvpRoOCaqGZFRWP5jGtpEzSJSUG2G2sPipyJzaww.0iY7EJThsBVEIa_lMxCO2QHQaShBkbBhlLY3MoJ3vP8; Path=/; Expires=Sat, 15 Nov 2025 03:21:25 GMT; HttpOnly; SameSite=Lax', 'x-forwarded-for': '::1', 'x-forwarded-proto': 'http', 'x-forwarded-port': '3000', 'x-forwarded-host': 'localhost:3000', 'cookie': 'authjs.csrf-token=af1a76fff5dc1f821e8acfcb3e249bab791366856f72d6bd29b74b5c6a166155%7C0b0c9022975f1bc3b9d59e148048b505f7a696a90ed4764c1c65edd80b9a069c; authjs.callback-url=http%3A%2F%2Flocalhost%3A3000; authjs.session-token=eyJhbGciOiJkaXIiLCJlbmMiOiJBMjU2Q0JDLUhTNTEyIiwia2lkIjoiczBqVUw3TGRxQmNicFZvaUJWZVJSZmFuTThyV29IUlNmWV9WTG5WS25HS0FJdFM5aDNRLXNXc3JQazF0MDJ3MTUxWnp4RzhycDV1WDEtbWJWUS1ydXcifQ..3lJIgFgAgc-dxU9MaVgubQ.HDJX9dyjERb3WgjqfQT4pDBGTPsm2gWTRXEkSIZzjqiBOWbn19AMRB6B-KGZKNOX6DWja0xyDe6Z2TueEwtVSI0YAZ_Fgae9TlZ2J7mpXYvt7bEmbHYtxdBLhI2d2k3MPrOCWa26eUxFNX9IFNoHWUReXAPSVNCQYdhz-MumQH-6CbRVVDoZFW_NNelrbrJDkyKpI5_ZZIEu3bPjDQ-zuGuSU_d1LCPJThvOYn0tKjRSsYpbgGKMeKm1X5tlrTpecB5KvteZNTMEHQv9vC4skSfHm4lpDnRE6FJ3bU8T5lEdKY52BxzN7PJribrLOTbYL9xamCk85a_wy8VSfFax7NoUZq2gZsfKWlZ-Eo-Mcg0-XgRj84TVaxvm2pVD_i01g7FbIgBEgjT7rSTQYMPH6Q.nDKYNX-LeatNRz94hsTfAdqkjOW7dTFgqBOAn8p_Qgw', 'accept-language': 'en-US,en;q=0.9', 'accept-encoding': 'gzip, deflate, br, zstd', 'referer': 'http://localhost:3000/chat', 'sec-fetch-dest': 'empty', 'sec-fetch-mode': 'cors', 'sec-fetch-site': 'same-origin', 'origin': 'http://localhost:3000', 'accept': '*/*', 'sec-ch-ua-mobile': '?0', 'content-type': 'application/json', 'sec-ch-ua': '"Google Chrome";v="141", "Not?A_Brand";v="8", "Chromium";v="141"', 'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36', 'sec-ch-ua-platform': '"macOS"', 'content-length': '161', 'connection': 'close', 'host': '127.0.0.1:8000'}
+2025-10-15 23:21:25 | DEBUG    | api.debug_middleware | Query params: {}
+2025-10-15 23:21:25 | DEBUG    | api.debug_middleware | Request body: {
+  "id": "8aa3beca-8b97-4ffb-bfd2-24be78726c20",
+  "message": {
+    "role": "user",
+    "parts": [
+      {
+        "type": "text",
+        "text": "hello chat"
+      }
+    ],
+    "id": "79b025e7-f1b9-441e-93a4-e12a44ac0ec9"
+  }
+}
+2025-10-15 23:21:25 | INFO     | api | [get_current_user] Attempting to get user from cookie...
+2025-10-15 23:21:25 | DEBUG    | api | [NextAuthMiddleware.get_user_from_cookie] session_token found: yes
+2025-10-15 23:21:25 | DEBUG    | api | [NextAuthMiddleware.get_user_from_token] Getting user from token: eyJhbGciOi... (truncated)
+2025-10-15 23:21:25 | ERROR    | api.debug_middleware | 🔴 POST /api/research/start - ERROR (0.005s)
+2025-10-15 23:21:25 | ERROR    | api.debug_middleware | 🔴 POST /api/research/start - ERROR (0.005s)
+2025-10-15 23:21:25 | ERROR    | api.debug_middleware | Exception: JWTError: Invalid token: module 'fastapi.requests' has no attribute 'get'
+2025-10-15 23:21:25 | ERROR    | api.debug_middleware | Exception: JWTError: Invalid token: module 'fastapi.requests' has no attribute 'get'
+2025-10-15 23:21:25 | ERROR    | api.debug_middleware | Traceback:
+Traceback (most recent call last):
+  File "/Users/andresb/Projects/gocareerpath/.venv/lib/python3.11/site-packages/starlette/middleware/base.py", line 151, in call_next
+    message = await recv_stream.receive()
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/andresb/Projects/gocareerpath/.venv/lib/python3.11/site-packages/anyio/streams/memory.py", line 126, in receive
+    raise EndOfStream from None
+anyio.EndOfStream
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/andresb/Projects/gocareerpath/api/debug_middleware.py", line 46, in dispatch
+    response = await call_next(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/andresb/Projects/gocareerpath/.venv/lib/python3.11/site-packages/starlette/middleware/base.py", line 159, in call_next
+    raise app_exc
+  File "/Users/andresb/Projects/gocareerpath/.venv/lib/python3.11/site-packages/starlette/middleware/base.py", line 144, in coro
+    await self.app(scope, receive_or_disconnect, send_no_error)
+  File "/Users/andresb/Projects/gocareerpath/.venv/lib/python3.11/site-packages/starlette/middleware/exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "/Users/andresb/Projects/gocareerpath/.venv/lib/python3.11/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/Users/andresb/Projects/gocareerpath/.venv/lib/python3.11/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/Users/andresb/Projects/gocareerpath/.venv/lib/python3.11/site-packages/fastapi/middleware/asyncexitstack.py", line 18, in __call__
+    await self.app(scope, receive, send)
+  File "/Users/andresb/Projects/gocareerpath/.venv/lib/python3.11/site-packages/starlette/routing.py", line 716, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/Users/andresb/Projects/gocareerpath/.venv/lib/python3.11/site-packages/starlette/routing.py", line 736, in app
+    await route.handle(scope, receive, send)
+  File "/Users/andresb/Projects/gocareerpath/.venv/lib/python3.11/site-packages/starlette/routing.py", line 290, in handle
+    await self.app(scope, receive, send)
+  File "/Users/andresb/Projects/gocareerpath/.venv/lib/python3.11/site-packages/fastapi/routing.py", line 123, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "/Users/andresb/Projects/gocareerpath/.venv/lib/python3.11/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/Users/andresb/Projects/gocareerpath/.venv/lib/python3.11/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/Users/andresb/Projects/gocareerpath/.venv/lib/python3.11/site-packages/fastapi/routing.py", line 109, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "/Users/andresb/Projects/gocareerpath/.venv/lib/python3.11/site-packages/fastapi/routing.py", line 379, in app
+    solved_result = await solve_dependencies(
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/andresb/Projects/gocareerpath/.venv/lib/python3.11/site-packages/fastapi/dependencies/utils.py", line 672, in solve_dependencies
+    solved = await call(**solved_result.values)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/andresb/Projects/gocareerpath/api/auth_middleware.py", line 196, in get_current_user
+    user = await auth_middleware.get_user_from_cookie(request)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/andresb/Projects/gocareerpath/api/auth_middleware.py", line 163, in get_user_from_cookie
+    user = await self.get_user_from_token(session_token)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/andresb/Projects/gocareerpath/api/auth_middleware.py", line 122, in get_user_from_token
+    payload = await self.verify_token(token)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/andresb/Projects/gocareerpath/api/auth_middleware.py", line 96, in verify_token
+    raise JWTError(f"Invalid token: {e}")
+jose.exceptions.JWTError: Invalid token: module 'fastapi.requests' has no attribute 'get'
+
+2025-10-15 23:21:25 | ERROR    | api.debug_middleware | Traceback:
+Traceback (most recent call last):
+  File "/Users/andresb/Projects/gocareerpath/.venv/lib/python3.11/site-packages/starlette/middleware/base.py", line 151, in call_next
+    message = await recv_stream.receive()
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/andresb/Projects/gocareerpath/.venv/lib/python3.11/site-packages/anyio/streams/memory.py", line 126, in receive
+    raise EndOfStream from None
+anyio.EndOfStream
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/andresb/Projects/gocareerpath/api/debug_middleware.py", line 46, in dispatch
+    response = await call_next(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/andresb/Projects/gocareerpath/.venv/lib/python3.11/site-packages/starlette/middleware/base.py", line 159, in call_next
+    raise app_exc
+  File "/Users/andresb/Projects/gocareerpath/.venv/lib/python3.11/site-packages/starlette/middleware/base.py", line 144, in coro
+    await self.app(scope, receive_or_disconnect, send_no_error)
+  File "/Users/andresb/Projects/gocareerpath/.venv/lib/python3.11/site-packages/starlette/middleware/exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "/Users/andresb/Projects/gocareerpath/.venv/lib/python3.11/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/Users/andresb/Projects/gocareerpath/.venv/lib/python3.11/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/Users/andresb/Projects/gocareerpath/.venv/lib/python3.11/site-packages/fastapi/middleware/asyncexitstack.py", line 18, in __call__
+    await self.app(scope, receive, send)
+  File "/Users/andresb/Projects/gocareerpath/.venv/lib/python3.11/site-packages/starlette/routing.py", line 716, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/Users/andresb/Projects/gocareerpath/.venv/lib/python3.11/site-packages/starlette/routing.py", line 736, in app
+    await route.handle(scope, receive, send)
+  File "/Users/andresb/Projects/gocareerpath/.venv/lib/python3.11/site-packages/starlette/routing.py", line 290, in handle
+    await self.app(scope, receive, send)
+  File "/Users/andresb/Projects/gocareerpath/.venv/lib/python3.11/site-packages/fastapi/routing.py", line 123, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "/Users/andresb/Projects/gocareerpath/.venv/lib/python3.11/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/Users/andresb/Projects/gocareerpath/.venv/lib/python3.11/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/Users/andresb/Projects/gocareerpath/.venv/lib/python3.11/site-packages/fastapi/routing.py", line 109, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "/Users/andresb/Projects/gocareerpath/.venv/lib/python3.11/site-packages/fastapi/routing.py", line 379, in app
+    solved_result = await solve_dependencies(
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/andresb/Projects/gocareerpath/.venv/lib/python3.11/site-packages/fastapi/dependencies/utils.py", line 672, in solve_dependencies
+    solved = await call(**solved_result.values)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/andresb/Projects/gocareerpath/api/auth_middleware.py", line 196, in get_current_user
+    user = await auth_middleware.get_user_from_cookie(request)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/andresb/Projects/gocareerpath/api/auth_middleware.py", line 163, in get_user_from_cookie
+    user = await self.get_user_from_token(session_token)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/andresb/Projects/gocareerpath/api/auth_middleware.py", line 122, in get_user_from_token
+    payload = await self.verify_token(token)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/andresb/Projects/gocareerpath/api/auth_middleware.py", line 96, in verify_token
+    raise JWTError(f"Invalid token: {e}")
+jose.exceptions.JWTError: Invalid token: module 'fastapi.requests' has no attribute 'get'
+
+2025-10-15 23:22:44 | DEBUG    | api | [auth_middleware] Instantiating NextAuthMiddleware...
+2025-10-15 23:22:53 | DEBUG    | api | [auth_middleware] Instantiating NextAuthMiddleware...
+2025-10-15 23:23:06 | INFO     | api.debug_middleware | 🔵 POST /api/research/start
+2025-10-15 23:23:06 | DEBUG    | api.debug_middleware | Headers: {'set-cookie': 'authjs.session-token=eyJhbGciOiJkaXIiLCJlbmMiOiJBMjU2Q0JDLUhTNTEyIiwia2lkIjoiczBqVUw3TGRxQmNicFZvaUJWZVJSZmFuTThyV29IUlNmWV9WTG5WS25HS0FJdFM5aDNRLXNXc3JQazF0MDJ3MTUxWnp4RzhycDV1WDEtbWJWUS1ydXcifQ..wB2kISnjI2j0bH0cH_OJdQ.sooKiR06xHARkdW3Qnmef_HhmdqMHvo3btWaNTa3pyYFsqs61gIu3W4k8iBoxJ3_FmrRa8q82wZeHOfdVCxGQu-XgayLdZFopReC0UuHt7f3bri2UeK3iwlBxN_AfQVcPmoQ26OqvPq5tmeFUCkyM1RiTu3OMtpuM_XGL0U-iGrICXoPg6HeATH8bdTOv_OsRHXsL1NhgHyVENtTMGppOFVP0JcvXuqFiLhedOld6svjS7Ty5bylbewC3NqfZYfomf8j0BYSVqCMYinC3H77LVtsEo_40PzNLPA26Y7kip0F4isTEczhD2BNN2bWWkFlIaPCy-pv34F6uqYB58O8obALA7mrVrPVgqmIIcHmzh1yf4PLN9eKMdmyactj297LIQLC-6-P6ndHDyqKPuJA6g.uq0ptuNncSRe8YJum1nvDk7u-zwUcsxYzC737vRBZcw; Path=/; Expires=Sat, 15 Nov 2025 03:23:06 GMT; HttpOnly; SameSite=Lax', 'x-forwarded-for': '::1', 'x-forwarded-proto': 'http', 'x-forwarded-port': '3000', 'x-forwarded-host': 'localhost:3000', 'cookie': 'authjs.csrf-token=af1a76fff5dc1f821e8acfcb3e249bab791366856f72d6bd29b74b5c6a166155%7C0b0c9022975f1bc3b9d59e148048b505f7a696a90ed4764c1c65edd80b9a069c; authjs.callback-url=http%3A%2F%2Flocalhost%3A3000; authjs.session-token=eyJhbGciOiJkaXIiLCJlbmMiOiJBMjU2Q0JDLUhTNTEyIiwia2lkIjoiczBqVUw3TGRxQmNicFZvaUJWZVJSZmFuTThyV29IUlNmWV9WTG5WS25HS0FJdFM5aDNRLXNXc3JQazF0MDJ3MTUxWnp4RzhycDV1WDEtbWJWUS1ydXcifQ..SMs5FrcPzcjXcrOxyWkycQ.mVFukQbLfPGE7Bykv1I0jJPC0wttOngfUFKBjpKVSw8bkGLhiV_6WFXd2QlQgZe6LqlKq7CrgPYZigXtD6JJF3bl2kli7RlAH6DoHthFghYitH1QjeQzTzEmcEVzWWbNKUroxt4851ev1YO5u88QHdArcH_Lb8OvaQzc--TYKFDLRYVjpDUuAsQuqaDtGqdImXdxvbmFX3cEQ6EQjbYVRNfUgGWSTN5GWZa_wFoFghMPkLePrkccWZmCz3ta8DIqOU8heDeSoJ-7zNsGGbDmaAazj3j4rKt8OYHbKGoclW2nwJ5kJYl55muXKOkKRH7NnJyzhEDqV49bgyCzBJbeLFACVqO4GQtIhs-L51qosmQ2IulqXCkZ0Rz_4mBpIMj_l1nl8krz7yS82kc8cAYQDw.LYuot-L36Oh8r37H2sR85xWTw0euh-RCVmIMTAfMvKI', 'accept-language': 'en-US,en;q=0.9', 'accept-encoding': 'gzip, deflate, br, zstd', 'referer': 'http://localhost:3000/chat', 'sec-fetch-dest': 'empty', 'sec-fetch-mode': 'cors', 'sec-fetch-site': 'same-origin', 'origin': 'http://localhost:3000', 'accept': '*/*', 'sec-ch-ua-mobile': '?0', 'content-type': 'application/json', 'sec-ch-ua': '"Google Chrome";v="141", "Not?A_Brand";v="8", "Chromium";v="141"', 'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36', 'sec-ch-ua-platform': '"macOS"', 'content-length': '158', 'connection': 'close', 'host': '127.0.0.1:8000'}
+2025-10-15 23:23:06 | DEBUG    | api.debug_middleware | Query params: {}
+2025-10-15 23:23:06 | DEBUG    | api.debug_middleware | Request body: {
+  "id": "4424d767-4bbc-48a5-a476-34db303bf990",
+  "message": {
+    "role": "user",
+    "parts": [
+      {
+        "type": "text",
+        "text": "Testing"
+      }
+    ],
+    "id": "b79b5491-d8c2-4a36-944c-d685972a60a6"
+  }
+}
+2025-10-15 23:23:06 | INFO     | api | [get_current_user] Attempting to get user from cookie...
+2025-10-15 23:23:06 | DEBUG    | api | [NextAuthMiddleware.get_user_from_cookie] session_token found: yes
+2025-10-15 23:23:06 | DEBUG    | api | [NextAuthMiddleware.get_user_from_token] Getting user from token: eyJhbGciOi... (truncated)
+2025-10-15 23:24:21 | ERROR    | api.debug_middleware | 🔴 POST /api/research/start - ERROR (75.133s)
+2025-10-15 23:24:21 | ERROR    | api.debug_middleware | 🔴 POST /api/research/start - ERROR (75.133s)
+2025-10-15 23:24:21 | ERROR    | api.debug_middleware | Exception: JWTError: Invalid token: HTTPSConnectionPool(host='keycloak.authjs.dev', port=443): Max retries exceeded with url: /realms/master/protocol/openid-connect/certs (Caused by ConnectTimeoutError(<urllib3.connection.HTTPSConnection object at 0x11313e190>, 'Connection to keycloak.authjs.dev timed out. (connect timeout=None)'))
+2025-10-15 23:24:21 | ERROR    | api.debug_middleware | Exception: JWTError: Invalid token: HTTPSConnectionPool(host='keycloak.authjs.dev', port=443): Max retries exceeded with url: /realms/master/protocol/openid-connect/certs (Caused by ConnectTimeoutError(<urllib3.connection.HTTPSConnection object at 0x11313e190>, 'Connection to keycloak.authjs.dev timed out. (connect timeout=None)'))
+2025-10-15 23:24:21 | ERROR    | api.debug_middleware | Traceback:
+Traceback (most recent call last):
+  File "/Users/andresb/Projects/gocareerpath/.venv/lib/python3.11/site-packages/starlette/middleware/base.py", line 151, in call_next
+    message = await recv_stream.receive()
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/andresb/Projects/gocareerpath/.venv/lib/python3.11/site-packages/anyio/streams/memory.py", line 126, in receive
+    raise EndOfStream from None
+anyio.EndOfStream
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/andresb/Projects/gocareerpath/api/debug_middleware.py", line 46, in dispatch
+    response = await call_next(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/andresb/Projects/gocareerpath/.venv/lib/python3.11/site-packages/starlette/middleware/base.py", line 159, in call_next
+    raise app_exc
+  File "/Users/andresb/Projects/gocareerpath/.venv/lib/python3.11/site-packages/starlette/middleware/base.py", line 144, in coro
+    await self.app(scope, receive_or_disconnect, send_no_error)
+  File "/Users/andresb/Projects/gocareerpath/.venv/lib/python3.11/site-packages/starlette/middleware/exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "/Users/andresb/Projects/gocareerpath/.venv/lib/python3.11/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/Users/andresb/Projects/gocareerpath/.venv/lib/python3.11/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/Users/andresb/Projects/gocareerpath/.venv/lib/python3.11/site-packages/fastapi/middleware/asyncexitstack.py", line 18, in __call__
+    await self.app(scope, receive, send)
+  File "/Users/andresb/Projects/gocareerpath/.venv/lib/python3.11/site-packages/starlette/routing.py", line 716, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/Users/andresb/Projects/gocareerpath/.venv/lib/python3.11/site-packages/starlette/routing.py", line 736, in app
+    await route.handle(scope, receive, send)
+  File "/Users/andresb/Projects/gocareerpath/.venv/lib/python3.11/site-packages/starlette/routing.py", line 290, in handle
+    await self.app(scope, receive, send)
+  File "/Users/andresb/Projects/gocareerpath/.venv/lib/python3.11/site-packages/fastapi/routing.py", line 123, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "/Users/andresb/Projects/gocareerpath/.venv/lib/python3.11/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/Users/andresb/Projects/gocareerpath/.venv/lib/python3.11/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/Users/andresb/Projects/gocareerpath/.venv/lib/python3.11/site-packages/fastapi/routing.py", line 109, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "/Users/andresb/Projects/gocareerpath/.venv/lib/python3.11/site-packages/fastapi/routing.py", line 379, in app
+    solved_result = await solve_dependencies(
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/andresb/Projects/gocareerpath/.venv/lib/python3.11/site-packages/fastapi/dependencies/utils.py", line 672, in solve_dependencies
+    solved = await call(**solved_result.values)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/andresb/Projects/gocareerpath/api/auth_middleware.py", line 197, in get_current_user
+    user = await auth_middleware.get_user_from_cookie(request)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/andresb/Projects/gocareerpath/api/auth_middleware.py", line 164, in get_user_from_cookie
+    user = await self.get_user_from_token(session_token)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/andresb/Projects/gocareerpath/api/auth_middleware.py", line 123, in get_user_from_token
+    payload = await self.verify_token(token)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/andresb/Projects/gocareerpath/api/auth_middleware.py", line 97, in verify_token
+    raise JWTError(f"Invalid token: {e}")
+jose.exceptions.JWTError: Invalid token: HTTPSConnectionPool(host='keycloak.authjs.dev', port=443): Max retries exceeded with url: /realms/master/protocol/openid-connect/certs (Caused by ConnectTimeoutError(<urllib3.connection.HTTPSConnection object at 0x11313e190>, 'Connection to keycloak.authjs.dev timed out. (connect timeout=None)'))
+
+2025-10-15 23:24:21 | ERROR    | api.debug_middleware | Traceback:
+Traceback (most recent call last):
+  File "/Users/andresb/Projects/gocareerpath/.venv/lib/python3.11/site-packages/starlette/middleware/base.py", line 151, in call_next
+    message = await recv_stream.receive()
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/andresb/Projects/gocareerpath/.venv/lib/python3.11/site-packages/anyio/streams/memory.py", line 126, in receive
+    raise EndOfStream from None
+anyio.EndOfStream
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/andresb/Projects/gocareerpath/api/debug_middleware.py", line 46, in dispatch
+    response = await call_next(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/andresb/Projects/gocareerpath/.venv/lib/python3.11/site-packages/starlette/middleware/base.py", line 159, in call_next
+    raise app_exc
+  File "/Users/andresb/Projects/gocareerpath/.venv/lib/python3.11/site-packages/starlette/middleware/base.py", line 144, in coro
+    await self.app(scope, receive_or_disconnect, send_no_error)
+  File "/Users/andresb/Projects/gocareerpath/.venv/lib/python3.11/site-packages/starlette/middleware/exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "/Users/andresb/Projects/gocareerpath/.venv/lib/python3.11/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/Users/andresb/Projects/gocareerpath/.venv/lib/python3.11/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/Users/andresb/Projects/gocareerpath/.venv/lib/python3.11/site-packages/fastapi/middleware/asyncexitstack.py", line 18, in __call__
+    await self.app(scope, receive, send)
+  File "/Users/andresb/Projects/gocareerpath/.venv/lib/python3.11/site-packages/starlette/routing.py", line 716, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/Users/andresb/Projects/gocareerpath/.venv/lib/python3.11/site-packages/starlette/routing.py", line 736, in app
+    await route.handle(scope, receive, send)
+  File "/Users/andresb/Projects/gocareerpath/.venv/lib/python3.11/site-packages/starlette/routing.py", line 290, in handle
+    await self.app(scope, receive, send)
+  File "/Users/andresb/Projects/gocareerpath/.venv/lib/python3.11/site-packages/fastapi/routing.py", line 123, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "/Users/andresb/Projects/gocareerpath/.venv/lib/python3.11/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/Users/andresb/Projects/gocareerpath/.venv/lib/python3.11/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/Users/andresb/Projects/gocareerpath/.venv/lib/python3.11/site-packages/fastapi/routing.py", line 109, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "/Users/andresb/Projects/gocareerpath/.venv/lib/python3.11/site-packages/fastapi/routing.py", line 379, in app
+    solved_result = await solve_dependencies(
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/andresb/Projects/gocareerpath/.venv/lib/python3.11/site-packages/fastapi/dependencies/utils.py", line 672, in solve_dependencies
+    solved = await call(**solved_result.values)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/andresb/Projects/gocareerpath/api/auth_middleware.py", line 197, in get_current_user
+    user = await auth_middleware.get_user_from_cookie(request)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/andresb/Projects/gocareerpath/api/auth_middleware.py", line 164, in get_user_from_cookie
+    user = await self.get_user_from_token(session_token)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/andresb/Projects/gocareerpath/api/auth_middleware.py", line 123, in get_user_from_token
+    payload = await self.verify_token(token)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/andresb/Projects/gocareerpath/api/auth_middleware.py", line 97, in verify_token
+    raise JWTError(f"Invalid token: {e}")
+jose.exceptions.JWTError: Invalid token: HTTPSConnectionPool(host='keycloak.authjs.dev', port=443): Max retries exceeded with url: /realms/master/protocol/openid-connect/certs (Caused by ConnectTimeoutError(<urllib3.connection.HTTPSConnection object at 0x11313e190>, 'Connection to keycloak.authjs.dev timed out. (connect timeout=None)'))
+
+2025-10-15 23:24:26 | DEBUG    | api | [auth_middleware] Instantiating NextAuthMiddleware...
+2025-10-15 23:25:06 | INFO     | api.debug_middleware | 🔵 POST /api/research/start
+2025-10-15 23:25:06 | DEBUG    | api.debug_middleware | Headers: {'set-cookie': 'authjs.session-token=eyJhbGciOiJkaXIiLCJlbmMiOiJBMjU2Q0JDLUhTNTEyIiwia2lkIjoiczBqVUw3TGRxQmNicFZvaUJWZVJSZmFuTThyV29IUlNmWV9WTG5WS25HS0FJdFM5aDNRLXNXc3JQazF0MDJ3MTUxWnp4RzhycDV1WDEtbWJWUS1ydXcifQ..ZGMLRtpuDoIHrZ_W1Xairg.UUBrGZcNz6ernPc7iuNqAk5JLQYcC4K2kmObohdjHraqKOZQLH64xjKISWP3qKmhUMrShV6yN_6Q1IebI9zf-iL0U-_tU5TICRQVpIhQK-JDgWgorqPmu3A07luOWJDWgUWqOVmINWHLBkGdSepSUTbqjtB3jvRx5GGe4RNyUj37UbXc2v8FeqjCea7Ll41Ky_uQ9h3wtqCHEhP79Or2oP9UaSRJ1AUfX_ygrqevKFy9b0yQ66ETAuYWfcvGiRJqWRLfvkb3hwTs5L9SNiN08qMj0u2JUG_iB04Xwlxo32YZTfQ0H2kOjkHn0Ft0mS7NDCP2Afjk7Mel4_vK0IgnhgO3KlHjOcMSi7OOGP7R2WfKsXDfTN5XLSHLDjXSZSFmNYoSYKDmsnbtKgz_xr26hg.xaJR5ubOfXfg2GkIQqVc2c1zsG8SQVj4wgxhokIUgZ0; Path=/; Expires=Sat, 15 Nov 2025 03:25:06 GMT; HttpOnly; SameSite=Lax', 'x-forwarded-for': '::1', 'x-forwarded-proto': 'http', 'x-forwarded-port': '3000', 'x-forwarded-host': 'localhost:3000', 'cookie': 'authjs.csrf-token=af1a76fff5dc1f821e8acfcb3e249bab791366856f72d6bd29b74b5c6a166155%7C0b0c9022975f1bc3b9d59e148048b505f7a696a90ed4764c1c65edd80b9a069c; authjs.callback-url=http%3A%2F%2Flocalhost%3A3000; authjs.session-token=eyJhbGciOiJkaXIiLCJlbmMiOiJBMjU2Q0JDLUhTNTEyIiwia2lkIjoiczBqVUw3TGRxQmNicFZvaUJWZVJSZmFuTThyV29IUlNmWV9WTG5WS25HS0FJdFM5aDNRLXNXc3JQazF0MDJ3MTUxWnp4RzhycDV1WDEtbWJWUS1ydXcifQ..O40ux601rY5bRMisQkzQPQ.t5g-mlGUNZ3mzmkyDA1f9OAto0AEEKyTzzU9ph8sNd42_C8SgP3r0BAvgmlCMmNpO1_j5gj9DlQnjiIlUi-zrhw9gbrw6p-Lmy4tztmw-8IpGvlkQwwHSz80jE4rSbXa1aMDw5FNGJ4dz0fmizQmGYll_eONdoZe1F0ejoLaV-u933NaVpYd2f8dokFD8uSmqspKYWvTP7DiuLnA54EGON5F3jdWOeOR77h9auxBTb4ckvJxHkY4E64SraAK5OuFg7EiVG4uC6YUqAGH-5T5x0CClf3infx2A8qK5jg79U4D8CgQdDLAwLiJA1pWCzNmv1iEmZdfXEtshJsfP99TeCpYMk0cxD6jTXexhtP3UdjhKqQQ1FKoyJl9iYhxgrnRo6H2hIdZRpwbWCc7THAaAQ.q27BqIFu1oNYcA6BsfY-y4TCY2ebpsqRdfobyLLFS3Q', 'accept-language': 'en-US,en;q=0.9', 'accept-encoding': 'gzip, deflate, br, zstd', 'referer': 'http://localhost:3000/chat', 'sec-fetch-dest': 'empty', 'sec-fetch-mode': 'cors', 'sec-fetch-site': 'same-origin', 'origin': 'http://localhost:3000', 'accept': '*/*', 'sec-ch-ua-mobile': '?0', 'content-type': 'application/json', 'sec-ch-ua': '"Google Chrome";v="141", "Not?A_Brand";v="8", "Chromium";v="141"', 'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36', 'sec-ch-ua-platform': '"macOS"', 'content-length': '161', 'connection': 'close', 'host': '127.0.0.1:8000'}
+2025-10-15 23:25:06 | DEBUG    | api.debug_middleware | Query params: {}
+2025-10-15 23:25:06 | DEBUG    | api.debug_middleware | Request body: {
+  "id": "6920eeb1-b1b2-413f-b728-be46d5053d15",
+  "message": {
+    "role": "user",
+    "parts": [
+      {
+        "type": "text",
+        "text": "hello chat"
+      }
+    ],
+    "id": "75939d30-59bd-4430-9d8d-cbca58416f7a"
+  }
+}
+2025-10-15 23:25:06 | INFO     | api | [get_current_user] Attempting to get user from cookie...
+2025-10-15 23:25:06 | DEBUG    | api | [NextAuthMiddleware.get_user_from_cookie] session_token found: yes
+2025-10-15 23:25:06 | DEBUG    | api | [NextAuthMiddleware.get_user_from_token] Getting user from token: eyJhbGciOi... (truncated)
+2025-10-15 23:26:21 | ERROR    | api.debug_middleware | 🔴 POST /api/research/start - ERROR (75.137s)
+2025-10-15 23:26:21 | ERROR    | api.debug_middleware | 🔴 POST /api/research/start - ERROR (75.137s)
+2025-10-15 23:26:21 | ERROR    | api.debug_middleware | Exception: JWTError: Invalid token: HTTPSConnectionPool(host='keycloak.authjs.dev', port=443): Max retries exceeded with url: /realms/master/protocol/openid-connect/certs (Caused by ConnectTimeoutError(<urllib3.connection.HTTPSConnection object at 0x10cf7e4d0>, 'Connection to keycloak.authjs.dev timed out. (connect timeout=None)'))
+2025-10-15 23:26:21 | ERROR    | api.debug_middleware | Exception: JWTError: Invalid token: HTTPSConnectionPool(host='keycloak.authjs.dev', port=443): Max retries exceeded with url: /realms/master/protocol/openid-connect/certs (Caused by ConnectTimeoutError(<urllib3.connection.HTTPSConnection object at 0x10cf7e4d0>, 'Connection to keycloak.authjs.dev timed out. (connect timeout=None)'))
+2025-10-15 23:26:21 | ERROR    | api.debug_middleware | Traceback:
+Traceback (most recent call last):
+  File "/Users/andresb/Projects/gocareerpath/.venv/lib/python3.11/site-packages/starlette/middleware/base.py", line 151, in call_next
+    message = await recv_stream.receive()
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/andresb/Projects/gocareerpath/.venv/lib/python3.11/site-packages/anyio/streams/memory.py", line 126, in receive
+    raise EndOfStream from None
+anyio.EndOfStream
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/andresb/Projects/gocareerpath/api/debug_middleware.py", line 46, in dispatch
+    response = await call_next(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/andresb/Projects/gocareerpath/.venv/lib/python3.11/site-packages/starlette/middleware/base.py", line 159, in call_next
+    raise app_exc
+  File "/Users/andresb/Projects/gocareerpath/.venv/lib/python3.11/site-packages/starlette/middleware/base.py", line 144, in coro
+    await self.app(scope, receive_or_disconnect, send_no_error)
+  File "/Users/andresb/Projects/gocareerpath/.venv/lib/python3.11/site-packages/starlette/middleware/exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "/Users/andresb/Projects/gocareerpath/.venv/lib/python3.11/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/Users/andresb/Projects/gocareerpath/.venv/lib/python3.11/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/Users/andresb/Projects/gocareerpath/.venv/lib/python3.11/site-packages/fastapi/middleware/asyncexitstack.py", line 18, in __call__
+    await self.app(scope, receive, send)
+  File "/Users/andresb/Projects/gocareerpath/.venv/lib/python3.11/site-packages/starlette/routing.py", line 716, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/Users/andresb/Projects/gocareerpath/.venv/lib/python3.11/site-packages/starlette/routing.py", line 736, in app
+    await route.handle(scope, receive, send)
+  File "/Users/andresb/Projects/gocareerpath/.venv/lib/python3.11/site-packages/starlette/routing.py", line 290, in handle
+    await self.app(scope, receive, send)
+  File "/Users/andresb/Projects/gocareerpath/.venv/lib/python3.11/site-packages/fastapi/routing.py", line 123, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "/Users/andresb/Projects/gocareerpath/.venv/lib/python3.11/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/Users/andresb/Projects/gocareerpath/.venv/lib/python3.11/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/Users/andresb/Projects/gocareerpath/.venv/lib/python3.11/site-packages/fastapi/routing.py", line 109, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "/Users/andresb/Projects/gocareerpath/.venv/lib/python3.11/site-packages/fastapi/routing.py", line 379, in app
+    solved_result = await solve_dependencies(
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/andresb/Projects/gocareerpath/.venv/lib/python3.11/site-packages/fastapi/dependencies/utils.py", line 672, in solve_dependencies
+    solved = await call(**solved_result.values)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/andresb/Projects/gocareerpath/api/auth_middleware.py", line 197, in get_current_user
+    user = await auth_middleware.get_user_from_cookie(request)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/andresb/Projects/gocareerpath/api/auth_middleware.py", line 164, in get_user_from_cookie
+    user = await self.get_user_from_token(session_token)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/andresb/Projects/gocareerpath/api/auth_middleware.py", line 123, in get_user_from_token
+    payload = await self.verify_token(token)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/andresb/Projects/gocareerpath/api/auth_middleware.py", line 97, in verify_token
+    raise JWTError(f"Invalid token: {e}")
+jose.exceptions.JWTError: Invalid token: HTTPSConnectionPool(host='keycloak.authjs.dev', port=443): Max retries exceeded with url: /realms/master/protocol/openid-connect/certs (Caused by ConnectTimeoutError(<urllib3.connection.HTTPSConnection object at 0x10cf7e4d0>, 'Connection to keycloak.authjs.dev timed out. (connect timeout=None)'))
+
+2025-10-15 23:26:21 | ERROR    | api.debug_middleware | Traceback:
+Traceback (most recent call last):
+  File "/Users/andresb/Projects/gocareerpath/.venv/lib/python3.11/site-packages/starlette/middleware/base.py", line 151, in call_next
+    message = await recv_stream.receive()
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/andresb/Projects/gocareerpath/.venv/lib/python3.11/site-packages/anyio/streams/memory.py", line 126, in receive
+    raise EndOfStream from None
+anyio.EndOfStream
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/andresb/Projects/gocareerpath/api/debug_middleware.py", line 46, in dispatch
+    response = await call_next(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/andresb/Projects/gocareerpath/.venv/lib/python3.11/site-packages/starlette/middleware/base.py", line 159, in call_next
+    raise app_exc
+  File "/Users/andresb/Projects/gocareerpath/.venv/lib/python3.11/site-packages/starlette/middleware/base.py", line 144, in coro
+    await self.app(scope, receive_or_disconnect, send_no_error)
+  File "/Users/andresb/Projects/gocareerpath/.venv/lib/python3.11/site-packages/starlette/middleware/exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "/Users/andresb/Projects/gocareerpath/.venv/lib/python3.11/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/Users/andresb/Projects/gocareerpath/.venv/lib/python3.11/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/Users/andresb/Projects/gocareerpath/.venv/lib/python3.11/site-packages/fastapi/middleware/asyncexitstack.py", line 18, in __call__
+    await self.app(scope, receive, send)
+  File "/Users/andresb/Projects/gocareerpath/.venv/lib/python3.11/site-packages/starlette/routing.py", line 716, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/Users/andresb/Projects/gocareerpath/.venv/lib/python3.11/site-packages/starlette/routing.py", line 736, in app
+    await route.handle(scope, receive, send)
+  File "/Users/andresb/Projects/gocareerpath/.venv/lib/python3.11/site-packages/starlette/routing.py", line 290, in handle
+    await self.app(scope, receive, send)
+  File "/Users/andresb/Projects/gocareerpath/.venv/lib/python3.11/site-packages/fastapi/routing.py", line 123, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "/Users/andresb/Projects/gocareerpath/.venv/lib/python3.11/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/Users/andresb/Projects/gocareerpath/.venv/lib/python3.11/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/Users/andresb/Projects/gocareerpath/.venv/lib/python3.11/site-packages/fastapi/routing.py", line 109, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "/Users/andresb/Projects/gocareerpath/.venv/lib/python3.11/site-packages/fastapi/routing.py", line 379, in app
+    solved_result = await solve_dependencies(
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/andresb/Projects/gocareerpath/.venv/lib/python3.11/site-packages/fastapi/dependencies/utils.py", line 672, in solve_dependencies
+    solved = await call(**solved_result.values)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/andresb/Projects/gocareerpath/api/auth_middleware.py", line 197, in get_current_user
+    user = await auth_middleware.get_user_from_cookie(request)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/andresb/Projects/gocareerpath/api/auth_middleware.py", line 164, in get_user_from_cookie
+    user = await self.get_user_from_token(session_token)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/andresb/Projects/gocareerpath/api/auth_middleware.py", line 123, in get_user_from_token
+    payload = await self.verify_token(token)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/andresb/Projects/gocareerpath/api/auth_middleware.py", line 97, in verify_token
+    raise JWTError(f"Invalid token: {e}")
+jose.exceptions.JWTError: Invalid token: HTTPSConnectionPool(host='keycloak.authjs.dev', port=443): Max retries exceeded with url: /realms/master/protocol/openid-connect/certs (Caused by ConnectTimeoutError(<urllib3.connection.HTTPSConnection object at 0x10cf7e4d0>, 'Connection to keycloak.authjs.dev timed out. (connect timeout=None)'))
+
+2025-10-15 23:31:07 | DEBUG    | api | [auth_middleware] Instantiating NextAuthMiddleware...
+2025-10-15 23:31:14 | DEBUG    | api | [auth_middleware] Instantiating NextAuthMiddleware...
+2025-10-15 23:31:19 | DEBUG    | api | [auth_middleware] Instantiating NextAuthMiddleware...
+2025-10-15 23:31:30 | DEBUG    | api | [auth_middleware] Instantiating NextAuthMiddleware...
+2025-10-15 23:31:38 | DEBUG    | api | [auth_middleware] Instantiating NextAuthMiddleware...
+2025-10-15 23:33:07 | INFO     | api.debug_middleware | 🔵 POST /api/research/start
+2025-10-15 23:33:07 | DEBUG    | api.debug_middleware | Headers: {'set-cookie': 'authjs.session-token=eyJhbGciOiJkaXIiLCJlbmMiOiJBMjU2Q0JDLUhTNTEyIiwia2lkIjoiczBqVUw3TGRxQmNicFZvaUJWZVJSZmFuTThyV29IUlNmWV9WTG5WS25HS0FJdFM5aDNRLXNXc3JQazF0MDJ3MTUxWnp4RzhycDV1WDEtbWJWUS1ydXcifQ..gGzgyA7WIMSIYxAnMiexFg.zFOOch1jg71ojxwAWkcZIud8o0bFpP3mI5UO9eXLhzJK0B3Ec5Jk06exXENyUOuR4ML-wQ8kqHVB3JpekmmAjYhTP05zCmAHktWnHgua0Ffjtdm1Jf7nvoY4ex-0DtuXcNR7CCElYf5AfRkuXAIjo2CUNlyPFCxZ_SaTjiV7Foeau5SeHlTWdghf0H2hg-PUHtlDmcN04B4TJpIq94D-1q0Rpqk4rnb1wenrUDKn6Doge_FkElow3HCAR-MJ7q3_B_ZK4ldwtqru2HwWNKbtY-AfDMRWvB4I1zxdEa-sAuN0MuuOc0T5E2uQHHSWqvAQ6_gsid7sG_nZt8-TZfsspb6xiTmcWNsWeLFgql9VLLWUEbJexVUhZdPQSioaID1gIIwThq4K_zYKm6EShOzhWA.k6FqoGOxQTOjCk1xSok35uAX2DEo3pbrBeUs2jPI69I; Path=/; Expires=Sat, 15 Nov 2025 03:33:07 GMT; HttpOnly; SameSite=Lax', 'x-forwarded-for': '::1', 'x-forwarded-proto': 'http', 'x-forwarded-port': '3000', 'x-forwarded-host': 'localhost:3000', 'cookie': 'authjs.csrf-token=af1a76fff5dc1f821e8acfcb3e249bab791366856f72d6bd29b74b5c6a166155%7C0b0c9022975f1bc3b9d59e148048b505f7a696a90ed4764c1c65edd80b9a069c; authjs.callback-url=http%3A%2F%2Flocalhost%3A3000; authjs.session-token=eyJhbGciOiJkaXIiLCJlbmMiOiJBMjU2Q0JDLUhTNTEyIiwia2lkIjoiczBqVUw3TGRxQmNicFZvaUJWZVJSZmFuTThyV29IUlNmWV9WTG5WS25HS0FJdFM5aDNRLXNXc3JQazF0MDJ3MTUxWnp4RzhycDV1WDEtbWJWUS1ydXcifQ..6nuoJUznIoqWuzVHn8FSFw.EHujZdyjsjkzP783YAoXo_e5TRHLQpBQ3Tdj7xCITnSiFI1qdoSEju8ppgrL36sfbwhMEF4PZPSuVTsw5OA9Lvp64w9uj8sFqQauBGB9o9MUanDOlJy47jNhDzWJ1KtrcfZfyLh1R7JWdkP9WwJgumBEN_loT8d5vaJKJMK0B05jKUefKZz50uUX6GQfLV8NZ7aJOBdNy2QPzzFExIcD0sehrDAb8iaZYkVXy9aCwhts_33sFB4mocqihY7LBx4lb9NP6S8Y_gQfrhAy5ZULqFjpgqu9sYBDhfgVGMRZijcIJrCKR1_C0CiK7FcOaHQIMYONOCNls6BFZ2vYAP-1ArflYb4IHu-YhqDg_dA2Fj_VPKlCG-MyHBIydh_1QQBXeSEn_4-C4oHHakT6_I4JFg.HDBV3b3irLstPV8chAKKLlofyHbSiWz5IS0bc78sVKQ', 'accept-language': 'en-US,en;q=0.9', 'accept-encoding': 'gzip, deflate, br, zstd', 'referer': 'http://localhost:3000/chat', 'sec-fetch-dest': 'empty', 'sec-fetch-mode': 'cors', 'sec-fetch-site': 'same-origin', 'origin': 'http://localhost:3000', 'accept': '*/*', 'sec-ch-ua-mobile': '?0', 'content-type': 'application/json', 'sec-ch-ua': '"Google Chrome";v="141", "Not?A_Brand";v="8", "Chromium";v="141"', 'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36', 'sec-ch-ua-platform': '"macOS"', 'content-length': '161', 'connection': 'close', 'host': '127.0.0.1:8000'}
+2025-10-15 23:33:07 | DEBUG    | api.debug_middleware | Query params: {}
+2025-10-15 23:33:07 | DEBUG    | api.debug_middleware | Request body: {
+  "id": "5bd8a9d5-af16-4599-94a3-25b61f72f623",
+  "message": {
+    "role": "user",
+    "parts": [
+      {
+        "type": "text",
+        "text": "hello chat"
+      }
+    ],
+    "id": "3b95d6ab-b580-413d-991b-816148738cdd"
+  }
+}
+2025-10-15 23:33:07 | INFO     | api | [get_current_user] Attempting to get user from cookie...
+2025-10-15 23:33:07 | DEBUG    | api | [NextAuthMiddleware.get_user_from_cookie] session_token found: yes
+2025-10-15 23:33:07 | DEBUG    | api | [NextAuthMiddleware.get_user_from_token] Getting user from token: eyJhbGciOi... (truncated)
+2025-10-15 23:33:12 | WARNING  | api | [NextAuthMiddleware.verify_token] Invalid token: 
+2025-10-15 23:33:12 | WARNING  | api | [NextAuthMiddleware.get_user_from_cookie] Failed to get user from cookie token: Invalid token: 
+2025-10-15 23:33:12 | INFO     | api | [get_current_user] Attempting to get user from Authorization header...
+2025-10-15 23:33:12 | DEBUG    | api | [NextAuthMiddleware.get_user_from_header] credentials present: no
+2025-10-15 23:33:12 | INFO     | api | [NextAuthMiddleware.get_user_from_header] No Authorization header provided
+2025-10-15 23:33:12 | ERROR    | api | [get_current_user] Authentication required, no valid user found
+2025-10-15 23:33:12 | ERROR    | api | [get_current_user] Authentication required, no valid user found
+2025-10-15 23:33:12 | WARNING  | api.exception_handlers | HTTP 401 on POST /api/research/start: Authentication required
+2025-10-15 23:33:12 | INFO     | api.debug_middleware | 🟢 POST /api/research/start - 401 (5.140s)
+2025-10-15 23:42:46 | DEBUG    | api | [auth_middleware] Instantiating NextAuthMiddleware...
+2025-10-15 23:42:59 | DEBUG    | api | [auth_middleware] Instantiating NextAuthMiddleware...
+2025-10-15 23:43:06 | DEBUG    | api | [auth_middleware] Instantiating NextAuthMiddleware...
+2025-10-15 23:43:12 | DEBUG    | api | [auth_middleware] Instantiating NextAuthMiddleware...
+2025-10-15 23:43:41 | DEBUG    | api | [auth_middleware] Instantiating NextAuthMiddleware...
+2025-10-15 23:43:41 | DEBUG    | api | [NextAuthMiddleware] AUTH_SECRET loaded successfully
+2025-10-15 23:47:50 | DEBUG    | api | [auth_middleware] Instantiating NextAuthMiddleware...
+2025-10-15 23:47:50 | DEBUG    | api | [NextAuthMiddleware] AUTH_SECRET loaded successfully
+2025-10-15 23:47:56 | DEBUG    | api | [auth_middleware] Instantiating NextAuthMiddleware...
+2025-10-15 23:47:56 | DEBUG    | api | [NextAuthMiddleware] AUTH_SECRET loaded successfully
+2025-10-15 23:48:05 | DEBUG    | api | [auth_middleware] Instantiating NextAuthMiddleware...
+2025-10-15 23:48:05 | DEBUG    | api | [NextAuthMiddleware] AUTH_SECRET loaded successfully
+2025-10-15 23:48:20 | DEBUG    | api | [auth_middleware] Instantiating NextAuthMiddleware...
+2025-10-15 23:48:20 | DEBUG    | api | [NextAuthMiddleware] AUTH_SECRET loaded successfully
+2025-10-15 23:48:26 | DEBUG    | api | [auth_middleware] Instantiating NextAuthMiddleware...
+2025-10-15 23:48:26 | DEBUG    | api | [NextAuthMiddleware] AUTH_SECRET loaded successfully
+2025-10-15 23:51:21 | DEBUG    | api | [auth_middleware] Instantiating NextAuthMiddleware...
+2025-10-15 23:51:21 | DEBUG    | api | [NextAuthMiddleware] AUTH_SECRET loaded successfully
+2025-10-15 23:51:27 | DEBUG    | api | [auth_middleware] Instantiating NextAuthMiddleware...
+2025-10-15 23:51:27 | DEBUG    | api | [NextAuthMiddleware] AUTH_SECRET loaded successfully
+2025-10-15 23:51:34 | DEBUG    | api | [auth_middleware] Instantiating NextAuthMiddleware...
+2025-10-15 23:51:34 | DEBUG    | api | [NextAuthMiddleware] AUTH_SECRET loaded successfully
+2025-10-15 23:51:42 | DEBUG    | api | [auth_middleware] Instantiating NextAuthMiddleware...
+2025-10-15 23:51:42 | DEBUG    | api | [NextAuthMiddleware] AUTH_SECRET loaded successfully
+2025-10-15 23:51:56 | INFO     | api.debug_middleware | 🔵 POST /api/research/start
+2025-10-15 23:51:57 | DEBUG    | api.debug_middleware | Headers: {'set-cookie': 'authjs.session-token=eyJhbGciOiJkaXIiLCJlbmMiOiJBMjU2Q0JDLUhTNTEyIiwia2lkIjoiczBqVUw3TGRxQmNicFZvaUJWZVJSZmFuTThyV29IUlNmWV9WTG5WS25HS0FJdFM5aDNRLXNXc3JQazF0MDJ3MTUxWnp4RzhycDV1WDEtbWJWUS1ydXcifQ..w_4IGT8JVKkkvfOCROJ-Ew.EJ-UBoGt-AFXN7nNJaQy0LbZ4V0KbYG2UqPEYLy_cNvu2TVCDaJ_K3m0N4mt6O68vLNyMFATqXg52yXD2W-6nXoNS3Fo2AbEpmD7gsinemjpB7jmRMswjWazY6cWR57oPHVbY5jy-WPV2c4A7YqHExKo9DjnrxjPairz3UxUhukw74PVag5swd9J7t3JIZISrvgmo3QiuJrGxdRDWDOSNeajHvDCaZ7HlIJNWClsPClBw29sz4YrOEx-wWGavjuMbPD1ZdfO-aggsXAWjP0wCsh42Kn0qz_c3p_VDZNa5dg3lDhIUVzT4HC4GmKfkZaQU-3aSp_qli0N01vvOave8IOO44UUjgqfdOAvxxY1ygczX2k0QwNmFnEEJsTh8iLU8fLS4liIEDBZBTEewmFWmQ.A5ZE-YmPdauoviMPes2oiDkMfxAPojFWS-dQsUKQDbI; Path=/; Expires=Sat, 15 Nov 2025 03:51:56 GMT; HttpOnly; SameSite=Lax', 'x-forwarded-for': '::1', 'x-forwarded-proto': 'http', 'x-forwarded-port': '3000', 'x-forwarded-host': 'localhost:3000', 'cookie': 'authjs.csrf-token=af1a76fff5dc1f821e8acfcb3e249bab791366856f72d6bd29b74b5c6a166155%7C0b0c9022975f1bc3b9d59e148048b505f7a696a90ed4764c1c65edd80b9a069c; authjs.callback-url=http%3A%2F%2Flocalhost%3A3000; authjs.session-token=eyJhbGciOiJkaXIiLCJlbmMiOiJBMjU2Q0JDLUhTNTEyIiwia2lkIjoiczBqVUw3TGRxQmNicFZvaUJWZVJSZmFuTThyV29IUlNmWV9WTG5WS25HS0FJdFM5aDNRLXNXc3JQazF0MDJ3MTUxWnp4RzhycDV1WDEtbWJWUS1ydXcifQ..aWT6TPHsecwsj547yNdjUw.ovu5Yu4YrhCg1B2OXL6yQ-55zRGi0RdJhTbKV4jBe1FLZG-FJR2vIWdkTTylSrMFY-055NkxxpSa-zJSzb59txf6q1WDASoj3F173MLTZYgRBegLxL_LPHiri5HwaKHRf3w96JfWUkAl_LrPIrVbJ-XZkBdQa8SUKncwI63tDwAZAVd9dwzbtaxBrvyW3TjF8OLfC6OFi0avfmEDYHYXLZUHuItNeD02Qoj85dmYOuhEOkgOGpEy3RubRIug1qW4hpblL_uR8WKJz85HPSwFx4_fFDjPn1V3ky80O8reW6O--aN_Z14fF4d8laCp1GScG9UnDp1rmlBY4B-lhNHaZxuVsIHNDB--ihUl8HMyNhqKyqRoHCpYwb9SBx1lJMod8OZJRdTXNlEWrPlfJ_kAgA.ay_4UBCuNOlXGVeKoC738EcQiLicZxojqOB0Lsgd3xw', 'accept-language': 'en-US,en;q=0.9', 'accept-encoding': 'gzip, deflate, br, zstd', 'referer': 'http://localhost:3000/chat', 'sec-fetch-dest': 'empty', 'sec-fetch-mode': 'cors', 'sec-fetch-site': 'same-origin', 'origin': 'http://localhost:3000', 'accept': '*/*', 'sec-ch-ua-mobile': '?0', 'content-type': 'application/json', 'sec-ch-ua': '"Google Chrome";v="141", "Not?A_Brand";v="8", "Chromium";v="141"', 'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36', 'sec-ch-ua-platform': '"macOS"', 'content-length': '164', 'connection': 'close', 'host': '127.0.0.1:8000'}
+2025-10-15 23:51:57 | DEBUG    | api.debug_middleware | Query params: {}
+2025-10-15 23:51:57 | DEBUG    | api.debug_middleware | Request body: {
+  "id": "511fc7f4-af90-49ea-8df5-f8bab9f9450e",
+  "message": {
+    "role": "user",
+    "parts": [
+      {
+        "type": "text",
+        "text": "Hello testing"
+      }
+    ],
+    "id": "85a9c323-8d9d-42db-adfa-6811d7aa171d"
+  }
+}
+2025-10-15 23:51:57 | INFO     | api | [get_current_user] Attempting to get user from cookie...
+2025-10-15 23:51:57 | DEBUG    | api | [NextAuthMiddleware.get_user_from_cookie] session_token found: yes
+2025-10-15 23:51:57 | DEBUG    | api | [NextAuthMiddleware.get_user_from_token] Getting user from token: eyJhbGciOi... (truncated)
+2025-10-15 23:51:57 | WARNING  | api | [NextAuthMiddleware] Failed to decrypt token: Key must be 256 bit for alg A256CBC
+2025-10-15 23:51:57 | WARNING  | api | [NextAuthMiddleware.get_user_from_cookie] Failed to get user from cookie token: Invalid session cookie
+2025-10-15 23:51:57 | INFO     | api | [get_current_user] Attempting to get user from Authorization header...
+2025-10-15 23:51:57 | DEBUG    | api | [NextAuthMiddleware.get_user_from_header] credentials present: no
+2025-10-15 23:51:57 | INFO     | api | [NextAuthMiddleware.get_user_from_header] No Authorization header provided
+2025-10-15 23:51:57 | ERROR    | api | [get_current_user] Authentication required, no valid user found
+2025-10-15 23:51:57 | ERROR    | api | [get_current_user] Authentication required, no valid user found
+2025-10-15 23:51:57 | WARNING  | api.exception_handlers | HTTP 401 on POST /api/research/start: Authentication required
+2025-10-15 23:51:57 | INFO     | api.debug_middleware | 🟢 POST /api/research/start - 401 (0.005s)

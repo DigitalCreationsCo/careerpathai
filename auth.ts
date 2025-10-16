@@ -17,41 +17,42 @@ const storage = createStorage({
     : memoryDriver(),
 })
 
-export const { handlers, auth, signIn, signOut } = NextAuth({
+export const { handlers: { GET, POST }, auth, signIn, signOut } = NextAuth({
   debug: !!process.env.AUTH_DEBUG,
   theme: { logo: "https://authjs.dev/img/logo-sm.png" },
   adapter: UnstorageAdapter(storage),
+  basePath: "/auth",
   providers: [
     Google({
         clientId: process.env.GOOGLE_CLIENT_ID!,
         clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
     }),
   ],
-  basePath: "/auth",
   session: { strategy: "jwt" },
   callbacks: {
-    async signIn({ user }) {
-        const isExistingUser = getUserByEmail(user.email!);
-        if (!isExistingUser){
-            await createUser(user.email!, '', user.id);
-        }
-    },
-    authorized({ request, auth }) {
-      const { pathname } = request.nextUrl
-      if (pathname === "/middleware-example") return !!auth
-      return true
-    },
-    jwt({ token, trigger, session, account }) {
-      if (trigger === "update") token.name = session.user.name
-      if (account?.provider === "keycloak") {
-        return { ...token, accessToken: account.access_token }
-      }
-      return token
-    },
-    async session({ session, token }) {
-      if (token?.accessToken) session.accessToken = token.accessToken
-      return session
-    },
+    // async signIn({ user }) {
+    //     const isExistingUser = getUserByEmail(user.email!);
+    //     if (!isExistingUser){
+    //         await createUser(user.email!, '', user.id);
+    //     }
+    //     return true;
+    // },
+    // authorized({ request, auth }) {
+    //   const { pathname } = request.nextUrl
+    //   if (pathname === "/middleware-example") return !!auth
+    //   return true
+    // },
+    // jwt({ token, trigger, session, account }) {
+    //   if (trigger === "update") token.name = session.user.name
+    //   if (account?.provider === "keycloak") {
+    //     return { ...token, accessToken: account.access_token }
+    //   }
+    //   return token
+    // },
+    // async session({ session, token }) {
+    //   if (token?.accessToken) session.accessToken = token.accessToken
+    //   return session
+    // },
   },
   experimental: { enableWebAuthn: true },
 })

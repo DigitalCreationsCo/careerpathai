@@ -17,16 +17,14 @@ import postgres from "postgres";
 import { ChatSDKError } from "@/lib/errors";
 import type { AppUsage } from "@/lib/usage";
 import { generateUUID } from "@/lib/utils";
+import type { Chat, User, Message as DBMessage } from "@/lib/types";
 import {
-  type Chat,
-  chat,
-  type DBMessage,
+  chats,
 //   document,
-  message,
+  messages,
 //   type Suggestion,
   stream,
 //   suggestion,
-  type User,
   users,
 } from "../schema";
 import { hashPassword } from "@/lib/auth/session";
@@ -42,7 +40,7 @@ export async function saveChat({
   title: string;
 }) {
   try {
-    return await db.insert(chat).values({
+    return await db.insert(chats).values({
       id,
       createdAt: new Date(),
       userId,
@@ -55,12 +53,12 @@ export async function saveChat({
 
 export async function deleteChatById({ id }: { id: string }) {
   try {
-    await db.delete(message).where(eq(message.chatId, id));
+    await db.delete(messages).where(eq(messages.chatId, id));
     await db.delete(stream).where(eq(stream.chatId, id));
 
     const [chatsDeleted] = await db
-      .delete(chat)
-      .where(eq(chat.id, id))
+      .delete(chats)
+      .where(eq(chats.id, id))
       .returning();
     return chatsDeleted;
   } catch (_error) {
@@ -88,13 +86,13 @@ export async function getChatsByUserId({
     const query = (whereCondition?: SQL<any>) =>
       db
         .select()
-        .from(chat)
+        .from(chats)
         .where(
           whereCondition
-            ? and(whereCondition, eq(chat.userId, id))
-            : eq(chat.userId, id)
+            ? and(whereCondition, eq(chats.userId, id))
+            : eq(chats.userId, id)
         )
-        .orderBy(desc(chat.createdAt))
+        .orderBy(desc(chats.createdAt))
         .limit(extendedLimit);
 
     let filteredChats: Chat[] = [];
@@ -102,8 +100,8 @@ export async function getChatsByUserId({
     if (startingAfter) {
       const [selectedChat] = await db
         .select()
-        .from(chat)
-        .where(eq(chat.id, startingAfter))
+        .from(chats)
+        .where(eq(chats.id, startingAfter))
         .limit(1);
 
       if (!selectedChat) {
@@ -113,12 +111,12 @@ export async function getChatsByUserId({
         );
       }
 
-      filteredChats = await query(gt(chat.createdAt, selectedChat.createdAt));
+      filteredChats = await query(gt(chats.createdAt, selectedChat.createdAt));
     } else if (endingBefore) {
       const [selectedChat] = await db
         .select()
-        .from(chat)
-        .where(eq(chat.id, endingBefore))
+        .from(chats)
+        .where(eq(chats.id, endingBefore))
         .limit(1);
 
       if (!selectedChat) {
@@ -128,7 +126,7 @@ export async function getChatsByUserId({
         );
       }
 
-      filteredChats = await query(lt(chat.createdAt, selectedChat.createdAt));
+      filteredChats = await query(lt(chats.createdAt, selectedChat.createdAt));
     } else {
       filteredChats = await query();
     }
@@ -149,20 +147,20 @@ export async function getChatsByUserId({
 
 export async function getChatById({ id }: { id: string }) {
   try {
-    const [selectedChat] = await db.select().from(chat).where(eq(chat.id, id));
+    const [selectedChat] = await db.select().from(chats).where(eq(chats.id, id));
     if (!selectedChat) {
       return null;
     }
 
     return selectedChat;
   } catch (_error) {
-    throw new ChatSDKError("bad_request:database", "Failed to get chat by id");
+    throw new ChatSDKError("bad_request:database", "Failed to get chats by id");
   }
 }
 
 export async function saveMessages({ messages }: { messages: DBMessage[] }) {
   try {
-    return await db.insert(message).values(messages);
+    return await db.insert(messages).values(messages);
   } catch (_error) {
     throw new ChatSDKError("bad_request:database", "Failed to save messages");
   }
@@ -172,9 +170,9 @@ export async function getMessagesByChatId({ id }: { id: string }) {
   try {
     return await db
       .select()
-      .from(message)
-      .where(eq(message.chatId, id))
-      .orderBy(asc(message.createdAt));
+      .from(messages)
+      .where(eq(messages.chatId, id))
+      .orderBy(asc(messages.createdAt));
   } catch (_error) {
     throw new ChatSDKError(
       "bad_request:database",
@@ -311,7 +309,7 @@ export async function getMessagesByChatId({ id }: { id: string }) {
 
 export async function getMessageById({ id }: { id: string }) {
   try {
-    return await db.select().from(message).where(eq(message.id, id));
+    return await db.select().from(messages).where(eq(messages.id, id));
   } catch (_error) {
     throw new ChatSDKError(
       "bad_request:database",
@@ -329,10 +327,10 @@ export async function deleteMessagesByChatIdAfterTimestamp({
 }) {
   try {
     const messagesToDelete = await db
-      .select({ id: message.id })
-      .from(message)
+      .select({ id: messages.id })
+      .from(messages)
       .where(
-        and(eq(message.chatId, chatId), gte(message.createdAt, timestamp))
+        and(eq(messages.chatId, chatId), gte(messages.createdAt, timestamp))
       );
 
     const messageIds = messagesToDelete.map(
@@ -341,9 +339,9 @@ export async function deleteMessagesByChatIdAfterTimestamp({
 
     if (messageIds.length > 0) {
       return await db
-        .delete(message)
+        .delete(messages)
         .where(
-          and(eq(message.chatId, chatId), inArray(message.id, messageIds))
+          and(eq(messages.chatId, chatId), inArray(messages.id, messageIds))
         );
     }
   } catch (_error) {
@@ -364,9 +362,9 @@ export async function updateChatLastContextById({
 }) {
   try {
     return await db
-      .update(chat)
+      .update(chats)
       .set({ lastContext: context })
-      .where(eq(chat.id, chatId));
+      .where(eq(chats.id, chatId));
   } catch (error) {
     console.warn("Failed to update lastContext for chat", chatId, error);
     return;
@@ -386,14 +384,14 @@ export async function getMessageCountByUserId({
     );
 
     const [stats] = await db
-      .select({ count: count(message.id) })
-      .from(message)
-      .innerJoin(chat, eq(message.chatId, chat.id))
+      .select({ count: count(messages.id) })
+      .from(messages)
+      .innerJoin(chats, eq(messages.chatId, chats.id))
       .where(
         and(
-          eq(chat.userId, id),
-          gte(message.createdAt, twentyFourHoursAgo),
-          eq(message.role, "user")
+          eq(chats.userId, id),
+          gte(messages.createdAt, twentyFourHoursAgo),
+          eq(messages.role, "user")
         )
       )
       .execute();

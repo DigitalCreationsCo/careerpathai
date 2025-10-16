@@ -13,7 +13,7 @@ export default async function LandingPage() {
         <section className="bg-gradient-primary-glow relative min-h-screen flex items-center justify-center p-2 sm:px-6 lg:px-8 snap-start">
           <div className="absolute inset-0 bg-gradient-to-b from-background/80 to-background" />
 
-          <div className="relative z-10 max-w-[80%] mx-auto text-center space-y-6 animate-slide-up">
+          <div className="relative z-10 max-w-sm sm:max-w-[80%] mx-auto text-center space-y-6 animate-slide-up">
             
             <div className="space-y-4 md:pt-4">
               <div className="hidden md:inline-flex items-center px-4 py-2 text-warning mb-4 gap-2">
@@ -32,7 +32,7 @@ export default async function LandingPage() {
                 Receive your personalized <span className='text-foreground font-semibold'>Career Path Report</span> revealing <span className='text-foreground font-semibold'>4&nbsp;high-paying, AI-resistant career paths</span> you can thrive in — using the skills you already have
               </p>
               <p className="text-sm text-muted-foreground">
-                Join <span className="text-accent font-semibold">1,000+</span> future-proofing their careers in the AI economy
+                Join <span className="text-accent font-semibold">1,000+ professionals </span>future-proofing their careers in the AI economy
               </p>
             </div>
 
@@ -191,7 +191,7 @@ export default async function LandingPage() {
 
             <div className="text-center mt-8">
               <p className="text-muted-foreground mb-4 w-[95%] place-self-center">
-                This could be one of 4 high-paying, AI-resistant career paths you'll discover in your complete Career Path Report.
+                Discover 4 high-paying, AI-resistant career paths in your complete Career Path Report.
               </p>
               <Link href="/sign-up">
                 <Button 
@@ -210,7 +210,7 @@ export default async function LandingPage() {
         <section className="py-16 px-4 sm:px-6 lg:px-8 bg-gradient-card snap-start">
           <div className="max-w-4xl mx-auto text-center space-y-8">
             <h2 className="text-4xl font-bold text-transparent bg-gradient-primary bg-clip-text">
-              Join 500+ Professionals Who've Already AI-Proofed Their Careers
+              Join 1,000+ Professionals Who've Already AI-Proofed Their Careers
             </h2>
             
             <div className="grid md:grid-cols-2 gap-8">
@@ -248,7 +248,7 @@ export default async function LandingPage() {
               <h2 className="text-4xl font-bold text-warning">
                 <span className="text-2xl">⚠️ </span>{`${numJobsDisplaced} Jobs Will Be Displaced by ${dateJobsDisplaced}`}
               </h2>
-              <p className="subtitle">
+              <p className="subtitle max-w-sm sm:!max-w-[70%]">
                 Don't wait to AI-proof your career. 
                 <br/>Your future role is already waiting — get your personalized Career Path Report today.
               </p>

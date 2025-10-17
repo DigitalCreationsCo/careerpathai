@@ -6,7 +6,7 @@ import { z } from "zod";
 // import type { requestSuggestions } from "./ai/tools/request-suggestions";
 // import type { updateDocument } from "./ai/tools/update-document";
 import type { AppUsage } from "./usage";
-import { activityLogs, chats, messages, reports, stream, teamMembers, teams, users } from "./db/schema";
+import { activityLogs, chats, messages, reports, researchSessions, stream, teamMembers, teams, users } from "./db/schema";
 
 export type Chat = typeof chats.$inferSelect;
 export type NewChat = typeof chats.$inferInsert;
@@ -28,6 +28,8 @@ export type TeamDataWithMembers = Team & {
 export type NewActivityLog = typeof activityLogs.$inferInsert;
 export type Report = typeof reports.$inferSelect;
 export type NewReport = typeof reports.$inferInsert;
+export type ResearchSession = typeof researchSessions.$inferSelect;
+export type NewResearchSession = typeof researchSessions.$inferInsert;
 
 export type DataPart = { type: "append-message"; message: string };
 

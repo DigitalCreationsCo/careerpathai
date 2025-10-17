@@ -1171,3 +1171,382 @@ jose.exceptions.JWTError: Invalid token: HTTPSConnectionPool(host='keycloak.auth
 2025-10-15 23:51:57 | ERROR    | api | [get_current_user] Authentication required, no valid user found
 2025-10-15 23:51:57 | WARNING  | api.exception_handlers | HTTP 401 on POST /api/research/start: Authentication required
 2025-10-15 23:51:57 | INFO     | api.debug_middleware | 🟢 POST /api/research/start - 401 (0.005s)
+2025-10-16 00:05:37 | DEBUG    | api | [auth_middleware] Instantiating NextAuthMiddleware...
+2025-10-16 00:05:37 | INFO     | api | [NextAuthMiddleware] Initialized with AUTH_SECRET
+2025-10-16 00:09:13 | DEBUG    | api | [auth_middleware] Instantiating NextAuthMiddleware...
+2025-10-16 00:09:13 | INFO     | api | [NextAuthMiddleware] Initialized with AUTH_SECRET
+2025-10-16 00:10:13 | INFO     | api.debug_middleware | 🔵 POST /api/research/start
+2025-10-16 00:10:13 | DEBUG    | api.debug_middleware | Headers: {'set-cookie': 'authjs.session-token=eyJhbGciOiJkaXIiLCJlbmMiOiJBMjU2Q0JDLUhTNTEyIiwia2lkIjoiczBqVUw3TGRxQmNicFZvaUJWZVJSZmFuTThyV29IUlNmWV9WTG5WS25HS0FJdFM5aDNRLXNXc3JQazF0MDJ3MTUxWnp4RzhycDV1WDEtbWJWUS1ydXcifQ..fAIBZ6a6hR1fV9_2tM07zw.S8ZpCEjnWJ0hh86ZLU4YNiw1eIqVzmx3vSW8YjvU3ygedhUhxdcS8iFk9pYsDSSjUqIKBRIM9vDmV6Lhhd0exZVOobmoIovO7_WrXMWCWbqa6GPUC4joDmTaQNSSZU68GDURRKBjmIngPbEWxsQKipEM9sFOjCwBDsgNutO1_wO796QKUUDeDtlqVo4ls_Jr9spW3Ntqvt3xkOpbp0GtdJCdhixh97n6fjtySijPPPUJFzW0VxqUldBKaU8YN2GGvuZBiRoWC3bP9MFpOzwBivOkWCtg9XXfn__EiW-dpN--SCowUWI8v3FAUfDohLpWjEIG0m6kGfiNRwKYc7peip-ZZ-bRI8EyEz8TfDDSv2jskkRvmGc0F8wIv7Mmxkr7ONL9e-hIEgdI7F0imhaVaA.wXHmSTlHKG3PBnQItfa3wduiV5MlDSlHweFR2xu_IQY; Path=/; Expires=Sat, 15 Nov 2025 04:10:13 GMT; HttpOnly; SameSite=Lax', 'x-forwarded-for': '::1', 'x-forwarded-proto': 'http', 'x-forwarded-port': '3000', 'x-forwarded-host': 'localhost:3000', 'cookie': 'authjs.csrf-token=b6c466b5298bd6817eb215608bf34e4b38474fc1bdf02fbb9257c2b47313a86b%7C693f36dcf51f25d9223d992583a2764fa326bc662e90bc2dc53eb0a0d622401e; authjs.callback-url=http%3A%2F%2Flocalhost%3A3000%2Fchat; authjs.session-token=eyJhbGciOiJkaXIiLCJlbmMiOiJBMjU2Q0JDLUhTNTEyIiwia2lkIjoiczBqVUw3TGRxQmNicFZvaUJWZVJSZmFuTThyV29IUlNmWV9WTG5WS25HS0FJdFM5aDNRLXNXc3JQazF0MDJ3MTUxWnp4RzhycDV1WDEtbWJWUS1ydXcifQ..NBbYwU3Mbdp3WYFc_YoxGQ.F8DWFVsYCH4JZG3NFgkLpwdwXFJbfSiSsZ3dL0nNvOux1WLDSAyBHeINYVQpw1E_eBU2yUTMlQs10SP_yvxh9Dj7mvYMiVJj3nZ1b_iQNvt0g5s_kz2cu7ah4uwJWoDu9E-0M6dUcWOkORQqWA-qHtiT5bxaUplhNxUFICI9H5gA0GioBK5S2pg7LOHY-6DTQ3oRpebsP9SPbxi7Jgs4vaTy6PQqVZwvy8t9-KJAlGvJgrQxOIjhWtocl344tioIk3EkKVgyFWIEWjuQTYMmdls1MPy5Z6Kt55n6gtgcE4xiRj4EdmCxWq57WgKhdRsPv8ixBYEcrTMRSbCEoXOpJ-uuOcp8w89g3cdjqHztX-FpFznIEke6jzhk5GZE1MnjZkazeCpda36zzJ4stE-_9Q.AGG5C96CilMPszCNEotTj4P-RO8BPtuuqAQHrWkLgDk', 'accept-language': 'en-US,en;q=0.9', 'accept-encoding': 'gzip, deflate, br, zstd', 'referer': 'http://localhost:3000/chat', 'sec-fetch-dest': 'empty', 'sec-fetch-mode': 'cors', 'sec-fetch-site': 'same-origin', 'origin': 'http://localhost:3000', 'accept': '*/*', 'sec-ch-ua-mobile': '?0', 'content-type': 'application/json', 'sec-ch-ua': '"Google Chrome";v="141", "Not?A_Brand";v="8", "Chromium";v="141"', 'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36', 'sec-ch-ua-platform': '"macOS"', 'content-length': '162', 'connection': 'close', 'host': '127.0.0.1:8000'}
+2025-10-16 00:10:13 | DEBUG    | api.debug_middleware | Query params: {}
+2025-10-16 00:10:13 | DEBUG    | api.debug_middleware | Request body: {
+  "id": "3e145bb9-0cc5-4bfc-8a1b-14683285b271",
+  "message": {
+    "role": "user",
+    "parts": [
+      {
+        "type": "text",
+        "text": "Hello there"
+      }
+    ],
+    "id": "2e6cb608-37d6-480e-8ba9-20333aa989cf"
+  }
+}
+2025-10-16 00:10:13 | INFO     | api | [get_current_user] Attempting authentication...
+2025-10-16 00:10:13 | DEBUG    | api | [NextAuthMiddleware.get_user_from_cookie] Found session in cookie: authjs.session-token
+2025-10-16 00:10:13 | DEBUG    | api | [NextAuthMiddleware.get_user_from_token] Extracting user from token
+2025-10-16 00:10:13 | ERROR    | api | [decrypt_session_token] Decryption failed: 
+2025-10-16 00:10:13 | ERROR    | api | [decrypt_session_token] Decryption failed: 
+2025-10-16 00:10:13 | WARNING  | api | [NextAuthMiddleware.verify_token] Token validation failed: Failed to decrypt session token: 
+2025-10-16 00:10:13 | WARNING  | api | [NextAuthMiddleware.get_user_from_cookie] Failed to authenticate: Invalid or expired session: Failed to decrypt session token: 
+2025-10-16 00:10:13 | INFO     | api | [NextAuthMiddleware.get_user_from_header] No Authorization header
+2025-10-16 00:10:13 | ERROR    | api | [get_current_user] Authentication required but not provided
+2025-10-16 00:10:13 | ERROR    | api | [get_current_user] Authentication required but not provided
+2025-10-16 00:10:13 | WARNING  | api.exception_handlers | HTTP 401 on POST /api/research/start: Authentication required
+2025-10-16 00:10:13 | INFO     | api.debug_middleware | 🟢 POST /api/research/start - 401 (0.012s)
+2025-10-16 00:26:07 | INFO     | api | [auth_middleware] Initializing NextAuthMiddleware...
+2025-10-16 00:26:07 | DEBUG    | api | [derive_keys] Decoded AUTH_SECRET from hex: 32 bytes
+2025-10-16 00:26:07 | DEBUG    | api | [derive_keys] Derived keys - MAC: 32 bytes, ENC: 32 bytes
+2025-10-16 00:26:07 | INFO     | api | [NextAuthMiddleware] Initialized (MAC fingerprint: 55aedeaf8cd73519, ENC fingerprint: d3f2dff8177794ff)
+2025-10-16 00:27:23 | INFO     | api | [auth_middleware] Initializing NextAuthMiddleware...
+2025-10-16 00:27:23 | DEBUG    | api | [derive_keys] Decoded AUTH_SECRET from hex: 32 bytes
+2025-10-16 00:27:23 | DEBUG    | api | [derive_keys] Derived keys - MAC: 32 bytes, ENC: 32 bytes
+2025-10-16 00:27:23 | INFO     | api | [NextAuthMiddleware] Initialized (MAC fingerprint: 55aedeaf8cd73519, ENC fingerprint: d3f2dff8177794ff)
+2025-10-16 00:27:30 | INFO     | api | [auth_middleware] Initializing NextAuthMiddleware...
+2025-10-16 00:27:30 | DEBUG    | api | [derive_keys] Decoded AUTH_SECRET from hex: 32 bytes
+2025-10-16 00:27:30 | DEBUG    | api | [derive_keys] Derived keys - MAC: 32 bytes, ENC: 32 bytes
+2025-10-16 00:27:30 | INFO     | api | [NextAuthMiddleware] Initialized (MAC fingerprint: 55aedeaf8cd73519, ENC fingerprint: d3f2dff8177794ff)
+2025-10-16 00:28:13 | INFO     | api | [auth_middleware] Initializing NextAuthMiddleware...
+2025-10-16 00:28:13 | DEBUG    | api | [derive_keys] Decoded AUTH_SECRET from hex: 32 bytes
+2025-10-16 00:28:13 | DEBUG    | api | [derive_keys] Derived keys - MAC: 32 bytes, ENC: 32 bytes
+2025-10-16 00:28:13 | INFO     | api | [NextAuthMiddleware] Initialized (MAC fingerprint: 55aedeaf8cd73519, ENC fingerprint: d3f2dff8177794ff)
+2025-10-16 00:28:17 | INFO     | api | [auth_middleware] Initializing NextAuthMiddleware...
+2025-10-16 00:28:17 | DEBUG    | api | [derive_keys] Decoded AUTH_SECRET from hex: 32 bytes
+2025-10-16 00:28:17 | DEBUG    | api | [derive_keys] Derived keys - MAC: 32 bytes, ENC: 32 bytes
+2025-10-16 00:28:17 | INFO     | api | [NextAuthMiddleware] Initialized (MAC fingerprint: 55aedeaf8cd73519, ENC fingerprint: d3f2dff8177794ff)
+2025-10-16 00:28:21 | INFO     | api | [auth_middleware] Initializing NextAuthMiddleware...
+2025-10-16 00:28:21 | DEBUG    | api | [derive_keys] Decoded AUTH_SECRET from hex: 32 bytes
+2025-10-16 00:28:22 | DEBUG    | api | [derive_keys] Derived keys - MAC: 32 bytes, ENC: 32 bytes
+2025-10-16 00:28:22 | INFO     | api | [NextAuthMiddleware] Initialized (MAC fingerprint: 55aedeaf8cd73519, ENC fingerprint: d3f2dff8177794ff)
+2025-10-16 00:28:28 | INFO     | api | [auth_middleware] Initializing NextAuthMiddleware...
+2025-10-16 00:28:28 | DEBUG    | api | [derive_keys] Decoded AUTH_SECRET from hex: 32 bytes
+2025-10-16 00:28:28 | DEBUG    | api | [derive_keys] Derived keys - MAC: 32 bytes, ENC: 32 bytes
+2025-10-16 00:28:28 | INFO     | api | [NextAuthMiddleware] Initialized (MAC fingerprint: 55aedeaf8cd73519, ENC fingerprint: d3f2dff8177794ff)
+2025-10-16 00:28:32 | INFO     | api | [auth_middleware] Initializing NextAuthMiddleware...
+2025-10-16 00:28:32 | DEBUG    | api | [derive_keys] Decoded AUTH_SECRET from hex: 32 bytes
+2025-10-16 00:28:32 | DEBUG    | api | [derive_keys] Derived keys - MAC: 32 bytes, ENC: 32 bytes
+2025-10-16 00:28:32 | INFO     | api | [NextAuthMiddleware] Initialized (MAC fingerprint: 55aedeaf8cd73519, ENC fingerprint: d3f2dff8177794ff)
+2025-10-16 00:28:38 | INFO     | api | [auth_middleware] Initializing NextAuthMiddleware...
+2025-10-16 00:28:38 | DEBUG    | api | [derive_keys] Decoded AUTH_SECRET from hex: 32 bytes
+2025-10-16 00:28:38 | DEBUG    | api | [derive_keys] Derived keys - MAC: 32 bytes, ENC: 32 bytes
+2025-10-16 00:28:38 | INFO     | api | [NextAuthMiddleware] Initialized (MAC fingerprint: 55aedeaf8cd73519, ENC fingerprint: d3f2dff8177794ff)
+2025-10-16 00:28:48 | INFO     | api | [auth_middleware] Initializing NextAuthMiddleware...
+2025-10-16 00:28:48 | DEBUG    | api | [derive_keys] Decoded AUTH_SECRET from hex: 32 bytes
+2025-10-16 00:28:48 | DEBUG    | api | [derive_keys] Derived keys - MAC: 32 bytes, ENC: 32 bytes
+2025-10-16 00:28:48 | INFO     | api | [NextAuthMiddleware] Initialized (MAC fingerprint: 55aedeaf8cd73519, ENC fingerprint: d3f2dff8177794ff)
+2025-10-16 00:28:56 | INFO     | api | [auth_middleware] Initializing NextAuthMiddleware...
+2025-10-16 00:28:56 | DEBUG    | api | [derive_keys] Decoded AUTH_SECRET from hex: 32 bytes
+2025-10-16 00:28:56 | DEBUG    | api | [derive_keys] Derived keys - MAC: 32 bytes, ENC: 32 bytes
+2025-10-16 00:28:56 | INFO     | api | [NextAuthMiddleware] Initialized (MAC fingerprint: 55aedeaf8cd73519, ENC fingerprint: d3f2dff8177794ff)
+2025-10-16 00:29:02 | INFO     | api | [auth_middleware] Initializing NextAuthMiddleware...
+2025-10-16 00:29:02 | DEBUG    | api | [derive_keys] Decoded AUTH_SECRET from hex: 32 bytes
+2025-10-16 00:29:02 | DEBUG    | api | [derive_keys] Derived keys - MAC: 32 bytes, ENC: 32 bytes
+2025-10-16 00:29:02 | INFO     | api | [NextAuthMiddleware] Initialized (MAC fingerprint: 55aedeaf8cd73519, ENC fingerprint: d3f2dff8177794ff)
+2025-10-16 00:29:10 | INFO     | api | [auth_middleware] Initializing NextAuthMiddleware...
+2025-10-16 00:29:10 | DEBUG    | api | [derive_keys] Decoded AUTH_SECRET from hex: 32 bytes
+2025-10-16 00:29:10 | DEBUG    | api | [derive_keys] Derived keys - MAC: 32 bytes, ENC: 32 bytes
+2025-10-16 00:29:10 | INFO     | api | [NextAuthMiddleware] Initialized (MAC fingerprint: 55aedeaf8cd73519, ENC fingerprint: d3f2dff8177794ff)
+2025-10-16 00:29:46 | INFO     | api | [auth_middleware] Initializing NextAuthMiddleware...
+2025-10-16 00:29:46 | DEBUG    | api | [derive_keys] Decoded AUTH_SECRET from hex: 32 bytes
+2025-10-16 00:29:46 | DEBUG    | api | [derive_keys] Derived keys - MAC: 32 bytes, ENC: 32 bytes
+2025-10-16 00:29:46 | INFO     | api | [NextAuthMiddleware] Initialized (MAC fingerprint: 55aedeaf8cd73519, ENC fingerprint: d3f2dff8177794ff)
+2025-10-16 00:29:52 | INFO     | api | [auth_middleware] Initializing NextAuthMiddleware...
+2025-10-16 00:29:52 | DEBUG    | api | [derive_keys] Decoded AUTH_SECRET from hex: 32 bytes
+2025-10-16 00:29:52 | DEBUG    | api | [derive_keys] Derived keys - MAC: 32 bytes, ENC: 32 bytes
+2025-10-16 00:29:52 | INFO     | api | [NextAuthMiddleware] Initialized (MAC fingerprint: 55aedeaf8cd73519, ENC fingerprint: d3f2dff8177794ff)
+2025-10-16 00:30:00 | INFO     | api | [auth_middleware] Initializing NextAuthMiddleware...
+2025-10-16 00:30:00 | DEBUG    | api | [derive_keys] Decoded AUTH_SECRET from hex: 32 bytes
+2025-10-16 00:30:00 | DEBUG    | api | [derive_keys] Derived keys - MAC: 32 bytes, ENC: 32 bytes
+2025-10-16 00:30:00 | INFO     | api | [NextAuthMiddleware] Initialized (MAC fingerprint: 55aedeaf8cd73519, ENC fingerprint: d3f2dff8177794ff)
+2025-10-16 00:30:17 | INFO     | api | [auth_middleware] Initializing NextAuthMiddleware...
+2025-10-16 00:30:17 | DEBUG    | api | [derive_keys] Decoded AUTH_SECRET from hex: 32 bytes
+2025-10-16 00:30:17 | DEBUG    | api | [derive_keys] Derived keys - MAC: 32 bytes, ENC: 32 bytes
+2025-10-16 00:30:17 | INFO     | api | [NextAuthMiddleware] Initialized (MAC fingerprint: 55aedeaf8cd73519, ENC fingerprint: d3f2dff8177794ff)
+2025-10-16 00:30:46 | INFO     | api | [auth_middleware] Initializing NextAuthMiddleware...
+2025-10-16 00:30:46 | DEBUG    | api | [derive_keys] Decoded AUTH_SECRET from hex: 32 bytes
+2025-10-16 00:30:46 | DEBUG    | api | [derive_keys] Derived keys - MAC: 32 bytes, ENC: 32 bytes
+2025-10-16 00:30:46 | INFO     | api | [NextAuthMiddleware] Initialized (MAC fingerprint: 55aedeaf8cd73519, ENC fingerprint: d3f2dff8177794ff)
+2025-10-16 00:30:52 | INFO     | api | [auth_middleware] Initializing NextAuthMiddleware...
+2025-10-16 00:30:52 | DEBUG    | api | [derive_keys] Decoded AUTH_SECRET from hex: 32 bytes
+2025-10-16 00:30:52 | DEBUG    | api | [derive_keys] Derived keys - MAC: 32 bytes, ENC: 32 bytes
+2025-10-16 00:30:52 | INFO     | api | [NextAuthMiddleware] Initialized (MAC fingerprint: 55aedeaf8cd73519, ENC fingerprint: d3f2dff8177794ff)
+2025-10-16 00:30:58 | INFO     | api | [auth_middleware] Initializing NextAuthMiddleware...
+2025-10-16 00:30:58 | DEBUG    | api | [derive_keys] Decoded AUTH_SECRET from hex: 32 bytes
+2025-10-16 00:30:58 | DEBUG    | api | [derive_keys] Derived keys - MAC: 32 bytes, ENC: 32 bytes
+2025-10-16 00:30:58 | INFO     | api | [NextAuthMiddleware] Initialized (MAC fingerprint: 55aedeaf8cd73519, ENC fingerprint: d3f2dff8177794ff)
+2025-10-16 00:31:13 | INFO     | api | [auth_middleware] Initializing NextAuthMiddleware...
+2025-10-16 00:31:13 | DEBUG    | api | [derive_keys] Decoded AUTH_SECRET from hex: 32 bytes
+2025-10-16 00:31:13 | DEBUG    | api | [derive_keys] Derived keys - MAC: 32 bytes, ENC: 32 bytes
+2025-10-16 00:31:13 | INFO     | api | [NextAuthMiddleware] Initialized (MAC fingerprint: 55aedeaf8cd73519, ENC fingerprint: d3f2dff8177794ff)
+2025-10-16 00:32:57 | INFO     | api | [auth_middleware] Initializing NextAuthMiddleware...
+2025-10-16 00:32:57 | DEBUG    | api | [derive_keys] Decoded AUTH_SECRET from hex: 32 bytes
+2025-10-16 00:32:57 | DEBUG    | api | [derive_keys] Derived keys - MAC: 32 bytes, ENC: 32 bytes
+2025-10-16 00:32:57 | INFO     | api | [NextAuthMiddleware] Initialized (MAC fingerprint: 55aedeaf8cd73519, ENC fingerprint: d3f2dff8177794ff)
+2025-10-16 00:33:04 | INFO     | api | [auth_middleware] Initializing NextAuthMiddleware...
+2025-10-16 00:33:04 | DEBUG    | api | [derive_keys] Decoded AUTH_SECRET from hex: 32 bytes
+2025-10-16 00:33:04 | DEBUG    | api | [derive_keys] Derived keys - MAC: 32 bytes, ENC: 32 bytes
+2025-10-16 00:33:04 | INFO     | api | [NextAuthMiddleware] Initialized (MAC fingerprint: 55aedeaf8cd73519, ENC fingerprint: d3f2dff8177794ff)
+2025-10-16 00:33:20 | INFO     | api | [auth_middleware] Initializing NextAuthMiddleware...
+2025-10-16 00:33:20 | DEBUG    | api | [derive_keys] Decoded AUTH_SECRET from hex: 32 bytes
+2025-10-16 00:33:20 | DEBUG    | api | [derive_keys] Derived keys - MAC: 32 bytes, ENC: 32 bytes
+2025-10-16 00:33:20 | INFO     | api | [NextAuthMiddleware] Initialized (MAC fingerprint: 55aedeaf8cd73519, ENC fingerprint: d3f2dff8177794ff)
+2025-10-16 00:33:26 | INFO     | api | [auth_middleware] Initializing NextAuthMiddleware...
+2025-10-16 00:33:26 | DEBUG    | api | [derive_keys] Decoded AUTH_SECRET from hex: 32 bytes
+2025-10-16 00:33:26 | DEBUG    | api | [derive_keys] Derived keys - MAC: 32 bytes, ENC: 32 bytes
+2025-10-16 00:33:26 | INFO     | api | [NextAuthMiddleware] Initialized (MAC fingerprint: 55aedeaf8cd73519, ENC fingerprint: d3f2dff8177794ff)
+2025-10-16 00:33:31 | INFO     | api | [auth_middleware] Initializing NextAuthMiddleware...
+2025-10-16 00:33:31 | DEBUG    | api | [derive_keys] Decoded AUTH_SECRET from hex: 32 bytes
+2025-10-16 00:33:31 | DEBUG    | api | [derive_keys] Derived keys - MAC: 32 bytes, ENC: 32 bytes
+2025-10-16 00:33:31 | INFO     | api | [NextAuthMiddleware] Initialized (MAC fingerprint: 55aedeaf8cd73519, ENC fingerprint: d3f2dff8177794ff)
+2025-10-16 00:33:35 | INFO     | api | [auth_middleware] Initializing NextAuthMiddleware...
+2025-10-16 00:33:35 | DEBUG    | api | [derive_keys] Decoded AUTH_SECRET from hex: 32 bytes
+2025-10-16 00:33:35 | DEBUG    | api | [derive_keys] Derived keys - MAC: 32 bytes, ENC: 32 bytes
+2025-10-16 00:33:35 | INFO     | api | [NextAuthMiddleware] Initialized (MAC fingerprint: 55aedeaf8cd73519, ENC fingerprint: d3f2dff8177794ff)
+2025-10-16 00:33:45 | INFO     | api | [auth_middleware] Initializing NextAuthMiddleware...
+2025-10-16 00:33:45 | DEBUG    | api | [derive_keys] Decoded AUTH_SECRET from hex: 32 bytes
+2025-10-16 00:33:45 | DEBUG    | api | [derive_keys] Derived keys - MAC: 32 bytes, ENC: 32 bytes
+2025-10-16 00:33:45 | INFO     | api | [NextAuthMiddleware] Initialized (MAC fingerprint: 55aedeaf8cd73519, ENC fingerprint: d3f2dff8177794ff)
+2025-10-16 00:34:38 | INFO     | api | [auth_middleware] Initializing NextAuthMiddleware...
+2025-10-16 00:34:38 | DEBUG    | api | [derive_keys] Decoded AUTH_SECRET from hex: 32 bytes
+2025-10-16 00:34:38 | DEBUG    | api | [derive_keys] Derived keys - MAC: 32 bytes, ENC: 32 bytes
+2025-10-16 00:34:38 | INFO     | api | [NextAuthMiddleware] Initialized (MAC fingerprint: 55aedeaf8cd73519, ENC fingerprint: d3f2dff8177794ff)
+2025-10-16 00:34:42 | INFO     | api | [auth_middleware] Initializing NextAuthMiddleware...
+2025-10-16 00:34:42 | DEBUG    | api | [derive_keys] Decoded AUTH_SECRET from hex: 32 bytes
+2025-10-16 00:34:42 | DEBUG    | api | [derive_keys] Derived keys - MAC: 32 bytes, ENC: 32 bytes
+2025-10-16 00:34:42 | INFO     | api | [NextAuthMiddleware] Initialized (MAC fingerprint: 55aedeaf8cd73519, ENC fingerprint: d3f2dff8177794ff)
+2025-10-16 00:34:56 | INFO     | api | [auth_middleware] Initializing NextAuthMiddleware...
+2025-10-16 00:34:56 | DEBUG    | api | [derive_keys] Decoded AUTH_SECRET from hex: 32 bytes
+2025-10-16 00:34:56 | DEBUG    | api | [derive_keys] Derived keys - MAC: 32 bytes, ENC: 32 bytes
+2025-10-16 00:34:56 | INFO     | api | [NextAuthMiddleware] Initialized (MAC fingerprint: 55aedeaf8cd73519, ENC fingerprint: d3f2dff8177794ff)
+2025-10-16 00:49:15 | INFO     | api | [auth_middleware] Initializing NextAuthMiddleware...
+2025-10-16 00:49:15 | DEBUG    | api | [derive_keys] Decoded AUTH_SECRET from hex: 32 bytes
+2025-10-16 00:49:15 | DEBUG    | api | [derive_keys] Derived keys - MAC: 32 bytes, ENC: 32 bytes
+2025-10-16 00:49:15 | INFO     | api | [NextAuthMiddleware] Initialized (MAC fingerprint: 55aedeaf8cd73519, ENC fingerprint: d3f2dff8177794ff)
+2025-10-16 00:51:36 | INFO     | api.debug_middleware | 🔵 POST /api/research/start
+2025-10-16 00:51:36 | DEBUG    | api.debug_middleware | Headers: {'set-cookie': 'authjs.session-token=eyJhbGciOiJkaXIiLCJlbmMiOiJBMjU2Q0JDLUhTNTEyIiwia2lkIjoiczBqVUw3TGRxQmNicFZvaUJWZVJSZmFuTThyV29IUlNmWV9WTG5WS25HS0FJdFM5aDNRLXNXc3JQazF0MDJ3MTUxWnp4RzhycDV1WDEtbWJWUS1ydXcifQ..3gE9z43uRlvWRdgKeJGYTA.WHzSBYoAXT4R32L0tj0IWuOxAILfMOFZzz3VnaoUgi_eShOmofdYdVY7pnMgQnvUdO7tgfLSJrcff2sb6luNzkLb74uBfhDJHhoHWtan5Z4P_Uu3oF2Or7PKnD2LoAwWO2eZYRWIByxV1x_L6wkFtZaw9xLGMnOuerBjasfuvXdLS-FnMAngpSKGoqKpL9dKt43Yc_GYiRmEJnSH-1Vgr_YfNOZvm-j9uSZhEN9wMsDhMhWSi0fEppLEBnWUcZ-l5SH90RQdWmtwvGyvtkc23RfJOFjdMk3ltR6zwb9fIq7S2q4zx-D2zGC4MzV5lW7xBxkDeD60VvREs3lgBE-41e8rbaVRe8QqcwVZPaVY44h56mhO8h3Art7G7K3JMXT1L0RkBS2uBHQZnS61aqtiew.5lAEoBqAuPNV-5f313AU-Um3KfYGXBsZ7Fqk0m0E4KI; Path=/; Expires=Sat, 15 Nov 2025 04:51:36 GMT; HttpOnly; SameSite=Lax', 'x-forwarded-for': '::1', 'x-forwarded-proto': 'http', 'x-forwarded-port': '3001', 'x-forwarded-host': 'localhost:3001', 'cookie': 'authjs.csrf-token=b6c466b5298bd6817eb215608bf34e4b38474fc1bdf02fbb9257c2b47313a86b%7C693f36dcf51f25d9223d992583a2764fa326bc662e90bc2dc53eb0a0d622401e; authjs.callback-url=http%3A%2F%2Flocalhost%3A3001; authjs.session-token=eyJhbGciOiJkaXIiLCJlbmMiOiJBMjU2Q0JDLUhTNTEyIiwia2lkIjoiczBqVUw3TGRxQmNicFZvaUJWZVJSZmFuTThyV29IUlNmWV9WTG5WS25HS0FJdFM5aDNRLXNXc3JQazF0MDJ3MTUxWnp4RzhycDV1WDEtbWJWUS1ydXcifQ..Haa_NIkyrPDHUTvYJ9yBDA.yXQEXfUvxOwEDb2R6KyrwpPdhvxjoI_5Ysjd3z8Izp3BQ-4Xokh1ZUnHP7wzzFEA2qblwx-PSl5JXkq_nO82dMOOrekdVnOuAfMFRgA1Z2a4T9Dn2Zw5uJijGoRmtiFFqUcsXRDamOSLwWCYW-cORfUoqr2AWCiliW8t4u5s0KdvlA-nnhu53hzWcP3gQM3qL7e3-ZV3cKFwTczbQk582OH1l79zjuVZvgCFpouBosQ7IFrSJ_6VTK03O87GOWMRWncJHLh8wNeRqCTim_0lWHLgG1CyuQH2TghJc_NeaBpwMAcLJgjV3abhO0wr07joVzsdp9qxKZxGShCmA2xKCPYQmrtlkdU6aOKke2PGBaAcYaqJfr28_B4dXyIBYXR49ldJiKVW_lGBtFdwwJqGgg.8qfWz9DITMaV67J9W87iSOu82tOVMBltHo457xRt3Cg', 'accept-language': 'en-US,en;q=0.9', 'accept-encoding': 'gzip, deflate, br, zstd', 'referer': 'http://localhost:3001/chat', 'sec-fetch-dest': 'empty', 'sec-fetch-mode': 'cors', 'sec-fetch-site': 'same-origin', 'origin': 'http://localhost:3001', 'accept': '*/*', 'sec-ch-ua-mobile': '?0', 'content-type': 'application/json', 'sec-ch-ua': '"Google Chrome";v="141", "Not?A_Brand";v="8", "Chromium";v="141"', 'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36', 'sec-ch-ua-platform': '"macOS"', 'content-length': '163', 'connection': 'close', 'host': '127.0.0.1:8000'}
+2025-10-16 00:51:36 | DEBUG    | api.debug_middleware | Query params: {}
+2025-10-16 00:51:36 | DEBUG    | api.debug_middleware | Request body: {
+  "id": "1374fabb-f221-4377-ad57-ab49e03b41c1",
+  "message": {
+    "role": "user",
+    "parts": [
+      {
+        "type": "text",
+        "text": "testing chat"
+      }
+    ],
+    "id": "0b923bc8-556e-449a-ad71-1cd7ae7d7670"
+  }
+}
+2025-10-16 00:51:36 | INFO     | api | [get_current_user] Attempting authentication...
+2025-10-16 00:51:36 | DEBUG    | api | [NextAuthMiddleware.get_user_from_cookie] Available cookies: ['authjs.csrf-token', 'authjs.callback-url', 'authjs.session-token']
+2025-10-16 00:51:36 | INFO     | api | [NextAuthMiddleware.get_user_from_cookie] Found session cookie: authjs.session-token
+2025-10-16 00:51:36 | DEBUG    | api | [NextAuthMiddleware.get_user_from_token] Extracting user info...
+2025-10-16 00:51:36 | DEBUG    | api | [NextAuthMiddleware.verify_token] Starting token verification...
+2025-10-16 00:51:36 | DEBUG    | api | [NextAuthMiddleware.verify_token] Token has 4 dots
+2025-10-16 00:51:36 | DEBUG    | api | [decrypt_jwe_token] Token length: 649
+2025-10-16 00:51:36 | DEBUG    | api | [decrypt_jwe_token] JWE Header - alg: dir, enc: A256CBC-HS512
+2025-10-16 00:51:36 | DEBUG    | api | [decrypt_jwe_token] Component sizes - IV: 16, CT: 304, Tag: 32
+2025-10-16 00:51:36 | ERROR    | api | [decrypt_jwe_token] Decryption failed: ValueError: HMAC authentication failed - invalid tag
+2025-10-16 00:51:36 | ERROR    | api | [decrypt_jwe_token] Decryption failed: ValueError: HMAC authentication failed - invalid tag
+2025-10-16 00:51:36 | ERROR    | api | [decrypt_jwe_token] Traceback: Traceback (most recent call last):
+  File "/Users/andresb/Projects/gocareerpath/api/auth_middleware.py", line 174, in decrypt_jwe_token
+    plaintext = decrypt_a256cbc_hs512(
+                ^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/andresb/Projects/gocareerpath/api/auth_middleware.py", line 113, in decrypt_a256cbc_hs512
+    raise ValueError("HMAC authentication failed - invalid tag")
+ValueError: HMAC authentication failed - invalid tag
+
+2025-10-16 00:51:36 | ERROR    | api | [decrypt_jwe_token] Traceback: Traceback (most recent call last):
+  File "/Users/andresb/Projects/gocareerpath/api/auth_middleware.py", line 174, in decrypt_jwe_token
+    plaintext = decrypt_a256cbc_hs512(
+                ^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/andresb/Projects/gocareerpath/api/auth_middleware.py", line 113, in decrypt_a256cbc_hs512
+    raise ValueError("HMAC authentication failed - invalid tag")
+ValueError: HMAC authentication failed - invalid tag
+
+2025-10-16 00:51:36 | ERROR    | api | [NextAuthMiddleware.verify_token] Decryption failed: Failed to decrypt token: HMAC authentication failed - invalid tag
+2025-10-16 00:51:36 | ERROR    | api | [NextAuthMiddleware.verify_token] Decryption failed: Failed to decrypt token: HMAC authentication failed - invalid tag
+2025-10-16 00:51:36 | WARNING  | api | [NextAuthMiddleware.get_user_from_cookie] Authentication failed: Invalid or expired session: Failed to decrypt token: HMAC authentication failed - invalid tag
+2025-10-16 00:51:36 | INFO     | api | [NextAuthMiddleware.get_user_from_header] No Authorization header
+2025-10-16 00:51:36 | ERROR    | api | [get_current_user] Authentication required but not provided
+2025-10-16 00:51:36 | ERROR    | api | [get_current_user] Authentication required but not provided
+2025-10-16 00:51:36 | WARNING  | api.exception_handlers | HTTP 401 on POST /api/research/start: Authentication required
+2025-10-16 00:51:36 | INFO     | api.debug_middleware | 🟢 POST /api/research/start - 401 (0.011s)
+2025-10-16 01:17:18 | INFO     | api | [auth_middleware] Initializing NextAuthMiddleware...
+2025-10-16 01:17:18 | DEBUG    | api | [derive_keys] Decoded AUTH_SECRET from hex: 32 bytes
+2025-10-16 01:17:18 | DEBUG    | api | [derive_keys] Derived keys - MAC: 32 bytes, ENC: 32 bytes
+2025-10-16 01:17:18 | DEBUG    | api | [derive_keys] MAC key (first 8 bytes): 7e5327907fc93cc8
+2025-10-16 01:17:18 | DEBUG    | api | [derive_keys] ENC key (first 8 bytes): a4c0458d2cb71301
+2025-10-16 01:17:18 | INFO     | api | [NextAuthMiddleware] Initialized (MAC fingerprint: 55aedeaf8cd73519, ENC fingerprint: d3f2dff8177794ff)
+2025-10-16 01:17:24 | INFO     | api.debug_middleware | 🔵 POST /api/research/start
+2025-10-16 01:17:24 | DEBUG    | api.debug_middleware | Headers: {'set-cookie': 'authjs.session-token=eyJhbGciOiJkaXIiLCJlbmMiOiJBMjU2Q0JDLUhTNTEyIiwia2lkIjoiczBqVUw3TGRxQmNicFZvaUJWZVJSZmFuTThyV29IUlNmWV9WTG5WS25HS0FJdFM5aDNRLXNXc3JQazF0MDJ3MTUxWnp4RzhycDV1WDEtbWJWUS1ydXcifQ.._Xv0PF63Hchrkr9VTHZPuA.FdELsUFYZshWEnzFWrLue-dpkrWH29hG11XEVKEw3Mzz5Z7Dvj95jZ2pKqTxzaGsVmCEzdTil7sZmVMSIdpGorBTMHKddb63t26DpqNDL4lmURvnP3KiCk8nCslQGcMX95hT30XQrhb4dm80ypgJ-6cM7f4p0EARGN-s9CwHdReI2j48f1DPXxc9mS707kifKV1yXrz0ufDm_vtUX_GJ41S3wvSOGCITRCldVMd9FAEAu-Bc1cEqfVvvyy3y3yDmykjhBsYKmgroJnqxGhqhA_D-JuAQfYRSXsPHwiUN1uGpHXsL8-TTplgvtYi8Lyda888AziOs6T8iBtIIrZkCfsxQW01eGmnLDFsizyunqMWzU26122aT_cl_lagQt844u5FrFuJaizB79zuZaw11Jw.df4dsaU8pxQ2zmmKxhC0AFDR_oI-uN1zXmHC8n8ugd4; Path=/; Expires=Sat, 15 Nov 2025 05:17:24 GMT; HttpOnly; SameSite=Lax', 'x-forwarded-for': '::1', 'x-forwarded-proto': 'http', 'x-forwarded-port': '3000', 'x-forwarded-host': 'localhost:3000', 'cookie': 'authjs.csrf-token=34a431e4cabb68b45e8b6210ae231072e2590dbd93e349c57673ae2ea508947d%7Cd29b3ccd22caa17f477907a0078403f99ab8e2500904e65639b71ff221b4d579; authjs.callback-url=http%3A%2F%2Flocalhost%3A3000%2Fchat; authjs.session-token=eyJhbGciOiJkaXIiLCJlbmMiOiJBMjU2Q0JDLUhTNTEyIiwia2lkIjoiczBqVUw3TGRxQmNicFZvaUJWZVJSZmFuTThyV29IUlNmWV9WTG5WS25HS0FJdFM5aDNRLXNXc3JQazF0MDJ3MTUxWnp4RzhycDV1WDEtbWJWUS1ydXcifQ..WLTzPSQpuEt-wENeqZNnGw.XEj4RfuZNeRLGzANQ1kvEReVCHjsHNjfs3k-8I_9bhn8dyWSvhLGBcc4RSBwxF40Yakymvh12V22QaZ2a1-kenN4O9ASSyUbblGbGOfP1E7SvF5xnvQMzkW7lUy3UrWMws_tw3GckPbLq7IJn4MPTYLxOUqW3xM9aqP_drSi0xGTOtQYtBN0lvV8H6UZc5qf8gEGTI4o9uZaybXz0dKiMOhg3DO5vEIY_TyOsG71sD_1qRihUbrvDCZvOG-ae1KZneMSFouYQcl3rVt6kM148kOtPosToM5SDuJFDqBn77VKIKAOmQtEfco0mVwkjendnP1WLnwnPnn_ZtXeKjBRSRHKwpi7VPCvRLdsxQ9O0YfSNG0iwz-tC3fikE-5eCd24wobKXia7weLkr2A1Z_Azw.H8dmlmwFkVxBtsEqSV-71GG4ssrap7v3cVBOWKKKPEI', 'accept-language': 'en-US,en;q=0.9', 'accept-encoding': 'gzip, deflate, br, zstd', 'referer': 'http://localhost:3000/chat', 'sec-fetch-dest': 'empty', 'sec-fetch-mode': 'cors', 'sec-fetch-site': 'same-origin', 'origin': 'http://localhost:3000', 'accept': '*/*', 'sec-ch-ua-mobile': '?0', 'content-type': 'application/json', 'sec-ch-ua': '"Google Chrome";v="141", "Not?A_Brand";v="8", "Chromium";v="141"', 'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36', 'sec-ch-ua-platform': '"macOS"', 'content-length': '164', 'connection': 'close', 'host': '127.0.0.1:8000'}
+2025-10-16 01:17:24 | DEBUG    | api.debug_middleware | Query params: {}
+2025-10-16 01:17:24 | DEBUG    | api.debug_middleware | Request body: {
+  "id": "68d51e65-a192-4837-a639-15a81b4dff40",
+  "message": {
+    "role": "user",
+    "parts": [
+      {
+        "type": "text",
+        "text": "Hello testing"
+      }
+    ],
+    "id": "da759b1e-b15d-445b-a31a-6d73c9365fbc"
+  }
+}
+2025-10-16 01:17:24 | INFO     | api | [get_current_user] Attempting authentication...
+2025-10-16 01:17:24 | DEBUG    | api | [NextAuthMiddleware.get_user_from_cookie] Available cookies: ['authjs.csrf-token', 'authjs.callback-url', 'authjs.session-token']
+2025-10-16 01:17:24 | INFO     | api | [NextAuthMiddleware.get_user_from_cookie] Found session cookie: authjs.session-token
+2025-10-16 01:17:24 | DEBUG    | api | [NextAuthMiddleware.get_user_from_token] Extracting user info...
+2025-10-16 01:17:24 | DEBUG    | api | [NextAuthMiddleware.verify_token] Starting token verification...
+2025-10-16 01:17:24 | DEBUG    | api | [NextAuthMiddleware.verify_token] Token has 4 dots
+2025-10-16 01:17:24 | DEBUG    | api | [decrypt_jwe_token] Token length: 649
+2025-10-16 01:17:24 | DEBUG    | api | [decrypt_jwe_token] JWE Header - alg: dir, enc: A256CBC-HS512
+2025-10-16 01:17:24 | DEBUG    | api | [decrypt_jwe_token] Component sizes - IV: 16, CT: 304, Tag: 32
+2025-10-16 01:17:24 | DEBUG    | api | [decrypt_a256cbc_hs512] MAC input components - AAD: 174, IV: 16, CT: 304, AL: 8
+2025-10-16 01:17:24 | DEBUG    | api | [decrypt_a256cbc_hs512] Computed tag: 3dcc0f5ecf7d8d052b2a69c40cf5f891...
+2025-10-16 01:17:24 | DEBUG    | api | [decrypt_a256cbc_hs512] Expected tag: 1fc766966c05915c41b6c12a495fbbd4...
+2025-10-16 01:17:24 | ERROR    | api | [decrypt_jwe_token] Decryption failed: ValueError: HMAC authentication failed - invalid tag
+2025-10-16 01:17:24 | ERROR    | api | [decrypt_jwe_token] Decryption failed: ValueError: HMAC authentication failed - invalid tag
+2025-10-16 01:17:24 | ERROR    | api | [decrypt_jwe_token] Traceback: Traceback (most recent call last):
+  File "/Users/andresb/Projects/gocareerpath/api/auth_middleware.py", line 187, in decrypt_jwe_token
+    plaintext = decrypt_a256cbc_hs512(
+                ^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/andresb/Projects/gocareerpath/api/auth_middleware.py", line 126, in decrypt_a256cbc_hs512
+    raise ValueError("HMAC authentication failed - invalid tag")
+ValueError: HMAC authentication failed - invalid tag
+
+2025-10-16 01:17:24 | ERROR    | api | [decrypt_jwe_token] Traceback: Traceback (most recent call last):
+  File "/Users/andresb/Projects/gocareerpath/api/auth_middleware.py", line 187, in decrypt_jwe_token
+    plaintext = decrypt_a256cbc_hs512(
+                ^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/andresb/Projects/gocareerpath/api/auth_middleware.py", line 126, in decrypt_a256cbc_hs512
+    raise ValueError("HMAC authentication failed - invalid tag")
+ValueError: HMAC authentication failed - invalid tag
+
+2025-10-16 01:17:24 | WARNING  | api | [NextAuthMiddleware.verify_token] HMAC failed with HKDF keys, trying direct secret...
+2025-10-16 01:17:24 | DEBUG    | api | [NextAuthMiddleware.verify_token] Trying with repeated secret...
+2025-10-16 01:17:24 | DEBUG    | api | [decrypt_jwe_token] Token length: 649
+2025-10-16 01:17:24 | DEBUG    | api | [decrypt_jwe_token] JWE Header - alg: dir, enc: A256CBC-HS512
+2025-10-16 01:17:24 | DEBUG    | api | [decrypt_jwe_token] Component sizes - IV: 16, CT: 304, Tag: 32
+2025-10-16 01:17:24 | DEBUG    | api | [decrypt_a256cbc_hs512] MAC input components - AAD: 174, IV: 16, CT: 304, AL: 8
+2025-10-16 01:17:24 | DEBUG    | api | [decrypt_a256cbc_hs512] Computed tag: 7eda822bc1b42bdeb546886c14fe0300...
+2025-10-16 01:17:24 | DEBUG    | api | [decrypt_a256cbc_hs512] Expected tag: 1fc766966c05915c41b6c12a495fbbd4...
+2025-10-16 01:17:24 | ERROR    | api | [decrypt_jwe_token] Decryption failed: ValueError: HMAC authentication failed - invalid tag
+2025-10-16 01:17:24 | ERROR    | api | [decrypt_jwe_token] Decryption failed: ValueError: HMAC authentication failed - invalid tag
+2025-10-16 01:17:24 | ERROR    | api | [decrypt_jwe_token] Traceback: Traceback (most recent call last):
+  File "/Users/andresb/Projects/gocareerpath/api/auth_middleware.py", line 187, in decrypt_jwe_token
+    plaintext = decrypt_a256cbc_hs512(
+                ^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/andresb/Projects/gocareerpath/api/auth_middleware.py", line 126, in decrypt_a256cbc_hs512
+    raise ValueError("HMAC authentication failed - invalid tag")
+ValueError: HMAC authentication failed - invalid tag
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/andresb/Projects/gocareerpath/api/auth_middleware.py", line 250, in verify_token
+    payload = decrypt_jwe_token(token, self.mac_key, self.enc_key)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/andresb/Projects/gocareerpath/api/auth_middleware.py", line 210, in decrypt_jwe_token
+    raise ValueError(f"Failed to decrypt token: {e}")
+ValueError: Failed to decrypt token: HMAC authentication failed - invalid tag
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/andresb/Projects/gocareerpath/api/auth_middleware.py", line 187, in decrypt_jwe_token
+    plaintext = decrypt_a256cbc_hs512(
+                ^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/andresb/Projects/gocareerpath/api/auth_middleware.py", line 126, in decrypt_a256cbc_hs512
+    raise ValueError("HMAC authentication failed - invalid tag")
+ValueError: HMAC authentication failed - invalid tag
+
+2025-10-16 01:17:24 | ERROR    | api | [decrypt_jwe_token] Traceback: Traceback (most recent call last):
+  File "/Users/andresb/Projects/gocareerpath/api/auth_middleware.py", line 187, in decrypt_jwe_token
+    plaintext = decrypt_a256cbc_hs512(
+                ^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/andresb/Projects/gocareerpath/api/auth_middleware.py", line 126, in decrypt_a256cbc_hs512
+    raise ValueError("HMAC authentication failed - invalid tag")
+ValueError: HMAC authentication failed - invalid tag
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/andresb/Projects/gocareerpath/api/auth_middleware.py", line 250, in verify_token
+    payload = decrypt_jwe_token(token, self.mac_key, self.enc_key)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/andresb/Projects/gocareerpath/api/auth_middleware.py", line 210, in decrypt_jwe_token
+    raise ValueError(f"Failed to decrypt token: {e}")
+ValueError: Failed to decrypt token: HMAC authentication failed - invalid tag
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/andresb/Projects/gocareerpath/api/auth_middleware.py", line 187, in decrypt_jwe_token
+    plaintext = decrypt_a256cbc_hs512(
+                ^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/andresb/Projects/gocareerpath/api/auth_middleware.py", line 126, in decrypt_a256cbc_hs512
+    raise ValueError("HMAC authentication failed - invalid tag")
+ValueError: HMAC authentication failed - invalid tag
+
+2025-10-16 01:17:24 | ERROR    | api | [NextAuthMiddleware.verify_token] All decryption methods failed: Failed to decrypt token: HMAC authentication failed - invalid tag
+2025-10-16 01:17:24 | ERROR    | api | [NextAuthMiddleware.verify_token] All decryption methods failed: Failed to decrypt token: HMAC authentication failed - invalid tag
+2025-10-16 01:17:24 | WARNING  | api | [NextAuthMiddleware.get_user_from_cookie] Authentication failed: Invalid or expired session
+2025-10-16 01:17:24 | INFO     | api | [NextAuthMiddleware.get_user_from_header] No Authorization header
+2025-10-16 01:17:24 | ERROR    | api | [get_current_user] Authentication required but not provided
+2025-10-16 01:17:24 | ERROR    | api | [get_current_user] Authentication required but not provided
+2025-10-16 01:17:24 | WARNING  | api.exception_handlers | HTTP 401 on POST /api/research/start: Authentication required
+2025-10-16 01:17:24 | INFO     | api.debug_middleware | 🟢 POST /api/research/start - 401 (0.012s)
+2025-10-16 01:22:45 | INFO     | api | [auth_middleware] Initializing NextAuthMiddleware...
+2025-10-16 01:22:45 | DEBUG    | api | [derive_keys] Decoded AUTH_SECRET from hex: 32 bytes
+2025-10-16 01:22:45 | DEBUG    | api | [derive_keys] Derived keys - MAC: 32 bytes, ENC: 32 bytes
+2025-10-16 01:22:45 | DEBUG    | api | [derive_keys] MAC key (first 8 bytes): 7e5327907fc93cc8
+2025-10-16 01:22:45 | DEBUG    | api | [derive_keys] ENC key (first 8 bytes): a4c0458d2cb71301
+2025-10-16 01:22:45 | INFO     | api | [NextAuthMiddleware] Initialized (MAC fingerprint: 55aedeaf8cd73519, ENC fingerprint: d3f2dff8177794ff)
+2025-10-16 01:26:38 | INFO     | api | [auth_middleware] Initializing NextAuthMiddleware...
+2025-10-16 01:26:38 | DEBUG    | api | [derive_keys] Decoded AUTH_SECRET from hex: 32 bytes
+2025-10-16 01:26:38 | DEBUG    | api | [derive_keys] Derived keys - MAC: 32 bytes, ENC: 32 bytes
+2025-10-16 01:26:38 | DEBUG    | api | [derive_keys] MAC key (first 8 bytes): 7e5327907fc93cc8
+2025-10-16 01:26:38 | DEBUG    | api | [derive_keys] ENC key (first 8 bytes): a4c0458d2cb71301
+2025-10-16 01:26:38 | INFO     | api | [NextAuthMiddleware] Initialized (MAC fingerprint: 55aedeaf8cd73519, ENC fingerprint: d3f2dff8177794ff)
+2025-10-16 01:30:22 | INFO     | api | [auth_middleware] Initializing NextAuthMiddleware...
+2025-10-16 01:30:22 | DEBUG    | api | [derive_keys] Decoded AUTH_SECRET from hex: 32 bytes
+2025-10-16 01:30:22 | DEBUG    | api | [derive_keys] Derived keys - MAC: 32 bytes, ENC: 32 bytes
+2025-10-16 01:30:22 | DEBUG    | api | [derive_keys] MAC key (first 8 bytes): 7e5327907fc93cc8
+2025-10-16 01:30:22 | DEBUG    | api | [derive_keys] ENC key (first 8 bytes): a4c0458d2cb71301
+2025-10-16 01:30:22 | INFO     | api | [NextAuthMiddleware] Initialized (MAC fingerprint: 55aedeaf8cd73519, ENC fingerprint: d3f2dff8177794ff)
+2025-10-16 01:30:49 | INFO     | api | [auth_middleware] Initializing NextAuthMiddleware...
+2025-10-16 01:30:49 | DEBUG    | api | [derive_keys] Decoded AUTH_SECRET from hex: 32 bytes
+2025-10-16 01:30:49 | DEBUG    | api | [derive_keys] Derived keys - MAC: 32 bytes, ENC: 32 bytes
+2025-10-16 01:30:49 | DEBUG    | api | [derive_keys] MAC key (first 8 bytes): 7e5327907fc93cc8
+2025-10-16 01:30:49 | DEBUG    | api | [derive_keys] ENC key (first 8 bytes): a4c0458d2cb71301
+2025-10-16 01:30:49 | INFO     | api | [NextAuthMiddleware] Initialized (MAC fingerprint: 55aedeaf8cd73519, ENC fingerprint: d3f2dff8177794ff)
+2025-10-16 02:53:57 | INFO     | api | [auth_middleware] Initializing NextAuthMiddleware...
+2025-10-16 02:53:57 | DEBUG    | api | [derive_keys] Decoded AUTH_SECRET from hex: 32 bytes
+2025-10-16 02:53:57 | DEBUG    | api | [derive_keys] Derived keys - MAC: 32 bytes, ENC: 32 bytes
+2025-10-16 02:53:57 | DEBUG    | api | [derive_keys] MAC key (first 8 bytes): 7e5327907fc93cc8
+2025-10-16 02:53:57 | DEBUG    | api | [derive_keys] ENC key (first 8 bytes): a4c0458d2cb71301
+2025-10-16 02:53:57 | INFO     | api | [NextAuthMiddleware] Initialized (MAC fingerprint: 55aedeaf8cd73519, ENC fingerprint: d3f2dff8177794ff)
+2025-10-16 02:54:05 | INFO     | api | [auth_middleware] Initializing NextAuthMiddleware...
+2025-10-16 02:54:05 | DEBUG    | api | [derive_keys] Decoded AUTH_SECRET from hex: 32 bytes
+2025-10-16 02:54:05 | DEBUG    | api | [derive_keys] Derived keys - MAC: 32 bytes, ENC: 32 bytes
+2025-10-16 02:54:05 | DEBUG    | api | [derive_keys] MAC key (first 8 bytes): 7e5327907fc93cc8
+2025-10-16 02:54:05 | DEBUG    | api | [derive_keys] ENC key (first 8 bytes): a4c0458d2cb71301
+2025-10-16 02:54:05 | INFO     | api | [NextAuthMiddleware] Initialized (MAC fingerprint: 55aedeaf8cd73519, ENC fingerprint: d3f2dff8177794ff)
+2025-10-16 03:28:18 | INFO     | api | [auth_middleware] Initializing NextAuthMiddleware...
+2025-10-16 03:28:18 | DEBUG    | api | [derive_keys] Decoded AUTH_SECRET from hex: 32 bytes
+2025-10-16 03:28:18 | DEBUG    | api | [derive_keys] Derived keys - MAC: 32 bytes, ENC: 32 bytes
+2025-10-16 03:28:18 | DEBUG    | api | [derive_keys] MAC key (first 8 bytes): 7e5327907fc93cc8
+2025-10-16 03:28:18 | DEBUG    | api | [derive_keys] ENC key (first 8 bytes): a4c0458d2cb71301
+2025-10-16 03:28:18 | INFO     | api | [NextAuthMiddleware] Initialized (MAC fingerprint: 55aedeaf8cd73519, ENC fingerprint: d3f2dff8177794ff)

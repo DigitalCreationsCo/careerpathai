@@ -28,7 +28,19 @@ export const { handlers: { GET, POST }, auth, signIn, signOut } = NextAuth({
         clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
     }),
   ],
-  session: { strategy: "jwt" },
+  cookies: {
+    sessionToken: {
+      options: {
+        httpOnly: true,
+        sameSite: 'lax',
+        path: '/',
+        secure: process.env.NODE_ENV === 'production'
+      }
+    }
+  },
+  session: { 
+    strategy: "jwt",
+  },
   callbacks: {
     // async signIn({ user }) {
     //     const isExistingUser = getUserByEmail(user.email!);

@@ -1,6 +1,5 @@
 
-import { nullable } from "zod/v4";
-import { configManager, RunnableConfig } from "./researchConfig";
+import { RunnableConfig } from "./configuration";
 import { PostgresSaver } from "@langchain/langgraph-checkpoint-postgres";
 import { Checkpoint } from "@langchain/langgraph-checkpoint";
 

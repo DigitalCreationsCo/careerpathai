@@ -1,18 +1,29 @@
 import { desc, and, eq, isNull } from 'drizzle-orm';
 import { db } from '../drizzle';
 import { activityLogs, teamMembers, teams, users } from '@/lib/db/schema';
-import { User } from '@/lib/types';
+import { NewUser, User } from '@/lib/types';
 import { cookies } from 'next/headers';
 import { hashPassword, verifyToken } from '@/lib/auth/session';
 
-export async function createUser(email: string, password: string, name: string) {
+export async function createUser(user: NewUser) {
   try {
-    const passwordHash = await hashPassword(password);
-    const newUser = await db.insert(users).values({ email, passwordHash, name });
+    console.debug('createUser: ', user);
+    let passwordHash = ''
+    if (user.password) {
+      passwordHash = await hashPassword(user.password);
+    }
+    const [newUser] = await db.insert(users).values({ 
+      ...user, 
+      id: user.id, 
+      passwordHash, 
+      role: 'member' 
+    }).returning();
+
     console.log('Created new user in database: ', newUser);
+
     return newUser;
   } catch (error) {
-    console.error("Failed to create user in database");
+    console.error("Failed to create user in database: ", error);
     throw error;
   }
 }

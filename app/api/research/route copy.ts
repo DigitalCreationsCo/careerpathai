@@ -1,9 +1,9 @@
 import { NextApiRequest, NextApiResponse } from 'next'
 import { EventEmitter } from 'events'
 import { generateUUID } from "@/lib/utils";
-import { sessionManager } from '@/lib/researcher/sessionManager'
+import { sessionManager } from '@/lib/deepResearcher/sessionManager'
 import { checkpointerManager } from '@/lib/researcher/checkpointerManager'
-import { deepResearcher } from '@/lib/researcher/deepResearcher'
+import { deepResearcher } from '@/lib/deepResearcher/deepResearcher'
 import { auth } from '@/auth';
 
 

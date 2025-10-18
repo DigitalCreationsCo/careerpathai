@@ -2,9 +2,7 @@
  * Research configuration management with user-specific settings.
  */
 
-export interface RunnableConfig {
-  configurable: Record<string, any>;
-}
+import { RunnableConfig } from "./configuration";
 
 export interface ResearchConfig {
   max_structured_output_retries: number;

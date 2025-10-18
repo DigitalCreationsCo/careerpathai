@@ -85,7 +85,7 @@ export const users = pgTable("users", {
 	id: uuid().defaultRandom().primaryKey().notNull(),
 	name: varchar({ length: 100 }),
 	email: varchar({ length: 255 }).notNull(),
-	passwordHash: text("password_hash").notNull(),
+	passwordHash: text("password_hash"),
 	role: varchar({ length: 20 }).default('member').notNull(),
 	createdAt: timestamp("created_at", { mode: 'string' }).defaultNow().notNull(),
 	updatedAt: timestamp("updated_at", { mode: 'string' }).defaultNow().notNull(),
@@ -132,7 +132,7 @@ export const reports = pgTable("reports", {
 
 export const researchSessions = pgTable("research_sessions", {
 	id: uuid().defaultRandom().primaryKey().notNull(),
-	userId: uuid("user_id").notNull(),
+	userId: uuid("user_id").notNull().references(() => users.id),
 	chatId: uuid("chat_id"),
 	threadId: varchar("thread_id", { length: 255 }).notNull(),
 	status: varchar({ length: 50 }).default('active').notNull(),

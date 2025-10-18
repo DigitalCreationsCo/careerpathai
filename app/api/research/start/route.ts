@@ -1,7 +1,7 @@
 import { auth } from "@/auth";
-import { checkpointerManager } from "@/lib/researcher/checkpointer";
-import { deepResearcher } from "@/lib/researcher/deepResearcher";
-import { sessionManager } from "@/lib/researcher/sessionManager";
+import { checkpointerManager } from "@/lib/deepResearcher/checkpointer";
+import { deepResearcher } from "@/lib/deepResearcher/deepResearcher";
+import { sessionManager } from "@/lib/deepResearcher/sessionManager";
 
 export interface StartResearchRequest {
   message: string
@@ -10,49 +10,60 @@ export interface StartResearchRequest {
 }
 
 export async function POST(req: Request) {
-
+  
   const user = (await auth())?.user;
+  console.debug('API: Research/start, user: ', JSON.stringify(user, null, 2));
+
+  console.debug('API: Research/start, user: ', JSON.stringify(user));
   if (!user) {
-    throw Error("No user. Unauthorized.")
+    throw Error("No user found. Unauthorized.")
   }
   
+  if (!user.id) {
+    throw Error("User is no id. Unauthorized.")
+  }
+  
+  
   const body: StartResearchRequest = req.body as any;
-  const session = await sessionManager.createSession(user.id!, body.chat_id, body.configuration)
+
+  const session = await sessionManager.createSession(user.id, body.chat_id, body.configuration)
 
   const config = sessionManager.createRunnableConfig(session)
   const checkpointer = await checkpointerManager.getCheckpointer() as any;
   const graph = deepResearcher.compile({ checkpointer })
 
-  // Stream first chunk to initialize session
   const chunks = await graph.stream(
     { messages: [{ role: 'user', content: body.message }] },
     config,
   )
+
+  console.debug('chunks ', chunks);
   
+  const reader = chunks.getReader(); // ✅ create reader ONCE
   let isFirst = true;
 
-  while (true) {
-    const { value, done } = await chunks.getReader().read();
-    if (done) {
-      console.log('Stream finished.');
-      break;
-    }
+  try {
+    while (true) {
+      const { value, done } = await reader.read();
+      if (done) {
+        console.log('Stream finished.');
+        break;
+      }
 
-    const chunk = value;
-    console.log('Received chunk:', chunk);
-    
-    if (isFirst) {
-      if ((chunk as any).research_brief) {
+      console.log('Received chunk:', value);
+
+      if (isFirst && value?.research_brief) {
         await sessionManager.updateSessionStatus(
           session.id,
           user.id!,
           'active',
-          (chunk as any).research_brief
-        )
+          value.research_brief
+        );
+        isFirst = false;
       }
-
-      isFirst = false;
     }
+  } finally {
+    reader.releaseLock(); // ✅ optional but clean
   }
 
   return Response.json(session)

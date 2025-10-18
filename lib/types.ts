@@ -15,7 +15,10 @@ export type NewMessage = typeof messages.$inferInsert;
 export type Stream = typeof stream.$inferSelect;
 export type NewStream = typeof stream.$inferInsert;
 export type User = typeof users.$inferSelect;
-export type NewUser = typeof users.$inferInsert;
+export type NewUser = typeof users.$inferInsert & {
+  password?: string;
+  passwordHash?: string;
+};
 export type Team = typeof teams.$inferSelect;
 export type NewTeam = typeof teams.$inferInsert;
 

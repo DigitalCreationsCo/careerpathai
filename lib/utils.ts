@@ -9,9 +9,9 @@ import { ChatSDKError, type ErrorCode } from './errors';
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
 import { tool } from "@langchain/core/tools";
-import { ResearchComplete } from "./researcher/state";
-import { Configuration, SearchApi } from "./researcher/configuration";
-import { Message } from "./researcher/deepResearcher";
+import { ResearchComplete } from "./deepResearcher/state";
+import { Configuration, SearchApi } from "./deepResearcher/configuration";
+import { Message } from "./deepResearcher/deepResearcher";
 import { AIMessage, BaseMessage, ChatMessage, FunctionMessage, HumanMessage, SystemMessage, ToolMessage } from "@langchain/core/messages";
 
 export function sanitizeUIMessages(messages: Array<Message>): Array<Message> {

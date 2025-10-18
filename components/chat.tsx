@@ -78,7 +78,8 @@ export function Chat({
     onData: (dataPart) => {
       console.log('useChat onData: ', dataPart);
     },
-    onFinish: () => {
+    onFinish: (data) => {
+      console.log('useChat onFinish: ', data);
     },
     onError: (error) => {
       console.error('use Chat Error: ', error);

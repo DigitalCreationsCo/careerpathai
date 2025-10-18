@@ -1,3 +1,4 @@
+import { initChatModel } from "langchain/chat_models/universal";
 import { z } from "zod";
 
 export enum SearchApi {
@@ -22,6 +23,8 @@ export class McpConfig {
 export interface RunnableConfig {
   configurable?: Record<string, any>;
 }
+
+export const configurableModel = initChatModel(undefined, {configurableFields: ['model', 'maxTokens', 'apiKey']});
 
 export class Configuration {
   // General Configuration

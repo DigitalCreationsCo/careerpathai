@@ -1,5 +1,5 @@
 {
-  "id": "566997c8-8524-446c-abe9-1cc500d6468b",
+  "id": "02e18e57-adc1-4f98-ae53-b8932b525982",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -425,12 +425,12 @@
       },
       "indexes": {},
       "foreignKeys": {
-        "research_sessions_chat_id_chats_id_fk": {
-          "name": "research_sessions_chat_id_chats_id_fk",
+        "research_sessions_user_id_users_id_fk": {
+          "name": "research_sessions_user_id_users_id_fk",
           "tableFrom": "research_sessions",
-          "tableTo": "chats",
+          "tableTo": "users",
           "columnsFrom": [
-            "chat_id"
+            "user_id"
           ],
           "columnsTo": [
             "id"
@@ -438,12 +438,12 @@
           "onDelete": "no action",
           "onUpdate": "no action"
         },
-        "research_sessions_user_id_users_id_fk": {
-          "name": "research_sessions_user_id_users_id_fk",
+        "research_sessions_chat_id_chats_id_fk": {
+          "name": "research_sessions_chat_id_chats_id_fk",
           "tableFrom": "research_sessions",
-          "tableTo": "users",
+          "tableTo": "chats",
           "columnsFrom": [
-            "user_id"
+            "chat_id"
           ],
           "columnsTo": [
             "id"
@@ -682,7 +682,7 @@
           "name": "password_hash",
           "type": "text",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false
         },
         "role": {
           "name": "role",

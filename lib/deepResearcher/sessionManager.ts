@@ -7,7 +7,7 @@ import { db } from "@/lib/db/drizzle";
 import dayjs from "dayjs";
 import { configManager } from "./researchConfig";
 import { ResearchSession } from '@/lib/types';
-import { and, eq, desc } from "drizzle-orm";
+import { and, eq, desc, lt } from "drizzle-orm";
 import { generateUUID } from "../utils";
 
 export class SessionManager {
@@ -17,8 +17,13 @@ export class SessionManager {
     chatId?: string | null,
     configuration?: Record<string, any>
   ): Promise<ResearchSession> {
-    const threadId = generateUUID();
+    console.debug('createSession');
+    if (!userId) throw Error("User is no id. Unauthorized.");
+    console.debug('userId =', userId);
 
+      const threadId = generateUUID();
+      
+      console.debug('createSession: inserting with userId=', userId, 'chatId=', chatId);
     const [researchSession] = await db
       .insert(researchSessions)
       .values({
@@ -29,6 +34,8 @@ export class SessionManager {
         configuration: configuration || {},
       })
       .returning();
+
+      console.debug('inserted session:', researchSession);
 
     return researchSession;
   }
@@ -110,7 +117,7 @@ export class SessionManager {
       .update(researchSessions)
       .set({ status: "archived" })
       .where(
-        and(eq(researchSessions.status, "completed"), researchSessions.updatedAt.lt(cutoffDate))
+        and(eq(researchSessions.status, "completed"), lt(researchSessions.updatedAt, cutoffDate))
       );
     // "res" on update returns array of affected records or rowCount per dialect,
     // use .rowCount if available, else .length

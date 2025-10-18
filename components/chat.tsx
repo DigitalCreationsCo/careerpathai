@@ -31,6 +31,7 @@ import { MultimodalInput } from "./multimodal-input";
 // import { getChatHistoryPaginationKey } from "./sidebar-history";
 import { toast } from "sonner";
 // import type { VisibilityType } from "./visibility-selector";
+import { useAutoResumeFromCheckpoint } from "@/hooks/use-checkpoint";
 
 export function Chat({
   chatId,
@@ -159,6 +160,21 @@ export function Chat({
   return (
     <>
       <div className="overscroll-behavior-contain flex h-dvh min-w-0 touch-pan-y flex-col bg-background">
+        
+        {/* Checkpoint resume banner */}
+        {hasCheckpoint && session?.status === 'active' && !isResuming && (
+          <div className="bg-blue-50 border-b border-blue-200 px-4 py-2 text-sm text-blue-800">
+            <div className="max-w-4xl mx-auto flex items-center justify-between">
+              <span>Previous research session found. Resuming automatically...</span>
+              {session.researchBrief && (
+                <span className="text-xs text-blue-600 truncate ml-2 max-w-md">
+                  {session.researchBrief}
+                </span>
+              )}
+            </div>
+          </div>
+        )}
+
         <Messages
           chatId={chatId}
           messages={messages}
@@ -182,6 +198,14 @@ export function Chat({
               usage={usage}
             />
         </div>
+
+         {/* Resume indicator */}
+         {isResuming && (
+          <div className="fixed top-4 right-4 bg-blue-500 text-white px-4 py-2 rounded-md shadow-lg flex items-center gap-2">
+            <div className="animate-spin h-4 w-4 border-2 border-white border-t-transparent rounded-full" />
+            <span>Resuming research...</span>
+          </div>
+        )}
       </div>
 
       {/* <Artifact

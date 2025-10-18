@@ -1,18 +1,20 @@
 import { auth } from "@/auth";
+import { getOrCreateChat, updateChatTitle } from "@/lib/db/queries/chat";
 import { checkpointerManager } from "@/lib/deepResearcher/checkpointer";
 import { deepResearcher } from "@/lib/deepResearcher/deepResearcher";
 import { sessionManager } from "@/lib/deepResearcher/sessionManager";
-import { AIMessage, AIMessageChunk, filterMessages } from "@langchain/core/messages";
+import { createAISDKStream } from "@/lib/streamingUtils";
 
 export interface StartResearchRequest {
-  message: string
-  chatId?: string
-  configuration?: Record<string, any>
+  message: string;
+  chatId?: string;
+  configuration?: Record<string, any>;
 }
 
 export async function POST(req: Request) {
   const user = (await auth())?.user;
   console.log('API: Research/start, user: ', JSON.stringify(user, null, 2));
+  
   if (!user?.id) {
     return new Response(JSON.stringify({ error: "Unauthorized" }), {
       status: 401,
@@ -22,96 +24,120 @@ export async function POST(req: Request) {
   
   try {
     const body: StartResearchRequest = await req.json();
-    console.log('request body: ', JSON.stringify(body));
-
-    const session = await sessionManager.getOrCreateSession(user.id, body.chatId, body.configuration)
-    const config = sessionManager.createRunnableConfig(session)
+    console.log('Request body: ', JSON.stringify(body));
     
-    const checkpointer = await checkpointerManager.getCheckpointer() as any;
+    const validChatId = await getOrCreateChat(user.id, body.chatId);
+
+    const session = await sessionManager.getOrCreateSession(user.id, body.chatId, body.configuration);
+    const config = sessionManager.createRunnableConfig(session);
+    
+    const checkpointer = await checkpointerManager.getCheckpointer();
+    if (!checkpointer) {
+      throw new Error("Failed to initialize checkpointer");
+    }
+    
+    // Check for existing checkpoint
     const existingCheckpoint = await checkpointerManager.loadCheckpoint(config);
-
-    console.log('Session:', session.id, 'ThreadId:', session.threadId);
-    console.log('Existing checkpoint:', existingCheckpoint ? 'Found' : 'None');
-
-    const graph = deepResearcher.compile({ checkpointer })
-
-    const input = existingCheckpoint && !body.message 
-    ? null 
-    : { messages: [{ role: 'user', content: body.message }] };
-    console.log('Starting graph with input:', input ? 'New message' : 'Resume from checkpoint');
-
-    const stream = await graph.stream(input,
-      { 
-        ...config,
-        streamMode: ['values', 'updates', 'checkpoints', 'debug', 'messages', 'tasks'] as const
-      },
-    )
-
-    const textStream = new ReadableStream({
-      async start(controller) {
-        const encoder = new TextEncoder();
-        let isFirst = true;
-        
-        try {
-          while (true) {
-            const { value: chunk, done } = await stream.reader.read();
-            if (done) break;
-
-            console.log('Graph chunk:', JSON.stringify(chunk, null, 2));
-            
-            const aiMessages = filterMessages(chunk, { includeTypes: [AIMessage, AIMessageChunk]});
-
-            for (const message of aiMessages) {
-              const dataLine = `0:${JSON.stringify(message)}\n`;
-              controller.enqueue(encoder.encode(dataLine));
-            }
-
-            if (isFirst && chunk?.researchBrief) {
-              await sessionManager.updateSessionStatus(
-                session.id,
-                user.id!,
-                'active',
-                chunk.researchBrief
-              );
-              isFirst = false;
-            }
-          }
-
-          // Mark session as completed
-          await sessionManager.updateSessionStatus(
-            session.id,
-            user.id!,
-            'completed'
-          );
-
-          console.log('Stream completed successfully');
-        } catch (err) {
-          console.error("Streaming error:", err);
-
-          await sessionManager.updateSessionStatus(
-            session.id,
-            user.id!,
-            'error'
-          );
-
-          controller.error(err);
-        } finally {
-          controller.close();
-          stream.reader.releaseLock();
-        }
-      }
+    const shouldResume = existingCheckpoint && (!body.message || body.message.trim() === '');
+    
+    console.log('Session:', {
+      id: session.id,
+      threadId: session.threadId,
+      status: session.status,
+      hasCheckpoint: !!existingCheckpoint,
+      shouldResume,
     });
+    
+    // Compile graph with checkpointer
+    const graph = deepResearcher.compile({ checkpointer });
+    
+    // Determine input: null to resume, or new message
+    const input = shouldResume 
+      ? null 
+      : { messages: [{ role: 'user', content: body.message }] };
+    
+    console.log('Starting graph:', shouldResume ? 'Resuming from checkpoint' : 'New conversation');
+    
+    // Create async generator for streaming
+    const streamGraph = async function*() {
+      let isFirst = true;
+      
+      try {
+        // Stream graph execution
+        const stream = await graph.stream(input, {
+          ...config,
+          streamMode: 'values' as const, // Stream state updates
+        });
+        
+        for await (const chunk of stream) {
+          console.log('Graph state update:', {
+            hasMessages: !!chunk.messages,
+            messageCount: chunk.messages?.length,
+            researchBrief: !!chunk.researchBrief,
+            node: chunk.current_node,
+          });
+          
+          // Update session on first meaningful chunk
+          if (isFirst && chunk.researchBrief) {
+            await sessionManager.updateSessionStatus(
+              session.id,
+              user.id!,
+              'active',
+              chunk.researchBrief
+            );
 
-    return new Response(textStream, {
+            // Update chat title with research brief
+            if (session.chatId) {
+              await updateChatTitle(
+                session.chatId,
+                user.id!,
+                chunk.researchBrief.substring(0, 100) // Truncate for title
+              );
+            }
+            
+            isFirst = false;
+          }
+          
+          yield chunk;
+        }
+        
+        // Mark session as completed
+        console.log('Graph execution completed');
+        await sessionManager.updateSessionStatus(
+          session.id,
+          user.id!,
+          'completed'
+        );
+        
+      } catch (error) {
+        console.error('Graph execution error:', error);
+        
+        // Update session to error state
+        await sessionManager.updateSessionStatus(
+          session.id,
+          user.id!,
+          'error'
+        );
+        
+        throw error;
+      }
+    };
+    
+    // Convert to AI SDK compatible stream
+    const aiStream = createAISDKStream(streamGraph());
+    
+    return new Response(aiStream, {
       headers: {
         "Content-Type": "text/plain; charset=utf-8",
-        "Cache-Control": "no-cache",
+        "Cache-Control": "no-cache, no-transform",
         "Connection": "keep-alive",
+        "X-Content-Type-Options": "nosniff",
         "X-Session-Id": session.id,
         "X-Thread-Id": session.threadId,
+        "X-Resume-Mode": shouldResume ? "true" : "false",
       },
     });
-  
+    
   } catch (error) {
     console.error('Research start error:', error);
     return new Response(

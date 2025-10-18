@@ -30,22 +30,63 @@ import {
 import { hashPassword } from "@/lib/auth/session";
 import { db } from "../drizzle";
 
+/**
+ * Get or create a chat record for the research session
+ */
+export async function getOrCreateChat(
+  userId: string,
+  chatId?: string,
+  title?: string
+): Promise<string> {
+  // If chatId provided, verify it exists
+  if (chatId) {
+    const [existingChat] = await db
+      .select()
+      .from(chats)
+      .where(and(eq(chats.id, chatId), eq(chats.userId, userId)))
+      .limit(1);
+    
+    if (existingChat) {
+      console.log('Found existing chat:', chatId);
+      return existingChat.id;
+    }
+    
+    console.warn(`Chat ${chatId} not found for user ${userId}`);
+    // Fall through to create new chat
+  }
+  
+  // Create new chat record
+  const newChat = await saveChat({
+      id: chatId,
+      userId,
+      title: title || 'Research Session',
+    });
+  
+  console.log('Created new chat:', newChat.id);
+  return newChat.id;
+}
+
 export async function saveChat({
   id,
   userId,
   title,
 }: {
-  id: string;
+  id?: string;
   userId: string;
   title: string;
 }) {
   try {
-    return await db.insert(chats).values({
+    if (!id) id = generateUUID();
+
+    const [newChat] = await db.insert(chats).values({
       id,
-      createdAt: new Date(),
       userId,
-      title,
-    });
+      title: title || 'Research Session',
+      createdAt: new Date().toISOString(),
+      visibility: 'private', 
+    }).returning();
+    
+    return newChat;
   } catch (_error) {
     throw new ChatSDKError("bad_request:database", "Failed to save chat");
   }
@@ -350,6 +391,22 @@ export async function deleteMessagesByChatIdAfterTimestamp({
       "Failed to delete messages by chat id after timestamp"
     );
   }
+}
+
+/**
+ * Update chat title (useful after research brief is generated)
+ */
+export async function updateChatTitle(
+  chatId: string,
+  userId: string,
+  title: string
+): Promise<void> {
+  await db
+    .update(chats)
+    .set({ title })
+    .where(and(eq(chats.id, chatId), eq(chats.userId, userId)));
+  
+  console.log('Updated chat title:', chatId, title);
 }
 
 export async function updateChatLastContextById({

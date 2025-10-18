@@ -75,24 +75,33 @@ export class SessionManager {
 
   /**
    * Get existing session by chatId or create new one
+   * This enables checkpoint resume by reusing the same threadId
    */
   async getOrCreateSession(
     userId: string,
     chatId?: string,
     configuration?: Record<string, any>
   ) {
-    // If chatId provided, try to find existing session
-    if (chatId) {
-      const existingSessions = await this.getUserSessions(userId, undefined, 1, 0);
-      const session = existingSessions.find(s => s.chatId === chatId);
-      
-      if (session) {
-        console.log('Found existing session for chatId:', chatId);
-        return session;
-      }
+    if (!chatId) {
+      // No chatId provided, create new session
+      console.log('No chatId provided, creating new session');
+      return await this.createSession(userId, null, configuration);
     }
     
-    // Create new session
+    // Try to find existing session by chatId
+    const sessions = await this.getUserSessions(userId, undefined, 50, 0);
+    const existingSession = sessions.find(s => s.chatId === chatId);
+    
+    if (existingSession) {
+      console.log('Found existing session:', {
+        id: existingSession.id,
+        threadId: existingSession.threadId,
+        status: existingSession.status,
+      });
+      return existingSession;
+    }
+    
+    // Create new session with provided chatId
     console.log('Creating new session for chatId:', chatId);
     return await this.createSession(userId, chatId, configuration);
   }

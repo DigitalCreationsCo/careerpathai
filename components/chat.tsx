@@ -3,7 +3,7 @@
 import { useChat } from "@ai-sdk/react";
 import { DefaultChatTransport } from "ai";
 import { useSearchParams } from "next/navigation";
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import useSWR, { useSWRConfig } from "swr";
 import { unstable_serialize } from "swr/infinite";
 import {
@@ -33,12 +33,12 @@ import { toast } from "sonner";
 // import type { VisibilityType } from "./visibility-selector";
 
 export function Chat({
-  id,
+  chatId,
   initialMessages,
   autoResume,
   initialLastContext,
 }: {
-  id: string;
+  chatId: string;
   initialMessages: ChatMessage[];
   autoResume: boolean;
   initialLastContext?: AppUsage;
@@ -48,6 +48,7 @@ export function Chat({
   const [input, setInput] = useState<string>("");
   const [usage, setUsage] = useState<AppUsage | undefined>(initialLastContext);
   const [showCreditCardAlert, setShowCreditCardAlert] = useState(false);
+  const [isResuming, setIsResuming] = useState(false);
 
   const {
     messages,
@@ -58,23 +59,25 @@ export function Chat({
     regenerate,
     resumeStream,
   } = useChat<ChatMessage>({
-    id,
+    id: chatId,
     messages: initialMessages,
     experimental_throttle: 100,
     transport: new DefaultChatTransport({
       api: "/api/research/start",
-      fetch: fetchWithErrorHandlers,
+      // fetch: fetchWithErrorHandlers,
       prepareSendMessagesRequest(request) {
         return {
+          ...request,
           body: {
-            id: request.id,
-            message: request.messages.at(-1),
             ...request.body,
+            id: request.id,
+            chatId,
+            message: request.messages.at(-1),
           },
         };
       },
     }),
-    generateId: generateUUID,
+    // generateId: generateUUID,
     onData: (dataPart) => {
       console.log('useChat onData: ', dataPart);
     },
@@ -83,28 +86,65 @@ export function Chat({
     },
     onError: (error) => {
       console.error('use Chat Error: ', error);
+      setIsResuming(false);
+
       if (error instanceof ChatSDKError) {
         toast.error(error.message);
+      } else {
+        toast.error("An error occurred during research");
       }
     },
   });
 
   const searchParams = useSearchParams();
   const query = searchParams.get("query");
-
   const [hasAppendedQuery, setHasAppendedQuery] = useState(false);
 
-  // useEffect(() => {
-  //   if (query && !hasAppendedQuery) {
-  //     sendMessage({
-  //       role: "user" as const,
-  //       parts: [{ type: "text", text: query }],
-  //     });
+  const handleResume = useCallback(async () => {
+    console.log('Resuming from checkpoint...');
+    setIsResuming(true);
+    
+    try {
+      // Send empty message to trigger checkpoint resume
+      sendMessage({
+        role: "user",
+        parts: [{ type: "text", text: "" }], // Empty signals resume from checkpoint
+      });
+      resumeStream();
+    } catch (error) {
+      console.error('Resume error:', error);
+      toast.error("Failed to resume research");
+      setIsResuming(false);
+    }
+  }, []);
 
-  //     setHasAppendedQuery(true);
-  //     // window.history.replaceState({}, "", `/chat/${id}`);
-  //   }
-  // }, [query, sendMessage, hasAppendedQuery, id]);
+  const { hasCheckpoint, session, willResume } = useAutoResumeFromCheckpoint(
+    chatId,
+    handleResume,
+    autoResume
+  );
+
+  // Handle URL query parameter
+  useEffect(() => {
+    if (query && !hasAppendedQuery && !willResume) {
+      sendMessage({
+        role: "user",
+        parts: [{ type: "text", text: query }],
+      });
+
+      setHasAppendedQuery(true);
+      // window.history.replaceState({}, "", `/chat/${chatId}`);
+    }
+  }, [query, sendMessage, hasAppendedQuery, willResume, chatId]);
+
+  const send = useCallback(async (text: string) => {
+    if (!text.trim()) return;
+    
+    sendMessage({
+      role: "user",
+      parts: [{ type: "text", text }],
+    });
+  }, [sendMessage]);
 
 //   const [attachments, setAttachments] = useState<Attachment[]>([]);
 //   const isArtifactVisible = useArtifactSelector((state) => state.isVisible);
@@ -120,7 +160,7 @@ export function Chat({
     <>
       <div className="overscroll-behavior-contain flex h-dvh min-w-0 touch-pan-y flex-col bg-background">
         <Messages
-          chatId={id}
+          chatId={chatId}
           messages={messages}
           regenerate={regenerate}
           setMessages={setMessages}
@@ -130,7 +170,7 @@ export function Chat({
         <div className="sticky bottom-0 z-1 mx-auto flex w-full max-w-4xl gap-2 border-t-0 bg-background px-2 pb-3 md:px-4 md:pb-4">
             <MultimodalInput
             //   attachments={attachments}
-              chatId={id}
+              chatId={chatId}
               input={input}
               messages={messages}
               sendMessage={sendMessage}
@@ -146,7 +186,7 @@ export function Chat({
 
       {/* <Artifact
         attachments={attachments}
-        chatId={id}
+        chatId={chatId}
         input={input}
         isReadonly={isReadonly}
         messages={messages}

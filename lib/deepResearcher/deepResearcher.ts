@@ -22,14 +22,16 @@ export interface ToolCall {
 const deepResearcherBuilder = new StateGraph(AgentState, Configuration.getSchema())
 
 deepResearcherBuilder.addNode('clarifyWithUser', clarifyWithUser, 
-                        { ends: ["writeResearchBrief"]})                       // User clarification phase
+                        { ends: ["writeResearchBrief"] })                       // User clarification phase
 deepResearcherBuilder.addNode('writeResearchBrief', writeResearchBrief, 
                         { ends: ["clarifyWithUser", "researchSupervisor"] })   // Research planning phase
-deepResearcherBuilder.addNode('researchSupervisor', supervisorSubgraph)        // Research execution phase
-deepResearcherBuilder.addNode("finalReportGeneration", finalReportGeneration)  // Report generation phase
+                        deepResearcherBuilder.addEdge(START, 'clarifyWithUser')                        // Entry point
 
-deepResearcherBuilder.addEdge(START, 'clarifyWithUser')                        // Entry point
+
+deepResearcherBuilder.addNode('researchSupervisor', supervisorSubgraph)        // Research execution phase
 deepResearcherBuilder.addEdge('researchSupervisor', 'finalReportGeneration')   // Research to report
+
+deepResearcherBuilder.addNode("finalReportGeneration", finalReportGeneration)  // Report generation phase
 deepResearcherBuilder.addEdge('finalReportGeneration', END)                    // Final exit point
 
 

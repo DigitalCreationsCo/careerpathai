@@ -17,9 +17,7 @@ export class SessionManager {
     chatId?: string | null,
     configuration?: Record<string, any>
   ): Promise<ResearchSession> {
-    console.debug('createSession');
     if (!userId) throw Error("User is no id. Unauthorized.");
-    console.debug('userId =', userId);
 
       const threadId = generateUUID();
       
@@ -73,6 +71,30 @@ export class SessionManager {
       .orderBy(desc(researchSessions.createdAt))
       .limit(limit)
       .offset(offset);
+  }
+
+  /**
+   * Get existing session by chatId or create new one
+   */
+  async getOrCreateSession(
+    userId: string,
+    chatId?: string,
+    configuration?: Record<string, any>
+  ) {
+    // If chatId provided, try to find existing session
+    if (chatId) {
+      const existingSessions = await this.getUserSessions(userId, undefined, 1, 0);
+      const session = existingSessions.find(s => s.chatId === chatId);
+      
+      if (session) {
+        console.log('Found existing session for chatId:', chatId);
+        return session;
+      }
+    }
+    
+    // Create new session
+    console.log('Creating new session for chatId:', chatId);
+    return await this.createSession(userId, chatId, configuration);
   }
 
   /** Update session status and optionally research brief */

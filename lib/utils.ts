@@ -13,6 +13,7 @@ import { ResearchComplete } from "./deepResearcher/state";
 import { Configuration, SearchApi } from "./deepResearcher/configuration";
 import { Message } from "./deepResearcher/deepResearcher";
 import { AIMessage, BaseMessage, ChatMessage, FunctionMessage, HumanMessage, SystemMessage, ToolMessage } from "@langchain/core/messages";
+import { RunnableConfig } from "@langchain/core/runnables";
 
 export function sanitizeUIMessages(messages: Array<Message>): Array<Message> {
   const messagesBySanitizedToolInvocations = messages.map((message) => {
@@ -266,38 +267,6 @@ export function convertToMessage(message) {
 export function convertToMessages(messages) {
   if (typeof messages?.to_messages === "function") return messages.to_messages();
   return Array.from(messages).map(m => convertToMessage(m));
-}
-
-function filterMessages(
-  messages,
-  {
-    include_names, // array or undefined
-    exclude_names, // array or undefined
-    include_types, // array or undefined
-    exclude_types, // array or undefined
-    include_ids,
-    exclude_ids,
-  } = {}
-) {
-  messages = convertToMessages(messages);
-  const filtered = [];
-  for (const msg of messages) {
-    // Exclusion
-    if (
-      (exclude_names && exclude_names.includes(msg.name)) ||
-      (exclude_types && isMessageType(msg, exclude_types)) ||
-      (exclude_ids && exclude_ids.includes(msg.id))
-    ) continue;
-
-    // Inclusion (if no include_* given, default include)
-    if (
-      !(include_types || include_ids || include_names) ||
-      (include_names && include_names.includes(msg.name)) ||
-      (include_types && isMessageType(msg, include_types)) ||
-      (include_ids && include_ids.includes(msg.id))
-    ) filtered.push(msg);
-  }
-  return filtered;
 }
 
 // Convenience: role string mapping for OpenAI API
@@ -706,8 +675,8 @@ export function convertToOpenaiMessages(messages) {
     // Storage layer for tokens: replace with your own as needed
     const _TOKENS_STORE: Record<string, { value: any, createdAt: Date }> = {};
     
-    export async function getTokens(config: any): Promise<any> {
-      const threadId = config?.configurable?.thread_id;
+    export async function getTokens(config: RunnableConfig<Configuration & { threadId: string }>): Promise<any> {
+      const threadId = config?.configurable?.threadId;
       const userId = config?.metadata?.owner;
       if (!threadId || !userId) return null;
       const key = `${userId}:tokens`;
@@ -724,8 +693,8 @@ export function convertToOpenaiMessages(messages) {
       return tokens.value;
     }
     
-    export async function setTokens(config: any, tokens: any) {
-      const threadId = config?.configurable?.thread_id;
+    export async function setTokens(config: RunnableConfig<Configuration & { threadId: string }>, tokens: any) {
+      const threadId = config?.configurable?.threadId;
       const userId = config?.metadata?.owner;
       if (!threadId || !userId) return;
       const key = `${userId}:tokens`;

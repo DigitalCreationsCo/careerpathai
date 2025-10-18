@@ -102,6 +102,7 @@ export async function supervisorTools(state: SupervisorState, config: RunnableCo
     if (exceededAllowedIterations || noToolCalls || researchCompleteToolCall) {
         return {
             goto: END,
+            graph: Command.PARENT,
             update: {
                 notes: getNotesFromToolCalls(supervisorMessages),
                 researchBrief: state.researchBrief || ""
@@ -185,6 +186,7 @@ export async function supervisorTools(state: SupervisorState, config: RunnableCo
                 // Token limit exceeded or other error - end research phase
                 return {
                     goto: END,
+                    graph: Command.PARENT,
                     update: {
                         notes: getNotesFromToolCalls(supervisorMessages),
                         researchBrief: state.researchBrief || ""

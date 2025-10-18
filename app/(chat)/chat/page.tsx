@@ -12,7 +12,7 @@ export default async function Page() {
     return (
         <Chat
             autoResume={false}
-            id={id}
+            chatId={id}
             initialMessages={initialMessages}
             key={id}
         />
@@ -22,7 +22,7 @@ export default async function Page() {
   return (
     <Chat
         autoResume={false}
-        id={id}
+        chatId={id}
         initialMessages={[]}
         key={id}
     />

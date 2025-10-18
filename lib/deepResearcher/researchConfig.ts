@@ -5,21 +5,21 @@
 import { RunnableConfig } from "./configuration";
 
 export interface ResearchConfig {
-  max_structured_output_retries: number;
-  allow_clarification: boolean;
-  max_concurrent_research_units: number;
-  search_api: string;
-  max_researcher_iterations: number;
-  max_react_tool_calls: number;
-  summarization_model: string;
-  summarization_model_max_tokens: number;
-  max_content_length: number;
-  research_model: string;
-  research_model_max_tokens: number;
-  compression_model: string;
-  compression_model_max_tokens: number;
-  final_report_model: string;
-  final_report_model_max_tokens: number;
+  maxStructuredOutputRetries: number;
+  allowClarification: boolean;
+  maxConcurrentResearchUnits: number;
+  searchApi: string;
+  maxResearcherIterations: number;
+  maxReactToolCalls: number;
+  summarizationModel: string;
+  summarizationModelMaxTokens: number;
+  maxContentLength: number;
+  researchModel: string;
+  researchModelMaxTokens: number;
+  compressionModel: string;
+  compressionModelMaxTokens: number;
+  finalReportModel: string;
+  finalReportModelMaxTokens: number;
   [key: string]: any;
 }
 
@@ -38,21 +38,21 @@ export class ResearchConfigManager {
     const getStr = (key: string, def: string) => process.env[key] || def;
 
     return {
-      max_structured_output_retries: getInt("MAX_STRUCTURED_OUTPUT_RETRIES", "3"),
-      allow_clarification: getBool("ALLOW_CLARIFICATION", "true"),
-      max_concurrent_research_units: getInt("MAX_CONCURRENT_RESEARCH_UNITS", "5"),
-      search_api: getStr("SEARCH_API", "tavily"),
-      max_researcher_iterations: getInt("MAX_RESEARCHER_ITERATIONS", "6"),
-      max_react_tool_calls: getInt("MAX_REACT_TOOL_CALLS", "10"),
-      summarization_model: getStr("SUMMARIZATION_MODEL", "openai:gpt-4.1-mini"),
-      summarization_model_max_tokens: getInt("SUMMARIZATION_MODEL_MAX_TOKENS", "8192"),
-      max_content_length: getInt("MAX_CONTENT_LENGTH", "50000"),
-      research_model: getStr("RESEARCH_MODEL", "openai:gpt-4.1"),
-      research_model_max_tokens: getInt("RESEARCH_MODEL_MAX_TOKENS", "10000"),
-      compression_model: getStr("COMPRESSION_MODEL", "openai:gpt-4.1"),
-      compression_model_max_tokens: getInt("COMPRESSION_MODEL_MAX_TOKENS", "8192"),
-      final_report_model: getStr("FINAL_REPORT_MODEL", "openai:gpt-4.1"),
-      final_report_model_max_tokens: getInt("FINAL_REPORT_MODEL_MAX_TOKENS", "10000"),
+      maxStructuredOutputRetries: getInt("MAX_STRUCTURED_OUTPUT_RETRIES", "3"),
+      allowClarification: getBool("ALLOW_CLARIFICATION", "true"),
+      maxConcurrentResearchUnits: getInt("MAX_CONCURRENT_RESEARCH_UNITS", "5"),
+      searchApi: getStr("SEARCH_API", "tavily"),
+      maxResearcherIterations: getInt("MAX_RESEARCHER_ITERATIONS", "6"),
+      maxReactToolCalls: getInt("MAX_REACT_TOOL_CALLS", "10"),
+      summarizationModel: getStr("SUMMARIZATION_MODEL", "openai:gpt-4.1-mini"),
+      summarizationModelMaxTokens: getInt("SUMMARIZATION_MODEL_MAX_TOKENS", "8192"),
+      maxContentLength: getInt("MAX_CONTENT_LENGTH", "50000"),
+      researchModel: getStr("RESEARCH_MODEL", "openai:gpt-4.1"),
+      researchModelMaxTokens: getInt("RESEARCH_MODEL_MAX_TOKENS", "10000"),
+      compressionModel: getStr("COMPRESSION_MODEL", "openai:gpt-4.1"),
+      compressionModelMaxTokens: getInt("COMPRESSION_MODEL_MAX_TOKENS", "8192"),
+      finalReportModel: getStr("FINAL_REPORT_MODEL", "openai:gpt-4.1"),
+      finalReportModelMaxTokens: getInt("FINAL_REPORT_MODEL_MAX_TOKENS", "10000"),
     };
   }
 
@@ -81,7 +81,7 @@ export class ResearchConfigManager {
     sessionConfig?: Record<string, any>
   ): RunnableConfig {
     const configurable = this.getUserConfig(userId, sessionConfig);
-    configurable.thread_id = threadId;
+    configurable.threadId = threadId;
 
     return { configurable };
   }

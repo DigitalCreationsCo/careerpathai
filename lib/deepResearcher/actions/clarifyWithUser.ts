@@ -17,25 +17,26 @@ import {
 import { 
   clarifyWithUserInstructions,
 } from '../prompts';
+import { RunnableConfig } from '@langchain/core/runnables';
 
 export async function clarifyWithUser(
     state: AgentState,
-    config: Configuration
+    config: RunnableConfig
   ): Promise<Command> {
-    const configurable = config
+    const configurable = config.configurable as Configuration;
     if (!configurable.allowClarification) {
       return { goto: 'writeResearchBrief' }
     }
   
     const messages = state.messages || []
-  
+    
     const clarificationModel = (await configurableModel)
-      .withStructuredOutput(ClarifyWithUser)
-      .withRetry({ stopAfterAttempt: configurable.maxStructuredOutputRetries })
-  
+    .withStructuredOutput(ClarifyWithUser)
+    .withRetry({ stopAfterAttempt: configurable.maxStructuredOutputRetries })
+    
     const clarifyWithUserPrompt = clarifyWithUserInstructions(getBufferString(messages), getTodayStr());
-  
-    let response: any;
+    
+    let response;
     try {
       response = await clarificationModel.invoke(clarifyWithUserPrompt, {
         configurable: {
@@ -57,7 +58,7 @@ export async function clarifyWithUser(
         }
       }
     }
-  
+    
     console.debug('[LLM RESPONSE] clarifyWithUser: ', response);
   
     if (response.needClarification) {

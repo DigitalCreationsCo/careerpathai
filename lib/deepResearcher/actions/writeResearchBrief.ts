@@ -7,21 +7,23 @@ import {
   Configuration,
 } from '../configuration'
 import {
+  AIMessage,
   getBufferString
 } from '@langchain/core/messages'
-import { Command } from '@langchain/langgraph'
+import { Command, END } from '@langchain/langgraph'
 import { 
   AgentState,
 } from '../state';
 import { 
   transformMessagesIntoResearchTopicPrompt,
 } from '../prompts';
+import { RunnableConfig } from '@langchain/core/runnables';
 
 export async function writeResearchBrief(
     state: AgentState,
-    config: Configuration
+    config: RunnableConfig
   ): Promise<Command> {
-    const configurable = config
+    const configurable = config.configurable as Configuration
     const messages = state.messages || []
     const prompt = transformMessagesIntoResearchTopicPrompt(getBufferString(messages), getTodayStr());
   
@@ -29,13 +31,27 @@ export async function writeResearchBrief(
     const briefModel = (await configurableModel)
       .withRetry({ stopAfterAttempt: configurable.maxStructuredOutputRetries });
   
-    const response = await briefModel.invoke(prompt, {
-      configurable: {
-        model: configurable.researchModel,
-        maxTokens: configurable.researchModelMaxTokens,
-        apiKey: getApiKeyForModel(configurable.researchModel, config),
+    let response;
+    try {
+      response = await briefModel.invoke(prompt, {
+        configurable: {
+          model: configurable.researchModel,
+          maxTokens: configurable.researchModelMaxTokens,
+          apiKey: getApiKeyForModel(configurable.researchModel, config),
+        }
+      }) as { researchBrief: string };
+    } catch (error) {
+      console.error('[LLM ERROR] writeResearchBriefa:', error);
+      const clearedState = { notes: { type: "override", value: [] } }
+
+      return {
+        goto: END,
+        update: {
+          ...clearedState,
+          messages: [new AIMessage({ content: "Error generating research brief." })],
+        }
       }
-    }) as { researchBrief: string };
+    }
   
     const supervisorPrompt = `Lead researcher instructions based on brief: ${response.researchBrief}`
   

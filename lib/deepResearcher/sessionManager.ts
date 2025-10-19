@@ -19,9 +19,17 @@ export class SessionManager {
   ): Promise<ResearchSession> {
     if (!userId) throw Error("User is no id. Unauthorized.");
 
-      const threadId = generateUUID();
+    const threadId = generateUUID();
+
+    if (!threadId) throw new Error("Failed to generate threadId");
       
-      console.debug('createSession: inserting with userId=', userId, 'chatId=', chatId);
+    console.log('createSession:', {
+      userId,
+      chatId,
+      threadId,
+      hasConfiguration: !!configuration,
+    });
+    
     const [researchSession] = await db
       .insert(researchSessions)
       .values({
@@ -96,12 +104,19 @@ export class SessionManager {
       console.log('Found existing session:', {
         id: existingSession.id,
         threadId: existingSession.threadId,
+        chatId: existingSession.chatId,
         status: existingSession.status,
       });
+      
+      // Validate existing session has threadId
+      if (!existingSession.threadId) {
+        console.error('CRITICAL: Existing session has no threadId!', existingSession);
+        throw new Error(`Session ${existingSession.id} has no threadId`);
+      }
+      
       return existingSession;
     }
-    
-    // Create new session with provided chatId
+
     console.log('Creating new session for chatId:', chatId);
     return await this.createSession(userId, chatId, configuration);
   }
@@ -185,11 +200,30 @@ export class SessionManager {
     session: ResearchSession,
     additionalConfig?: Record<string, any>
   ): Record<string, any> {
-    return configManager.createRunnableConfig(
+    if (!session.threadId) {
+      throw new Error(`Session ${session.id} has no threadId`);
+    }
+    
+    // Create config with threadId
+    const config = configManager.createRunnableConfig(
       session.threadId,
       session.userId,
-      session.configuration!
+      session.configuration || {}
     );
+    
+    // Merge additional config if provided
+    if (additionalConfig) {
+      Object.assign(config, additionalConfig);
+    }
+    
+    console.log('Created runnable config:', {
+      sessionId: session.id,
+      threadId: session.threadId,
+      hasConfigurable: !!config.configurable,
+      configurableThreadId: config.configurable?.thread_id,
+    });
+    
+    return config;
   }
 }
 

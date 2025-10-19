@@ -54,20 +54,35 @@ export async function POST(req: Request) {
     // Determine input: null to resume, or new message
     const input = shouldResume 
       ? null 
-      : { messages: [{ role: 'user', content: body.message }] };
+      : { 
+          messages: [{ 
+            role: 'user',
+            content: body.message,
+            // Add timestamp for tracking
+            timestamp: new Date().toISOString(),
+          }] 
+        };
     
-    console.log('Starting graph:', shouldResume ? 'Resuming from checkpoint' : 'New conversation');
+        console.log('Starting graph with config:', {
+          mode: shouldResume ? 'Resume' : 'New',
+          threadId: config.configurable?.threadId,
+          userId: config.configurable?.userId,
+          hasConfigurable: !!config.configurable,
+        });
     
     // Create async generator for streaming
     const streamGraph = async function*() {
       let isFirst = true;
       
       try {
-        // Stream graph execution
-        const stream = await graph.stream(input, {
-          ...config,
-          streamMode: 'values' as const, // Stream state updates
+        console.log('Pre-stream validation:', {
+          sessionThreadId: session.threadId,
+          configThreadId: config.configurable?.thread_id,
+          configKeys: Object.keys(config.configurable || {}),
         });
+        
+        const streamConfig = { ...config, streamMode: 'values' as const };
+        const stream = await graph.stream(input, streamConfig);
         
         for await (const chunk of stream) {
           console.log('Graph state update:', {

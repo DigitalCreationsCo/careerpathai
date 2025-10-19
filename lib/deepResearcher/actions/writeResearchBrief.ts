@@ -8,8 +8,8 @@ import {
 } from '../configuration'
 import {
   AIMessage,
-  getBufferString
 } from '@langchain/core/messages'
+import { getBufferString } from '../../messageUtils';
 import { Command, END } from '@langchain/langgraph'
 import { 
   AgentState,

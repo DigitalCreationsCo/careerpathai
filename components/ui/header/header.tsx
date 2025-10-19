@@ -83,10 +83,12 @@ function UserMenu({ session }: any) {
 
 export function Header({ session }: any) {
   return (
-    <header className="absolute w-full z-10 transition-all duration-300">
-      <div className="mx-auto p-2 flex justify-between items-center">
+    <header className="absolute hidden md:block w-full z-10 transition-all duration-300">
+      <div className="mx-auto py-2 px-3 flex justify-between items-center">
         <Link href="/" className="flex items-center">
-          <Logo />
+          <div className='hidden'>
+            <Logo />
+          </div>
           <span className="ml-2 font-semibold text-muted-foreground text-lg">GoCareerPath</span>
         </Link>
         <div className="flex items-center space-x-4">

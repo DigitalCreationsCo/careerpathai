@@ -11,8 +11,8 @@ import {
 import {
   HumanMessage,
   AIMessage,
-  getBufferString
 } from '@langchain/core/messages'
+import { getBufferString } from '../../messageUtils';
 import { RunnableConfig } from '@langchain/core/runnables'
 import { 
   AgentState,

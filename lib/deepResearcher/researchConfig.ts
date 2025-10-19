@@ -82,6 +82,7 @@ export class ResearchConfigManager {
   ): RunnableConfig {
     const configurable = this.getUserConfig(userId, sessionConfig);
     configurable.threadId = threadId;
+    configurable.thread_id = threadId; // used by LangGraph
 
     return { configurable };
   }

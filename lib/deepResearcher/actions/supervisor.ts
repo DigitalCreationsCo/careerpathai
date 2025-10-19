@@ -4,7 +4,7 @@ import {
   getApiKeyForModel,
   thinkTool,
   getNotesFromToolCalls,
-} from '@/lib/utils'
+} from '@/lib/deepResearcher/llmUtils'
 import {
     configurableModel,
   Configuration,

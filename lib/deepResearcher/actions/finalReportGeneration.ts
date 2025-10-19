@@ -3,7 +3,7 @@ import {
   isTokenLimitExceeded,
   getApiKeyForModel,
   getModelTokenLimit,
-} from '@/lib/utils'
+} from '@/lib/deepResearcher/llmUtils'
 import {
     configurableModel,
   Configuration,

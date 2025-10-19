@@ -28,7 +28,7 @@ export async function POST(req: Request) {
     
     const validChatId = await getOrCreateChat(user.id, body.chatId);
 
-    const session = await sessionManager.getOrCreateSession(user.id, body.chatId, body.configuration);
+    const session = await sessionManager.getOrCreateSession(user.id, validChatId, body.configuration);
     const config = sessionManager.createRunnableConfig(session);
     
     const checkpointer = await checkpointerManager.getCheckpointer();
@@ -58,7 +58,6 @@ export async function POST(req: Request) {
           messages: [{ 
             role: 'user',
             content: body.message,
-            // Add timestamp for tracking
             timestamp: new Date().toISOString(),
           }] 
         };
@@ -82,6 +81,13 @@ export async function POST(req: Request) {
         });
         
         const streamConfig = { ...config, streamMode: 'values' as const };
+
+        console.log('Stream config:', {
+          hasConfigurable: !!streamConfig.configurable,
+          threadId: streamConfig.configurable?.threadId,
+          streamMode: streamConfig.streamMode,
+        });
+
         const stream = await graph.stream(input, streamConfig);
         
         for await (const chunk of stream) {
@@ -106,7 +112,7 @@ export async function POST(req: Request) {
               await updateChatTitle(
                 session.chatId,
                 user.id!,
-                chunk.researchBrief.substring(0, 100) // Truncate for title
+                chunk.researchBrief.substring(0, 100) 
               );
             }
             

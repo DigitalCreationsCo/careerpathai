@@ -1,7 +1,7 @@
 import {
   getTodayStr,
   getApiKeyForModel,
-} from '@/lib/utils'
+} from '@/lib/deepResearcher/llmUtils'
 import {
   configurableModel,
   Configuration,
@@ -10,6 +10,7 @@ import { getBufferString } from '../../messageUtils';
 import { Command } from '@langchain/langgraph'
 import { 
   ClarifyWithUser,
+  ClarifyWithUserType,
   AgentState,
 } from '../state';
 import { 
@@ -45,13 +46,17 @@ export async function clarifyWithUser(
     console.log('Message buffer:', messageBuffer.substring(0, 200) + '...');
     
     const clarifyWithUserPrompt = clarifyWithUserInstructions(
-      messageBuffer, 
+      messageBuffer,
       getTodayStr()
     );
     
     let response;
     try {
-      console.log('Invoking clarification model...');
+      console.log('Invoking clarification model: ', {
+        model: configurable.researchModel,
+        maxTokens: configurable.researchModelMaxTokens,
+        apiKey: getApiKeyForModel(configurable.researchModel, config),
+      });
       response = await clarificationModel.invoke(clarifyWithUserPrompt, {
         configurable: {
           model: configurable.researchModel,

@@ -9,6 +9,7 @@ import { createUser, getUserByEmail } from "./lib/db/queries/user"
 import { NewUser } from "./lib/types"
 import { generateUUID } from "./lib/utils"
 
+
 declare module "next-auth" {
   interface User {
     id?: string;

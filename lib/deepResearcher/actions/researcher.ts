@@ -1,12 +1,14 @@
 import {
+  removeUpToLastAIMessage,
+} from '@/lib/utils'
+import {
   getTodayStr,
   getApiKeyForModel,
   getAllTools,
   openaiWebsearchCalled,
   anthropicWebsearchCalled,
   isTokenLimitExceeded,
-  removeUpToLastAIMessage,
-} from '@/lib/utils'
+} from '@/lib/deepResearcher/llmUtils'
 import {
     configurableModel,
   Configuration,

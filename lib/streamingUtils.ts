@@ -216,25 +216,114 @@ export interface StreamChunk {
       });
     }
   }
-  
-  /**
-   * Create a ReadableStream from LangGraph stream
-   */
-  export function createAISDKStream(graphStream: AsyncIterable<any>): ReadableStream<Uint8Array> {
-    const encoder = new TextEncoder();
-    
-    return new ReadableStream({
-      async start(controller) {
-        try {
-          for await (const chunk of streamGraphToAISDK(graphStream)) {
-            controller.enqueue(encoder.encode(chunk));
-          }
-        } catch (error) {
-          console.error('Stream controller error:', error);
-          controller.error(error);
-        } finally {
-          controller.close();
-        }
-      },
-    });
+
+/**
+ * Track which messages we've already sent to avoid duplicates
+ */
+class StreamTracker {
+  private sentMessageCount = 0;
+
+  hasNewMessages(currentMessages: any[]): boolean {
+    return currentMessages.length > this.sentMessageCount;
   }
+
+  getNewMessages(currentMessages: any[]): any[] {
+    const newMessages = currentMessages.slice(this.sentMessageCount);
+    this.sentMessageCount = currentMessages.length;
+    return newMessages;
+  }
+}
+
+/**
+ * Convert graph message to simple text
+ */
+function extractTextContent(message: any): string {
+  if (typeof message.content === 'string') {
+    return message.content;
+  }
+  
+  if (Array.isArray(message.content)) {
+    return message.content
+      .filter((part: any) => part.type === 'text')
+      .map((part: any) => part.text || '')
+      .join('\n');
+  }
+  
+  return '';
+}
+
+/**
+ * Create AI SDK compatible stream from LangGraph
+ */
+export function createAISDKStream(graphStream: AsyncIterable<any>): ReadableStream<Uint8Array> {
+  const encoder = new TextEncoder();
+  const tracker = new StreamTracker();
+  
+  return new ReadableStream({
+    async start(controller) {
+      console.log("\n[STREAM] ===== Starting AI SDK Stream =====");
+
+      try {
+        for await (const chunk of graphStream) {  
+          console.log('Stream chunk received:', {
+            hasMessages: !!chunk.messages,
+            messageCount: chunk.messages?.length || 0,
+          });
+          console.log(JSON.stringify(chunk, null, 2));
+          
+          // Check if there are new messages
+          if (chunk.messages && tracker.hasNewMessages(chunk.messages)) {
+            const newMessages = tracker.getNewMessages(chunk.messages);
+            console.log(`[STREAM] ${newMessages.length} new messages detected`);
+
+            // Stream each new AI message
+            for (const message of newMessages) {
+              if (message.role === 'ai' || message.role === 'assistant') {
+                const content = extractTextContent(message);
+                
+                if (content) {
+                  // AI SDK format: "0:{json}\n"
+                  const textChunk = `0:${JSON.stringify(content)}\n`;
+                  controller.enqueue(encoder.encode(textChunk));
+                  
+                  console.log('Sent text chunk:', content.substring(0, 50) + '...');
+                }
+              }
+            }
+          }
+          // Log tool calls
+          if (chunk.toolCalls && chunk.toolCalls.length) {
+            console.log(`[STREAM] Tool calls detected: ${chunk.toolCalls.length}`);
+            for (const call of chunk.toolCalls) {
+              console.log(`  • Tool: ${call.name}, Args:`, call.args);
+              const toolChunk = `9:${JSON.stringify(call)}\n`;
+              controller.enqueue(encoder.encode(toolChunk));
+            }
+          }
+
+          if (chunk.researchBrief) {
+            console.log(`[STREAM] Research brief found (${chunk.researchBrief.length} chars)`);
+            const dataChunk = `2:[${JSON.stringify({
+              type: "research_brief",
+              content: chunk.researchBrief,
+            })}]\n`;
+            controller.enqueue(encoder.encode(dataChunk));
+          }
+        }
+        
+        // Send done signal
+        controller.enqueue(encoder.encode('d:{"finishReason":"stop"}\n'));
+        console.log('Stream completed');
+        
+      } catch (error) {
+        console.error('Stream error:', error);
+        controller.error(error);
+      } finally {
+        console.log("[STREAM] Stream finalized and controller closed.\n");
+        controller.close();
+      }
+    }
+  });
+}
+
+  

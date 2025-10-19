@@ -84,6 +84,7 @@ export function Chat({
     },
     onFinish: (data) => {
       console.log('useChat onFinish: ', data);
+      setIsResuming(false);
     },
     onError: (error) => {
       console.error('use Chat Error: ', error);
@@ -138,15 +139,6 @@ export function Chat({
     }
   }, [query, sendMessage, hasAppendedQuery, willResume, chatId]);
 
-  const send = useCallback(async (text: string) => {
-    if (!text.trim()) return;
-    
-    sendMessage({
-      role: "user",
-      parts: [{ type: "text", text }],
-    });
-  }, [sendMessage]);
-
 //   const [attachments, setAttachments] = useState<Attachment[]>([]);
 //   const isArtifactVisible = useArtifactSelector((state) => state.isVisible);
 
@@ -160,7 +152,6 @@ export function Chat({
   return (
     <>
       <div className="overscroll-behavior-contain flex h-dvh min-w-0 touch-pan-y flex-col bg-background">
-        
         {/* Checkpoint resume banner */}
         {hasCheckpoint && session?.status === 'active' && !isResuming && (
           <div className="bg-blue-50 border-b border-blue-200 px-4 py-2 text-sm text-blue-800">

@@ -9,6 +9,7 @@ import { configManager } from "./researchConfig";
 import { ResearchSession } from '@/lib/types';
 import { and, eq, desc, lt } from "drizzle-orm";
 import { generateUUID } from "../utils";
+import { RunnableConfig } from "@langchain/core/runnables";
 
 export class SessionManager {
   /** Create a new research session */
@@ -199,7 +200,7 @@ export class SessionManager {
   createRunnableConfig(
     session: ResearchSession,
     additionalConfig?: Record<string, any>
-  ): Record<string, any> {
+  ): RunnableConfig {
     if (!session.threadId) {
       throw new Error(`Session ${session.id} has no threadId`);
     }

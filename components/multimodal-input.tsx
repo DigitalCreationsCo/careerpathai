@@ -124,6 +124,7 @@ function PureMultimodalInput({
 
   const submitForm = useCallback(() => {
     // window.history.replaceState({}, "", `/chat/${chatId}`);
+    if (!input.trim()) return;
 
     sendMessage({
       role: "user",

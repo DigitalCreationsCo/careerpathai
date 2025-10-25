@@ -26,13 +26,15 @@ deepResearcherBuilder.addNode('clarifyWithUser', clarifyWithUserTest,
                         { ends: ["writeResearchBrief"] })                       // User clarification phase
 deepResearcherBuilder.addNode('writeResearchBrief', writeResearchBrief, 
                         { ends: ["clarifyWithUser", "researchSupervisor"] })   // Research planning phase
-deepResearcherBuilder.addEdge(START, 'clarifyWithUser')                        // Entry point
-
 deepResearcherBuilder.addNode('researchSupervisor', supervisorSubgraph)        // Research execution phase
-deepResearcherBuilder.addEdge('researchSupervisor', 'finalReportGeneration')   // Research to report
-
 deepResearcherBuilder.addNode("finalReportGeneration", finalReportGeneration)  // Report generation phase
+
+deepResearcherBuilder.addEdge(START, 'clarifyWithUser')                        // Entry point
+deepResearcherBuilder.addEdge('researchSupervisor', 'finalReportGeneration')   // Research to report
 deepResearcherBuilder.addEdge('finalReportGeneration', END)                    // Final exit point
+const deepResearcherGraph = deepResearcherBuilder.compile();
 
-
-export { deepResearcherBuilder as deepResearcher }
+export { 
+  deepResearcherBuilder as deepResearcher,
+  deepResearcherGraph
+}

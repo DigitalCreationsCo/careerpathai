@@ -1568,3 +1568,9 @@ ValueError: HMAC authentication failed - invalid tag
 2025-10-23 15:23:22 | DEBUG    | api | [derive_keys] MAC key (first 8 bytes): 7e5327907fc93cc8
 2025-10-23 15:23:22 | DEBUG    | api | [derive_keys] ENC key (first 8 bytes): a4c0458d2cb71301
 2025-10-23 15:23:22 | INFO     | api | [NextAuthMiddleware] Initialized (MAC fingerprint: 55aedeaf8cd73519, ENC fingerprint: d3f2dff8177794ff)
+2025-10-25 14:40:54 | INFO     | api | [auth_middleware] Initializing NextAuthMiddleware...
+2025-10-25 14:40:54 | DEBUG    | api | [derive_keys] Decoded AUTH_SECRET from hex: 32 bytes
+2025-10-25 14:40:54 | DEBUG    | api | [derive_keys] Derived keys - MAC: 32 bytes, ENC: 32 bytes
+2025-10-25 14:40:54 | DEBUG    | api | [derive_keys] MAC key (first 8 bytes): 7e5327907fc93cc8
+2025-10-25 14:40:54 | DEBUG    | api | [derive_keys] ENC key (first 8 bytes): a4c0458d2cb71301
+2025-10-25 14:40:54 | INFO     | api | [NextAuthMiddleware] Initialized (MAC fingerprint: 55aedeaf8cd73519, ENC fingerprint: d3f2dff8177794ff)

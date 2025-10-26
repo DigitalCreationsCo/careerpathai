@@ -1,3 +1,6 @@
+// ============================================
+// clarifyWithUser.ts
+// ============================================
 import {
   getTodayStr,
   getApiKeyForModel,
@@ -10,41 +13,40 @@ import { getBufferString } from '../../messageUtils';
 import { Command } from '@langchain/langgraph'
 import { 
   ClarifyWithUser,
-  ClarifyWithUserType,
   AgentState,
 } from '../state';
 import { 
   clarifyWithUserInstructions,
 } from '../prompts';
 import { RunnableConfig } from '@langchain/core/runnables';
+import { AIMessage } from '@langchain/core/messages';
 
 export async function clarifyWithUser(
     state: AgentState,
     config: RunnableConfig
-  ): Promise<Command> {
+  ): Promise<Partial<AgentState> | Command> {
     console.log('clarifyWithUser: Processing state', {
       messageCount: state.messages?.length,
-      messages: state.messages,
     });
-
+    
     const configurable = config.configurable as Configuration;
     const messages = state.messages || []
-
+    
     if (!Array.isArray(messages)) {
       throw new Error('State.messages must be an array');
     }
-
+    
     if (!configurable.allowClarification) {
-      return { goto: 'writeResearchBrief' }
+      return new Command({
+        goto: 'writeResearchBrief'
+      });
     }
   
     const clarificationModel = (await configurableModel)
-    .withStructuredOutput(ClarifyWithUser)
-    .withRetry({ stopAfterAttempt: configurable.maxStructuredOutputRetries })
+      .withStructuredOutput(ClarifyWithUser)
+      .withRetry({ stopAfterAttempt: configurable.maxStructuredOutputRetries })
     
     const messageBuffer = getBufferString(messages);
-    console.log('Message buffer:', messageBuffer.substring(0, 200) + '...');
-    
     const clarifyWithUserPrompt = clarifyWithUserInstructions(
       messageBuffer,
       getTodayStr()
@@ -52,11 +54,6 @@ export async function clarifyWithUser(
     
     let response;
     try {
-      console.log('Invoking clarification model: ', {
-        model: configurable.researchModel,
-        maxTokens: configurable.researchModelMaxTokens,
-        apiKey: getApiKeyForModel(configurable.researchModel, config),
-      });
       response = await clarificationModel.invoke(clarifyWithUserPrompt, {
         configurable: {
           model: configurable.researchModel,
@@ -64,42 +61,42 @@ export async function clarifyWithUser(
           apiKey: getApiKeyForModel(configurable.researchModel, config),
         }
       });
-
     } catch (error) {
       console.error('[LLM ERROR] clarifyWithUser:', error);
-      // fallback: return to writeResearchBrief or handle as needed
-      return {
+      
+      return new Command({
         goto: 'writeResearchBrief',
         update: {
           messages: [
-            ...messages,
-            { role: 'ai', content: '[LLM Error during clarification. Proceeding to research brief.]' }
+            new AIMessage({ 
+              content: '[LLM Error during clarification. Proceeding to research brief.]' 
+            })
           ]
         }
-      }
+      });
     }
     
-    console.debug('[LLM RESPONSE] clarifyWithUser: ', response);
-  
     if (response.needClarification) {
-      return {
+      return new Command({
         goto: 'END',
         update: {
           messages: [
-            ...messages,
-            { role: 'ai', content: response.question || '' }
+            new AIMessage({ 
+              content: response.question || 'Could you please provide more details?' 
+            })
           ]
         }
-      }
+      });
     }
     
-    return {
+    return new Command({
       goto: 'writeResearchBrief',
       update: {
         messages: [
-          ...messages,
-          { role: 'ai', content: response.verification || '' }
+          new AIMessage({ 
+            content: response.verification || 'Understood. Proceeding with research.' 
+          })
         ]
       }
-    }
-  }
+    });
+}

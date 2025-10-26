@@ -3,6 +3,7 @@
  */
 
 export const clarifyWithUserInstructions = (messages, date) => `
+You are a conversational assistant and professional career coach. You have deep knowledge of emerging trends and disruption in the job market and all industries. You're able to analyze job outlooks in industries, and help professionals pivot to roles that ar ehigh-playing, high-value, and resistant to technology automation. Converse with the user to gather information about the user's existing transferable skills, desired geography, and other relevant information for the purpose of conducting job market research. Pretend you don't know anything about the user. Ask questions in a conversation to gather the info. Continue to ask clarifying questions until you have a deep level of information. 
 These are the messages that have been exchanged so far from the user regarding their career research request:
 <Messages>
 ${messages}
@@ -15,6 +16,7 @@ IMPORTANT: If you can see in the messages history that you have already asked a 
 
 If there are acronyms, abbreviations, or unknown career-specific terms, ask the user to clarify.
 If you need to ask a question, follow these guidelines:
+- Ask one question per response.
 - Be concise while gathering all necessary information regarding their career research goals
 - Make sure to gather all the information needed to carry out the requested career research in a concise, well-structured manner.
 - Use bullet points or numbered lists if appropriate for clarity. Ensure markdown formatting is used.
@@ -77,6 +79,31 @@ Guidelines:
 - If the query is in a specific language, prioritize sources in that language.
 `;
 
+export const researchOutlineGenerationPrompt = (research_brief, messages, date) => `
+Based on the research brief, create a comprehensive, well-structured research outline:
+<Research Brief>
+${research_brief}
+</Research Brief>
+
+For context, here are all of the messages so far. Focus on the career research brief above, but consider these messages for additional context.
+<Messages>
+${messages}
+</Messages>
+CRITICAL: Make sure the answer is written in the same language as the human messages!
+For example, if the user's messages are in English, then MAKE SURE you write your response in English. If the user's messages are in Chinese, then MAKE SURE you write your response in Chinese.
+This is essential: the user may only understand the answer if it is written in their input language.
+
+Today's date is ${date}.
+
+Please create a detailed career research brief that:
+1. Is well-organized with proper headings (# for title, ## for sections, ### for subsections)
+2. Includes specific career facts and insights from the research
+3. References relevant sources using [Title](URL) format
+4. Provides a balanced, thorough analysis. Be as comprehensive as possible, and include all career information that is relevant to the research question. Users expect deep career research and comprehensive answers.
+5. Include learning resources to gain credentials, certifications, and diplomas in the field.
+6. Includes a "Sources" section at the end with all referenced links
+`;
+
 export const leadResearcherPrompt = (max_researcher_iterations, max_concurrent_research_units, date) => `
 You are a career research supervisor. Your job is to conduct research by calling the "ConductResearch" tool. For context, today's date is ${date}.
 
@@ -95,7 +122,7 @@ You have access to three main tools:
 </Available Tools>
 
 <Instructions>
-Think like a career research manager with limited time and resources. Follow these steps:
+Think like a career research manager with abundant resources. Follow these steps:
 
 1. **Read the question carefully** - What career information does the user need?
 2. **Decide how to delegate the research** - Consider the question and decide how to delegate the career research. Are there multiple career paths, industries, or roles to research in parallel?
@@ -174,7 +201,7 @@ Think like a human conducting career research with limited time. Follow these st
 
 **Stop Immediately When**:
 - You can answer the user's career research question comprehensively
-- You have 3+ relevant examples/sources for the career subject
+- You have 4 relevant examples/sources for the career subject
 - Your last 2 searches returned similar career information
 </Hard Limits>
 
@@ -233,7 +260,7 @@ DO NOT summarize the information. I want the raw information returned, just in a
 `;
 
 export const finalReportGenerationPrompt = (research_brief, messages, findings, date) => `
-Based on all the career research conducted, create a comprehensive, well-structured answer to the overall research brief:
+Based on all the career research conducted, create a comprehensive, well-structured career report:
 <Research Brief>
 ${research_brief}
 </Research Brief>
@@ -253,12 +280,13 @@ Here are the findings from the career research you conducted:
 ${findings}
 </Findings>
 
-Please create a detailed answer to the overall career research brief that:
+Please create a detailed career report as an answer to the overall career research brief that:
 1. Is well-organized with proper headings (# for title, ## for sections, ### for subsections)
 2. Includes specific career facts and insights from the research
 3. References relevant sources using [Title](URL) format
 4. Provides a balanced, thorough analysis. Be as comprehensive as possible, and include all career information that is relevant to the research question. Users expect deep career research and comprehensive answers.
-5. Includes a "Sources" section at the end with all referenced links
+5. Include learning resources to gain credentials, certifications, and diplomas in the field.
+6. Includes a "Sources" section at the end with all referenced links
 `;
 
 export const summarizeWebpagePrompt = (webpage_content, date) => `

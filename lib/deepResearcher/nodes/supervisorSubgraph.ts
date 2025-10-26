@@ -1,20 +1,35 @@
-import { StateGraph, START } from '@langchain/langgraph'
+// ============================================
+// supervisorSubgraph.ts - UPDATED
+// ============================================
+import { StateGraph, START, END } from '@langchain/langgraph'
 import { Configuration } from '../configuration'
 import { SupervisorState } from '../state';
 import { supervisor, supervisorTools } from '../actions/supervisor';
 
-// Supervisor Subgraph Construction
-// Creates the supervisor workflow that manages research delegation and coordination
 const supervisorBuilder = new StateGraph(SupervisorState, Configuration.getSchema())
 
-// Add supervisor nodes for research management
-supervisorBuilder.addNode("supervisor", supervisor, { ends: ["supervisorTools"] })  // Main supervisor logic
-supervisorBuilder.addNode("supervisorTools", supervisorTools)                       // Tool execution handler
+// Add supervisor nodes
+supervisorBuilder.addNode("supervisor", supervisor, { ends:["supervisorTools"] })
+supervisorBuilder.addNode("supervisorTools", supervisorTools, { ends: ["supervisor"] })
 
-// Define supervisor workflow edges
-supervisorBuilder.addEdge(START, "supervisor")                                      // Entry point to supervisor
+// Define workflow
+supervisorBuilder.addEdge(START, "supervisor")
 
-// Compile supervisor subgraph for use in main workflow
+// Add conditional routing from supervisor
+// supervisorBuilder.addConditionalEdges(
+//   "supervisorTools",
+//   (state: SupervisorState) => {
+//     // Your routing logic - when to use tools vs when to finish
+//     const shouldUseTool = state.notes?.length < 5; // Example condition
+//     return shouldUseTool ? "supervisorTools" : END;
+//   },
+//   {
+//     supervisorTools: "supervisorTools",
+//     [END]: END
+//   }
+// );
+
 const supervisorSubgraph = supervisorBuilder.compile()
 
 export { supervisorSubgraph }
+

@@ -1,37 +1,27 @@
+// ============================================
+// deepResearcher.ts
+// ============================================
 import { StateGraph, START, END } from '@langchain/langgraph'
 import { Configuration } from './configuration'
 import { AgentState } from './state';
 import { clarifyWithUser } from './actions/clarifyWithUser';
-import { clarifyWithUserTest } from './actions/clarifyWithUserTest';
 import { writeResearchBrief } from './actions/writeResearchBrief';
 import { supervisorSubgraph } from './nodes/supervisorSubgraph';
 import { finalReportGeneration } from './actions/finalReportGeneration';
-
-export type Message = {
-  role: 'human' | 'ai' | 'system' | 'tool'
-  content: string
-  toolCalls?: ToolCall[]
-}
-
-export interface ToolCall {
-  name: string
-  id: string
-  args: any
-}
-
+import { writeResearchOutline } from './actions/writeResearchOutline';
 
 const deepResearcherBuilder = new StateGraph(AgentState, Configuration.getSchema())
 
-deepResearcherBuilder.addNode('clarifyWithUser', clarifyWithUserTest, 
-                        { ends: ["writeResearchBrief"] })                       // User clarification phase
-deepResearcherBuilder.addNode('writeResearchBrief', writeResearchBrief, 
-                        { ends: ["clarifyWithUser", "researchSupervisor"] })   // Research planning phase
-deepResearcherBuilder.addNode('researchSupervisor', supervisorSubgraph)        // Research execution phase
-deepResearcherBuilder.addNode("finalReportGeneration", finalReportGeneration)  // Report generation phase
+deepResearcherBuilder.addNode('clarifyWithUser', clarifyWithUser, { ends: ["writeResearchBrief"] });
+deepResearcherBuilder.addNode('writeResearchBrief', writeResearchBrief, { ends: ["writeResearchOutline"] });
+deepResearcherBuilder.addNode('writeResearchOutline', writeResearchOutline, { ends: ["researchSupervisor"] });
+deepResearcherBuilder.addNode('researchSupervisor', supervisorSubgraph)
+deepResearcherBuilder.addNode("finalReportGeneration", finalReportGeneration)
 
-deepResearcherBuilder.addEdge(START, 'clarifyWithUser')                        // Entry point
-deepResearcherBuilder.addEdge('researchSupervisor', 'finalReportGeneration')   // Research to report
-deepResearcherBuilder.addEdge('finalReportGeneration', END)                    // Final exit point
+deepResearcherBuilder.addEdge(START, 'clarifyWithUser')
+deepResearcherBuilder.addEdge('researchSupervisor', 'finalReportGeneration')
+deepResearcherBuilder.addEdge('finalReportGeneration', END)
+
 const deepResearcherGraph = deepResearcherBuilder.compile();
 
 export { 

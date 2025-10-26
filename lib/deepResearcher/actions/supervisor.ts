@@ -16,9 +16,9 @@ import {
 import { RunnableConfig } from '@langchain/core/runnables'
 import { Command } from '@langchain/langgraph'
 import { 
-  SupervisorState, 
   ConductResearch,
   ResearchComplete,
+  SupervisorState,
 } from '../state';
 import { researcherSubgraph } from '../nodes/researchSubgraph';
 
@@ -57,16 +57,27 @@ export async function supervisor(state: SupervisorState, config: RunnableConfig)
     
     // Step 2: Generate supervisor response based on current context
     const supervisorMessages = state.supervisorMessages || []
+    
     const response = await researchModel.invoke(supervisorMessages)
     
     // Step 3: Update state and proceed to tool execution
-    return {
+    return new Command({
         goto: "supervisorTools",
         update: {
             supervisorMessages: [response],
             researchIterations: (state.researchIterations || 0) + 1
         }
-    }
+    });
+    // return {
+    //   messages: [
+    //     new AIMessage({
+    //       content: 'Supervisor: Coordinating research tasks...'
+    //     })
+    //   ],
+    //   // Add any notes found
+    //   notes: ['Research finding 1', 'Research finding 2']
+    // };
+     
 }
 
 export async function supervisorTools(state: SupervisorState, config: RunnableConfig): Promise<Command> {
@@ -93,21 +104,21 @@ export async function supervisorTools(state: SupervisorState, config: RunnableCo
     
     // Define exit criteria for research phase
     const exceededAllowedIterations = researchIterations > configurable.maxResearcherIterations
-    const noToolCalls = !mostRecentMessage.toolCalls
+    const noToolCalls = mostRecentMessage.type !== "tool"
     const researchCompleteToolCall = mostRecentMessage.toolCalls?.some(
         toolCall => toolCall.name === "ResearchComplete"
     ) || false
     
     // Exit if any termination condition is met
     if (exceededAllowedIterations || noToolCalls || researchCompleteToolCall) {
-        return {
+        return new Command({
             goto: END,
             graph: Command.PARENT,
             update: {
                 notes: getNotesFromToolCalls(supervisorMessages),
                 researchBrief: state.researchBrief || ""
             }
-        }
+        });
     }
     
     // Step 2: Process all tool calls together (both thinkTool and ConductResearch)
@@ -184,22 +195,109 @@ export async function supervisorTools(state: SupervisorState, config: RunnableCo
             // Handle research execution errors
             if (isTokenLimitExceeded(e, configurable.researchModel) || true) {
                 // Token limit exceeded or other error - end research phase
-                return {
+                return new Command({
                     goto: END,
                     graph: Command.PARENT,
                     update: {
                         notes: getNotesFromToolCalls(supervisorMessages),
                         researchBrief: state.researchBrief || ""
                     }
-                }
+                });
             }
         }
     }
     
     // Step 3: Return command with all tool results
     updatePayload.supervisorMessages = allToolMessages
-    return {
+    return new Command({
         goto: "supervisor",
         update: updatePayload
-    }
+    });
 }
+
+// ============================================
+// supervisor.ts - Example of how to update it
+// ============================================
+// import { AIMessage } from '@langchain/core/messages';
+// import { SupervisorState } from '../state';
+// import { RunnableConfig } from '@langchain/core/runnables';
+
+// export async function supervisor(
+//   state: SupervisorState,
+//   config: RunnableConfig
+// ): Promise<Partial<SupervisorState>> {
+//   console.log('supervisor: Starting', {
+//     messageCount: state.messages?.length,
+//     notesCount: state.notes?.length
+//   });
+  
+//   // Your supervisor logic here...
+//   // When supervisor makes decisions, add them as messages
+  
+//   return {
+//     messages: [
+//       new AIMessage({
+//         content: 'Supervisor: Coordinating research tasks...'
+//       })
+//     ],
+//     // Add any notes found
+//     notes: ['Research finding 1', 'Research finding 2']
+//   };
+// }
+
+// export async function supervisorTools(
+//   state: SupervisorState,
+//   config: RunnableConfig
+// ): Promise<Partial<SupervisorState>> {
+//   console.log('supervisorTools: Executing tools');
+  
+//   // Your tool execution logic here...
+//   // Add tool results as messages
+  
+//   return {
+//     messages: [
+//       new AIMessage({
+//         content: 'Tool execution completed. Found relevant information...'
+//       })
+//     ],
+//     notes: ['Tool finding 1']
+//   };
+// }
+
+// // ============================================
+// // supervisorSubgraph.ts - UPDATED
+// // ============================================
+// import { StateGraph, START, END } from '@langchain/langgraph'
+// import { Configuration } from '../configuration'
+// import { SupervisorState } from '../state';
+// import { supervisor, supervisorTools } from '../actions/supervisor';
+
+// const supervisorBuilder = new StateGraph(SupervisorState, Configuration.getSchema())
+
+// // Add supervisor nodes
+// supervisorBuilder.addNode("supervisor", supervisor)
+// supervisorBuilder.addNode("supervisorTools", supervisorTools)
+
+// // Define workflow
+// supervisorBuilder.addEdge(START, "supervisor")
+
+// // Add conditional routing from supervisor
+// supervisorBuilder.addConditionalEdges(
+//   "supervisor",
+//   (state: SupervisorState) => {
+//     // Your routing logic - when to use tools vs when to finish
+//     const shouldUseTool = state.notes?.length < 5; // Example condition
+//     return shouldUseTool ? "supervisorTools" : END;
+//   },
+//   {
+//     supervisorTools: "supervisorTools",
+//     [END]: END
+//   }
+// );
+
+// // Route from tools back to supervisor for next iteration
+// supervisorBuilder.addEdge("supervisorTools", "supervisor");
+
+// const supervisorSubgraph = supervisorBuilder.compile()
+
+// export { supervisorSubgraph }

@@ -5,8 +5,6 @@ import { SignJWT, jwtVerify } from 'jose';
 import { cookies } from 'next/headers';
 import { NewUser } from '@/lib/types';
 
-console.log('AUTH_SECRET length:', process.env.AUTH_SECRET?.length);
-console.log('AUTH_SECRET sample:', process.env.AUTH_SECRET?.slice(0, 5));
 const key = new TextEncoder().encode(process.env.AUTH_SECRET);
 
 const SALT_ROUNDS = 10;

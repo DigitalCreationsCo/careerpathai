@@ -8,7 +8,6 @@ import {
 } from '../configuration'
 import {
   AIMessage,
-  filterMessages,
   HumanMessage,
   SystemMessage,
 } from '@langchain/core/messages'
@@ -20,11 +19,10 @@ import {
 import { 
   leadResearcherPrompt,
   researchOutlineGenerationPrompt,
-  transformMessagesIntoResearchTopicPrompt,
 } from '../prompts';
 import { RunnableConfig } from '@langchain/core/runnables';
 
-export async function writeResearchBrief(
+export async function writeResearchOutline(
     state: AgentState,
     config: RunnableConfig
   ): Promise<Partial<AgentState> | Command> {
@@ -33,19 +31,21 @@ export async function writeResearchBrief(
     }); 
     
     const configurable = config.configurable as Configuration
-    const messages = state.messages || []
-    // main research question prompt 
-    // Why? to ask one deep question which will guide the goal of research
-    const researchTopicPrompt = transformMessagesIntoResearchTopicPrompt(
-      getBufferString(messages), 
+
+    // research brief generation prompt
+    // Why? To create a detailed outline which will be expanded by the research agent
+    // Good input = good output
+    const researchOutlinePrompt = researchOutlineGenerationPrompt(
+      state.researchBrief || "", 
+      getBufferString(state.messages || []),
       getTodayStr()
-    );
+    )
   
     const briefModel = (await configurableModel)
       .withRetry({ stopAfterAttempt: configurable.maxStructuredOutputRetries });
   
     try {
-      const response = await briefModel.invoke(researchTopicPrompt, {
+      const response = await briefModel.invoke(researchOutlinePrompt, {
         configurable: {
           model: configurable.researchModel,
           maxTokens: configurable.researchModelMaxTokens,
@@ -53,27 +53,38 @@ export async function writeResearchBrief(
         }
       });
       
-      const researchBrief = typeof response === 'string' 
+      // supervisor prompt
+      // Why? To understand the input, understnad the tools available, and understand the desired output
+      const supervisorSystemPrompt = leadResearcherPrompt(
+        configurable.maxResearcherIterations,
+        configurable.maxConcurrentResearchUnits, 
+        getTodayStr(),
+      );
+
+      const researchOutline = typeof response === 'string' 
         ? response 
         : (response as any).researchBrief || response.content?.toString() || '';
       
-      console.log('Research brief generated:', researchBrief.substring(0, 100));
+      console.log('Research outline generated:', researchOutline.substring(0, 100));
       
       // Add brief as message that supervisor will see
       return new Command({
-        goto: 'writeResearchOutline',
+        goto: 'researchSupervisor',
         update: {
-          researchBrief: researchBrief,
-          messages: [
-            new AIMessage({ 
-              content: `${researchBrief}` 
+          researchOutline,
+          supervisorMessages: [
+            new SystemMessage({ 
+              content: supervisorSystemPrompt
+            }),
+            new HumanMessage({ 
+              content: `${researchOutline}` 
             }),
           ],
-          // messages: [
-          //   new AIMessage({
-          //     content: "Composing research brief..."
-          //   })
-          // ]
+          messages: [
+            new AIMessage({
+              content: "Composing research brief..."
+            })
+          ]
         }
       });
       

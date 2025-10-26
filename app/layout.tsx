@@ -9,6 +9,7 @@ import Head from 'next/head';
 import { dateJobsDisplaced, numJobsDisplaced } from '@/lib/utils';
 import { Header } from '@/components/ui/header/header';
 import { auth } from '@/auth';
+import { NuqsAdapter } from 'nuqs/adapters/next/app'
 
 export const metadata: Metadata = {
   title: 'GoCareerPath — Find & Pivot to Your AI-Proof Career Path',
@@ -81,7 +82,7 @@ export default async function RootLayout({
         <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-N5RPQTFM"
         height="0" width="0" style={{display:'none',visibility:'hidden'}}></iframe></noscript>
 
-        <SWRConfig
+        {/* <SWRConfig
           value={{
             fallback: {
               // We do NOT await here
@@ -90,11 +91,13 @@ export default async function RootLayout({
               // '/api/team': getTeamForUser()
             }
           }}
-        >
-          <Header session={session} />
-          {children}
-          <Toaster position="bottom-center" />
-        </SWRConfig>
+        > */}
+          <NuqsAdapter>
+            <Header session={session} />
+            {children}
+            <Toaster position="bottom-center" />
+          </NuqsAdapter>
+        {/* </SWRConfig> */}
       </body>
     </html>
   );

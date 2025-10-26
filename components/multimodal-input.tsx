@@ -252,11 +252,11 @@ function PureMultimodalInput({
         className="rounded-xl border border-border bg-background p-3 shadow-xs transition-all duration-200 focus-within:border-border hover:border-muted-foreground/50"
         onSubmit={(event) => {
           event.preventDefault();
-          if (status !== "ready") {
-            toast.error("Please wait for the model to finish its response!");
-          } else {
+          // if (status !== "ready") {
+          //   toast.error("Please wait for the model to finish its response!");
+          // } else {
             submitForm();
-          }
+          // }
         }}
       >
         {/* {(attachments.length > 0 || uploadQueue.length > 0) && (

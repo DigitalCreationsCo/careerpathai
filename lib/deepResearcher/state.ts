@@ -40,7 +40,7 @@ export const ClarifyWithUser = z.object({
       "Verify message that we will start research after the user has provided the necessary information."
     ),
 });
-export type ClarifyWithUserType = z.infer<typeof ClarifyWithUser>;
+// export type ClarifyWithUserType = z.infer<typeof ClarifyWithUser>;
 
 export const ResearchQuestion = z.object({
   researchBrief: z
@@ -61,23 +61,23 @@ export type MessagesStateType = z.infer<typeof MessagesState>;
 export const AgentInputState = MessagesState.extend({});
 export type AgentInputState = z.infer<typeof AgentInputState>;
 
-export const AgentState = MessagesState.extend({
-  supervisorMessages: z.array(MessageLike),
-  researchBrief: z.string().optional(),
-  rawNotes: z.array(z.string()),
-  notes: z.array(z.string()),
-  finalReport: z.string(),
-});
-export type AgentState = z.infer<typeof AgentState>;
+// export const AgentState = MessagesState.extend({
+//   supervisorMessages: z.array(MessageLike),
+//   researchBrief: z.string().optional(),
+//   rawNotes: z.array(z.string()),
+//   notes: z.array(z.string()),
+//   finalReport: z.string(),
+// });
+// export type AgentState = z.infer<typeof AgentState>;
 
-export const SupervisorState = z.object({
-  supervisorMessages: z.array(MessageLike),
-  researchBrief: z.string(),
-  notes: z.array(z.string()),
-  researchIterations: z.number(),
-  rawNotes: z.array(z.string()),
-});
-export type SupervisorState = z.infer<typeof SupervisorState>;
+// export const SupervisorState = z.object({
+//   supervisorMessages: z.array(MessageLike),
+//   researchBrief: z.string(),
+//   notes: z.array(z.string()),
+//   researchIterations: z.number(),
+//   rawNotes: z.array(z.string()),
+// });
+// export type SupervisorState = z.infer<typeof SupervisorState>;
 
 export const ResearcherState = z.object({
   researcherMessages: z.array(MessageLike),
@@ -93,3 +93,124 @@ export const ResearcherOutputState = z.object({
   rawNotes: z.array(z.string()).default([]),
 });
 export type ResearcherOutputState = z.infer<typeof ResearcherOutputState>;
+
+
+/**
+ * Clarification decision structure
+ */
+export interface ClarifyWithUser {
+  needClarification: boolean;
+  question?: string;
+  verification?: string;
+}
+
+export type ClarifyWithUserType = typeof ClarifyWithUser;
+
+// Export state types for use in nodes
+export type AgentState = typeof AgentState.State;
+export type SupervisorState = typeof SupervisorState.State;
+
+// ============================================
+// state.ts - UPDATED with shared state
+// ============================================
+import { Annotation } from "@langchain/langgraph";
+import { BaseMessage } from "@langchain/core/messages";
+
+/**
+ * Main agent state that tracks research progress and findings
+ */
+export const AgentState = Annotation.Root({
+  // Core conversation messages - SHARED with supervisor
+  messages: Annotation<BaseMessage[]>({
+    reducer: (current, update) => {
+      if (!update) return current || [];
+      if (!current) return update;
+      return current.concat(update);
+    },
+    default: () => []
+  }),
+
+  // Supervisor-specific messages, e.g., instructions for supervisor
+  supervisorMessages: Annotation<BaseMessage[]>({
+    reducer: (current, update) => {
+      if (!update) return current || [];
+      if (!current) return update;
+      return current.concat(update);
+    },
+    default: () => []
+  }),
+  
+  // Research brief/topic generated from user input
+  researchBrief: Annotation<string>({
+    reducer: (current, update) => update ?? current,
+    default: () => ""
+  }),
+ 
+  researchOutline: Annotation<string>({
+    reducer: (current, update) => update ?? current,
+    default: () => ""
+  }),
+  
+  // Research notes/findings collected during research
+  notes: Annotation<string[]>({
+    reducer: (current, update) => {
+      if (!update) return current || [];
+      if (!current) return update;
+      return current.concat(update);
+    },
+    default: () => []
+  }),
+  
+  // Final compiled research report
+  finalReport: Annotation<string>({
+    reducer: (current, update) => update ?? current,
+    default: () => ""
+  }),
+});
+
+/**
+ * Supervisor subgraph state - SHARES messages with parent
+ */
+export const SupervisorState = Annotation.Root({
+  // CRITICAL: Use same messages field as parent graph
+  messages: Annotation<BaseMessage[]>({
+    reducer: (current, update) => {
+      if (!update) return current || [];
+      if (!current) return update;
+      return current.concat(update);
+    },
+    default: () => []
+  }),
+
+  // Supervisor-specific messages, e.g., instructions for supervisor
+  supervisorMessages: Annotation<BaseMessage[]>({
+    reducer: (current, update) => {
+      if (!update) return current || [];
+      if (!current) return update;
+      return current.concat(update);
+    },
+    default: () => []
+  }),
+  
+  // Notes collected by researchers
+  notes: Annotation<string[]>({
+    reducer: (current, update) => {
+      if (!update) return current || [];
+      if (!current) return update;
+      return current.concat(update);
+    },
+    default: () => []
+  }),
+  
+  // Research brief passed from parent graph
+  researchBrief: Annotation<string>({
+    reducer: (current, update) => update ?? current,
+    default: () => ""
+  }),
+
+  // Number of research iterations completed
+  researchIterations: Annotation<number>({
+    reducer: (current, update) => update ?? current,
+    default: () => 0
+  }),
+});

@@ -13,14 +13,16 @@ const protectedRoutes:string[] = [
   '/early-access-non-lexicon-draft'
 ];
 
-export default auth((req) => {
-  const isProtectedRoute = protectedRoutes.some((route) => req.nextUrl.pathname.startsWith(route));
+// export default auth((req) => {
+//   const isProtectedRoute = protectedRoutes.some((route) => req.nextUrl.pathname.startsWith(route));
 
-  if (!req.auth && isProtectedRoute) {
-    const newUrl = new URL("/sign-in", req.nextUrl.origin)
-    return Response.redirect(newUrl)
-  }
-})
+//   if (!req.auth && isProtectedRoute) {
+//     const newUrl = new URL("/sign-in", req.nextUrl.origin)
+//     return Response.redirect(newUrl)
+//   }
+// })
+export default function (req) { return req; }
+
 
 // export default async function auth((request: NextRequest) {
 //   const { pathname } = request.nextUrl;

@@ -69,11 +69,6 @@ export async function writeResearchBrief(
               content: `${researchBrief}` 
             }),
           ],
-          // messages: [
-          //   new AIMessage({
-          //     content: "Composing research brief..."
-          //   })
-          // ]
         }
       });
       

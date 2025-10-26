@@ -295,7 +295,7 @@ function PureMultimodalInput({
         <div className="flex flex-row items-start gap-1 sm:gap-2">
           <PromptInputTextarea
             autoFocus
-            className="grow resize-none border-0! border-none! bg-transparent p-2 text-sm outline-none ring-0 [-ms-overflow-style:none] [scrollbar-width:none] placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-offset-0 [&::-webkit-scrollbar]:hidden"
+            className="grow resize-none border-0! border-none! bg-transparent p-2 text-lg md:text-lg outline-none ring-0 [-ms-overflow-style:none] [scrollbar-width:none] placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-offset-0 [&::-webkit-scrollbar]:hidden"
             data-testid="multimodal-input"
             disableAutoResize={true}
             maxHeight={200}
@@ -306,7 +306,7 @@ function PureMultimodalInput({
             rows={1}
             value={input}
           />{" "}
-          <Context {...contextProps} />
+          {/* <Context {...contextProps} /> */}
         </div>
         <PromptInputToolbar className="!border-top-0 border-t-0! p-0 shadow-none dark:border-0 dark:border-transparent!">
           {/* <PromptInputTools className="gap-0 sm:gap-0.5">

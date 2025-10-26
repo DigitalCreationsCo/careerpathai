@@ -35,23 +35,23 @@ const PurePreviewMessage = ({
 
   return (
     <motion.div
-      animate={{ opacity: 1 }}
-      className="group/message w-full"
+      animate={{ opacity: 1, y: 0 }}
+      className="group/message w-full px-2 md:px-8"
+      initial={{ opacity: 0, y: 10 }}
       data-role={message.role}
       data-testid={`message-${message.role}`}
-      initial={{ opacity: 0 }}
-    >
+      >
       <div
-        className={cn("flex w-full items-start gap-2 md:gap-3", {
-          "justify-end": message.role === "user" && mode !== "edit",
+        className={cn("flex w-full items-start gap-2 md:gap-3 text-lg md:text-xl", {
+          "justify-center md:justify-end": message.role === "user" && mode !== "edit",
           "justify-start": message.role === "assistant",
         })}
       >
-        {message.role === "assistant" && (
+        {/* {message.role === "assistant" && (
           <div className="-mt-1 flex size-8 shrink-0 items-center justify-center rounded-full bg-background ring-1 ring-border">
             <SparklesIcon size={14} />
           </div>
-        )}
+        )} */}
 
         <div
           className={cn("flex flex-col", {
@@ -109,7 +109,7 @@ const PurePreviewMessage = ({
                       className={cn({
                         "w-fit break-words rounded-2xl px-3 py-2 text-right text-white":
                           message.role === "user",
-                        "bg-transparent px-0 py-0 text-left":
+                        "bg-transparent px-0 py-0 text-left text-zinc-500":
                           message.role === "assistant",
                       })}
                       data-testid="message-content"
@@ -251,13 +251,13 @@ const PurePreviewMessage = ({
             return null;
           })}
 
-          <MessageActions
+          {/* <MessageActions
             chatId={chatId}
             isLoading={isLoading}
             key={`action-${message.id}`}
             message={message}
             setMode={setMode}
-          />
+          /> */}
         </div>
       </div>
     </motion.div>
@@ -301,7 +301,7 @@ export const ThinkingMessage = () => {
         </div>
 
         <div className="flex w-full flex-col gap-2 md:gap-4">
-          <div className="p-0 text-muted-foreground text-sm">
+          <div className="p-0 text-muted-foreground">
             <LoadingText>Thinking...</LoadingText>
           </div>
         </div>

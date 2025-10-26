@@ -13,7 +13,7 @@ export const Greeting = () => {
   const delays = useGoldenRatio(1.0, 1.7, messages.length);
 
   return (
-    <div className="mx-auto mt-4 flex size-full max-w-3xl flex-col justify-center px-2 md:mt-16 md:px-8 space-y-4" key="overview">
+    <div className="mx-auto mt-4 flex size-full flex-col justify-center px-2 md:mt-16 md:px-8 space-y-4" key="overview">
       {messages.map((text, i) => (
         <motion.div
           key={i}

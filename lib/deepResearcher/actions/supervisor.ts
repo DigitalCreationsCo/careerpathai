@@ -10,6 +10,7 @@ import {
   Configuration,
 } from '../configuration'
 import {
+  AIMessage,
   HumanMessage,
   ToolMessage,
 } from '@langchain/core/messages'
@@ -115,8 +116,13 @@ export async function supervisorTools(state: SupervisorState, config: RunnableCo
             goto: END,
             graph: Command.PARENT,
             update: {
+                researchBrief: state.researchBrief || "",
                 notes: getNotesFromToolCalls(supervisorMessages),
-                researchBrief: state.researchBrief || ""
+                messages: [
+                  new AIMessage({
+                    content: "Writing your career path report..."
+                  })
+                ],
             }
         });
     }

@@ -80,11 +80,6 @@ export async function writeResearchOutline(
               content: `${researchOutline}` 
             }),
           ],
-          messages: [
-            new AIMessage({
-              content: "Composing research brief..."
-            })
-          ]
         }
       });
       

@@ -8,6 +8,7 @@ import { Messages } from "./messages";
 import { MultimodalInput } from "./multimodal-input";
 import type { ChatMessage } from "@/lib/types";
 import type { AppUsage } from "@/lib/usage";
+import { generateUUID } from "@/lib/utils";
 
 // Convert LangChain message to ChatMessage
 function convertMessage(lcMessage: any): ChatMessage {
@@ -169,6 +170,7 @@ export function Chat({
   const searchParams = useSearchParams();
   const query = searchParams.get("query");
   const [hasAppendedQuery, setHasAppendedQuery] = useState(false);
+  const [hasSentInitialEmptyMessage, setHasSentInitialEmptyMessage] = useState(false);
 
   const handleResume = useCallback(async () => {
     console.log('Resuming from checkpoint...');
@@ -188,15 +190,42 @@ export function Chat({
     autoResume
   );
 
+  // Send a message with empty text to start assistant on load if nothing else triggers
   useEffect(() => {
-    if (query && !hasAppendedQuery && !willResume) {
-      sendMessage({
-        role: "user",
-        parts: [{ type: "text", text: query }],
-      });
-      setHasAppendedQuery(true);
+    const sendInitalMessage = async () => {
+      // Only run when: 
+      // - there is no checkpoint auto-resume happening,
+      // - there is no query parameter,
+      // - initialMessages is empty,
+      // - we haven't sent it already for this session
+      if (
+        !willResume
+        && !query
+        && !hasSentInitialEmptyMessage
+        && initialMessages.length === 0
+      ) {
+        const initialMessage = { 
+          id: generateUUID(),
+          role: "user",
+          parts: [{ type: "text", text: "" }],
+        } as any;
+        await fetchResearchStream({ message: initialMessage });
+        setHasSentInitialEmptyMessage(true);
+      }
     }
-  }, [query, sendMessage, hasAppendedQuery, willResume, chatId]);
+    sendInitalMessage();
+  }, [willResume, query, hasSentInitialEmptyMessage, initialMessages, sendMessage, chatId]);
+
+  // // Existing: Send query from URL as a message if present (and not after resume)
+  // useEffect(() => {
+  //   if (query && !hasAppendedQuery && !willResume) {
+  //     sendMessage({
+  //       role: "user",
+  //       parts: [{ type: "text", text: query }],
+  //     });
+  //     setHasAppendedQuery(true);
+  //   }
+  // }, [query, sendMessage, hasAppendedQuery, willResume, chatId]);
 
   return (
     <div className="overscroll-behavior-contain flex h-dvh min-w-0 touch-pan-y flex-col bg-background">

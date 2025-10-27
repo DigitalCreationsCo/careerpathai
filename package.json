@@ -3,9 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "s-dev": "uv pip install -r requirements.txt && uv run start_debug_api.py --reload",
-    "c-dev": "NODE_OPTIONS=\"--inspect\" next dev --turbopack",
-    "dev": "concurrently \"npm run c-dev\" \"npm run s-dev\"",
+    "dev": "NODE_OPTIONS=\"--inspect\" next dev --turbopack",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",

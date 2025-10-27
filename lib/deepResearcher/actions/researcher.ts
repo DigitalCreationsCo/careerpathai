@@ -81,13 +81,13 @@ export async function researcher(state: ResearcherState, config: RunnableConfig)
     const response = await researchModel.invoke(messages)
     
     // Step 4: Update state and proceed to tool execution
-    return {
+    return new Command({
         goto: "researcherTools",
         update: {
             researcherMessages: [response],
             toolCallIterations: (state.toolCallIterations || 0) + 1
         }
-    }
+    });
 }
 
 export async function researcherTools(state: ResearcherState, config: RunnableConfig): Promise<Command> {
@@ -120,7 +120,7 @@ export async function researcherTools(state: ResearcherState, config: RunnableCo
     )
     
     if (!hasToolCalls && !hasNativeSearch) {
-        return { goto: "compressResearch" }
+        return new Command({ goto: "compressResearch" });
     }
     
     // Step 2: Handle other tool calls (search, MCP tools, etc.)
@@ -133,7 +133,7 @@ export async function researcherTools(state: ResearcherState, config: RunnableCo
     
     // Execute all tool calls in parallel
     const toolCalls = mostRecentMessage.toolCalls || []
-    const toolExecutionTasks = toolCalls.map(toolCall =>
+    const toolExecutionTasks = toolCalls.map((toolCall: any) =>
         executeToolSafely(toolsByName[toolCall.name], toolCall.args, config)
     )
     const observations = await Promise.all(toolExecutionTasks)
@@ -151,25 +151,25 @@ export async function researcherTools(state: ResearcherState, config: RunnableCo
     // Step 3: Check late exit conditions (after processing tools)
     const exceededIterations = (state.toolCallIterations || 0) >= configurable.maxReactToolCalls
     const researchCompleteCalled = toolCalls.some(
-        toolCall => toolCall.name === "ResearchComplete"
+        (toolCall: any) => toolCall.name === "ResearchComplete"
     )
     
     if (exceededIterations || researchCompleteCalled) {
         // End research and proceed to compression
-        return {
+        return new Command({
             goto: "compressResearch",
             update: { researcherMessages: toolOutputs }
-        }
+        });
     }
     
     // Continue research loop with tool results
-    return {
+    return new Command({
         goto: "researcher",
         update: { researcherMessages: toolOutputs }
-    }
+    });
 }
 
-export async function compressResearch(state: ResearcherState, config: RunnableConfig): Promise<{ compressedResearch: string; rawNotes: string[] }> {
+export async function compressResearch(state: ResearcherState, config: RunnableConfig): Promise<Command> {
     /**
      * Compress and synthesize research findings into a concise, structured summary.
      * 
@@ -213,22 +213,23 @@ export async function compressResearch(state: ResearcherState, config: RunnableC
             const response = await synthesizerModel.invoke(messages)
             
             // Extract raw notes from all tool and AI messages
-            const rawNotesContent = filterMessages(researcherMessages, { includeTypes: ["tool", "ai"] })
+            const rawNotesContent = filterMessages(researcherMessages as any, { includeTypes: ["tool", "ai"] })
                 .map(message => message.content.toString())
                 .join("\n")
             
             // Return successful compression result
-            return {
-                compressedResearch: response.content.toString(),
-                rawNotes: [rawNotesContent]
-            }
-            
+            return new Command ({
+                update: {
+                    compressedResearch: response.content.toString(),
+                    rawNotes: [rawNotesContent]
+                }
+            });
         } catch (e: any) {
             synthesisAttempts++
             
             // Handle token limit exceeded by removing older messages
             if (isTokenLimitExceeded(e, configurable.researchModel)) {
-                researcherMessages = removeUpToLastAIMessage(researcherMessages)
+                researcherMessages = removeUpToLastAIMessage(researcherMessages as any)
                 continue
             }
             
@@ -238,12 +239,14 @@ export async function compressResearch(state: ResearcherState, config: RunnableC
     }
     
     // Step 4: Return error result if all attempts failed
-    const rawNotesContent = filterMessages(researcherMessages, { includeTypes: ["tool", "ai"] })
+    const rawNotesContent = filterMessages(researcherMessages as any, { includeTypes: ["tool", "ai"] })
         .map(message => message.content.toString())
         .join("\n")
     
-    return {
-        compressedResearch: "Error synthesizing research report: Maximum retries exceeded",
-        rawNotes: [rawNotesContent]
-    }
+    return new Command({
+        update: {
+            compressedResearch: "Error synthesizing research report: Maximum retries exceeded",
+            rawNotes: [rawNotesContent]
+        }
+    });
 }

@@ -25,11 +25,12 @@ export type NewTeam = typeof teams.$inferInsert;
 export type TeamMember = typeof teamMembers.$inferSelect;
 export type NewTeamMember = typeof teamMembers.$inferInsert;
 export type TeamDataWithMembers = Team & {
-  members: TeamMember[]
+  teamMembers: (TeamMember & { user: Pick<User, 'id' | 'name' | 'email'> })[]
 };
 
 export type NewActivityLog = typeof activityLogs.$inferInsert;
-export type Report = typeof reports.$inferSelect;
+
+export type Report = Omit<typeof reports.$inferSelect, keyof CareerPathResponse> & CareerPathResponse;
 export type NewReport = typeof reports.$inferInsert;
 export type ResearchSession = typeof researchSessions.$inferSelect;
 export type NewResearchSession = typeof researchSessions.$inferInsert;
@@ -86,7 +87,7 @@ export type Attachment = {
 
 
 /** =========================
- *  Types (mirroring schema)
+    Career Report Data Types
  *  ========================= */
 
 type ScoreWeight = {
@@ -193,9 +194,9 @@ export type Metadata = {
 
 export type CareerPathResponse = {
   metadata: Metadata;
-  decision_matrix: DecisionRow[];
+  decisionMatrix: DecisionRow[];
   suggestions: CareerPathSuggestion[];
-  global_rationale: string;
+  globalRationale: string;
 };
 
 

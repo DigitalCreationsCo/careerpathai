@@ -12,7 +12,7 @@ export async function getReports() {
     .limit(100)
 }
 
-export async function getReportById(id: number):Promise<Report> {
+export async function getReportById(id: string):Promise<Report> {
   const user = await getUser();
   if (!user) {
     throw new Error('User not authenticated');

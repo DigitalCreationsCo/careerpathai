@@ -19,7 +19,7 @@ function convertMessage(lcMessage: any): ChatMessage {
       type: 'text',
       text: lcMessage.content || ''
     }],
-    createdAt: lcMessage.timestamp || new Date().toISOString()
+    // createdAt: lcMessage.timestamp || new Date().toISOString()
   };
 }
 
@@ -38,12 +38,12 @@ export function Chat({
   const [usage, setUsage] = useState<AppUsage | undefined>(initialLastContext);
   const [isResuming, setIsResuming] = useState(false);
   const [messages, setMessages] = useState<ChatMessage[]>(initialMessages);
-  const [status, setStatus] = useState<"idle" | "streaming" | "error" | "done">("idle");
+  const [status, setStatus] = useState<"submitted" | "streaming" | "error" | "ready">("ready");
   const abortControllerRef = useRef<AbortController | null>(null);
 
   const fetchResearchStream = useCallback(
     async ({ message, resume = false }: { message?: ChatMessage; resume?: boolean }) => {
-      setStatus("streaming");
+      setStatus("submitted");
       abortControllerRef.current?.abort();
       const abortController = new AbortController();
       abortControllerRef.current = abortController;
@@ -69,7 +69,7 @@ export function Chat({
           throw new Error(json.error || "Internal error");
         }
 
-        // Process NDJSON stream
+        setStatus("streaming");
         const reader = res.body!.getReader();
         const decoder = new TextDecoder();
         let buffer = "";
@@ -111,7 +111,7 @@ export function Chat({
               }
 
               if (chunk.type === 'final') {
-                setStatus("done");
+                setStatus("ready");
               }
 
             } catch (parseError) {
@@ -124,7 +124,7 @@ export function Chat({
 
       } catch (error: any) {
         if (error.name === 'AbortError') {
-          setStatus("idle");
+          setStatus("ready");
           return;
         }
         
@@ -143,7 +143,7 @@ export function Chat({
         id: Math.random().toString(36).slice(2),
         role: "user",
         parts: msgInput.parts,
-        createdAt: new Date().toISOString(),
+        // createdAt: new Date().toISOString(),
       };
       setMessages((prev) => [...prev, userMsg]);
       await fetchResearchStream({ message: userMsg });
@@ -153,10 +153,10 @@ export function Chat({
 
   const stop = useCallback(() => {
     abortControllerRef.current?.abort();
-    setStatus("idle");
+    setStatus("ready");
   }, []);
 
-  const regenerate = useCallback(() => {
+  const regenerate = useCallback(async () => {
     const lastUserMsg = [...messages].reverse().find((msg) => msg.role === "user");
     if (lastUserMsg) {
       fetchResearchStream({ message: lastUserMsg });

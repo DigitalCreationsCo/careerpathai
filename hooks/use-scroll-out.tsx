@@ -8,14 +8,14 @@ import { useEffect, useRef, type RefObject } from "react";
  */
 export function useScrollOutOfViewOnScroll<T extends HTMLElement>(
   threshold: number = 64 // px scrolled before hiding
-): RefObject<T> {
-  const ref = useRef<T>(null);
+): RefObject<T | null> {
+  const ref = useRef<T | null>(null);
   const lastScrollTop = useRef(0);
   const ticking = useRef(false);
 
   useEffect(() => {
     function handleScroll() {
-      if (!ref.current) return;
+      if (!ref || !ref.current) return;
 
       const scrollTop = window.scrollY || document.documentElement.scrollTop;
       const scrollingDown = scrollTop > lastScrollTop.current;

@@ -21,7 +21,7 @@ const protectedRoutes:string[] = [
 //     return Response.redirect(newUrl)
 //   }
 // })
-export default function (req) { return req; }
+export default function (req: NextRequest) { return req; }
 
 
 // export default async function auth((request: NextRequest) {

@@ -60,7 +60,11 @@ export async function clarifyWithUser(
           maxTokens: configurable.researchModelMaxTokens,
           apiKey: getApiKeyForModel(configurable.researchModel, config),
         }
-      });
+      }) as unknown as {
+        needClarification: Boolean;
+        question: string;
+        verification: string;
+      };
     } catch (error) {
       console.error('[LLM ERROR] clarifyWithUser:', error);
       
@@ -69,7 +73,7 @@ export async function clarifyWithUser(
         update: {
           messages: [
             new AIMessage({ 
-              content: '[LLM Error during clarification. Proceeding to research brief.]' 
+              content: '[LLM Error during clarification. Proceeding to research brief.]'
             })
           ]
         }

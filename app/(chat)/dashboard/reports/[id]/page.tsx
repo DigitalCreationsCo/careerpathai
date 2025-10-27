@@ -33,6 +33,8 @@ export default async function ReportPage(props: ReportPageProps) {
     notFound();
   }
 
+  const metadata: any = report.metadata as any;
+
   return (
     <div className="flex-1 p-4 lg:p-8">
       {/* Header with back button */}
@@ -49,8 +51,8 @@ export default async function ReportPage(props: ReportPageProps) {
             Career Path Report #{report.id}
           </h1>
           <div className="text-sm text-gray-500">
-            Generated {report.metadata?.generated_at ? 
-              new Date(report.metadata.generated_at).toLocaleDateString() : 
+            Generated {metadata?.generated_at ? 
+              new Date(metadata.generated_at).toLocaleDateString() : 
               'Unknown date'
             }
           </div>

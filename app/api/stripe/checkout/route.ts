@@ -57,7 +57,7 @@ export async function GET(request: NextRequest) {
     const user = await db
       .select()
       .from(users)
-      .where(eq(users.id, Number(userId)))
+      .where(eq(users.id, userId))
       .limit(1);
 
     if (user.length === 0) {
@@ -84,7 +84,7 @@ export async function GET(request: NextRequest) {
         stripeProductId: productId,
         planName: (plan.product as Stripe.Product).name,
         subscriptionStatus: subscription.status,
-        updatedAt: new Date(),
+        updatedAt: new Date().toISOString(),
       })
       .where(eq(teams.id, userTeam[0].teamId));
 

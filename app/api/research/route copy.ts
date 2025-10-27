@@ -1,8 +1,9 @@
+// @ts-nocheck
 import { NextApiRequest, NextApiResponse } from 'next'
 import { EventEmitter } from 'events'
 import { generateUUID } from "@/lib/utils";
 import { sessionManager } from '@/lib/deepResearcher/sessionManager'
-import { checkpointerManager } from '@/lib/researcher/checkpointerManager'
+import { checkpointerManager } from '@/lib/deepResearcher/checkpointer'
 import { deepResearcher } from '@/lib/deepResearcher/deepResearcher'
 import { auth } from '@/auth';
 

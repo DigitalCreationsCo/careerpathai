@@ -11,7 +11,7 @@ import {
 } from "react";
 import { deleteTrailingMessages } from "@/app/(chat)/actions";
 import type { ChatMessage } from "@/lib/types";
-import { getTextFromMessage } from "@/lib/utils";
+import { getTextFromUIMessage } from "@/lib/utils";
 import { Button } from "./ui/button";
 import { Textarea } from "./ui/textarea";
 
@@ -31,7 +31,7 @@ export function MessageEditor({
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
 
   const [draftContent, setDraftContent] = useState<string>(
-    getTextFromMessage(message)
+    getTextFromUIMessage(message)
   );
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 

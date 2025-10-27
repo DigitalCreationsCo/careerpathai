@@ -2,10 +2,6 @@
 import React, { ReactElement } from 'react';
 import { Report } from '@/lib/types';
 
-
-/** =========================
- *  Helpers
- *  ========================= */
 const pct = (n: number) => `${n}%`;
 const formatCurrency = (n?: number, currency: string = 'USD') =>
   n == null
@@ -97,7 +93,6 @@ export default function CareerPathReport ({
     <div className='min-h-screen bg-white text-foreground p-6 md:p-12 print:p-4'>
       <style>{printStyles}</style>
 
-      {/* Header */}
       <header className='mb-8 flex items-start justify-between print:mb-4'>
         <div>
           <h1 className='text-3xl font-bold'>
@@ -116,7 +111,6 @@ export default function CareerPathReport ({
         </button>
       </header>
 
-      {/* Meta */}
       <Section title='Meta'>
         <div className='grid md:grid-cols-3 gap-4'>
           <KeyValue label='Candidate Count' value={metadata.candidate_count} />
@@ -125,7 +119,6 @@ export default function CareerPathReport ({
         </div>
       </Section>
 
-      {/* Quick Preview */}
       <Section title='Quick Preview'>
         <SubSection title='Titles'>
           <div className='flex flex-wrap'>
@@ -166,7 +159,6 @@ export default function CareerPathReport ({
         </SubSection>
       </Section>
 
-      {/* Decision Matrix */}
       <Section title='Decision Matrix'>
         <div className='overflow-x-auto'>
           <table className='w-full text-sm border border-gray-200'>
@@ -198,7 +190,6 @@ export default function CareerPathReport ({
         </div>
       </Section>
 
-      {/* Suggestions */}
       <Section title='Suggestions'>
         <div className='space-y-10'>
           {suggestions.map((s, idx) => (
@@ -443,7 +434,6 @@ export default function CareerPathReport ({
         </div>
       </Section>
 
-      {/* Global Rationale */}
       <Section title='Global Rationale'>
         <p>{globalRationale}</p>
       </Section>
@@ -455,7 +445,6 @@ export default function CareerPathReport ({
   );
 };
 
-/** Simple table cell helpers */
 const Th: React.FC<{ children: React.ReactNode }> = ({ children }) => (
   <th className='text-left px-3 py-2 text-sm font-semibold uppercase tracking-wide text-gray-600'>
     {children}
@@ -465,7 +454,6 @@ const Td: React.FC<{ children: React.ReactNode }> = ({ children }) => (
   <td className='px-3 py-2 align-top'>{children}</td>
 );
 
-/** Print styles */
 const printStyles = `
 @media print {
   @page {

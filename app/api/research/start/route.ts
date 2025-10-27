@@ -3,6 +3,7 @@ import { getOrCreateChat, updateChatTitle } from "@/lib/db/queries/chat";
 import { checkpointerManager } from "@/lib/deepResearcher/checkpointer";
 import { deepResearcher } from "@/lib/deepResearcher/deepResearcher";
 import { sessionManager } from "@/lib/deepResearcher/sessionManager";
+import { HumanMessage } from "@langchain/core/messages";
 
 export interface StartResearchRequest {
   message: any;
@@ -63,12 +64,11 @@ export async function POST(req: Request) {
       ? null
       : {
           messages: [
-            {
+            new HumanMessage({
               id: persistantMessageId,
-              role: "user",
               content: text || body.message?.content,
-              timestamp: new Date().toISOString(),
-            },
+              additional_kwargs: { timestamp: new Date().toISOString() },
+            }),
           ],
         };
 
@@ -85,16 +85,15 @@ export async function POST(req: Request) {
             streamMode: "updates" as const,
           };
 
-          const graphStream = await graph.stream(input, streamConfig);
+          const graphStream = await graph.stream(input, streamConfig as any);
 
           for await (const update of graphStream) {
             // Extract messages from the update
             // update format: { [nodeName]: { messages: [...], otherState: ... } }
-            // The update type may be a Record<...> - so use Object.keys safely.
-            const nodeNames = Object.keys(update);
+            const nodeNames = Object.keys(update as any);
 
             for (const nodeName of nodeNames) {
-              const nodeUpdate = update[nodeName];
+              const nodeUpdate = (update as any)[nodeName];
 
               console.log("Node update:", {
                 node: nodeName,
@@ -201,17 +200,19 @@ export async function POST(req: Request) {
       },
     });
 
+    const headers: Record<string, string> = {
+      "Content-Type": "application/x-ndjson",
+      "Cache-Control": "no-cache, no-transform",
+      "Connection": "keep-alive",
+      "X-Content-Type-Options": "nosniff",
+      "X-Session-Id": session.id,
+      "X-Thread-Id": session.threadId,
+      "X-Resume-Mode": shouldResume ? "true" : "false",
+    };
+    if (persistantMessageId) headers["X-User-Message-Id"] = persistantMessageId;
+
     return new Response(stream, {
-      headers: {
-        "Content-Type": "application/x-ndjson",
-        "Cache-Control": "no-cache, no-transform",
-        "Connection": "keep-alive",
-        "X-Content-Type-Options": "nosniff",
-        "X-Session-Id": session.id,
-        "X-Thread-Id": session.threadId,
-        "X-Resume-Mode": shouldResume ? "true" : "false",
-        "X-User-Message-Id": persistantMessageId,
-      },
+      headers,
     });
   } catch (error) {
     console.error("Research start error:", error);

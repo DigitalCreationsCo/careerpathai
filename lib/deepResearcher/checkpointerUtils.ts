@@ -37,7 +37,7 @@ export async function getCheckpointMetadata(session: ResearchSession) {
     return {
       exists: true,
       channelValues: checkpoint.channel_values,
-      parentConfig: checkpoint.parent_config,
+      parentConfig: (checkpoint as any).parent_config,
       // Add any other useful metadata
     };
   } catch (error) {

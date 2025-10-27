@@ -78,11 +78,10 @@ export default async function RootLayout({
         <GoogleTagManager />
       </Head>
       <body className="min-h-[100dvh] relative bg-background">
-        {/* Google Tag Manager (noscript) */}
         <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-N5RPQTFM"
         height="0" width="0" style={{display:'none',visibility:'hidden'}}></iframe></noscript>
 
-        {/* <SWRConfig
+        <SWRConfig
           value={{
             fallback: {
               // We do NOT await here
@@ -91,13 +90,13 @@ export default async function RootLayout({
               // '/api/team': getTeamForUser()
             }
           }}
-        > */}
+        >
           <NuqsAdapter>
             <Header session={session} />
             {children}
             <Toaster position="bottom-center" />
           </NuqsAdapter>
-        {/* </SWRConfig> */}
+        </SWRConfig>
       </body>
     </html>
   );

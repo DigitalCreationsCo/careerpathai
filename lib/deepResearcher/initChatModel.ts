@@ -89,17 +89,19 @@ export async function initChatModel(defaultConfig = {}) {
 export async function initConfigurableModel(config: Record<string, any> = {}) {
   const hybrid = (await initChatModel(config));
 
-  hybrid.withConfigurable = (cfg: any) => ({
-    async invoke(prompt: any, runtimeConfig?: any) {
-      return hybrid.invoke(prompt, {
-        configurable: { ...cfg, ...(runtimeConfig?.configurable || {}) },
-      });
-    },
-    async stream(prompt: any, runtimeConfig?: any) {
-      return hybrid.stream(prompt, {
-        configurable: { ...cfg, ...(runtimeConfig?.configurable || {}) },
-      });
-    },
+  Object.defineProperty(hybrid, "withConfigurable", {
+    value: (cfg: any) => ({
+      async invoke(prompt: any, runtimeConfig?: any) {
+        return hybrid.invoke(prompt, {
+          configurable: { ...cfg, ...(runtimeConfig?.configurable || {}) },
+        });
+      },
+      async stream(prompt: any, runtimeConfig?: any) {
+        return hybrid.stream(prompt, {
+          configurable: { ...cfg, ...(runtimeConfig?.configurable || {}) },
+        });
+      },
+    })
   });
 
   debugLog("Custom configurableModel initialized with config:", config);

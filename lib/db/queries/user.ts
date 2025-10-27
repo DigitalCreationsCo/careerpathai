@@ -101,7 +101,7 @@ export async function updateTeamSubscription(
     .update(teams)
     .set({
       ...subscriptionData,
-      updatedAt: new Date()
+      updatedAt: new Date().toISOString()
     })
     .where(eq(teams.id, teamId));
 }

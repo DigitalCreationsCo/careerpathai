@@ -106,7 +106,7 @@ export class Configuration {
     // Overlay config for all other fields including user data, EXCEPT special-cased fields above
     if (data && typeof data === "object") {
       for (const key in data) {
-        if (data[key] !== undefined && ![
+        if (data[key as keyof Configuration] !== undefined && ![
           "summarizationModelMaxTokens",
           "researchModelMaxTokens",
           "compressionModelMaxTokens",
@@ -117,7 +117,7 @@ export class Configuration {
           "finalReportModel"
         ].includes(key)
         ) {
-          (this as any)[key] = data[key];
+          (this as any)[key] = data[key as keyof Configuration];
         }
       }
     }
@@ -354,8 +354,8 @@ class ModelSelector {
     }
 
     // Bind tools if provided and model has withTools method
-    if (this.toolsBinding && typeof model.withTools === "function") {
-      model = model.withTools(this.toolsBinding) as any;
+    if (this.toolsBinding && typeof model.bindTools === "function") {
+      model = model.bindTools(this.toolsBinding) as any;
     }
 
     // Any other config not used above gets passed in here, except 'model', 'apiKey', 'maxTokens', 'tags'
@@ -443,8 +443,8 @@ export class McpConfig {
   authRequired?: boolean;
 
   constructor(data?: Partial<McpConfig>) {
-    this.url = data?.url ?? null;
-    this.tools = data?.tools ?? null;
+    this.url = data?.url ?? undefined;
+    this.tools = data?.tools ?? undefined;
     this.authRequired = data?.authRequired ?? false;
   }
 }

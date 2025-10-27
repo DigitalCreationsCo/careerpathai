@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/nextjs';
+import type { Meta, StoryObj } from '@storybook/nextjs-vite';
 import { fn } from 'storybook/test';
 
 import { WaitlistEmail } from './waitlist-email';
@@ -16,4 +16,10 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const Primary: Story = {}
+export const Primary: Story = {
+  args: {
+    username: "Andres", 
+    previewLink: "", 
+    spotNumber: Math.random(),
+  }
+}

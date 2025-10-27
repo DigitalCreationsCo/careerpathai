@@ -17,13 +17,13 @@ import {
 import * as React from "react";
 
 interface WaitlistEmailProps {
-  username?: string;
+  username: string;
   previewLink?: string;
-  spotNumber: number;
+  spotNumber?: number;
 }
 
 export const WaitlistEmail = ({
-  username = "Alex",
+  username,
   previewLink = "https://gocareerpath.com/preview",
   spotNumber = Math.floor(Math.random() * 73) + 1,
 }: WaitlistEmailProps) => {

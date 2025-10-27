@@ -3,7 +3,6 @@
 import { compare, hash } from 'bcryptjs';
 import { SignJWT, jwtVerify } from 'jose';
 import { cookies } from 'next/headers';
-import { NewUser } from '@/lib/types';
 
 const key = new TextEncoder().encode(process.env.AUTH_SECRET);
 
@@ -50,10 +49,10 @@ export async function getSession() {
   return await verifyToken(session);
 }
 
-export async function setSession(user: NewUser) {
+export async function setSession(user: { id: string }) {
   const expiresInOneDay = new Date(Date.now() + 24 * 60 * 60 * 1000);
   const session: SessionData = {
-    user: { id: user.id! },
+    user: { id: user.id },
     expires: expiresInOneDay.toISOString(),
   };
   const encryptedSession = await signToken(session);

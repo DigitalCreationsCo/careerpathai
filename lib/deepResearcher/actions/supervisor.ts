@@ -106,8 +106,8 @@ export async function supervisorTools(state: SupervisorState, config: RunnableCo
     // Define exit criteria for research phase
     const exceededAllowedIterations = researchIterations > configurable.maxResearcherIterations
     const noToolCalls = mostRecentMessage.type !== "tool"
-    const researchCompleteToolCall = mostRecentMessage.toolCalls?.some(
-        toolCall => toolCall.name === "ResearchComplete"
+    const researchCompleteToolCall = (mostRecentMessage as any).toolCalls?.some(
+        (toolCall: any) => toolCall.name === "ResearchComplete"
     ) || false
     
     // Exit if any termination condition is met
@@ -132,8 +132,8 @@ export async function supervisorTools(state: SupervisorState, config: RunnableCo
     const updatePayload: any = { supervisorMessages: [] }
     
     // Handle thinkTool calls (strategic reflection)
-    const thinkToolCalls = mostRecentMessage.toolCalls?.filter(
-        toolCall => toolCall.name === "thinkTool"
+    const thinkToolCalls = (mostRecentMessage as any).toolCalls?.filter(
+        (toolCall: any) => toolCall.name === "thinkTool"
     ) || []
     
     for (const toolCall of thinkToolCalls) {
@@ -146,8 +146,8 @@ export async function supervisorTools(state: SupervisorState, config: RunnableCo
     }
     
     // Handle ConductResearch calls (research delegation)
-    const conductResearchCalls = mostRecentMessage.toolCalls?.filter(
-        toolCall => toolCall.name === "ConductResearch"
+    const conductResearchCalls = (mostRecentMessage as any).toolCalls?.filter(
+        (toolCall: any) => toolCall.name === "ConductResearch"
     ) || []
     
     if (conductResearchCalls.length > 0) {
@@ -157,7 +157,7 @@ export async function supervisorTools(state: SupervisorState, config: RunnableCo
             const overflowConductResearchCalls = conductResearchCalls.slice(configurable.maxConcurrentResearchUnits)
             
             // Execute research tasks in parallel
-            const researchTasks = allowedConductResearchCalls.map(toolCall =>
+            const researchTasks = allowedConductResearchCalls.map((toolCall: any) =>
                 researcherSubgraph.invoke({
                     researcherMessages: [
                         new HumanMessage({ content: toolCall.args.researchTopic })

@@ -1,4 +1,4 @@
-import './landing.css'
+import '../landing.css'
 import { CheckCircle, Star, Zap } from 'lucide-react';
 import { Browser } from '@/components/browser';
 import { WaitlistEmailCapture } from '@/components/waitlist-email-capture';

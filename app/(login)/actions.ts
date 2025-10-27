@@ -82,7 +82,7 @@ export const signInWithEmail = validatedAction(signInSchema, async (data, formDa
 
   const isPasswordValid = await comparePasswords(
     password,
-    foundUser.passwordHash
+    foundUser.passwordHash || ''
   );
 
   if (!isPasswordValid) {
@@ -248,7 +248,7 @@ export const updatePassword = validatedActionWithUser(
 
     const isPasswordValid = await comparePasswords(
       currentPassword,
-      user.passwordHash
+      user.passwordHash || ''
     );
 
     if (!isPasswordValid) {
@@ -304,7 +304,7 @@ export const deleteAccount = validatedActionWithUser(
   async (data, _, user) => {
     const { password } = data;
 
-    const isPasswordValid = await comparePasswords(password, user.passwordHash);
+    const isPasswordValid = await comparePasswords(password, user.passwordHash || '');
     if (!isPasswordValid) {
       return {
         password,

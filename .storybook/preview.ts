@@ -1,5 +1,5 @@
 import '../app/globals.css';
-import type { Preview } from '@storybook/nextjs'
+import type { Preview } from '@storybook/nextjs-vite'
 import { sb } from 'storybook/test';
 
 // Automatically spies on all exports

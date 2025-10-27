@@ -8,8 +8,7 @@ import { formatISO } from 'date-fns';
 import { ChatSDKError, type ErrorCode } from './errors';
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
-import { Message } from "./deepResearcher/deepResearcher";
-import { ChatMessage } from "@langchain/core/messages";
+import { ChatMessage, Message } from "@langchain/core/messages";
 import { ChatTools, CustomUIDataTypes } from "./types";
 
 export function camelCaseToUpperCaseSnakeCase(camelCaseString: string) {
@@ -21,7 +20,7 @@ export function camelCaseToUpperCaseSnakeCase(camelCaseString: string) {
     .replace(/^_/, '');         // Removes leading underscore if present (for cases like "FirstName")
 }
 
-export function sanitizeUIMessages(messages: Array<Message>): Array<Message> {
+export function sanitizeUIMessages(messages: Array<ChatMessage & any>): Array<Message> {
   const messagesBySanitizedToolInvocations = messages.map((message) => {
     if (message.role !== "assistant") return message;
 
@@ -36,7 +35,7 @@ export function sanitizeUIMessages(messages: Array<Message>): Array<Message> {
     }
 
     const sanitizedToolInvocations = message.toolInvocations.filter(
-      (toolInvocation) =>
+      (toolInvocation: any) =>
         toolInvocation.state === "result" ||
         toolResultIds.includes(toolInvocation.toolCallId),
     );
@@ -181,7 +180,7 @@ export function sanitizeText(text: string) {
   return text.replace('<has_function_call>', '');
 }
 
-export function convertToUIMessages(messages: any[]): ChatMessage[] {
+export function convertToUIMessages(messages: any[]): Partial<ChatMessage>[] {
   return messages.map((message) => ({
     id: message.id,
     role: message.role as 'user' | 'assistant' | 'system',
@@ -192,7 +191,7 @@ export function convertToUIMessages(messages: any[]): ChatMessage[] {
   }));
 }
 
-export function getTextFromMessage(message: ChatMessage): string {
+export function getTextFromUIMessage(message: UIMessage): string {
   return message.parts
     .filter((part) => part.type === 'text')
     .map((part) => part.text)
@@ -200,7 +199,7 @@ export function getTextFromMessage(message: ChatMessage): string {
 }
 
 // Convert messages (array of AIMessage-like objects) to OpenAI message format.
-export function convertToOpenaiMessages(messages) {
+export function convertToOpenaiMessages(messages: any[]) {
   const openaiMessages = [];
   for (const message of messages) {
     const parts = [];

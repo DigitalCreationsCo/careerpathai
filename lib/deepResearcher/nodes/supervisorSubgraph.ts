@@ -13,7 +13,7 @@ supervisorBuilder.addNode("supervisor", supervisor, { ends:["supervisorTools"] }
 supervisorBuilder.addNode("supervisorTools", supervisorTools, { ends: ["supervisor"] })
 
 // Define workflow
-supervisorBuilder.addEdge(START, "supervisor")
+supervisorBuilder.addEdge(START, "supervisor" as any)
 
 // Add conditional routing from supervisor
 // supervisorBuilder.addConditionalEdges(

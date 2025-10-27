@@ -15,12 +15,12 @@ const deepResearcherBuilder = new StateGraph(AgentState, Configuration.getSchema
 deepResearcherBuilder.addNode('clarifyWithUser', clarifyWithUser, { ends: ["writeResearchBrief"] });
 deepResearcherBuilder.addNode('writeResearchBrief', writeResearchBrief, { ends: ["writeResearchOutline"] });
 deepResearcherBuilder.addNode('writeResearchOutline', writeResearchOutline, { ends: ["researchSupervisor"] });
-deepResearcherBuilder.addNode('researchSupervisor', supervisorSubgraph)
+deepResearcherBuilder.addNode('researchSupervisor', supervisorSubgraph as any)
 deepResearcherBuilder.addNode("finalReportGeneration", finalReportGeneration)
 
-deepResearcherBuilder.addEdge(START, 'clarifyWithUser')
-deepResearcherBuilder.addEdge('researchSupervisor', 'finalReportGeneration')
-deepResearcherBuilder.addEdge('finalReportGeneration', END)
+deepResearcherBuilder.addEdge(START, 'clarifyWithUser' as any)
+deepResearcherBuilder.addEdge('researchSupervisor' as any, 'finalReportGeneration' as any)
+deepResearcherBuilder.addEdge('finalReportGeneration' as any, END)
 
 const deepResearcherGraph = deepResearcherBuilder.compile();
 

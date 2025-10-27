@@ -1,6 +1,0 @@
-{
-    "graphs": {
-      "Deep Researcher": "./deepResearcher.ts:deepResearcherGraph"
-    },
-    "env": ".env.local"
-}

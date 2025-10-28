@@ -27,7 +27,7 @@ export default async function LandingPage() {
                 Before It’s Too Late
               </span>
             </h1>
-            <p className="subtitle text-base text-muted-foreground sm:text-lg max-w-2xl mx-auto">
+            <p className="subtitle  text-muted-foreground sm:text-lg max-w-2xl mx-auto">
               Get your <span className="text-foreground">personalized Career Path Report</span>—discover <span className='text-foreground'>4 high-paying, AI-resistant roles</span> you can thrive in using skills you already have.<br /><br />
               <span className="subtext">
                 Join <span className="text-accent">1,000+ professionals</span> future-proofing their careers in the AI economy.
@@ -60,7 +60,7 @@ export default async function LandingPage() {
                 Why Upskilling Matters Now
               </span>
             </h2>
-            <p className="subtitle text-base sm:text-lg text-muted-foreground">
+            <p className="subtitle  sm:text-lg text-muted-foreground">
               The world of work is changing faster than ever. AI and automation are already making entire categories of jobs obsolete—<span className="text-foreground">waiting means falling behind</span>. Upskilling today is your best defense against job displacement, and your smartest move for a secure, fulfilling future.
             </p>
           </div>
@@ -68,7 +68,7 @@ export default async function LandingPage() {
             <h3 className="heading text-xl sm:text-2xl mb-2">
               How Your Career Path Report Is <span className="text-accent">Personalized</span>
             </h3>
-            <p className="subtitle text-base sm:text-lg text-muted-foreground">
+            <p className="subtitle  sm:text-lg text-muted-foreground">
               Your report is unique—just like your career journey. We analyze your <span className="text-foreground">location, current skill level, existing skills, desired salary</span>, and more to create a customized roadmap.
             </p>
             <ul className="grid gap-3 md:grid-cols-2 max-w-2xl mx-auto mt-5 text-left text-muted-foreground">
@@ -221,35 +221,35 @@ export default async function LandingPage() {
               </span>
             </h2>
             <p className="subtitle mb-4 sm:text-lg">
-              Every Career Path Report includes:
+              Every personalized Career Path Report includes:
             </p>
           </div>
           <ul className="grid gap-6 md:grid-cols-2 max-w-2xl mx-auto text-left">
             <li className="p-4 rounded-lg hover:bg-accent/10 transition">
               <span className='text-2xl'>🎯</span>{' '}
               <span>Custom Strategy Plan</span>
-              <p className="text-muted-foreground text-base mt-1 ml-1">
+              <p className="text-muted-foreground mt-1 ml-1">
                 A step-by-step roadmap to pivot into resilient roles that fit your background.
               </p>
             </li>
             <li className="p-4 rounded-lg hover:bg-accent/10 transition">
               <span className='text-2xl'>📚</span>{' '}
               <span>Skills Gap Analysis</span>
-              <p className="text-muted-foreground text-base mt-1 ml-1">
+              <p className="text-muted-foreground  mt-1 ml-1">
                 See exactly which skills to upgrade (and which to skip)—no wasted time or money.
               </p>
             </li>
             <li className="p-4 rounded-lg hover:bg-accent/10 transition">
               <span className='text-2xl'>🚀</span>{' '}
               <span>30-Day Sprint</span>
-              <p className="text-muted-foreground text-base mt-1 ml-1">
+              <p className="text-muted-foreground  mt-1 ml-1">
                 Compact, daily action plan for rapid momentum—start moving day one.
               </p>
             </li>
             <li className="p-4 rounded-lg hover:bg-accent/10 transition">
               <span className='text-2xl'>💼</span>{' '}
               <span>Offer-Getting Scripts</span>
-              <p className="text-muted-foreground text-base mt-1 ml-1">
+              <p className="text-muted-foreground  mt-1 ml-1">
                 Outreach templates and salary scripts designed to help land interviews and increase offers.
               </p>
             </li>
@@ -262,7 +262,7 @@ export default async function LandingPage() {
         <div className="max-w-7xl mx-auto">
           <h2 className="heading mb-6">
             <span className="text-transparent bg-gradient-accent bg-clip-text">
-              Sample Report: <span className="italic">Marketing Director → AI-Ready Career</span>
+            Preview: <span className="italic">Marketing Director → AI-Ready Career</span>
             </span>
           </h2>
           {/* Demo Report */}
@@ -272,7 +272,7 @@ export default async function LandingPage() {
                 <h3 className="text-lg text-primary mb-2 flex items-center gap-2">
                   <span className='text-2xl'>🎯</span> AI-Resistant Path #1
                 </h3>
-                <p className="text-muted-foreground text-base">Revenue Operations Director</p>
+                <p className="text-muted-foreground ">Revenue Operations Director</p>
               </div>
 
               <div>
@@ -299,7 +299,7 @@ export default async function LandingPage() {
                   <div className="text-muted-foreground">
                     <div className="rounded-lg space-y-3">
                       <h4 className="text-accent mb-1">
-                        <span className='text-xl'>📚</span> Needed Skills
+                        <span className='text-xl'>📚</span> Skills Gap Analysis
                       </h4>
                       <ul className="text-sm space-y-1">
                         <li className="flex items-center">
@@ -325,19 +325,19 @@ export default async function LandingPage() {
                 </p>
                 <ul className="bg-gradient-to-r from-blue-500/10 to-purple-500/10 border border-blue-500/20 rounded-lg p-4 space-y-2">
                   <li>
-                    <span className="text-foreground">•</span> <span>30-Day Sprint overview</span>
+                    <span className="text-muted-foreground">- 30-Day Sprint:</span>
                   </li>
                   <li>
-                    <span className="text-foreground">•</span> <span>Weekly action steps (sample: complete Salesforce training, update LinkedIn, reach out to hiring managers)</span>
+                    <span className="text-muted-foreground">- Week 1: Complete Salesforce training, Update LinkedIn, Reach out to hiring managers...)</span>
                   </li>
                   <li>
-                    <span className="text-foreground">•</span> <span>High-response outreach templates</span>
+                    <span className="text-muted-foreground">- Outreach templates</span>
                   </li>
                   <li>
-                    <span className="text-foreground">•</span> <span>Salary negotiation scripts</span>
+                    <span className="text-muted-foreground">- Salary negotiation scripts</span>
                   </li>
                   <li>
-                    <span className="text-foreground">•</span> <span>More practical, actionable tools</span>
+                    <span className="text-muted-foreground">- More practical, actionable tools</span>
                   </li>
                 </ul>
               </div>
@@ -345,7 +345,7 @@ export default async function LandingPage() {
           </Browser>
           <div className="text-center mt-8 mb-4">
             <p className="text-muted-foreground my-8 w-full max-w-lg mx-auto">
-              Unlock all <span className="text-accent">4 future-proof career options</span> tailored to you.
+            Discover <span className="text-accent">4 high-paying, AI-resistant career paths</span> tailored to you.
             </p>
             <Link href="/sign-up" legacyBehavior>
               <Button
@@ -353,7 +353,7 @@ export default async function LandingPage() {
                 size="xl"
                 className="mx-auto max-w-md text-background whitespace-normal break-words"
               >
-                See My Personalized Report – $29
+                Unlock All 4 Career Paths – Get My Complete Report for $29
               </Button>
             </Link>
           </div>
@@ -364,7 +364,7 @@ export default async function LandingPage() {
       <section className="py-16 px-4 sm:px-6 lg:px-8 bg-gradient-card">
         <div className="max-w-4xl mx-auto text-center space-y-10">
           <h2 className="heading text-transparent bg-gradient-primary bg-clip-text">
-            Trusted by Professionals in Every Industry
+            Join 1,000+ Professionals Who've Already AI-Proofed Their Careers
           </h2>
           <div className="grid md:grid-cols-2 gap-8">
             <div className="max-w-md mx-auto bg-muted/30 rounded-xl p-6 border border-border shadow-sm">
@@ -374,7 +374,7 @@ export default async function LandingPage() {
                 ))}
               </div>
               <p className="text-muted-foreground mb-4 italic">
-                “Within weeks of following my custom report, I pivoted to cybersecurity—I'm already earning $95K!”
+              “The career path report gave me total clarity, and got me moving immediately. Today I'm earning $95K in cybersecurity.”
               </p>
               <p>Sarah Chen<br /><span className="text-sm text-muted-foreground">Cybersecurity Analyst</span></p>
             </div>
@@ -386,7 +386,7 @@ export default async function LandingPage() {
                 ))}
               </div>
               <p className="text-muted-foreground mb-4 italic">
-                “The Skills Gap Analysis was exact. I landed a RevOps role just 4 months after using the report.”
+                “The skills gap analysis was spot-on.  I went from technical support to a RevOps role in just 4 months using the report.”
               </p>
               <p>Marcus Rodriguez<br /><span className="text-sm text-muted-foreground">Revenue Operations Manager</span></p>
             </div>
@@ -398,15 +398,14 @@ export default async function LandingPage() {
       <section className="py-16 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-muted/20 to-background">
         <div className="flex flex-col items-center justify-center mx-auto text-center gap-8">
           <div className="space-y-3">
-            <h2 className="heading text-warning text-2xl sm:text-3xl">
-              <span className="">⚠️</span> <span className="ml-2">{numJobsDisplaced} jobs could vanish by {dateJobsDisplaced}</span>
+            <h2 className="heading text-warning text-2xl sm:text-3xl whitespace-pre-line font-semibold">⚠️ {numJobsDisplaced} jobs will be displaced by {dateJobsDisplaced}
             </h2>
-            <p className="subtitle max-w-xs sm:max-w-md text-base text-muted-foreground">
-              Don't wait until it's too late.<br />
-              Take control with a proven roadmap—get your custom Career Path Report today.
+            <p className="subtitle max-w-xs sm:max-w-md text-muted-foreground">
+            Don't wait to AI-proof your career. <br/>
+            Your future role is already waiting — get your personalized Career Path Report today.
             </p>
           </div>
-          <div className="flex flex-col items-center space-y-4">
+          <div className="flex flex-col items-center">
             <div className="space-y-2">
               <p className="text-muted-foreground line-through whitespace-pre"> Regular: $99 </p>
               <p className="heading text-success font-[Outfit]">Launch Special: $29 <span className="subtext text-muted-foreground">(Limited Time)</span></p>
@@ -421,7 +420,7 @@ export default async function LandingPage() {
               </Button>
             </Link>
             <div className="text-xs text-red-400 mt-2">
-              Instant digital access &mdash; All sales final
+              Instant digital access. All sales are final.
             </div>
           </div>
         </div>

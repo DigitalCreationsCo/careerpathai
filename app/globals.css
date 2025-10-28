@@ -82,7 +82,7 @@
   }
 
   * {
-    @apply border-border font-normal;
+    @apply border-border;
   }
 }
 

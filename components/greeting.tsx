@@ -13,7 +13,7 @@ export const Greeting = () => {
   const delays = useGoldenRatio(1.0, 1.7, messages.length);
 
   return (
-    <div className="mx-auto mt-4 flex size-full flex-col justify-center px-2 md:mt-16 md:px-8 space-y-4" key="overview">
+    <div className="mx-auto mt-4 flex size-full flex-col justify-center md:mt-8 md:px-8 space-y-4" key="overview">
       {messages.map((text, i) => (
         <motion.div
           key={i}
@@ -21,12 +21,15 @@ export const Greeting = () => {
           exit={{ opacity: 0, y: 10 }}
           initial={{ opacity: 0, y: 10 }}
           transition={{ delay: delays[i] }}
-          className={cn(i === 0 ? "font-semibold text-xl md:text-2xl" : "text-lg text-zinc-500 md:text-xl", 'items-center')}
+          className={cn([
+            'text-lg leading-snug flex',
+            i === 0 ? "font-medium text-foreground!" : "text-muted-foreground", 
+          ])}
         >
-          <div className="float-left mr-2">
+          <div className="flex items-center float-left gap-2">
             {i === 0 && <Logo />}
+            {text}
           </div>
-          {text}
         </motion.div>
       ))}
     </div>

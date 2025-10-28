@@ -19,7 +19,7 @@ import {
   clarifyWithUserInstructions,
 } from '../prompts';
 import { RunnableConfig } from '@langchain/core/runnables';
-import { AIMessage } from '@langchain/core/messages';
+import { AIMessage, MessageStructure, AIMessageChunk } from '@langchain/core/messages';
 
 export async function clarifyWithUser(
     state: AgentState,
@@ -60,12 +60,8 @@ export async function clarifyWithUser(
           maxTokens: configurable.researchModelMaxTokens,
           apiKey: getApiKeyForModel(configurable.researchModel, config),
         }
-      }) as unknown as {
-        needClarification: Boolean;
-        question: string;
-        verification: string;
-      };
-    } catch (error) {
+      });
+    } catch(error) {
       console.error('[LLM ERROR] clarifyWithUser:', error);
       
       return new Command({
@@ -80,6 +76,12 @@ export async function clarifyWithUser(
       });
     }
     
+    response = JSON.parse(response.content as string) as unknown as { 
+      needClarification: Boolean;
+      question: string;
+      verification: string;
+    };
+
     if (response.needClarification) {
       return new Command({
         goto: 'END',

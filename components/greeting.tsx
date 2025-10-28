@@ -7,7 +7,7 @@ export const Greeting = () => {
   const messages = [
     "Welcome to GoCareerPath.",
     "Work is changing fast—automation is transforming every field. \nFortunately, your skills matter, and they should lead to a stable, well-paid future.",
-    "Answer a few short questions to get your Career Path Report and find the paths most likely to stay strong in the years ahead."
+    "Answer a few short questions to get your Career Path Report and find the paths most likely to stay strong in the years ahead.",
   ];
 
   const delays = useGoldenRatio(1.0, 1.7, messages.length);

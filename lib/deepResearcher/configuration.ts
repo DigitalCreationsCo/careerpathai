@@ -1,4 +1,3 @@
-// import { initChatModel } from "@/lib/deepResearcher/initChatModel";
 import { z } from "zod";
 import { ChatGoogleGenerativeAI } from "@langchain/google-genai";
 import { ChatOpenAI } from "@langchain/openai";
@@ -11,6 +10,15 @@ export interface RunnableConfig {
   configurable?: Record<string, any>;
 }
 
+function getEnv(): Record<string, string | undefined> {
+  return process.env as Record<string, string | undefined>;
+}
+
+/**
+ * parseValue:
+ * - If key related to known booleans or numbers: cast appropriately.
+ * - Otherwise, return the string as is.
+ */
 function parseValue(key: string, value: any) {
   // Provide type conversions for boolean/numbers from env
   if (
@@ -35,158 +43,226 @@ function parseValue(key: string, value: any) {
   return value;
 }
 
+export function removeVendorPrefix(modelKey: string): string {
+  if (!modelKey) return modelKey;
+  return modelKey.replace(/^(openai:|anthropic:|google:)/, "");
+}
+
+// Strip vendor prefix and lookup token limit, fallback to default for missing keys.
 function getDefaultModelTokenLimitByFullMatch(modelKey: string, fallback: number): number {
   if (!modelKey) return fallback;
-  let key = modelKey;
-  if (key.startsWith("openai:")) key = key.replace(/^openai:/, "");
-  if (key.startsWith("anthropic:")) key = key.replace(/^anthropic:/, "");
-  if (key.startsWith("google:")) key = key.replace(/^google:/, "");
-  // Prefer full match only
+  let key = removeVendorPrefix(modelKey);
   if (MODEL_TOKEN_LIMITS && MODEL_TOKEN_LIMITS[key] !== undefined) {
     return MODEL_TOKEN_LIMITS[key];
   }
   return fallback;
 }
 
+export enum SearchApi {
+  Anthropic = "anthropic",
+  Openai = "openai",
+  Tavily = "tavily",
+  None = "none",
+}
+
+/**
+ * McpConfig value object. Accepts absent or null values cleanly.
+ */
+export class McpConfig {
+  url?: string | null;
+  tools?: string[] | null;
+  authRequired?: boolean;
+
+  constructor(data?: Partial<McpConfig>) {
+    this.url = data?.url ?? null;
+    this.tools = data?.tools ?? null;
+    this.authRequired = data?.authRequired ?? false;
+  }
+}
+
 export class Configuration {
   // General Configuration
-  maxStructuredOutputRetries = 3;
-  allowClarification = true;
-  maxConcurrentResearchUnits = 5;
+  maxStructuredOutputRetries: number = 3;
+  allowClarification: boolean = true;
+  maxConcurrentResearchUnits: number = 5;
 
   // Research Configuration
   searchApi: SearchApi = SearchApi.Tavily;
-  maxResearcherIterations = 6;
-  maxReactToolCalls = 10;
+  maxResearcherIterations: number = 6;
+  maxReactToolCalls: number = 10;
 
   // Model Configuration
-  summarizationModel = "openai:gpt-4.1-mini";
-  summarizationModelMaxTokens: number;
-  maxContentLength = 50000;
-  researchModel = "openai:gpt-4.1";
-  researchModelMaxTokens: number;
-  compressionModel = "openai:gpt-4.1";
-  compressionModelMaxTokens: number;
-  finalReportModel = "openai:gpt-4.1";
-  finalReportModelMaxTokens: number;
+  summarizationModel: string = "openai:gpt-4.1-mini";
+  summarizationModelMaxTokens!: number;
+  maxContentLength: number = 50000;
+  researchModel: string = "openai:gpt-4.1";
+  researchModelMaxTokens!: number;
+  compressionModel: string = "openai:gpt-4.1";
+  compressionModelMaxTokens!: number;
+  finalReportModel: string = "openai:gpt-4.1";
+  finalReportModelMaxTokens!: number;
 
   // MCP server configuration
-  mcpConfig?: McpConfig | null;
-  mcpPrompt?: string | null;
+  mcpConfig: McpConfig | null = null;
+  mcpPrompt: string | null = null;
 
-  // ----
-  /**
-   * Accepts various sources and merges using correct precedence:
-   * 1. ENV (UPPER_SNAKE) overrides
-   * 2. data (camelCase, e.g. from config/configurable)
-   *
-   * Numbers are converted, booleans parsed.
-   */
   constructor(data?: Partial<Configuration>) {
-    // 1st: start with all defaults (already in property definitions except *_MaxTokens, set below)
-    // Set model fields first if given in data
-    if (data?.summarizationModel) this.summarizationModel = data.summarizationModel;
-    if (data?.researchModel) this.researchModel = data.researchModel;
-    if (data?.compressionModel) this.compressionModel = data.compressionModel;
-    if (data?.finalReportModel) this.finalReportModel = data.finalReportModel;
+    // Start with all defaults (already set by property initializers above)
+    // Step 1: Overlay passed-in (data) model fields first, since max tokens depend on them.
+    if (data?.summarizationModel !== undefined)
+      this.summarizationModel = data.summarizationModel;
+    if (data?.researchModel !== undefined)
+      this.researchModel = data.researchModel;
+    if (data?.compressionModel !== undefined)
+      this.compressionModel = data.compressionModel;
+    if (data?.finalReportModel !== undefined)
+      this.finalReportModel = data.finalReportModel;
 
-    // Env (resolve early so can be used below)
-    const env = process?.env || {};
+    // Step 2: Resolve token limits using current model values (see note: order matters).
+    // These are subject to override by env/data/env again below.
+    const env = getEnv();
 
-    // Helper for reading env, then fallback to full match for each token limit
-    const resolveLimit = (envKey: string, modelKey: string, fallback: number) => {
+    // Read in order: ENV, config value, MODEL_TOKEN_LIMITS, fallback.
+    const resolveLimit = (
+      envKey: string,
+      modelKey: string,
+      fallback: number,
+      configValue?: number
+    ) => {
       if (env[envKey] !== undefined) return parseValue(envKey, env[envKey]);
+      if (configValue !== undefined) return configValue;
       return getDefaultModelTokenLimitByFullMatch(modelKey, fallback);
     };
-    this.summarizationModelMaxTokens = resolveLimit("SUMMARIZATION_MODEL_MAX_TOKENS", this.summarizationModel, 8192);
-    this.researchModelMaxTokens = resolveLimit("RESEARCH_MODEL_MAX_TOKENS", this.researchModel, 10000);
-    this.compressionModelMaxTokens = resolveLimit("COMPRESSION_MODEL_MAX_TOKENS", this.compressionModel, 8192);
-    this.finalReportModelMaxTokens = resolveLimit("FINAL_REPORT_MODEL_MAX_TOKENS", this.finalReportModel, 10000);
 
-    // Overlay config for all other fields including user data, EXCEPT special-cased fields above
+    this.summarizationModelMaxTokens = resolveLimit(
+      "SUMMARIZATION_MODEL_MAX_TOKENS",
+      this.summarizationModel,
+      8192,
+      data?.summarizationModelMaxTokens
+    );
+    this.researchModelMaxTokens = resolveLimit(
+      "RESEARCH_MODEL_MAX_TOKENS",
+      this.researchModel,
+      10000,
+      data?.researchModelMaxTokens
+    );
+    this.compressionModelMaxTokens = resolveLimit(
+      "COMPRESSION_MODEL_MAX_TOKENS",
+      this.compressionModel,
+      8192,
+      data?.compressionModelMaxTokens
+    );
+    this.finalReportModelMaxTokens = resolveLimit(
+      "FINAL_REPORT_MODEL_MAX_TOKENS",
+      this.finalReportModel,
+      10000,
+      data?.finalReportModelMaxTokens
+    );
+
+    // Step 3: Overlay remaining user data fields (EXCEPT for special-cased above) on top.
     if (data && typeof data === "object") {
       for (const key in data) {
-        if (data[key as keyof Configuration] !== undefined && ![
-          "summarizationModelMaxTokens",
-          "researchModelMaxTokens",
-          "compressionModelMaxTokens",
-          "finalReportModelMaxTokens",
-          "summarizationModel",
-          "researchModel",
-          "compressionModel",
-          "finalReportModel"
-        ].includes(key)
-        ) {
+        // Special case disables
+        if (
+          [
+            "summarizationModelMaxTokens",
+            "researchModelMaxTokens",
+            "compressionModelMaxTokens",
+            "finalReportModelMaxTokens",
+            "summarizationModel",
+            "researchModel",
+            "compressionModel",
+            "finalReportModel",
+          ].includes(key)
+        )
+          continue;
+        if (data[key as keyof Configuration] !== undefined) {
           (this as any)[key] = data[key as keyof Configuration];
         }
       }
     }
-    // 3rd: overlay environment (UPPERCASE_SNAKE overrides everything)
+
+    // Step 4: Overlay ENV (UPPER_SNAKE, always wins, except for _MAX_TOKENS handled next)
     for (const k in this) {
-      if (!Object.prototype.hasOwnProperty.call(this, k)) continue;
-      const envKey = camelCaseToUpperCaseSnakeCase(k);
-      if (
-        envKey in env && env[envKey] !== undefined &&
-        !["SUMMARIZATION_MODEL_MAX_TOKENS", "RESEARCH_MODEL_MAX_TOKENS", "COMPRESSION_MODEL_MAX_TOKENS", "FINAL_REPORT_MODEL_MAX_TOKENS"].includes(envKey)
-      ) {
-        (this as any)[k] = parseValue(k, env[envKey]);
+      if (Object.prototype.hasOwnProperty.call(this, k)) {
+        const envKey = camelCaseToUpperCaseSnakeCase(k);
+        if (
+          env[envKey] !== undefined &&
+          ![
+            "SUMMARIZATION_MODEL_MAX_TOKENS",
+            "RESEARCH_MODEL_MAX_TOKENS",
+            "COMPRESSION_MODEL_MAX_TOKENS",
+            "FINAL_REPORT_MODEL_MAX_TOKENS",
+          ].includes(envKey)
+        ) {
+          (this as any)[k] = parseValue(k, env[envKey]);
+        }
       }
     }
-    // Overlay final token fields from env (again so env always wins)
+
+    // Step 5: Overlay ENV on *_MAX_TOKENS fields AGAIN (so ENV always has highest precedence)
     if (env["SUMMARIZATION_MODEL_MAX_TOKENS"] !== undefined) {
-      this.summarizationModelMaxTokens = parseValue("summarizationModelMaxTokens", env["SUMMARIZATION_MODEL_MAX_TOKENS"]);
+      this.summarizationModelMaxTokens = parseValue(
+        "summarizationModelMaxTokens",
+        env["SUMMARIZATION_MODEL_MAX_TOKENS"]
+      );
     }
     if (env["RESEARCH_MODEL_MAX_TOKENS"] !== undefined) {
-      this.researchModelMaxTokens = parseValue("researchModelMaxTokens", env["RESEARCH_MODEL_MAX_TOKENS"]);
+      this.researchModelMaxTokens = parseValue(
+        "researchModelMaxTokens",
+        env["RESEARCH_MODEL_MAX_TOKENS"]
+      );
     }
     if (env["COMPRESSION_MODEL_MAX_TOKENS"] !== undefined) {
-      this.compressionModelMaxTokens = parseValue("compressionModelMaxTokens", env["COMPRESSION_MODEL_MAX_TOKENS"]);
+      this.compressionModelMaxTokens = parseValue(
+        "compressionModelMaxTokens",
+        env["COMPRESSION_MODEL_MAX_TOKENS"]
+      );
     }
     if (env["FINAL_REPORT_MODEL_MAX_TOKENS"] !== undefined) {
-      this.finalReportModelMaxTokens = parseValue("finalReportModelMaxTokens", env["FINAL_REPORT_MODEL_MAX_TOKENS"]);
+      this.finalReportModelMaxTokens = parseValue(
+        "finalReportModelMaxTokens",
+        env["FINAL_REPORT_MODEL_MAX_TOKENS"]
+      );
     }
   }
 
+  /**
+   * Create a Configuration from a RunnableConfig (for chain usage, etc).
+   * Precedence (lowest ⟶ highest):
+   *   - (1) current property defaults
+   *   - (2) withConfig() passed values (.configurable)
+   *   - (3) ENV
+   * For maxToken fields, their value depends on which model was resolved at the time, ENV always wins.
+   */
   static fromRunnableConfig(config?: RunnableConfig): Configuration {
     const configurable = config?.configurable ?? {};
-    const env = process.env;
-    // Build list of *instance* keys (not just for new Configuration() defaults) to allow custom fields too
+    const env = getEnv();
+
+    // Find all field names (from instance's own keys).
     const instance = new Configuration();
     const fieldNames = Object.keys(instance);
 
+    // Step 1: assign all available config values to values, including *MaxTokens fields.
     const values: Record<string, any> = {};
-    // To allow proper token limit resolution, specially assign models first if present
-    if (configurable.summarizationModel) values.summarizationModel = configurable.summarizationModel;
-    if (configurable.researchModel) values.researchModel = configurable.researchModel;
-    if (configurable.compressionModel) values.compressionModel = configurable.compressionModel;
-    if (configurable.finalReportModel) values.finalReportModel = configurable.finalReportModel;
-    // Continue as before
     for (const fieldName of fieldNames) {
-      if ([
-        "summarizationModelMaxTokens",
-        "researchModelMaxTokens",
-        "compressionModelMaxTokens",
-        "finalReportModelMaxTokens"
-      ].includes(fieldName)) {
-        // token limits will be resolved in the Configuration constructor
-        continue;
-      }
-      // Try getting UPPER_SNAKE from env first, Then camelCase from configurable, else leave default.
       const envField = camelCaseToUpperCaseSnakeCase(fieldName);
-      let set = false;
-      if (envField in env && env[envField] !== undefined) {
+      if (env[envField] !== undefined) {
+        // ENV always wins
         values[fieldName] = parseValue(fieldName, env[envField]);
-        set = true;
-      }
-      if (!set && fieldName in configurable && configurable[fieldName] !== undefined) {
+      } else if (configurable[fieldName] !== undefined) {
+        // fallback to config if present, even for *MaxTokens
         values[fieldName] = configurable[fieldName];
       }
+      // else: property default handled by Configuration constructor
     }
+
+    // Return Configuration using all combined values
     return new Configuration(values);
   }
 
   static getSchema() {
-    // For the token limits, use a static default; runtime will select from env/MODEL_TOKEN_LIMITS.
+    // Use static defaults to satisfy interface; runtime constructor chooses precedence!
     return z.object({
       maxStructuredOutputRetries: z.number().default(3),
       allowClarification: z.boolean().default(true),
@@ -204,20 +280,13 @@ export class Configuration {
       finalReportModel: z.string().default("openai:gpt-4.1"),
       finalReportModelMaxTokens: z.number().default(10000),
       mcpConfig: z.any().optional().nullable(),
-      mcpPrompt: z.string().optional().nullable(),
+      mcpPrompt: z.string().optional().nullable().default(null),
     });
   }
 }
 
-/**
- * ModelSelector - Extended to merge and use configs from multiple sources
- *
- * This version accumulates configurations set with withConfig, withStructuredOutput,
- * withRetry, as well as arguments to invoke/stream/batch in any order. Parameters
- * provided to invoke/stream/batch override those from withConfig, and all are merged
- * for the underlying model initialization.
- */
-class ModelSelector {
+// --- ModelSelector for config passthrough and config merging -------------
+export class ModelSelector {
   private structuredOutputSchema?: any;
   private retryConfig?: any;
   private additionalConfig?: Record<string, any>;
@@ -257,15 +326,11 @@ class ModelSelector {
     return new ModelSelector(
       this.structuredOutputSchema,
       this.retryConfig,
-      { ...this.additionalConfig, ...config },
+      { ...(this.additionalConfig || {}), ...config },
       this.toolsBinding
     );
   }
 
-  /**
-   * Binds tools to the model, which will be attached when the model instance is created.
-   * Returns the new ModelSelector instance with tools bound.
-   */
   bindTools(tools: any) {
     return new ModelSelector(
       this.structuredOutputSchema,
@@ -276,23 +341,22 @@ class ModelSelector {
   }
 
   /**
-   * Internal utility to merge configs in the correct precedence order:
-   * - callerConfig overrides this.additionalConfig (those from withConfig chain)
-   * - both override any default (empty)
+   * Merge configs: caller config always wins over .withConfig chain.
    */
   private mergeConfigs(callerConfig?: RunnableConfig | Record<string, any>): Record<string, any> {
     let callerCfg: Record<string, any> = {};
-    if (callerConfig && "configurable" in callerConfig && callerConfig.configurable) {
-      callerCfg = { ...callerConfig.configurable };
-    } else if (callerConfig) {
-      callerCfg = { ...callerConfig };
+    if (callerConfig && typeof callerConfig === "object") {
+      if ("configurable" in callerConfig && callerConfig.configurable) {
+        callerCfg = { ...callerConfig.configurable };
+      } else {
+        callerCfg = { ...callerConfig };
+      }
     }
-    return { ...(this.additionalConfig || {}), ...callerCfg };
+    return { ...(this.additionalConfig || {}), ...(callerCfg || {}) };
   }
 
   /**
-   * Build the actual LangChain chat model instance, merging all configuration sources.
-   * The config argument may be a RunnableConfig or a plain object, both are supported.
+   * Determine the actual model variant and settings, and construct an LLM instance.
    */
   private createModelInstance(callerConfig?: RunnableConfig | Record<string, any>): BaseChatModel {
     const resolvedConfig = this.mergeConfigs(callerConfig);
@@ -300,97 +364,109 @@ class ModelSelector {
     const modelName = resolvedConfig.model;
     const apiKey = resolvedConfig.apiKey;
 
-    // Model token limit logic: select the best source of truth for maxTokens/maxOutputTokens
     let maxTokens: number | undefined = resolvedConfig.maxTokens;
-    if (!maxTokens) {
+    if (!maxTokens && modelName) {
       maxTokens = getDefaultModelTokenLimitByFullMatch(modelName, 2048);
     }
 
     if (!modelName) {
-      throw new Error('Model name must be provided in the config');
+      throw new Error("Model name must be provided in the config");
     }
 
-    console.log('Creating model instance:', { modelName, hasApiKey: !!apiKey, maxTokens });
-
+    // Use direct API keys or fall back to environment keys
     let model: BaseChatModel;
 
-    if (modelName.toLowerCase().includes('gemini')) {
-      const cleanModel = modelName.replace(/^(google:|gemini:)/, '');
+    if (
+      typeof modelName === "string" &&
+      (modelName.startsWith("google:") ||
+        modelName.startsWith("gemini:") ||
+        modelName.toLowerCase().includes("gemini"))
+    ) {
+      const cleanModel = modelName.replace(/^(google:|gemini:)/, "");
       model = new ChatGoogleGenerativeAI({
-        apiKey: apiKey || process.env.GOOGLE_API_KEY,
+        apiKey: apiKey || getEnv().GOOGLE_API_KEY,
         model: cleanModel,
         maxOutputTokens: maxTokens,
-        ...(resolvedConfig.tags ? { tags: resolvedConfig.tags } : {})
+        ...(resolvedConfig.tags ? { tags: resolvedConfig.tags } : {}),
       });
-    }
-    else if (modelName.startsWith('openai:') || modelName.startsWith('gpt-')) {
-      const cleanModel = modelName.replace('openai:', '');
+    } else if (
+      typeof modelName === "string" &&
+      (modelName.startsWith("openai:") || modelName.startsWith("gpt-"))
+    ) {
+      const cleanModel = modelName.replace(/^openai:/, "");
       model = new ChatOpenAI({
-        apiKey: apiKey || process.env.OPENAI_API_KEY,
+        apiKey: apiKey || getEnv().OPENAI_API_KEY,
         modelName: cleanModel,
         maxTokens,
-        ...(resolvedConfig.tags ? { tags: resolvedConfig.tags } : {})
+        ...(resolvedConfig.tags ? { tags: resolvedConfig.tags } : {}),
       });
-    }
-    else if (modelName.startsWith('anthropic:') || modelName.startsWith('claude-')) {
-      const cleanModel = modelName.replace('anthropic:', '');
+    } else if (
+      typeof modelName === "string" &&
+      (modelName.startsWith("anthropic:") || modelName.startsWith("claude-"))
+    ) {
+      const cleanModel = modelName.replace(/^anthropic:/, "");
       model = new ChatAnthropic({
-        apiKey: apiKey || process.env.ANTHROPIC_API_KEY,
+        apiKey: apiKey || getEnv().ANTHROPIC_API_KEY,
         modelName: cleanModel,
         maxTokens,
-        ...(resolvedConfig.tags ? { tags: resolvedConfig.tags } : {})
+        ...(resolvedConfig.tags ? { tags: resolvedConfig.tags } : {}),
       });
-    }
-    else {
+    } else {
       throw new Error(`Unsupported model: ${modelName}`);
     }
 
-    if (this.structuredOutputSchema) {
+    if (this.structuredOutputSchema?.shape || this.structuredOutputSchema?._def) {
       model = model.withStructuredOutput(this.structuredOutputSchema) as any;
     }
-
+    
     if (this.retryConfig) {
       model = model.withRetry(this.retryConfig) as any;
     }
 
-    // Bind tools if provided and model has withTools method
-    if (this.toolsBinding && typeof model.bindTools === "function") {
-      model = model.bindTools(this.toolsBinding) as any;
+    if (
+      this.toolsBinding &&
+      typeof (model as any).bindTools === "function"
+    ) {
+      model = (model as any).bindTools(this.toolsBinding);
     }
 
-    // Any other config not used above gets passed in here, except 'model', 'apiKey', 'maxTokens', 'tags'
+    // Attach any other config (excluding known keys)
     if (this.additionalConfig) {
-      const { model: _model, apiKey: _apiKey, maxTokens: _maxTokens, tags: _tags, ...otherConfig } = this.additionalConfig;
-      if (Object.keys(otherConfig).length > 0) {
-        model = model.withConfig(otherConfig) as any;
+      const {
+        model: _model,
+        apiKey: _apiKey,
+        maxTokens: _maxTokens,
+        tags: _tags,
+        ...other
+      } = this.additionalConfig;
+      if (Object.keys(other).length > 0) {
+        model = (model as any).withConfig(other);
       }
     }
     if (callerConfig) {
-      let moreOther: Record<string, any> = {};
-      if ("configurable" in callerConfig && callerConfig.configurable) {
-        const { model, apiKey, maxTokens, tags, ...other } = callerConfig.configurable;
-        moreOther = other;
-      } else if (callerConfig) {
-        const { model, apiKey, maxTokens, tags, ...other } = callerConfig as any;
-        moreOther = other;
+      let extra: Record<string, any> = {};
+      if (
+        typeof callerConfig === "object" &&
+        "configurable" in callerConfig &&
+        callerConfig.configurable
+      ) {
+        const { model, apiKey, maxTokens, tags, ...rest } = callerConfig.configurable;
+        extra = rest;
+      } else if (typeof callerConfig === "object") {
+        const { model, apiKey, maxTokens, tags, ...rest } = callerConfig as any;
+        extra = rest;
       }
-      if (Object.keys(moreOther).length > 0) {
-        model = model.withConfig(moreOther) as any;
+      if (Object.keys(extra).length > 0) {
+        model = (model as any).withConfig(extra);
       }
     }
 
     return model;
   }
 
-  /**
-   * Invoke the model. Accepts configuration via:
-   * - chained withConfig/withRetry/withStructuredOutput/bindTools
-   * - the config parameter (RunnableConfig or plain object)
-   * - precedence: invoke() param > .withConfig() > defaults
-   */
-  async invoke(input: any, config?: RunnableConfig | Record<string, any>) {
+  async invoke(input: any, config?: RunnableConfig) {
     const model = this.createModelInstance(config);
-    if (config && "configurable" in config) {
+    if (config && typeof config === "object" && "configurable" in config) {
       return await model.invoke(input, config);
     } else if (config) {
       return await model.invoke(input, { configurable: config });
@@ -398,12 +474,9 @@ class ModelSelector {
     return await model.invoke(input);
   }
 
-  /**
-   * Stream the model, supporting the same parameter merging approach.
-   */
   async stream(input: any, config?: RunnableConfig | Record<string, any>) {
     const model = this.createModelInstance(config);
-    if (config && "configurable" in config) {
+    if (config && typeof config === "object" && "configurable" in config) {
       return await model.stream(input, config);
     } else if (config) {
       return await model.stream(input, { configurable: config });
@@ -411,12 +484,9 @@ class ModelSelector {
     return await model.stream(input);
   }
 
-  /**
-   * Batch invoke, merging config sources.
-   */
   async batch(inputs: any[], config?: RunnableConfig | Record<string, any>) {
     const model = this.createModelInstance(config);
-    if (config && "configurable" in config) {
+    if (config && typeof config === "object" && "configurable" in config) {
       return await model.batch(inputs, config);
     } else if (config) {
       return await model.batch(inputs, { configurable: config });
@@ -430,21 +500,3 @@ class ModelSelector {
  */
 export const configurableModel = new ModelSelector();
 
-export enum SearchApi {
-  Anthropic = "anthropic",
-  Openai = "openai",
-  Tavily = "tavily",
-  None = "none",
-}
-
-export class McpConfig {
-  url?: string;
-  tools?: string[];
-  authRequired?: boolean;
-
-  constructor(data?: Partial<McpConfig>) {
-    this.url = data?.url ?? undefined;
-    this.tools = data?.tools ?? undefined;
-    this.authRequired = data?.authRequired ?? false;
-  }
-}

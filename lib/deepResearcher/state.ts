@@ -1,258 +1,94 @@
-import { Annotation } from "@langchain/langgraph";
+import { z } from "zod";
 import { BaseMessage } from "@langchain/core/messages";
 
-/**
- * Annotation for ConductResearch event state.
- */
-export const ConductResearch = Annotation<{ researchTopic: string }>({
-  reducer: (current, update) => ({
-    researchTopic: update?.researchTopic ?? current?.researchTopic ?? "",
-  }),
-  default: () => ({ researchTopic: "" }),
+// Zod schema for ConductResearch event state
+export const ConductResearch = z.object({
+  researchTopic: z.string(),
 });
 
-/**
- * Annotation for ResearchComplete event state (empty state).
- */
-export const ResearchComplete = Annotation<{}>({
-  reducer: (current, update) => ({}),
-  default: () => ({}),
+// Zod schema for ResearchComplete event state (empty schema)
+export const ResearchComplete = z.object({});
+
+// Zod schema for Summary event state
+export const Summary = z.object({
+  summary: z.string(),
+  keyExcerpts: z.string(),
 });
 
-/**
- * Annotation for Summary event state.
- */
-export const Summary = Annotation<{ summary: string; keyExcerpts: string }>({
-  reducer: (current, update) => ({
-    summary: update?.summary ?? current?.summary ?? "",
-    keyExcerpts: update?.keyExcerpts ?? current?.keyExcerpts ?? "",
-  }),
-  default: () => ({ summary: "", keyExcerpts: "" }),
+// Zod schema for clarifying with user
+export const ClarifyWithUser = z.object({
+  needClarification: z.boolean(),
+  question: z.string().optional(),
+  verification: z.string().optional(),
 });
 
-/**
- * Annotation for clarifying with user.
- */
-export const ClarifyWithUser = Annotation<{
-  needClarification: boolean;
-  question?: string;
-  verification?: string;
-}>({
-  reducer: (current, update) => ({
-    needClarification:
-      update?.needClarification ?? current?.needClarification ?? false,
-    question: update?.question ?? current?.question,
-    verification: update?.verification ?? current?.verification,
-  }),
-  default: () => ({ needClarification: false }),
+// Zod schema for ResearchQuestion event state
+export const ResearchQuestion = z.object({
+  researchBrief: z.string(),
 });
 
-/**
- * Annotation for ResearchQuestion event state.
- */
-export const ResearchQuestion = Annotation<{ researchBrief: string }>({
-  reducer: (current, update) => ({
-    researchBrief: update?.researchBrief ?? current?.researchBrief ?? "",
-  }),
-  default: () => ({ researchBrief: "" }),
+// Zod schema for MessageLike (arbitrary object)
+export const MessageLike = z.record(z.any());
+
+export type ConductResearch = typeof ConductResearch._type;
+export type ResearchComplete = typeof ResearchComplete._type;
+export type Summary = typeof Summary._type;
+export type ClarifyWithUser = typeof ClarifyWithUser._type;
+export type ResearchQuestion = typeof ResearchQuestion._type;
+export type MessageLike = typeof MessageLike._type;
+
+// Zod schema for MessagesState
+export const MessagesState = z.object({
+  messages: z.array(MessageLike).optional(),
 });
 
-/**
- * MessageLike annotation and types.
- */
-export const MessageLike = Annotation<Record<string, any>>({
-  reducer: (current, update) => ({ ...current, ...update }),
-  default: () => ({}),
+export type MessagesState = typeof MessagesState._type;
+
+// Zod schema for AgentInputState
+export const AgentInputState = z.object({
+  messages: z.array(MessageLike).optional(),
 });
 
-export type ConductResearch = typeof ConductResearch.ValueType;
-export type ResearchComplete = typeof ResearchComplete.ValueType;
-export type Summary = typeof Summary.ValueType;
-export type ClarifyWithUser = typeof ClarifyWithUser.ValueType;
-export type ResearchQuestion = typeof ResearchQuestion.ValueType;
-export type MessageLike = typeof MessageLike.ValueType;
+export type AgentInputState = typeof AgentInputState._type;
 
-/**
- * Messages state as annotation.
- */
-export const MessagesState = Annotation<{
-  messages?: MessageLike[];
-}>({
-  reducer: (current, update) => ({
-    messages: (current?.messages || []).concat(update?.messages || []),
-  }),
-  default: () => ({ messages: [] }),
+// Zod schema for ResearcherState
+export const ResearcherState = z.object({
+  researcherMessages: z.array(MessageLike),
+  toolCallIterations: z.number(),
+  researchTopic: z.string(),
+  compressedResearch: z.string(),
+  rawNotes: z.array(z.string()),
 });
 
-export type MessagesState = typeof MessagesState.ValueType;
+export type ResearcherState = typeof ResearcherState._type;
 
-/**
- * AgentInputState extends MessagesState annotation.
- */
-export const AgentInputState = Annotation<{
-  messages?: MessageLike[];
-}>({
-  reducer: (current, update) => ({
-    messages: (current?.messages || []).concat(update?.messages || []),
-  }),
-  default: () => ({ messages: [] }),
+// Zod schema for ResearcherOutputState
+export const ResearcherOutputState = z.object({
+  compressedResearch: z.string(),
+  rawNotes: z.array(z.string()),
 });
 
-export type AgentInputState = typeof AgentInputState.ValueType;
+export type ResearcherOutputState = typeof ResearcherOutputState._type;
 
-/**
- * ResearcherState as root annotation.
- */
-export const ResearcherState = Annotation.Root({
-  researcherMessages: Annotation<MessageLike[]>({
-    reducer: (current, update) => {
-      if (!update) return current || [];
-      if (!current) return update;
-      return current.concat(update);
-    },
-    default: () => [],
-  }),
-  toolCallIterations: Annotation<number>({
-    reducer: (current, update) =>
-      update ?? current ?? 0,
-    default: () => 0,
-  }),
-  researchTopic: Annotation<string>({
-    reducer: (current, update) => update ?? current ?? "",
-    default: () => "",
-  }),
-  compressedResearch: Annotation<string>({
-    reducer: (current, update) => update ?? current ?? "",
-    default: () => "",
-  }),
-  rawNotes: Annotation<string[]>({
-    reducer: (current, update) => {
-      if (!update) return current || [];
-      if (!current) return update;
-      return current.concat(update);
-    },
-    default: () => [],
-  }),
+// Zod schema for AgentState (main agent state)
+export const AgentState = z.object({
+  messages: z.array(z.custom<BaseMessage>()),
+  supervisorMessages: z.array(z.custom<BaseMessage>()),
+  researchBrief: z.string(),
+  researchOutline: z.string(),
+  notes: z.array(z.string()),
+  finalReport: z.string(),
 });
 
-export type ResearcherState = typeof ResearcherState.State;
+export type AgentState = typeof AgentState._type;
 
-/**
- * ResearcherOutputState as annotation.
- */
-export const ResearcherOutputState = Annotation<{
-  compressedResearch: string;
-  rawNotes: string[];
-}>({
-  reducer: (current, update) => ({
-    compressedResearch:
-      update?.compressedResearch ?? current?.compressedResearch ?? "",
-    rawNotes: (current?.rawNotes || []).concat(update?.rawNotes || []),
-  }),
-  default: () => ({ compressedResearch: "", rawNotes: [] }),
+// Zod schema for SupervisorState
+export const SupervisorState = z.object({
+  messages: z.array(MessageLike),
+  supervisorMessages: z.array(z.custom<BaseMessage>()),
+  notes: z.array(z.string()),
+  researchBrief: z.string(),
+  researchIterations: z.number(),
 });
 
-export type ResearcherOutputState = typeof ResearcherOutputState.ValueType;
-
-/**
- * Main agent state that tracks research progress and findings using Annotation.
- */
-export const AgentState = Annotation.Root({
-  // Conversation messages (shared)
-  messages: Annotation<BaseMessage[]>({
-    reducer: (current, update) => {
-      if (!update) return current || [];
-      if (!current) return update;
-      return current.concat(update);
-    },
-    default: () => [],
-  }),
-
-  // Supervisor-specific messages
-  supervisorMessages: Annotation<BaseMessage[]>({
-    reducer: (current, update) => {
-      if (!update) return current || [];
-      if (!current) return update;
-      return current.concat(update);
-    },
-    default: () => [],
-  }),
-
-  // Research brief/topic
-  researchBrief: Annotation<string>({
-    reducer: (current, update) => update ?? current,
-    default: () => "",
-  }),
-
-  researchOutline: Annotation<string>({
-    reducer: (current, update) => update ?? current,
-    default: () => "",
-  }),
-
-  // Notes/findings
-  notes: Annotation<string[]>({
-    reducer: (current, update) => {
-      if (!update) return current || [];
-      if (!current) return update;
-      return current.concat(update);
-    },
-    default: () => [],
-  }),
-
-  // Final report
-  finalReport: Annotation<string>({
-    reducer: (current, update) => update ?? current,
-    default: () => "",
-  }),
-});
-
-export type AgentState = typeof AgentState.State;
-
-/**
- * Supervisor subgraph state using Annotation.
- */
-export const SupervisorState = Annotation.Root({
-  // Shared conversation messages
-  messages: Annotation<MessageLike[]>({
-    reducer: (current, update) => {
-      if (!update) return current || [];
-      if (!current) return update;
-      return current.concat(update);
-    },
-    default: () => [],
-  }),
-
-  // Supervisor's messages
-  supervisorMessages: Annotation<BaseMessage[]>({
-    reducer: (current, update) => {
-      if (!update) return current || [];
-      if (!current) return update;
-      return current.concat(update);
-    },
-    default: () => [],
-  }),
-
-  // Notes from researchers
-  notes: Annotation<string[]>({
-    reducer: (current, update) => {
-      if (!update) return current || [];
-      if (!current) return update;
-      return current.concat(update);
-    },
-    default: () => [],
-  }),
-
-  // Research brief
-  researchBrief: Annotation<string>({
-    reducer: (current, update) => update ?? current,
-    default: () => "",
-  }),
-
-  // Number of research iterations
-  researchIterations: Annotation<number>({
-    reducer: (current, update) => update ?? current,
-    default: () => 0,
-  }),
-});
-
-export type SupervisorState = typeof SupervisorState.State;
+export type SupervisorState = typeof SupervisorState._type;

@@ -31,7 +31,7 @@ If you need to ask a question, follow these guidelines:
 - Speak using a 10th grade education level and professional tone.
 - Do not introduce yourself to the user.
 
-Respond in valid JSON format with these exact keys:
+Your entire response must be valid JSON syntax containing these exact keys:
 "need_clarification": boolean,
 "question": "<question to ask the user to clarify the career research scope>",
 "verification": "<verification message that we will start research>"
@@ -350,7 +350,7 @@ For different types of career-related content:
 
 Your summary should be significantly shorter than the original content but comprehensive enough to stand alone as a source of actionable career information. Aim for about 25–30 percent of the original length unless the content is already concise.
 
-Present your summary in the following format, json:
+Present your summary in the following format using valid json syntax:
 
 {
    "summary": "Your summary here, structured with appropriate paragraphs or bullet points as needed (focused on career content)",
@@ -359,13 +359,13 @@ Present your summary in the following format, json:
 
 Here are two examples of good summaries:
 
-Example 1 (for a job market data article, json): 
+Example 1 (for a job market data article): 
 {
    "summary": "According to the U.S. Bureau of Labor Statistics, software engineering jobs are projected to grow 25% between 2022 and 2032, far above the national average. Entry-level roles require a bachelor's degree in computer science or related fields. Salaries in 2023 ranged from $85,000 to $175,000 depending on experience, geographic location, and specialization. California, New York, and Texas are listed as top employment locations.",
    "key_excerpts": "Software engineering remains one of the highest-growth fields, according to BLS. The most in-demand skills include Python, cloud computing, and full-stack development. Salary growth is driven in part by remote work opportunities."
 }
 
-Example 2 (for a company career page summary, json):
+Example 2 (for a company career page summary):
 {
    "summary": "Google offers a wide range of career opportunities across engineering, product management, sales, and marketing. The company emphasizes flexibility, diversity, and employee wellbeing. On-site roles are concentrated in Mountain View, New York, London, and Hyderabad, but many hybrid and remote opportunities exist. Google supports employee growth through mentorship programs and internal mobility.",
    "key_excerpts": "We're committed to building a diverse workforce. Google employees have access to generous learning resources. Our hybrid workplace is designed for collaboration and balance."

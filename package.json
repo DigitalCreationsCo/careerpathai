@@ -7,6 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
+    "test": "vitest",
     "db:setup": "npx tsx lib/db/setup.ts",
     "db:seed": "npx tsx lib/db/seed.ts",
     "db:introspec": "npx drizzle-kit introspect",
@@ -45,6 +46,7 @@
     "@types/react-dom": "19.1.5",
     "@vercel/functions": "^3.1.1",
     "@vercel/kv": "^1.0.1",
+    "@vitejs/plugin-react": "^5.1.0",
     "ai": "^5.0.60",
     "autoprefixer": "^10.4.21",
     "bcryptjs": "^3.0.2",
@@ -89,6 +91,8 @@
     "unstorage": "^1.17.1",
     "use-stick-to-bottom": "^1.1.1",
     "usehooks-ts": "^3.1.1",
+    "vite-tsconfig-paths": "^5.1.4",
+    "vitest": "^3.2.4",
     "zod": "^3.25.76"
   },
   "devDependencies": {
@@ -98,6 +102,7 @@
     "@storybook/addon-vitest": "^9.1.1",
     "@storybook/nextjs-vite": "^9.1.1",
     "@tailwindcss/typography": "^0.5.16",
+    "jsdom": "^27.0.1",
     "react-email": "4.2.7",
     "storybook": "^9.1.1"
   }

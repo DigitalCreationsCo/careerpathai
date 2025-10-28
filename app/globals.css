@@ -82,29 +82,11 @@
   }
 
   * {
-    @apply border-border;
-  }
-  
-  body {
-    @apply bg-background text-foreground;
-  }
-
-  ul {
-    @apply text-lg md:text-xl;
+    @apply border-border font-normal;
   }
 }
 
 @layer utilities {
-  body {
-    font-family: "Manrope", Arial, Helvetica, sans-serif;
-  }
-  
-  .text-hero {
-    font-family: "Lato", Arial, Helvetica, sans-serif;
-    font-weight: 1000;
-  }
-  
-  /* Custom Gradient Utilities as backup */
   .bg-gradient-primary {
     background-image: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--primary-glow)));
     transition: all;
@@ -152,11 +134,6 @@
     }
   }
 
-  /* 
-    `.shiny-text` for both text and icons (SVGs):
-    - Uses mask-image for SVG fill effect
-    - Uses background-clip for text
-  */
   .shiny-text {
     position: relative;
     display: inline-block;
@@ -218,12 +195,18 @@
     animation: shine 2.5s linear infinite;
   }
 
+  .heading {
+    @apply text-4xl max-w-[400px] md:max-w-full text-center place-self-center mb-8 leading-tight tracking-tight;
+    font-optical-sizing: auto;
+  }
+
   .subtitle {
-    @apply text-lg md:text-xl text-muted-foreground mx-auto leading-snug md:max-w-2xl;
+    @apply text-muted-foreground mx-auto leading-snug md:max-w-2xl;
+
   }
 
   .subtext {
-    @apply text-sm text-muted-foreground;
+    @apply text-muted-foreground;
   }
 }
 

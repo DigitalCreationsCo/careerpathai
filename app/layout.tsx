@@ -1,12 +1,12 @@
 import './globals.css';
 import type { Metadata, Viewport } from 'next';
-import { Manrope, Lato } from 'next/font/google';
+import { Manrope, Outfit } from 'next/font/google';
 import { getUser, getTeamForUser } from '@/lib/db/queries/user';
 import { SWRConfig } from 'swr';
 import { Toaster } from "@/components/ui/sonner"
 import { GoogleTagManager } from '@/components/googletagmanager';
 import Head from 'next/head';
-import { dateJobsDisplaced, numJobsDisplaced } from '@/lib/utils';
+import { cn, dateJobsDisplaced, numJobsDisplaced } from '@/lib/utils';
 import { Header } from '@/components/ui/header/header';
 import { auth } from '@/auth';
 import { NuqsAdapter } from 'nuqs/adapters/next/app'
@@ -61,7 +61,7 @@ export const viewport: Viewport = {
 };
 
 const manrope = Manrope({ subsets: ['latin'] });
-const lato = Lato({ subsets: ['latin'], weight: "400" });
+const outfit = Outfit({ subsets: ['latin'] });
 
 export default async function RootLayout({
   children
@@ -72,12 +72,15 @@ export default async function RootLayout({
   return (
     <html
       lang="en"
-      className={`bg-white dark:bg-gray-950 text-black dark:text-white ${manrope.className}`}
     >
       <Head>
         <GoogleTagManager />
       </Head>
-      <body className="min-h-[100dvh] relative bg-background">
+      <body className={cn([
+         manrope.className,
+        `bg-background text-foreground`, 
+        "antialiased min-h-[100dvh] relative"
+      ])}>
         <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-N5RPQTFM"
         height="0" width="0" style={{display:'none',visibility:'hidden'}}></iframe></noscript>
 

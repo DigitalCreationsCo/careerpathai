@@ -1,5 +1,5 @@
 import './landing.css'
-import { ArrowRight, CheckCircle, CheckSquareIcon, SquareIcon, Star, Zap } from 'lucide-react';
+import { CheckSquareIcon, Star } from 'lucide-react';
 import { Browser } from '@/components/browser';
 import { copyright, dateJobsDisplaced, numJobsDisplaced } from '@/lib/utils';
 import { Logo } from '@/components/logo';
@@ -8,281 +8,431 @@ import Link from 'next/link';
 
 export default async function LandingPage() {
   return (
-    <main className="min-h-screen bg-gradient-hero text-foreground md:snap-none snap-y snap-mandatory md:overflow-hidden overflow-y-scroll md:h-auto h-screen scroll-smooth">
-        {/* Hero Section */}
-        <section className="bg-gradient-primary-glow relative min-h-screen flex items-center justify-center p-2 sm:px-6 lg:px-8 snap-start">
-          <div className="absolute inset-0 bg-gradient-to-b from-background/80 to-background" />
-
-          <div className="relative z-10 max-w-sm sm:max-w-[80%] mx-auto text-center space-y-6 animate-slide-up">
-            
-            <div className="space-y-4 md:pt-4">
-              <div className="hidden md:inline-flex items-center px-4 py-2 text-warning mb-4 gap-2">
-                <Logo size="md" />
-                <p className="shiny-text font-semibold">{`AI is eliminating ${numJobsDisplaced} jobs by ${dateJobsDisplaced} — Are you prepared?`}</p>
-              </div>
-              
-              <h1 className="text-4xl sm:text-5xl lg:text-7xl font-bold leading-tight">
-                <span className="text-transparent bg-gradient-primary bg-clip-text">
-                  AI-Proof Your Career
-                </span>
-                <br/>Before It's Too Late
-              </h1>
-              
-              <p className="subtitle">
-                Receive your personalized <span className='text-foreground font-semibold'>Career Path Report</span> revealing <span className='text-foreground font-semibold'>4&nbsp;high-paying, AI-resistant career paths</span> you can thrive in — using the skills you already have
-              </p>
-              <p className="text-sm text-muted-foreground">
-                Join <span className="text-accent font-semibold">1,000+ professionals </span>future-proofing their careers in the AI economy
-              </p>
+    <main className="min-h-screen bg-gradient-hero text-foreground md:overflow-hidden overflow-y-scroll md:h-auto h-screen scroll-smooth">
+      {/* Hero Section */}
+      <section className="bg-gradient-primary-glow relative min-h-screen flex md:items-center justify-center p-2 sm:px-6 lg:px-8">
+        <div className="absolute inset-0 bg-gradient-to-b from-background/80 to-background" />
+        <div className="relative z-10 max-w-md sm:max-w-[80%] mx-auto text-center space-y-8 animate-slide-up mt-20 md:mt-0">
+          <div className="space-y-4 md:pt-4">
+            <div className="hidden md:inline-flex items-center px-4 py-2 text-warning mb-0 gap-2">
+              <Logo size="md" />
+              <p className="shiny-text text-lg">{`AI is eliminating over ${numJobsDisplaced} jobs by ${dateJobsDisplaced} — Are you prepared?`}</p>
             </div>
+            <h1 className="text-4xl sm:text-5xl lg:text-7xl leading-tight tracking-tight">
+              <span className="text-transparent bg-gradient-primary bg-clip-text font-bold lg:font-normal">
+                AI-Proof Your Career
+              </span>
+              <br />
+              <span className="text-warning block font-bold lg:font-normal">
+                Before It’s Too Late
+              </span>
+            </h1>
+            <p className="subtitle text-base text-muted-foreground sm:text-lg max-w-2xl mx-auto">
+              Get your <span className="text-foreground">personalized Career Path Report</span>—discover <span className='text-foreground'>4 high-paying, AI-resistant roles</span> you can thrive in using skills you already have.<br /><br />
+              <span className="subtext">
+                Join <span className="text-accent">1,000+ professionals</span> future-proofing their careers in the AI economy.
+              </span>
+            </p>
+          </div>
+          <div className="flex flex-col items-center space-y-4">
+            <div className="space-y-2">
+              <p className="text-muted-foreground line-through whitespace-pre"> Regular: $99 </p>
+              <p className="heading text-success font-[Outfit]">Launch Special: $29 <span className="subtext text-muted-foreground">(Limited Time)</span></p>
+            </div>
+            <Link href="/sign-up" legacyBehavior>
+              <Button
+                variant="cta"
+                size="xl"
+                className="text-background items-center w-full max-w-xs"
+              >
+                Get My Career Path Report – $29
+              </Button>
+            </Link>
+          </div>
+        </div>
+      </section>
 
-            <div className="flex flex-col items-center space-y-6">
-              <div className="space-y-3">
-                <div className="space-y-2">
-                  <p className="subtext">Regular Price: $99</p>
-                  <p className="text-lg lg:text-3xl font-bold text-success">Launch Price: $29 (Limited Time)</p>
+      <section className="py-16 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-background/80 to-muted/10">
+        <div className="max-w-3xl mx-auto text-center space-y-8">
+          <div>
+            <h2 className="heading mb-3">
+              <span className="text-transparent bg-gradient-warning bg-clip-text">
+                Why Upskilling Matters Now
+              </span>
+            </h2>
+            <p className="subtitle text-base sm:text-lg text-muted-foreground">
+              The world of work is changing faster than ever. AI and automation are already making entire categories of jobs obsolete—<span className="text-foreground">waiting means falling behind</span>. Upskilling today is your best defense against job displacement, and your smartest move for a secure, fulfilling future.
+            </p>
+          </div>
+          <div className="mt-2">
+            <h3 className="heading text-xl sm:text-2xl mb-2">
+              How Your Career Path Report Is <span className="text-accent">Personalized</span>
+            </h3>
+            <p className="subtitle text-base sm:text-lg text-muted-foreground">
+              Your report is unique—just like your career journey. We analyze your <span className="text-foreground">location, current skill level, existing skills, desired salary</span>, and more to create a customized roadmap.
+            </p>
+            <ul className="grid gap-3 md:grid-cols-2 max-w-2xl mx-auto mt-5 text-left text-muted-foreground">
+              <li className="flex items-start gap-3">
+                <span className="text-lg mt-1">🌎</span>
+                <div>
+                  <span className="text-foreground">Your Geography</span>
+                  <div>Find roles and industries in demand where you live.</div>
                 </div>
-                
-                <Link href="/sign-up">
-                  <Button
-                    variant="cta"
-                    size="xl"
-                    className="text-background items-center"
-                  >
-                    Get My Career Path Report – $29
-                    {/* <ArrowRight className="group-hover:translate-x-1 transition-transform" size={20} /> */}
-                  </Button>
-                </Link>
-              </div>
-              
-              {/* <p className="text-sm text-muted-foreground">
-                Delivered within 24-48 hours • No refunds on digital products
-              </p> */}
+              </li>
+              <li className="flex items-start gap-3">
+                <span className="text-lg mt-1">🎓</span>
+                <div>
+                  <span className="text-foreground">Skill Level</span>
+                  <div>Recommendations align with your actual experience (no unrealistic pivots).</div>
+                </div>
+              </li>
+              <li className="flex items-start gap-3">
+                <span className="text-lg mt-1">🛠️</span>
+                <div>
+                  <span className="text-foreground">Existing Skills</span>
+                  <div>We build on what you already know for a faster, smoother transition.</div>
+                </div>
+              </li>
+              <li className="flex items-start gap-3">
+                <span className="text-lg mt-1">💰</span>
+                <div>
+                  <span className="text-foreground">Desired Salary</span>
+                  <div>Target career paths that match your compensation goals.</div>
+                </div>
+              </li>
+              <li className="flex items-start gap-3 md:col-span-2">
+                <span className="text-lg mt-1">⚡</span>
+                <div>
+                  <span className="text-foreground">And More</span>
+                  <div>Your aspirations, strengths, and even your timeline shape your report—so it fits <span>you</span>, not the crowd.</div>
+                </div>
+              </li>
+            </ul>
+            <div className="mt-8">
+              <Link href="/sign-up" legacyBehavior>
+                <Button
+                  variant="cta"
+                  size="xl"
+                  className="text-background w-full max-w-xs mx-auto"
+                >
+                  Start My Personalized Career Report
+                </Button>
+              </Link>
             </div>
           </div>
-        </section>
+        </div>
+      </section>
 
-        {/* Product Spec Section */}
-        <section className="py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-muted/20 to-background snap-start">
-          <div className="md:max-w-2xl mx-auto">
-            <div className="text-center md:mb-16">
-              <h2 className="text-4xl max-w-[400px] md:max-w-full text-center place-self-center font-bold mb-4">
-                <span className="text-transparent bg-gradient-accent bg-clip-text">Preview Your Career Path Report</span>
-              </h2>
-              <p className="subtitle">
-                Here's what your personalized <strong>Career Path Report</strong> includes:
-              </p>
-              <ul className="max-w-100 px-4 py-4 space-y-4 justify-self-center md:w-100 text-left md:text-center">
-                <li>
-                  <span className='text-2xl'>🎯</span> <span className='font-semibold'>Strategy Plan</span>
-                  <br/>
-                  <p className="text-muted-foreground text-lg">
-                    Your step-by-step roadmap to land a future-proof role.
-                  </p>
+      <section className="py-16 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-background/80 to-muted/10">
+        <div className="max-w-2xl mx-auto space-y-10 flex flex-col items-center">
+          {/* Headline & Motivation */}
+          <div className="w-full text-center space-y-3">
+            <h2 className="heading mb-1">
+              <span className="text-transparent bg-gradient-warning bg-clip-text">
+                Secure Your Future Skills
+              </span>
+            </h2>
+            <p className="subtitle text-md sm:text-lg text-muted-foreground">
+              AI is changing work rapidly.<br />
+              <span className="text-foreground">Upskill now to stay ahead.</span>
+            </p>
+          </div>
+          {/* 2-Column Personalization & Feature Grid */}
+          <div className="w-full grid sm:grid-cols-2 gap-6 text-left">
+            <div className="bg-background/50 p-6 rounded-lg border border-border flex flex-col items-start space-y-4">
+              <h3 className="text-foreground text-lg flex items-center gap-2">
+                <span className="text-xl">✨</span>Personalized for You
+              </h3>
+              <ul className="space-y-3 text-muted-foreground text-sm">
+                <li className="flex gap-2 items-start">
+                  <span className="text-lg">🌎</span>
+                  <span>
+                    <span className="text-foreground">Location</span>: See roles in your region.
+                  </span>
                 </li>
-                <li>
-                  <span className='text-2xl'>📚</span> <span className="font-semibold">Skills Gap Analysis</span>
-                  <br/>
-                  <p className="text-muted-foreground text-lg">
-                    Pinpoint exactly what to learn (and what you can skip).
-                  </p>
+                <li className="flex gap-2 items-start">
+                  <span className="text-lg">🎓</span>
+                  <span>
+                    <span className="text-foreground">Skill Level</span>: Roles fit your experience.
+                  </span>
                 </li>
-                <li>
-                  <span className='text-2xl'>🚀</span> <span className="font-semibold">30-Day Sprint</span>
-                  <br/>
-                  <p className="text-muted-foreground text-lg">
-                    A daily action plan to accelerate your transition.
-                  </p>
+                <li className="flex gap-2 items-start">
+                  <span className="text-lg">🛠️</span>
+                  <span>
+                    <span className="text-foreground">Existing Skills</span>: Build on what you know.
+                  </span>
                 </li>
-                <li>
-                  <span className='text-2xl'>💼</span> <span className="font-semibold">Communication Packet</span>
-                  <br/>
-                  <p className="text-muted-foreground text-lg">
-                    Ready-to-use outreach templates and salary scripts to help you land offers faster.
-                  </p>
+                <li className="flex gap-2 items-start">
+                  <span className="text-lg">💰</span>
+                  <span>
+                    <span className="text-foreground">Salary Goals</span>: Target your ambitions.
+                  </span>
+                </li>
+              </ul>
+            </div>
+            <div className="bg-background/50 p-6 rounded-lg border border-border flex flex-col items-start space-y-4">
+              <h3 className="text-foreground text-lg flex items-center gap-2">
+                <span className="text-xl">📈</span>Why Upskill Now?
+              </h3>
+              <ul className="space-y-3 text-muted-foreground text-sm">
+                <li className="flex gap-2 items-start">
+                  <span className="text-lg">⚡</span>
+                  <span>
+                    <span className="text-foreground">Rise Above Automation</span>: Avoid jobs at risk.
+                  </span>
+                </li>
+                <li className="flex gap-2 items-start">
+                  <span className="text-lg">🚀</span>
+                  <span>
+                    <span className="text-foreground">Accelerate Your Pivot</span>: Get a clear action plan.
+                  </span>
+                </li>
+                <li className="flex gap-2 items-start">
+                  <span className="text-lg">🔒</span>
+                  <span>
+                    <span className="text-foreground">Skill Security</span>: Upgrade with confidence.
+                  </span>
                 </li>
               </ul>
             </div>
           </div>
-        </section>
-        
-        {/* Product Demo Section */}
-        <section className="py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-background to-muted/20 snap-start">
-          <div className="max-w-6xl mx-auto">
-            <h2 className="text-center text-4xl font-bold mb-8">
-              <span className="text-transparent bg-gradient-accent bg-clip-text">Example Report: <span className="italic">Marketing Director → AI-Proof Career</span></span>
+          {/* CTA */}
+          <div className="w-full flex justify-center pt-4">
+            <Link href="/sign-up" legacyBehavior>
+              <Button
+                variant="cta"
+                size="xl"
+                className="text-background w-full max-w-xs mx-auto"
+              >
+                Start My Personalized Report
+              </Button>
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* Product Features / What's Included */}
+      <section className="py-16 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-muted/20 to-background">
+        <div className="md:max-w-2xl mx-auto">
+          <div className="text-center mb-12">
+            <h2 className="heading mb-2">
+              <span className="text-transparent bg-gradient-accent bg-clip-text">
+                What's Inside
+              </span>
             </h2>
-            {/* Demo Report */}
-            <Browser className="md:w-[90%] place-self-center">
-              <div className="max-w-2xl mx-auto space-y-8">
-                <div className="border-b border-border pb-4">
-                  <h3 className="text-lg text-primary mb-2"><span className='text-2xl'>🎯 </span>Career Path #1</h3>
-                  <p className="text-muted-foreground">Revenue Operations Director</p>
-                </div>
+            <p className="subtitle mb-4 sm:text-lg">
+              Every Career Path Report includes:
+            </p>
+          </div>
+          <ul className="grid gap-6 md:grid-cols-2 max-w-2xl mx-auto text-left">
+            <li className="p-4 rounded-lg hover:bg-accent/10 transition">
+              <span className='text-2xl'>🎯</span>{' '}
+              <span>Custom Strategy Plan</span>
+              <p className="text-muted-foreground text-base mt-1 ml-1">
+                A step-by-step roadmap to pivot into resilient roles that fit your background.
+              </p>
+            </li>
+            <li className="p-4 rounded-lg hover:bg-accent/10 transition">
+              <span className='text-2xl'>📚</span>{' '}
+              <span>Skills Gap Analysis</span>
+              <p className="text-muted-foreground text-base mt-1 ml-1">
+                See exactly which skills to upgrade (and which to skip)—no wasted time or money.
+              </p>
+            </li>
+            <li className="p-4 rounded-lg hover:bg-accent/10 transition">
+              <span className='text-2xl'>🚀</span>{' '}
+              <span>30-Day Sprint</span>
+              <p className="text-muted-foreground text-base mt-1 ml-1">
+                Compact, daily action plan for rapid momentum—start moving day one.
+              </p>
+            </li>
+            <li className="p-4 rounded-lg hover:bg-accent/10 transition">
+              <span className='text-2xl'>💼</span>{' '}
+              <span>Offer-Getting Scripts</span>
+              <p className="text-muted-foreground text-base mt-1 ml-1">
+                Outreach templates and salary scripts designed to help land interviews and increase offers.
+              </p>
+            </li>
+          </ul>
+        </div>
+      </section>
 
-                <div>
-                  <div className="grid md:grid-cols-2 gap-8 space-y-2">
-                    <div className="rounded-lg">
-                      <div className="space-y-1 py-1 text-sm">
-                        <div className="flex justify-between">
-                          <span className="text-muted-foreground">Salary Range:</span>
-                          <span className="font-medium text-success">$75K - $120K</span>
-                        </div>
-                        <div className="flex justify-between">
-                          <span className="text-muted-foreground">Automation Risk Score:</span>
-                          <span className="font-medium text-success">Low (15%)</span>
-                        </div>
-                        <div className="flex justify-between">
-                          <span className="text-muted-foreground">Transferability Score:</span>
-                          <span className="font-medium text-primary">85%</span>
-                        </div>
-                        <div className="flex justify-between">
-                          <span className="text-muted-foreground">Time to Pivot:</span>
-                          <span className="font-medium text-primary">3–4 months</span>
-                        </div>
-                      </div>
+      {/* Example Report */}
+      <section className="py-16 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-background to-muted/20">
+        <div className="max-w-7xl mx-auto">
+          <h2 className="heading mb-6">
+            <span className="text-transparent bg-gradient-accent bg-clip-text">
+              Sample Report: <span className="italic">Marketing Director → AI-Ready Career</span>
+            </span>
+          </h2>
+          {/* Demo Report */}
+          <Browser className="lg:w-5xl mx-auto">
+            <div className="max-w-2xl mx-auto space-y-8">
+              <div className="border-b border-border pb-4">
+                <h3 className="text-lg text-primary mb-2 flex items-center gap-2">
+                  <span className='text-2xl'>🎯</span> AI-Resistant Path #1
+                </h3>
+                <p className="text-muted-foreground text-base">Revenue Operations Director</p>
+              </div>
+
+              <div>
+                <div className="grid md:grid-cols-2 gap-8">
+                  <div className="rounded-lg space-y-1 py-1 text-sm text-muted-foreground">
+                    <div className="flex justify-between">
+                      <span>Salary Range:</span>
+                      <span className="text-success">$75K - $120K</span>
                     </div>
+                    <div className="flex justify-between">
+                      <span>Automation Risk:</span>
+                      <span className="text-success">Low (15%)</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span>Transferability:</span>
+                      <span className="text-primary">85%</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span>Estimated Pivot Time:</span>
+                      <span className="text-primary">3–4 months</span>
+                    </div>
+                  </div>
 
-                    <div className="text-muted-foreground">
-                      <div className="rounded-lg space-y-4">
-                      <h4 className="text-accent"><span className='text-xl'>📚 </span>Skills Gap Analysis</h4>
-                        <ul className="text-sm space-y-1">
-                          <li className="text-sm flex items-center">
-                            <CheckSquareIcon className="mr-2 text-success" size={16} />
-                            Salesforce Admin Cert (40 hrs)
-                          </li>
-                          <li className="flex items-center">
-                            <CheckSquareIcon className="mr-2 text-success" size={16} />
-                            HubSpot Revenue Ops (20 hrs)
-                          </li>
-                          <li className="flex items-center">
-                            <CheckSquareIcon className="mr-2 text-success" size={16} />
-                            SQL for Analytics (30 hrs)
-                          </li>
-                        </ul>
-                      </div>
+                  <div className="text-muted-foreground">
+                    <div className="rounded-lg space-y-3">
+                      <h4 className="text-accent mb-1">
+                        <span className='text-xl'>📚</span> Needed Skills
+                      </h4>
+                      <ul className="text-sm space-y-1">
+                        <li className="flex items-center">
+                          <CheckSquareIcon className="mr-2 text-success" size={16} />
+                          Salesforce Admin Cert (40 hrs)
+                        </li>
+                        <li className="flex items-center">
+                          <CheckSquareIcon className="mr-2 text-success" size={16} />
+                          HubSpot Revenue Ops (20 hrs)
+                        </li>
+                        <li className="flex items-center">
+                          <CheckSquareIcon className="mr-2 text-success" size={16} />
+                          SQL for Analytics (30 hrs)
+                        </li>
+                      </ul>
                     </div>
                   </div>
                 </div>
-                <div className="space-y-2">
-                  <p className="px-4 text-muted-foreground">
-                    Career Path Report includes:
-                  </p>
-                  <ul className='bg-gradient-to-r from-blue-500/10 to-purple-500/10 border border-blue-500/20 rounded-lg p-4 space-y-2'>
-                    <li>
-                      <p className="text-sm text-muted-foreground">30-Day Sprint: </p>
-                    </li>
-                    <li>
-                      <p className="text-sm text-muted-foreground">Week 1: Complete Salesforce training, update LinkedIn headline...</p>
-                    </li>
-                    <li>
-                      <p className="text-sm text-muted-foreground">Outreach Templates</p>
-                    </li>
-                    <li>
-                      <p className="text-sm text-muted-foreground">Salary Negotiation Scripts</p>
-                    </li>
-                    <li>
-                      <p className="text-sm text-muted-foreground">and more actionable tools</p>
-                    </li>
-                  </ul>
-                </div>
               </div>
-            </Browser>
+              <div>
+                <p className="px-4 text-muted-foreground text-sm mb-2">
+                  Your custom plan includes:
+                </p>
+                <ul className="bg-gradient-to-r from-blue-500/10 to-purple-500/10 border border-blue-500/20 rounded-lg p-4 space-y-2">
+                  <li>
+                    <span className="text-foreground">•</span> <span>30-Day Sprint overview</span>
+                  </li>
+                  <li>
+                    <span className="text-foreground">•</span> <span>Weekly action steps (sample: complete Salesforce training, update LinkedIn, reach out to hiring managers)</span>
+                  </li>
+                  <li>
+                    <span className="text-foreground">•</span> <span>High-response outreach templates</span>
+                  </li>
+                  <li>
+                    <span className="text-foreground">•</span> <span>Salary negotiation scripts</span>
+                  </li>
+                  <li>
+                    <span className="text-foreground">•</span> <span>More practical, actionable tools</span>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </Browser>
+          <div className="text-center mt-8 mb-4">
+            <p className="text-muted-foreground my-8 w-full max-w-lg mx-auto">
+              Unlock all <span className="text-accent">4 future-proof career options</span> tailored to you.
+            </p>
+            <Link href="/sign-up" legacyBehavior>
+              <Button
+                variant="cta"
+                size="xl"
+                className="mx-auto max-w-md text-background whitespace-normal break-words"
+              >
+                See My Personalized Report – $29
+              </Button>
+            </Link>
+          </div>
+        </div>
+      </section>
 
-            <div className="text-center mt-8">
-              <p className="text-muted-foreground mb-4 w-[95%] place-self-center">
-                Discover 4 high-paying, AI-resistant career paths in your complete Career Path Report.
+      {/* Social Proof (Testimonials) */}
+      <section className="py-16 px-4 sm:px-6 lg:px-8 bg-gradient-card">
+        <div className="max-w-4xl mx-auto text-center space-y-10">
+          <h2 className="heading text-transparent bg-gradient-primary bg-clip-text">
+            Trusted by Professionals in Every Industry
+          </h2>
+          <div className="grid md:grid-cols-2 gap-8">
+            <div className="max-w-md mx-auto bg-muted/30 rounded-xl p-6 border border-border shadow-sm">
+              <div className="flex items-center mb-4">
+                {[...Array(5)].map((_, i) => (
+                  <Star key={i} className="text-yellow-400 mr-1" size={16} fill="currentColor" />
+                ))}
+              </div>
+              <p className="text-muted-foreground mb-4 italic">
+                “Within weeks of following my custom report, I pivoted to cybersecurity—I'm already earning $95K!”
               </p>
-              <Link href="/sign-up">
-                <Button 
-                  variant="cta" 
-                  size="lg"
-                  className="text-background"
-                >
-                  Unlock All 4 Career Paths – Get My Complete Report for $29
-                </Button>
-              </Link>
+              <p>Sarah Chen<br /><span className="text-sm text-muted-foreground">Cybersecurity Analyst</span></p>
+            </div>
+
+            <div className="max-w-md mx-auto bg-muted/30 rounded-xl p-6 border border-border shadow-sm">
+              <div className="flex items-center mb-4">
+                {[...Array(5)].map((_, i) => (
+                  <Star key={i} className="text-yellow-400 mr-1" size={16} fill="currentColor" />
+                ))}
+              </div>
+              <p className="text-muted-foreground mb-4 italic">
+                “The Skills Gap Analysis was exact. I landed a RevOps role just 4 months after using the report.”
+              </p>
+              <p>Marcus Rodriguez<br /><span className="text-sm text-muted-foreground">Revenue Operations Manager</span></p>
             </div>
           </div>
-        </section>
+        </div>
+      </section>
 
-        {/* Social Proof */}
-        <section className="py-16 px-4 sm:px-6 lg:px-8 bg-gradient-card snap-start">
-          <div className="max-w-4xl mx-auto text-center space-y-8">
-            <h2 className="text-4xl font-bold text-transparent bg-gradient-primary bg-clip-text">
-              Join 1,000+ Professionals Who've Already AI-Proofed Their Careers
+      {/* Final CTA */}
+      <section className="py-16 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-muted/20 to-background">
+        <div className="flex flex-col items-center justify-center mx-auto text-center gap-8">
+          <div className="space-y-3">
+            <h2 className="heading text-warning text-2xl sm:text-3xl">
+              <span className="">⚠️</span> <span className="ml-2">{numJobsDisplaced} jobs could vanish by {dateJobsDisplaced}</span>
             </h2>
-            
-            <div className="grid md:grid-cols-2 gap-8">
-              <div className="max-w-md mx-auto bg-muted/20 rounded-xl p-6 border border-border">
-                <div className="flex items-center mb-4">
-                  {[...Array(5)].map((_, i) => (
-                    <Star key={i} className="text-yellow-400 mr-1" size={16} fill="currentColor" />
-                  ))}
-                </div>
-                <p className="text-muted-foreground mb-4">
-                “The Career Path Report gave me total clarity. The 30-Day Sprint got me moving immediately, and now I'm earning $95K in cybersecurity.”
-                </p>
-                <p className="font-semibold">Sarah Chen, Cybersecurity Analyst</p>
-              </div>
-              
-              <div className="max-w-md mx-auto bg-muted/20 rounded-xl p-6 border border-border">
-                <div className="flex items-center mb-4">
-                  {[...Array(5)].map((_, i) => (
-                    <Star key={i} className="text-yellow-400 mr-1" size={16} fill="currentColor" />
-                  ))}
-                </div>
-                <p className="text-muted-foreground mb-4">
-                  "The Skills Gap Analysis was spot-on. I went from technical support to RevOps in 4 months using the Career Path Report!"
-                </p>
-                <p className="font-semibold">Marcus Rodriguez, Revenue Operations Manager</p>
-              </div>
+            <p className="subtitle max-w-xs sm:max-w-md text-base text-muted-foreground">
+              Don't wait until it's too late.<br />
+              Take control with a proven roadmap—get your custom Career Path Report today.
+            </p>
+          </div>
+          <div className="flex flex-col items-center space-y-4">
+            <div className="space-y-2">
+              <p className="text-muted-foreground line-through whitespace-pre"> Regular: $99 </p>
+              <p className="heading text-success font-[Outfit]">Launch Special: $29 <span className="subtext text-muted-foreground">(Limited Time)</span></p>
+            </div>
+            <Link href="/sign-up" legacyBehavior>
+              <Button
+                variant="cta"
+                size="xl"
+                className="text-background items-center w-full max-w-xs"
+              >
+                Get My Career Path Report – $29
+              </Button>
+            </Link>
+            <div className="text-xs text-red-400 mt-2">
+              Instant digital access &mdash; All sales final
             </div>
           </div>
-        </section>
+        </div>
+      </section>
 
-        {/* Final CTA */}
-        <section className="py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-muted/20 to-background snap-start">
-          <div className="flex flex-col items-center justify-center mx-auto text-center gap-8">
-            <div className="space-y-4">
-              <h2 className="text-4xl font-bold text-warning">
-                <span className="text-2xl">⚠️ </span>{`${numJobsDisplaced} Jobs Will Be Displaced by ${dateJobsDisplaced}`}
-              </h2>
-              <p className="subtitle max-w-sm sm:!max-w-[70%]">
-                Don't wait to AI-proof your career. 
-                <br/>Your future role is already waiting — get your personalized Career Path Report today.
-              </p>
-            </div>
-
-            <div className="space-y-6">
-              <div className="space-y-2">
-                <p className="subtext">Regular Price: $99</p>
-                <p className="text-lg lg:text-3xl font-bold text-success">Launch Price: $29 (Limited Time)</p>
-              </div>
-
-              <Link href="/sign-up">
-                <Button 
-                  variant="cta" 
-                  size="xl"
-                  className='text-background'
-                >
-                  🔓 Get My Career Path Report – $29
-                </Button>
-              </Link>
-
-              <div className="text-sm text-red-400 font-medium">
-                Final sale • No refunds • Instant digital delivery
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* Footer */}
-        <footer className="py-8 px-4 sm:px-6 lg:px-8 snap-start">
-          <div className="max-w-6xl mx-auto text-center text-sm text-muted-foreground">
-            <p>{copyright}</p>
-          </div>
-        </footer>
+      {/* Footer */}
+      <footer className="py-8 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-6xl mx-auto text-center text-xs text-muted-foreground">
+          <p>{copyright}</p>
+        </div>
+      </footer>
     </main>
   );
 }

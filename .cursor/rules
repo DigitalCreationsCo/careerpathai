@@ -1,0 +1,8 @@
+# Project Instructions
+## Code Style
+- Use TypeScript over javascript
+- Prefer functional components in React
+## CSS Instructions
+- Prefer custom classes from @app/globals.css over inline classes
+- use tailwindcss classes
+- use inherited text, spacing, and colors from @tailwind.config.js. 

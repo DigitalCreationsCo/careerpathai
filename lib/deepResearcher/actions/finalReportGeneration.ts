@@ -23,12 +23,13 @@ import {
     finalReportGenerationPrompt,
   } from '../prompts';
 import { generateUUID } from '@/lib/utils';
+import { Command, END } from '@langchain/langgraph';
   
   // CRITICAL: Return Partial<AgentState>, NOT Command
   export async function finalReportGeneration(
     state: AgentState, 
     config: RunnableConfig
-  ): Promise<Partial<AgentState>> {
+  ): Promise<Command> {
       console.log('finalReportGeneration: Starting', {
         notesCount: state.notes?.length,
         messageCount: state.messages?.length
@@ -73,16 +74,20 @@ import { generateUUID } from '@/lib/utils';
               console.log('Final report generated, length:', reportContent.length);
               
               // CRITICAL: Return state update directly (no Command)
-              return {
-                  finalReport: reportContent,
-                  messages: [
-                      createMessageFromMessageType(
-                        "ai",
-                        `# Research Report Complete\n\n${reportContent}`,
-                      )
-                  ],
-                  notes: []
-              };
+              // Instead of returning a plain state update, return a Command to signal END (return to graph and finish)
+              return new Command({
+                  goto: END,
+                  update: {
+                      finalReport: reportContent,
+                      messages: [
+                          createMessageFromMessageType(
+                            "ai",
+                            `${reportContent}`,
+                          )
+                      ],
+                      notes: []
+                  }
+              });
               
           } catch (e: any) {
               console.error('Final report generation error:', e);
@@ -93,16 +98,18 @@ import { generateUUID } from '@/lib/utils';
                   if (currentRetry === 1) {
                       const modelTokenLimit = getModelTokenLimit(configurable.finalReportModel)
                       if (!modelTokenLimit) {
-                          return {
-                              finalReport: `Error: Token limit exceeded.`,
-                              messages: [
-                                  createMessageFromMessageType(
-                                    "ai",
-                                    "Report generation failed due to token limits.",
-                                  )
-                              ],
-                              notes: []
-                          };
+                          return new Command({
+                              update: {
+                                  finalReport: `Error: Token limit exceeded.`,
+                                  messages: [
+                                      createMessageFromMessageType(
+                                        "ai",
+                                        "Report generation failed due to token limits.",
+                                      )
+                                  ],
+                                  notes: []
+                              }
+                          });
                       }
                       findingsTokenLimit = modelTokenLimit * 4
                   } else {
@@ -112,28 +119,34 @@ import { generateUUID } from '@/lib/utils';
                   findings = findings.substring(0, findingsTokenLimit || 0)
                   continue
               } else {
-                  return {
-                      finalReport: `Error: ${e.message || e}`,
-                      messages: [
-                          createMessageFromMessageType(
-                            "ai",
-                            `Error generating report: ${e.message || 'Unknown error'}`,
-                          )
-                      ],
-                      notes: []
-                  };
+                  return new Command({
+                      goto: END,
+                      update: {
+                          finalReport: `Error: ${e.message || e}`,
+                          messages: [
+                              createMessageFromMessageType(
+                                  "ai",
+                                  `Error generating report: ${e.message || 'Unknown error'}`,
+                              )
+                          ],
+                          notes: []
+                      }
+                  });
               }
           }
       }
       
-      return {
-          finalReport: "Error: Maximum retries exceeded",
-          messages: [
-              createMessageFromMessageType(
-                "ai",
-                "Report generation failed after multiple attempts.",
-              )
-          ],
-          notes: []
-      };
+      return new Command({
+          goto: END,
+          update: {
+              finalReport: "Error: Maximum retries exceeded",
+              messages: [
+                  createMessageFromMessageType(
+                    "ai",
+                    "Report generation failed after multiple attempts.",
+                  )
+              ],
+              notes: []
+          }
+      });
   }

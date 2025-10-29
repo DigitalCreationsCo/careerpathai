@@ -30,11 +30,14 @@ Growth, ownership, equity shares, in-office work, account management.
   }
 
   return (
-    <Chat
+    <div className="relative bg-gradient-primary-glow">
+      <div className="absolute inset-0 bg-gradient-to-t from-background/80 to-background animate-gradient" />
+      <Chat
         autoResume={false}
         chatId={chatId}
         initialMessages={initialMessages}
         key={chatId}
-    />
+        />
+    </div>
   );
 }

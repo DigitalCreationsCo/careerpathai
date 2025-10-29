@@ -61,12 +61,14 @@ export async function supervisor(state: SupervisorState, config: RunnableConfig)
     const supervisorMessages = state.supervisorMessages || []
     
     const response = await researchModel.invoke(supervisorMessages)
-    
+    console.log('breakpoint');
     // Step 3: Update state and proceed to tool execution
     return new Command({
         goto: "supervisorTools",
         update: {
-            supervisorMessages: [response],
+            supervisorMessages: [
+                createMessageFromMessageType("system", response.content)
+            ],
             researchIterations: (state.researchIterations || 0) + 1
         }
     });

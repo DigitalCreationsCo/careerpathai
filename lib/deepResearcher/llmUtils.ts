@@ -560,10 +560,10 @@ export async function getAllTools(
 }
 
 export function getNotesFromToolCalls(messages: any[]): any[] {
-  // Use the correct casing for FilterMessagesFields: includeTypes
-  return filterMessages(messages, { includeTypes: ["tool"] }).map(
-    (toolMsg: any) => toolMsg.content
-  );
+  // Use variables for easy debugging
+  const toolMessages = filterMessages(messages, { includeTypes: ["tool"] });
+  const notes = toolMessages.map((toolMsg: any) => toolMsg.content);
+  return notes;
 }
 
 // Model Provider Native Websearch Utilities

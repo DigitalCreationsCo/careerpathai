@@ -133,7 +133,7 @@ module.exports = {
 			'accordion-up': 'accordion-up 0.2s ease-out',
 			'glow-pulse': 'glow-pulse 2s ease-in-out infinite',
 			'float': 'float 3s ease-in-out infinite',
-			'slide-up': 'slide-up 0.5s ease-out'
+			'slide-up': 'slide-up 0.5s ease-out',
 		},
 		boxShadow: {
 			'primary': 'var(--shadow-primary)',

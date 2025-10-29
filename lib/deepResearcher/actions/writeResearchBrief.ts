@@ -28,8 +28,6 @@ export async function writeResearchBrief(
     const configurable = config.configurable as Configuration
     const messages = state.messages || []
     
-    // main research question prompt 
-    // Why? to ask one deep question which will guide the goal of research
     const researchTopicPrompt = transformMessagesIntoResearchTopicPrompt(
       getBufferString(messages), 
       getTodayStr()
@@ -53,7 +51,6 @@ export async function writeResearchBrief(
       
       console.log('Research brief generated:', researchBrief.substring(0, 100));
       
-      // Add brief as message that supervisor will see
       return new Command({
         goto: 'writeResearchOutline',
         update: {

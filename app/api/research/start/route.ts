@@ -1,10 +1,10 @@
+import util from "util";
 import { auth } from "@/auth";
 import { getOrCreateChat, updateChatTitle } from "@/lib/db/queries/chat";
 import { checkpointerManager } from "@/lib/deepResearcher/checkpointer";
 import { deepResearcher } from "@/lib/deepResearcher/deepResearcher";
 import { sessionManager } from "@/lib/deepResearcher/sessionManager";
-import { MessageLike } from "@/lib/deepResearcher/state";
-import { HumanMessage } from "@langchain/core/messages";
+  import { HumanMessage } from "@langchain/core/messages";
 
 export interface StartResearchRequest {
   message: { 
@@ -14,7 +14,7 @@ export interface StartResearchRequest {
   };
   chatId?: string;
   configuration?: Record<string, any>;
-  messageId?: string; // For explicitness if client sends one
+  messageId?: string; 
 }
 
 export async function POST(req: Request) {
@@ -62,10 +62,8 @@ export async function POST(req: Request) {
       );
     }
 
-    // Compile graph with checkpointer
     const graph = deepResearcher.compile({ checkpointer });
 
-    // Determine input, now with id (tracked)
     const input = shouldResume
       ? null // Running the same thread with a null input will continue from where we left off. This is enabled by LangGraph’s persistence layer.
       : ({
@@ -78,14 +76,12 @@ export async function POST(req: Request) {
           ],
         });
 
-    // Create ReadableStream for NDJSON streaming
     const stream = new ReadableStream({
       async start(controller) {
         const encoder = new TextEncoder();
         let isFirst = true;
 
         try {
-          // Use 'values' mode to get complete state after each node
           const streamConfig = {
             ...config,
             subgraphs: true,
@@ -112,7 +108,7 @@ export async function POST(req: Request) {
                 break;
 
               case "values":
-                console.log("[VALUES]:", update);
+                console.debug("[VALUES]:", update);
                 break;
 
               case "updates":
@@ -141,22 +137,20 @@ export async function POST(req: Request) {
                       await updateChatTitle(
                         session.chatId,
                         user.id!,
-                        nodeUpdate.researchBrief.substring(0, 100)
+                        nodeUpdate.researchBrief.substring(0, 30)
                       );
                     }
                     isFirst = false;
                   }
     
-                  // Convert LangChain messages to serializable format, include id
-                  // Also surface supervisor/researcher messages as chat-visible messages
                   const aggregateMessages = [
                     ...(nodeUpdate.messages || []),
-                    ...(nodeUpdate.supervisorMessages || []),
-                    ...(nodeUpdate.researcherMessages || []),
+                    // ...(nodeUpdate.supervisorMessages || []),
+                    // ...(nodeUpdate.researcherMessages || []),
                   ];
     
+
                   const serializedData = {
-                    ...nodeUpdate,
                     messages: aggregateMessages.length
                       ? aggregateMessages.map((msg: any) => ({
                           id: msg.id,
@@ -169,13 +163,12 @@ export async function POST(req: Request) {
                       : undefined,
                   };
     
-                  // Stream the update as NDJSON, also send userMessageId for tracking
                   const chunk = {
                     type: "update",
                     node: nodeName,
                     data: serializedData,
                     timestamp: new Date().toISOString(),
-                    userMessageId: persistantMessageId, // <--- sent on each update event
+                    userMessageId: persistantMessageId, 
                   };
     
                   controller.enqueue(encoder.encode(JSON.stringify(chunk) + "\n"));
@@ -188,12 +181,11 @@ export async function POST(req: Request) {
                 break;
 
               case "custom":
-                // Custom events from nodes; process if needed
                 break;
 
               case "checkpoints":
                 if (update) {
-                  console.log("[CHECKPOINTS] Checkpoint:", JSON.stringify(update));
+                  console.debug("[CHECKPOINTS] Checkpoint:", util.inspect(update, { depth: 2, colors: true }));
                 }
                 break;
 
@@ -206,14 +198,12 @@ export async function POST(req: Request) {
             }
           }
 
-          // Get final state to send complete messages
           const finalState = await graph.getState(config);
 
-          // Serialize final messages; also include ids. Aggregate other message arrays for UI
           const finalAggregate = [
             ...(finalState.values.messages || []),
-            ...(finalState.values.supervisorMessages || []),
-            ...(finalState.values.researcherMessages || []),
+            // ...(finalState.values.supervisorMessages || []),
+            // ...(finalState.values.researcherMessages || []),
           ];
 
           const serializedMessages = finalAggregate.map((msg: any) => ({
@@ -229,7 +219,7 @@ export async function POST(req: Request) {
             messages: serializedMessages,
             finalReport: finalState.values.finalReport,
             timestamp: new Date().toISOString(),
-            userMessageId: persistantMessageId, // <--- continue id tracking in output
+            userMessageId: persistantMessageId,
           };
 
           controller.enqueue(encoder.encode(JSON.stringify(finalChunk) + "\n"));
@@ -240,7 +230,6 @@ export async function POST(req: Request) {
             "completed"
           );
 
-          // Now, close only after the graph has ended successfully.
           controller.close();
         } catch (error) {
           console.error("Graph execution error:", error);
@@ -255,13 +244,11 @@ export async function POST(req: Request) {
             type: "error",
             error: error instanceof Error ? error.message : "Unknown error",
             timestamp: new Date().toISOString(),
-            userMessageId: persistantMessageId, // Include on errors also for UI
+            userMessageId: persistantMessageId, 
           };
 
           controller.enqueue(encoder.encode(JSON.stringify(errorChunk) + "\n"));
-          controller.close();
         } finally {
-          // Do not close the controller here; we only want to close it when the graph completes (success or error).
         }
       },
     });

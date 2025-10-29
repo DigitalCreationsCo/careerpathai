@@ -86,7 +86,7 @@ export function Chat({
 
               if (chunk.type === 'update') {
                 if (chunk.data.messages && Array.isArray(chunk.data.messages)) {
-                  const convertedMessages = chunk.data.messages.map((msg: any) => ({
+                  const convertedMessages: ChatMessage[] = chunk.data.messages.map((msg: any) => ({
                     id: msg.id,
                     role: msg.role === 'human' ? 'user' : msg.role === 'ai' ? 'assistant' : msg.role,
                     parts: [{
@@ -95,23 +95,31 @@ export function Chat({
                     }],
                     createdAt: msg.timestamp
                   }));
-                  setMessages(convertedMessages);
+                  setMessages((prevMessages) => [
+                    ...prevMessages,
+                    ...convertedMessages.filter(
+                      (msg) => !prevMessages.some((prev) => prev.id === msg.id)
+                    )
+                  ]);
                 }
               }
 
               if (chunk.type === 'final') {
-                if (chunk.messages && Array.isArray(chunk.messages)) {
-                  const convertedMessages = chunk.messages.map((msg: any) => ({
-                    id: msg.id || generateUUID(),
-                    role: msg.role === 'human' ? 'user' : msg.role === 'ai' ? 'assistant' : msg.role,
-                    parts: [{
-                      type: 'text',
-                      text: msg.content || ''
-                    }],
-                    createdAt: msg.timestamp
-                  }));
-                  setMessages(convertedMessages);
-                }
+                // if (chunk.messages && Array.isArray(chunk.messages)) {
+                //   const convertedMessages: ChatMessage[] = chunk.messages.map((msg: any) => ({
+                //     id: msg.id || generateUUID(),
+                //     role: msg.role === 'human' ? 'user' : msg.role === 'ai' ? 'assistant' : msg.role,
+                //     parts: [{
+                //       type: 'text',
+                //       text: msg.content || ''
+                //     }],
+                //     createdAt: msg.timestamp
+                //   }));
+                //   setMessages((prevMessages) => [
+                //     ...prevMessages,
+                //     convertedMessages[convertedMessages.length - 1]
+                //   ]);
+                // }
                 setStatus("ready");
               }
 
@@ -137,8 +145,18 @@ export function Chat({
     [chatId]
   );
 
+  /**
+   * Sends a new user message via the streaming API, ensuring that only one stream
+   * is open at a time. If a stream is already in progress (status === "streaming" or "submitted"),
+   * this function does not send another request.
+   */
   const sendMessage = useCallback(
     async (msgInput: { role: "user"; parts: { type: "text"; text: string }[] }) => {
+      // Prevent sending if a stream is already active
+      if (status === "streaming" || status === "submitted") {
+        toast.info("Please wait for the current response to finish.");
+        return;
+      }
       setInput("");
       const userMsg: ChatMessage = {
         id: generateUUID(),
@@ -149,7 +167,7 @@ export function Chat({
       setMessages((prev) => [...prev, userMsg]);
       await fetchResearchStream({ message: userMsg });
     },
-    [fetchResearchStream]
+    [fetchResearchStream, status]
   );
 
   const stop = useCallback(() => {
@@ -228,9 +246,9 @@ export function Chat({
   // }, [query, sendMessage, hasAppendedQuery, willResume, chatId]);
 
   return (
-    <div className="overscroll-behavior-contain flex h-dvh min-w-0 touch-pan-y flex-col bg-background">
+    <div className="border overscroll-behavior-contain flex h-dvh min-w-0 touch-pan-y flex-col">
       {hasCheckpoint && session?.status === 'active' && !isResuming && (
-        <div className="bg-blue-50 border-b border-blue-200 px-4 py-2 text-sm text-blue-800">
+        <div className="border-b border-blue-200 px-4 py-2 text-sm text-primary">
           <div className="max-w-4xl mx-auto flex items-center justify-between">
             <span>Previous research session found. Resuming automatically...</span>
             {session.researchBrief && (
@@ -250,7 +268,7 @@ export function Chat({
         status={status}
       />
 
-      <div className="sticky bottom-0 z-1 mx-auto flex w-full max-w-4xl gap-2 border-t-0 bg-background px-2 pb-3 md:px-4 md:pb-4">
+      <div className="sticky bottom-0 z-1 mx-auto flex w-full max-w-4xl gap-2 px-2 pb-3 md:px-4 md:pb-4">
         <MultimodalInput
           chatId={chatId}
           input={input}
@@ -265,7 +283,7 @@ export function Chat({
       </div>
 
       {isResuming && (
-        <div className="fixed top-4 right-4 bg-blue-500 text-white px-4 py-2 rounded-md shadow-lg flex items-center gap-2">
+        <div className="fixed top-4 right-4 text-white px-4 py-2 rounded-md shadow-lg flex items-center gap-2">
           <div className="animate-spin h-4 w-4 border-2 border-white border-t-transparent rounded-full" />
           <span>Resuming research...</span>
         </div>

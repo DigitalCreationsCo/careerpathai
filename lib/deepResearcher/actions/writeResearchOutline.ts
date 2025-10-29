@@ -70,9 +70,15 @@ export async function writeResearchOutline(
         update: {
           researchOutline,
           supervisorMessages: [
-            createMessageFromMessageType("system", supervisorSystemPrompt, { id: generateUUID() }),
-            createMessageFromMessageType("human", `Research Outline: \n${researchOutline}`),
+            createMessageFromMessageType("system", supervisorSystemPrompt),
+            createMessageFromMessageType("human", researchOutline),
           ],
+          messages: [
+            createMessageFromMessageType(
+              "ai",
+              "Please wait while I research your career paths."
+            ),
+          ]
         }
       });
       

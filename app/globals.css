@@ -133,6 +133,23 @@
       background-position: -100% center;
     }
   }
+  
+  @keyframes shine-vertical {
+    0% {
+      background-position: center 50%;
+    }
+    50% {
+      background-position: center 100%;
+    }
+    100% {
+      background-position: center 50%;
+    }
+  }
+  
+  .animate-gradient {
+    background-size: auto 200%;
+    animation: shine-vertical 12s ease-in-out infinite;
+  }
 
   .shiny-text {
     position: relative;

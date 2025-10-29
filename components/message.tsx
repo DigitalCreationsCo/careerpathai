@@ -36,7 +36,7 @@ const PurePreviewMessage = ({
   return (
     <motion.div
       animate={{ opacity: 1, y: 0 }}
-      className="group/message w-full px-2 md:px-8"
+      className="group/message w-full px-2"
       initial={{ opacity: 0, y: 10 }}
       data-role={message.role}
       data-testid={`message-${message.role}`}
@@ -58,9 +58,9 @@ const PurePreviewMessage = ({
             "gap-2 md:gap-4": message.parts?.some(
               (p) => p.type === "text" && p.text?.trim()
             ),
-            "min-h-96": message.role === "assistant" && requiresScrollPadding,
+            "min-h-96": message.role !== "user" && requiresScrollPadding,
             "w-full":
-              (message.role === "assistant" &&
+              (message.role !== "user" &&
                 message.parts?.some(
                   (p) => p.type === "text" && p.text?.trim()
                 )) ||
@@ -107,10 +107,10 @@ const PurePreviewMessage = ({
                   <div key={key}>
                     <MessageContent
                       className={cn({
-                        "w-fit break-words rounded-2xl px-3 py-2 text-right text-white":
+                        "w-fit break-words rounded-2xl px-3 py-2 text-left text-white":
                           message.role === "user",
                         "bg-transparent px-0 py-0 text-left text-zinc-500":
-                          message.role === "assistant",
+                          message.role !== "user",
                       })}
                       data-testid="message-content"
                       style={

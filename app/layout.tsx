@@ -93,7 +93,6 @@ export default async function RootLayout({
           }}
         >
           <NuqsAdapter>
-            <Header session={session} />
             {children}
             <Toaster position="bottom-center" />
           </NuqsAdapter>

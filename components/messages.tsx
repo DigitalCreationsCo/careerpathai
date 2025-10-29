@@ -53,8 +53,8 @@ function PureMessages({
       ref={messagesContainerRef}
       style={{ overflowAnchor: "none" }}
     >
-      <Conversation className="mx-auto flex min-w-0 max-w-4xl flex-col gap-4 md:gap-6">
-        <ConversationContent className="flex flex-col gap-4 px-2 py-4 md:gap-4 md:px-4">
+      <Conversation className="mx-auto flex w-full min-w-0 flex-col gap-4 md:gap-6">
+        <ConversationContent className="mx-auto flex flex-col max-w-4xl gap-4 px-2 py-4 md:gap-4 md:px-4">
           <Greeting />
           {messages.map((message, index) => (
             <PreviewMessage

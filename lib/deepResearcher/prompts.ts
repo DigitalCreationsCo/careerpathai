@@ -540,9 +540,7 @@ Use **dynamic, informative, beautiful Mermaid diagrams** with hex color palette.
 
 ---
 
-🎯 Career Path Report
-# [User's Career Transition/Goal]
-
+# 🎯 Your Career Path Report
 ## Executive Summary
 
 [1 paragraph: user profile, research approach, top recommendation]
@@ -564,8 +562,6 @@ flowchart TD
     style F fill:#BDC3C7,stroke:#7F8C8D,stroke-width:2px,color:#2C3E50
     style G fill:#5DD39E,stroke:#3AA76D,stroke-width:3px,color:#FFFFFF
 \`\`\`
-
----
 
 ## 🏆 Path Rankings at a Glance
 
@@ -620,6 +616,7 @@ mindmap
 </div>
 
 <div style="grid-column: span 2;">
+
 **Market & Salary Intelligence**
 
 | Metric | Data | Source |
@@ -638,6 +635,7 @@ mindmap
 ---
 
 <div style="grid-column: span 2;">
+
 **Salary Progression Path**
 
 \`\`\`mermaid
@@ -659,6 +657,7 @@ flowchart LR
 </div>
 
 <div style="grid-column: span 1;">
+
 **🤖 Automation Resilience: [LOW/MEDIUM/HIGH RISK]**
 
 \`\`\`mermaid
@@ -670,6 +669,7 @@ pie title "Task Vulnerability Over 5 Years"
 </div>
 
 <div style="grid-column: span 1;">
+
 **Human-Essential Skills:**
 - 🧠 **[Skill 1]:** [Why AI cannot replicate - 1 sentence]
 - 💡 **[Skill 2]:** [Complex judgment requirement - 1 sentence]
@@ -682,6 +682,7 @@ pie title "Task Vulnerability Over 5 Years"
 ---
 
 <div style="grid-column: span 2;">
+
 **Entry Requirements & Path**
 
 \`\`\`mermaid
@@ -710,9 +711,11 @@ flowchart TD
     style CERT1 fill:#FFD700,stroke:#B8860B,stroke-width:2px,color:#2C3E50
     style READY fill:#5DD39E,stroke:#3AA76D,stroke-width:3px,color:#FFFFFF
 \`\`\`
+<br/>
 </div>
 
 <div style="grid-column: span 2;">
+
 **Your Skill Gap Analysis**
 
 | Category | ✅ You Have | 📚 To Develop | ⏱️ Timeline |
@@ -729,6 +732,7 @@ flowchart TD
 ---
 
 <div style="grid-column: span 2;">
+
 **Career Progression Timeline**
 
 \`\`\`mermaid
@@ -743,9 +747,11 @@ timeline
     section Years 8+
         Principal or Director : $XXX–XXXk+ salary : Organizational impact : Mentorship and hiring
 \`\`\`
+<br/>
 </div>
 
 <div style="grid-column: span 2;">
+
 **Top Employers Hiring Now**
 
 | Company | Volume | Why Notable | Rating |
@@ -767,6 +773,7 @@ timeline
 ---
 
 <div style="grid-column: span 2;">
+
 **Learning Roadmap**
 
 \`\`\`mermaid
@@ -785,9 +792,11 @@ gantt
     Resume and Portfolio Polish  :resume, 2025-04-01, 30d
     Networking and Applications  :network, after resume, 60d
 \`\`\`
+
 </div>
 
 <div style="grid-column: span 2;">
+
 **Priority Learning Resources**
 
 1. 🏆 **[Certification Name]** ([Provider])  

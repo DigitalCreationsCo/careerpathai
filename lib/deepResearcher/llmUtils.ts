@@ -13,6 +13,7 @@ import {
   FilterMessagesFields,
 } from "@langchain/core/messages";
 import { RunnableConfig } from "@langchain/core/runnables";
+import { generateUUID } from "../utils";
 
 // Get API key for a specific model from environment or config.
 export function getApiKeyForModel(
@@ -785,9 +786,63 @@ export function messagesFromDict(messages: any[]): BaseMessage[] {
   return messages.map((m) => messageFromDict(m));
 }
 
-// MessageLikeRepresentation: One of: BaseMessage | [role, content] | string | object
 export function createMessageFromMessageType(
-  messageType: string,
+  messageType: "human" | "user",
+  content: any,
+  opts?: {
+    name?: string;
+    tool_call_id?: string;
+    tool_calls?: any;
+    id?: string;
+    [key: string]: any;
+  }
+): HumanMessage;
+export function createMessageFromMessageType(
+  messageType: "ai" | "assistant",
+  content: any,
+  opts?: {
+    name?: string;
+    tool_call_id?: string;
+    tool_calls?: any;
+    id?: string;
+    [key: string]: any;
+  }
+): AIMessage;
+export function createMessageFromMessageType(
+  messageType: "system" | "developer",
+  content: any,
+  opts?: {
+    name?: string;
+    tool_call_id?: string;
+    tool_calls?: any;
+    id?: string;
+    [key: string]: any;
+  }
+): SystemMessage;
+export function createMessageFromMessageType(
+  messageType: "function",
+  content: any,
+  opts?: {
+    name?: string;
+    tool_call_id?: string;
+    tool_calls?: any;
+    id?: string;
+    [key: string]: any;
+  }
+): FunctionMessage;
+export function createMessageFromMessageType(
+  messageType: "tool",
+  content: any,
+  opts?: {
+    name?: string;
+    tool_call_id?: string;
+    tool_calls?: any;
+    id?: string;
+    [key: string]: any;
+  }
+): ToolMessage;
+export function createMessageFromMessageType(
+  messageType: "human" | "user" | "system" | "developer" | "ai" | "assistant" | "tool" | "function",
   content: any,
   opts: {
     name?: string;
@@ -796,13 +851,16 @@ export function createMessageFromMessageType(
     id?: string;
     [key: string]: any;
   } = {}
-): BaseMessage {
+): HumanMessage | AIMessage | SystemMessage | FunctionMessage | ToolMessage {
   const { name, tool_call_id, tool_calls, id, ...additional_kwargs } = opts;
   const kwargs: Record<string, any> = {};
+
   if (name) kwargs.name = name;
   if (tool_call_id) kwargs.tool_call_id = tool_call_id;
-  if (id) kwargs.id = id;
   if (tool_calls) kwargs.tool_calls = tool_calls;
+  // Always attach id, use provided or generate new
+  kwargs.id = id ?? generateUUID();
+
   if (Object.keys(additional_kwargs).length > 0)
     kwargs.additional_kwargs = additional_kwargs;
 

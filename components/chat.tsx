@@ -1,5 +1,8 @@
-"use client";
+// ============================================
+// components/chat.tsx
+// ============================================
 
+"use client";
 import { useSearchParams } from "next/navigation";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { toast } from "sonner";
@@ -9,19 +12,6 @@ import { MultimodalInput } from "./multimodal-input";
 import type { ChatMessage } from "@/lib/types";
 import type { AppUsage } from "@/lib/usage";
 import { generateUUID } from "@/lib/utils";
-
-// Convert LangChain message to ChatMessage
-function convertMessage(lcMessage: any): ChatMessage {
-  return {
-    id: lcMessage.id || Math.random().toString(36).slice(2),
-    role: lcMessage.role === 'user' ? 'user' : 'assistant',
-    parts: [{
-      type: 'text',
-      text: lcMessage.content || ''
-    }],
-    // createdAt: lcMessage.timestamp || new Date().toISOString()
-  };
-}
 
 export function Chat({
   chatId,
@@ -81,7 +71,7 @@ export function Chat({
 
           buffer += decoder.decode(value, { stream: true });
           const lines = buffer.split('\n');
-          buffer = lines.pop() || ''; // Keep incomplete line in buffer
+          buffer = lines.pop() || ''; 
 
           for (const line of lines) {
             if (!line.trim()) continue;
@@ -95,7 +85,6 @@ export function Chat({
               }
 
               if (chunk.type === 'update') {
-                // Update from graph state - convert messages
                 if (chunk.data.messages && Array.isArray(chunk.data.messages)) {
                   const convertedMessages = chunk.data.messages.map((msg: any) => ({
                     id: msg.id,
@@ -106,11 +95,23 @@ export function Chat({
                     }],
                     createdAt: msg.timestamp
                   }));
-                  setMessages((prev) => [...prev, ...convertedMessages]);
+                  setMessages(convertedMessages);
                 }
               }
 
               if (chunk.type === 'final') {
+                if (chunk.messages && Array.isArray(chunk.messages)) {
+                  const convertedMessages = chunk.messages.map((msg: any) => ({
+                    id: msg.id || generateUUID(),
+                    role: msg.role === 'human' ? 'user' : msg.role === 'ai' ? 'assistant' : msg.role,
+                    parts: [{
+                      type: 'text',
+                      text: msg.content || ''
+                    }],
+                    createdAt: msg.timestamp
+                  }));
+                  setMessages(convertedMessages);
+                }
                 setStatus("ready");
               }
 
@@ -140,11 +141,11 @@ export function Chat({
     async (msgInput: { role: "user"; parts: { type: "text"; text: string }[] }) => {
       setInput("");
       const userMsg: ChatMessage = {
-        id: Math.random().toString(36).slice(2),
+        id: generateUUID(),
         role: "user",
         parts: msgInput.parts,
-        // createdAt: new Date().toISOString(),
       };
+
       setMessages((prev) => [...prev, userMsg]);
       await fetchResearchStream({ message: userMsg });
     },
@@ -159,6 +160,9 @@ export function Chat({
   const regenerate = useCallback(async () => {
     const lastUserMsg = [...messages].reverse().find((msg) => msg.role === "user");
     if (lastUserMsg) {
+      // Remove messages after last user message
+      const lastUserIndex = messages.findIndex(m => m.id === lastUserMsg.id);
+      setMessages(messages.slice(0, lastUserIndex + 1));
       fetchResearchStream({ message: lastUserMsg });
     }
   }, [messages, fetchResearchStream]);
@@ -190,31 +194,27 @@ export function Chat({
     autoResume
   );
 
-  // Send a message with empty text to start assistant on load if nothing else triggers
   useEffect(() => {
-    const sendInitalMessage = async () => {
-      // Only run when: 
-      // - there is no checkpoint auto-resume happening,
-      // - there is no query parameter,
-      // - initialMessages is empty,
-      // - we haven't sent it already for this session
-      if (
-        !willResume
-        && !query
-        && !hasSentInitialEmptyMessage
-        && initialMessages.length === 0
-      ) {
-        const initialMessage = { 
-          id: generateUUID(),
-          role: "user",
-          parts: [{ type: "text", text: "" }],
-        } as any;
-        await fetchResearchStream({ message: initialMessage });
-        setHasSentInitialEmptyMessage(true);
+    const sendInitial = async () => {
+      if (!willResume && !query && !hasSentInitialEmptyMessage) {
+        if (initialMessages && initialMessages.length > 0) {
+          // If there are initialMessages, send the first one.
+          await fetchResearchStream({ message: initialMessages[0] });
+          setHasSentInitialEmptyMessage(true);
+        } else {
+          // Otherwise, send an empty message to begin the stream.
+          const emptyMessage = {
+            id: generateUUID(),
+            role: "user",
+            parts: [{ type: "text", text: "" }],
+          } as any;
+          await fetchResearchStream({ message: emptyMessage });
+          setHasSentInitialEmptyMessage(true);
+        }
       }
-    }
-    sendInitalMessage();
-  }, [willResume, query, hasSentInitialEmptyMessage, initialMessages, sendMessage, chatId]);
+    };
+    sendInitial();
+  }, [willResume, query, hasSentInitialEmptyMessage, initialMessages, fetchResearchStream]);
 
   // // Existing: Send query from URL as a message if present (and not after resume)
   // useEffect(() => {

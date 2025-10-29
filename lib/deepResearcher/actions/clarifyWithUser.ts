@@ -1,9 +1,11 @@
 // ============================================
-// clarifyWithUser.ts
+// lib/deepResearcher/actions/clarifyWithUser.ts
 // ============================================
+
 import {
   getTodayStr,
   getApiKeyForModel,
+  createMessageFromMessageType,
 } from '@/lib/deepResearcher/llmUtils'
 import {
   configurableModel,
@@ -19,26 +21,22 @@ import {
   clarifyWithUserInstructions,
 } from '../prompts';
 import { RunnableConfig } from '@langchain/core/runnables';
-import { AIMessage, MessageStructure, AIMessageChunk } from '@langchain/core/messages';
 
+/**
+ * clarifyWithUser composes message history and ensures message accumulation.
+ * 
+ * Each new message is appended to the prior message array, preserving chat context.
+ */
 export async function clarifyWithUser(
     state: AgentState,
     config: RunnableConfig
   ): Promise<Partial<AgentState> | Command> {
-    console.log('clarifyWithUser: Processing state', {
-      messageCount: state.messages?.length,
-    });
-    
     const configurable = config.configurable as Configuration;
-    const messages = state.messages || []
-    
-    if (!Array.isArray(messages)) {
-      throw new Error('State.messages must be an array');
-    }
+    const messages = state.messages || [];
     
     if (!configurable.allowClarification) {
       return new Command({
-        goto: 'writeResearchBrief'
+        goto: 'writeResearchBrief',
       });
     }
   
@@ -60,7 +58,11 @@ export async function clarifyWithUser(
           maxTokens: configurable.researchModelMaxTokens,
           apiKey: getApiKeyForModel(configurable.researchModel, config),
         }
-      });
+      }) as unknown as { 
+        needClarification: Boolean;
+        question: string;
+        verification: string;
+      };
     } catch(error) {
       console.error('[LLM ERROR] clarifyWithUser:', error);
       
@@ -68,28 +70,23 @@ export async function clarifyWithUser(
         goto: 'writeResearchBrief',
         update: {
           messages: [
-            new AIMessage({ 
-              content: '[LLM Error during clarification. Proceeding to research brief.]'
-            })
+            createMessageFromMessageType(
+              "ai",
+              '[LLM Error during clarification. Proceeding to research brief.]'
+            ),
           ]
         }
       });
     }
-    
-    response = JSON.parse(response.content as string) as unknown as { 
-      needClarification: Boolean;
-      question: string;
-      verification: string;
-    };
 
     if (response.needClarification) {
       return new Command({
-        goto: 'END',
         update: {
           messages: [
-            new AIMessage({ 
-              content: response.question || 'Could you please provide more details?' 
-            })
+            createMessageFromMessageType(
+              "ai",
+              response.question || 'Could you please provide more details?',
+            )
           ]
         }
       });
@@ -99,9 +96,10 @@ export async function clarifyWithUser(
       goto: 'writeResearchBrief',
       update: {
         messages: [
-          new AIMessage({ 
-            content: response.verification || 'Understood. Proceeding with research.' 
-          })
+          createMessageFromMessageType(
+            "ai",
+            response.verification || 'Understood. Proceeding with research.',
+          )
         ]
       }
     });

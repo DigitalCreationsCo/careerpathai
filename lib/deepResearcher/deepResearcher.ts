@@ -1,5 +1,5 @@
 // ============================================
-// deepResearcher.ts
+// lib/deepResearcher/deepResearcher.ts
 // ============================================
 import { StateGraph, START, END } from '@langchain/langgraph'
 import { Configuration } from './configuration'

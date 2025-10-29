@@ -1,4 +1,5 @@
 import {
+    generateUUID,
   removeUpToLastAIMessage,
 } from '@/lib/utils'
 import {
@@ -8,6 +9,7 @@ import {
   openaiWebsearchCalled,
   anthropicWebsearchCalled,
   isTokenLimitExceeded,
+  createMessageFromMessageType,
 } from '@/lib/deepResearcher/llmUtils'
 import {
     configurableModel,
@@ -27,7 +29,7 @@ import {
 import { 
     compressResearchSimpleHumanMessage,
     compressResearchSystemPrompt,
-  researchSystemPrompt,
+    researchSystemPrompt,
 } from '../prompts';
 import { executeToolSafely } from '../toolsUtils'
 
@@ -77,7 +79,11 @@ export async function researcher(state: ResearcherState, config: RunnableConfig)
         .withConfig(researchModelConfig)
     
     // Step 3: Generate researcher response with system context
-    const messages = [new SystemMessage({ content: researcherPrompt }), ...researcherMessages]
+    const messages = [
+        createMessageFromMessageType("system", researcherPrompt), 
+        ...researcherMessages,
+    ]
+
     const response = await researchModel.invoke(messages)
     
     // Step 4: Update state and proceed to tool execution
@@ -141,14 +147,15 @@ export async function researcherTools(state: ResearcherState, config: RunnableCo
     // Create tool messages from execution results
     const toolOutputs = observations.map((observation, index) => {
         const toolCall = toolCalls[index]
-        return new ToolMessage({
-            content: observation,
-            name: toolCall.name,
-            tool_call_id: toolCall.id
-        })
+        return createMessageFromMessageType(
+            "tool", 
+            observation,
+            {
+                name: toolCall.name,
+                tool_call_id: toolCall.id
+            });
     })
     
-    // Step 3: Check late exit conditions (after processing tools)
     const exceededIterations = (state.toolCallIterations || 0) >= configurable.maxReactToolCalls
     const researchCompleteCalled = toolCalls.some(
         (toolCall: any) => toolCall.name === "ResearchComplete"
@@ -158,14 +165,14 @@ export async function researcherTools(state: ResearcherState, config: RunnableCo
         // End research and proceed to compression
         return new Command({
             goto: "compressResearch",
-            update: { researcherMessages: toolOutputs }
+            update: { researcherMessages: [ ...researcherMessages, toolOutputs] }
         });
     }
     
     // Continue research loop with tool results
     return new Command({
         goto: "researcher",
-        update: { researcherMessages: toolOutputs }
+        update: { researcherMessages: [ ...researcherMessages, toolOutputs ] }
     });
 }
 
@@ -197,7 +204,9 @@ export async function compressResearch(state: ResearcherState, config: RunnableC
     let researcherMessages = state.researcherMessages || []
     
     // Add instruction to switch from research mode to compression mode
-    researcherMessages.push(new HumanMessage({ content: compressResearchSimpleHumanMessage() }))
+    researcherMessages.push(
+        createMessageFromMessageType("human", compressResearchSimpleHumanMessage(configurable.compressionModelMaxTokens))
+    )
     
     // Step 3: Attempt compression with retry logic for token limit issues
     let synthesisAttempts = 0
@@ -206,8 +215,14 @@ export async function compressResearch(state: ResearcherState, config: RunnableC
     while (synthesisAttempts < maxAttempts) {
         try {
             // Create system prompt focused on compression task
-            const compressionPrompt = compressResearchSystemPrompt(getTodayStr());
-            const messages = [new SystemMessage({ content: compressionPrompt }), ...researcherMessages]
+            const compressionPrompt = compressResearchSystemPrompt(
+                configurable.compressionModelMaxTokens,
+                getTodayStr()
+            );
+            const messages = [
+                createMessageFromMessageType("system", compressionPrompt ), 
+                ...researcherMessages
+            ]
             
             // Execute compression
             const response = await synthesizerModel.invoke(messages)

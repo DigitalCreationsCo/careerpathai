@@ -7,15 +7,13 @@ import {
     isTokenLimitExceeded,
     getApiKeyForModel,
     getModelTokenLimit,
+    createMessageFromMessageType,
   } from '@/lib/deepResearcher/llmUtils'
   import {
     configurableModel,
     Configuration,
   } from '../configuration'
-  import {
-    HumanMessage,
-    AIMessage,
-  } from '@langchain/core/messages'
+  // Remove direct imports of HumanMessage, AIMessage
   import { getBufferString } from '../../messageUtils';
   import { RunnableConfig } from '@langchain/core/runnables'
   import { 
@@ -24,6 +22,7 @@ import {
   import { 
     finalReportGenerationPrompt,
   } from '../prompts';
+import { generateUUID } from '@/lib/utils';
   
   // CRITICAL: Return Partial<AgentState>, NOT Command
   export async function finalReportGeneration(
@@ -54,10 +53,11 @@ import {
       while (currentRetry <= maxRetries) {
           try {
               const finalReportPrompt = finalReportGenerationPrompt(
-                  state.researchBrief || "", 
-                  getBufferString(state.messages || []),
-                  findings,
-                  getTodayStr()
+                state.researchBrief || "",
+                state.researchOutline || "", 
+                getBufferString(state.messages || []),
+                findings,
+                getTodayStr()
               );
               
               console.log('Generating final report...');
@@ -65,7 +65,7 @@ import {
               const finalReportResponse = await (await configurableModel)
                 .withConfig(writerModelConfig)
                 .invoke([
-                  new HumanMessage({ content: finalReportPrompt })
+                  createMessageFromMessageType("human", finalReportPrompt)
                 ]);
               
               const reportContent = finalReportResponse.content.toString();
@@ -76,9 +76,10 @@ import {
               return {
                   finalReport: reportContent,
                   messages: [
-                      new AIMessage({ 
-                          content: `# Research Report Complete\n\n${reportContent}` 
-                      })
+                      createMessageFromMessageType(
+                        "ai",
+                        `# Research Report Complete\n\n${reportContent}`,
+                      )
                   ],
                   notes: []
               };
@@ -95,9 +96,10 @@ import {
                           return {
                               finalReport: `Error: Token limit exceeded.`,
                               messages: [
-                                  new AIMessage({ 
-                                      content: "Report generation failed due to token limits." 
-                                  })
+                                  createMessageFromMessageType(
+                                    "ai",
+                                    "Report generation failed due to token limits.",
+                                  )
                               ],
                               notes: []
                           };
@@ -113,9 +115,10 @@ import {
                   return {
                       finalReport: `Error: ${e.message || e}`,
                       messages: [
-                          new AIMessage({ 
-                              content: `Error generating report: ${e.message || 'Unknown error'}` 
-                          })
+                          createMessageFromMessageType(
+                            "ai",
+                            `Error generating report: ${e.message || 'Unknown error'}`,
+                          )
                       ],
                       notes: []
                   };
@@ -126,9 +129,10 @@ import {
       return {
           finalReport: "Error: Maximum retries exceeded",
           messages: [
-              new AIMessage({ 
-                  content: "Report generation failed after multiple attempts." 
-              })
+              createMessageFromMessageType(
+                "ai",
+                "Report generation failed after multiple attempts.",
+              )
           ],
           notes: []
       };

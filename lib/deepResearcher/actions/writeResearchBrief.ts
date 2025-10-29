@@ -1,3 +1,7 @@
+// ============================================
+// lib/deepResearcher/actions/writeResearchBrief.ts
+// ============================================
+
 import {
   getTodayStr,
   getApiKeyForModel,
@@ -6,9 +10,6 @@ import {
   configurableModel,
   Configuration,
 } from '../configuration'
-import {
-  AIMessage,
-} from '@langchain/core/messages'
 import { getBufferString } from '../../messageUtils';
 import { Command, END } from '@langchain/langgraph'
 import { 
@@ -18,17 +19,15 @@ import {
   transformMessagesIntoResearchTopicPrompt,
 } from '../prompts';
 import { RunnableConfig } from '@langchain/core/runnables';
+import { createMessageFromMessageType } from '../llmUtils';
 
 export async function writeResearchBrief(
     state: AgentState,
     config: RunnableConfig
   ): Promise<Partial<AgentState> | Command> {
-    console.log('writeResearchBrief: Starting', {
-      messageCount: state.messages?.length
-    }); 
-    
     const configurable = config.configurable as Configuration
     const messages = state.messages || []
+    
     // main research question prompt 
     // Why? to ask one deep question which will guide the goal of research
     const researchTopicPrompt = transformMessagesIntoResearchTopicPrompt(
@@ -60,9 +59,10 @@ export async function writeResearchBrief(
         update: {
           researchBrief: researchBrief,
           messages: [
-            new AIMessage({ 
-              content: `${researchBrief}` 
-            }),
+            createMessageFromMessageType(
+              'ai',
+              `${researchBrief}` 
+            ),
           ],
         }
       });
@@ -74,9 +74,10 @@ export async function writeResearchBrief(
         goto: END,
         update: {
           messages: [
-            new AIMessage({ 
-              content: "Error generating research brief. Please try rephrasing your question." 
-            })
+            createMessageFromMessageType(
+              'ai',
+              "Error generating research brief. Please try rephrasing your question." 
+            )
           ]
         }
       });

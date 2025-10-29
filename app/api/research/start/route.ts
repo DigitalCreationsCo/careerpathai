@@ -3,10 +3,15 @@ import { getOrCreateChat, updateChatTitle } from "@/lib/db/queries/chat";
 import { checkpointerManager } from "@/lib/deepResearcher/checkpointer";
 import { deepResearcher } from "@/lib/deepResearcher/deepResearcher";
 import { sessionManager } from "@/lib/deepResearcher/sessionManager";
+import { MessageLike } from "@/lib/deepResearcher/state";
 import { HumanMessage } from "@langchain/core/messages";
 
 export interface StartResearchRequest {
-  message: any;
+  message: { 
+    id: string;
+    role: "user";
+    parts: [{ type: "text", text: string }];
+  };
   chatId?: string;
   configuration?: Record<string, any>;
   messageId?: string; // For explicitness if client sends one
@@ -34,7 +39,8 @@ export async function POST(req: Request) {
     }
 
     const existingCheckpoint = await checkpointerManager.loadCheckpoint(config);
-    let text = body.message?.parts?.[0]?.text;
+    let text = body.message?.parts?.[0]?.text ?? ""
+
     const shouldResume = existingCheckpoint && (!text || text?.trim() === "");
 
     // Choose or generate persistent message id
@@ -61,16 +67,16 @@ export async function POST(req: Request) {
 
     // Determine input, now with id (tracked)
     const input = shouldResume
-      ? null
-      : {
+      ? null // Running the same thread with a null input will continue from where we left off. This is enabled by LangGraph’s persistence layer.
+      : ({
           messages: [
             new HumanMessage({
               id: persistantMessageId,
-              content: text || body.message?.content,
+              content: text,
               additional_kwargs: { timestamp: new Date().toISOString() },
             }),
           ],
-        };
+        });
 
     // Create ReadableStream for NDJSON streaming
     const stream = new ReadableStream({
@@ -82,84 +88,141 @@ export async function POST(req: Request) {
           // Use 'values' mode to get complete state after each node
           const streamConfig = {
             ...config,
-            streamMode: "updates" as const,
+            subgraphs: true,
+            streamMode: process.env.NODE_ENV !== "production" ? [
+              "values",
+              "updates",
+              "debug",
+              "messages",
+              "custom",
+              "checkpoints",
+              "tasks"
+            ] : ["values" as const],
           };
 
           const graphStream = await graph.stream(input, streamConfig as any);
 
-          for await (const update of graphStream) {
-            // Extract messages from the update
-            // update format: { [nodeName]: { messages: [...], otherState: ... } }
-            const nodeNames = Object.keys(update as any);
+          for await (const streamUpdate of graphStream) {
+            const [_, updateType, update] = streamUpdate as any;
 
-            for (const nodeName of nodeNames) {
-              const nodeUpdate = (update as any)[nodeName];
+            switch (updateType) {
+              case "debug":
+                console.debug("[DEBUG] update type:", update.type);
+                console.debug("[DEBUG] payload:", update.payload);
+                break;
 
-              console.log("Node update:", {
-                node: nodeName,
-                hasMessages: !!nodeUpdate.messages,
-                messageCount: nodeUpdate.messages?.length,
-                hasBrief: !!nodeUpdate.researchBrief,
-              });
+              case "values":
+                console.log("[VALUES]:", update);
+                break;
 
-              // Handle research brief for title
-              if (isFirst && nodeUpdate.researchBrief) {
-                await sessionManager.updateSessionStatus(
-                  session.id,
-                  user.id!,
-                  "active",
-                  nodeUpdate.researchBrief
-                );
+              case "updates":
+                const nodeNames = Object.keys(update as any);
 
-                if (session.chatId) {
-                  await updateChatTitle(
-                    session.chatId,
-                    user.id!,
-                    nodeUpdate.researchBrief.substring(0, 100)
-                  );
+                for (const nodeName of nodeNames) {
+                  const nodeUpdate = (update as any)[nodeName];
+    
+                  console.log("Node update:", {
+                    node: nodeName,
+                    hasMessages: !!nodeUpdate.messages,
+                    messageCount: nodeUpdate.messages?.length,
+                    hasBrief: !!nodeUpdate.researchBrief,
+                  });
+    
+                  // Handle research brief for title
+                  if (isFirst && nodeUpdate.researchBrief) {
+                    await sessionManager.updateSessionStatus(
+                      session.id,
+                      user.id!,
+                      "active",
+                      nodeUpdate.researchBrief
+                    );
+    
+                    if (session.chatId) {
+                      await updateChatTitle(
+                        session.chatId,
+                        user.id!,
+                        nodeUpdate.researchBrief.substring(0, 100)
+                      );
+                    }
+                    isFirst = false;
+                  }
+    
+                  // Convert LangChain messages to serializable format, include id
+                  // Also surface supervisor/researcher messages as chat-visible messages
+                  const aggregateMessages = [
+                    ...(nodeUpdate.messages || []),
+                    ...(nodeUpdate.supervisorMessages || []),
+                    ...(nodeUpdate.researcherMessages || []),
+                  ];
+    
+                  const serializedData = {
+                    ...nodeUpdate,
+                    messages: aggregateMessages.length
+                      ? aggregateMessages.map((msg: any) => ({
+                          id: msg.id,
+                          role: msg.type,
+                          content: msg.content,
+                          timestamp:
+                            msg.additional_kwargs?.timestamp ||
+                            new Date().toISOString(),
+                        }))
+                      : undefined,
+                  };
+    
+                  // Stream the update as NDJSON, also send userMessageId for tracking
+                  const chunk = {
+                    type: "update",
+                    node: nodeName,
+                    data: serializedData,
+                    timestamp: new Date().toISOString(),
+                    userMessageId: persistantMessageId, // <--- sent on each update event
+                  };
+    
+                  controller.enqueue(encoder.encode(JSON.stringify(chunk) + "\n"));
                 }
-                isFirst = false;
-              }
+                break;
 
-              // Convert LangChain messages to serializable format, include id
-              const serializedData = {
-                ...nodeUpdate,
-                messages: nodeUpdate.messages?.map((msg: any) => ({
-                  id: msg.id, // should propagate id from input user message
-                  role: msg.type,
-                  content: msg.content,
-                  timestamp:
-                    msg.additional_kwargs?.timestamp ||
-                    new Date().toISOString(),
-                })),
-              };
+              case "messages":
+                const [msg, metadata] = update;
+                console.log("[MESSAGES] update from node:", metadata.langgraph_node, `. Content: `, msg.content);
+                break;
 
-              // Stream the update as NDJSON, also send userMessageId for tracking
-              const chunk = {
-                type: "update",
-                node: nodeName,
-                data: serializedData,
-                timestamp: new Date().toISOString(),
-                userMessageId: persistantMessageId, // <--- sent on each update event
-              };
+              case "custom":
+                // Custom events from nodes; process if needed
+                break;
 
-              controller.enqueue(encoder.encode(JSON.stringify(chunk) + "\n"));
+              case "checkpoints":
+                if (update) {
+                  console.log("[CHECKPOINTS] Checkpoint:", JSON.stringify(update));
+                }
+                break;
+
+              case "tasks":
+                break;
+
+              default:
+                console.warn(`Unknown update type encountered in research stream: ${updateType}`);
+                break;
             }
           }
 
           // Get final state to send complete messages
           const finalState = await graph.getState(config);
 
-          // Serialize final messages; also include ids
-          const serializedMessages = (finalState.values.messages || []).map(
-            (msg: any) => ({
-              id: msg.id,
-              role: msg.type,
-              content: msg.content,
-              timestamp:
-                msg.additional_kwargs?.timestamp || new Date().toISOString(),
-            })
-          );
+          // Serialize final messages; also include ids. Aggregate other message arrays for UI
+          const finalAggregate = [
+            ...(finalState.values.messages || []),
+            ...(finalState.values.supervisorMessages || []),
+            ...(finalState.values.researcherMessages || []),
+          ];
+
+          const serializedMessages = finalAggregate.map((msg: any) => ({
+            id: msg.id,
+            role: msg.type,
+            content: msg.content,
+            timestamp:
+              msg.additional_kwargs?.timestamp || new Date().toISOString(),
+          }));
 
           const finalChunk = {
             type: "final",
@@ -177,6 +240,7 @@ export async function POST(req: Request) {
             "completed"
           );
 
+          // Now, close only after the graph has ended successfully.
           controller.close();
         } catch (error) {
           console.error("Graph execution error:", error);
@@ -196,10 +260,12 @@ export async function POST(req: Request) {
 
           controller.enqueue(encoder.encode(JSON.stringify(errorChunk) + "\n"));
           controller.close();
+        } finally {
+          // Do not close the controller here; we only want to close it when the graph completes (success or error).
         }
       },
     });
-
+    
     const headers: Record<string, string> = {
       "Content-Type": "application/x-ndjson",
       "Cache-Control": "no-cache, no-transform",

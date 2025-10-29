@@ -4,6 +4,7 @@ import {
   getApiKeyForModel,
   thinkTool,
   getNotesFromToolCalls,
+  createMessageFromMessageType,
 } from '@/lib/deepResearcher/llmUtils'
 import {
     configurableModel,
@@ -106,7 +107,7 @@ export async function supervisorTools(state: SupervisorState, config: RunnableCo
     // Define exit criteria for research phase
     const exceededAllowedIterations = researchIterations > configurable.maxResearcherIterations
     const noToolCalls = mostRecentMessage.type !== "tool"
-    const researchCompleteToolCall = (mostRecentMessage as any).toolCalls?.some(
+    const researchCompleteToolCall = (mostRecentMessage as any).tool_calls?.some(
         (toolCall: any) => toolCall.name === "ResearchComplete"
     ) || false
     
@@ -116,12 +117,10 @@ export async function supervisorTools(state: SupervisorState, config: RunnableCo
             goto: END,
             graph: Command.PARENT,
             update: {
-                researchBrief: state.researchBrief || "",
+                researchOutline: state.researchOutline || "",
                 notes: getNotesFromToolCalls(supervisorMessages),
                 messages: [
-                  new AIMessage({
-                    content: "Writing your career path report..."
-                  })
+                  createMessageFromMessageType("ai", "Writing your career path report...",)
                 ],
             }
         });
@@ -137,83 +136,93 @@ export async function supervisorTools(state: SupervisorState, config: RunnableCo
     ) || []
     
     for (const toolCall of thinkToolCalls) {
-        const reflectionContent = toolCall.args.reflection
-        allToolMessages.push(new ToolMessage({
-            content: `Reflection recorded: ${reflectionContent}`,
-            name: "thinkTool",
-            tool_call_id: toolCall.id
-        }))
-    }
-    
-    // Handle ConductResearch calls (research delegation)
-    const conductResearchCalls = (mostRecentMessage as any).toolCalls?.filter(
-        (toolCall: any) => toolCall.name === "ConductResearch"
-    ) || []
-    
-    if (conductResearchCalls.length > 0) {
-        try {
-            // Limit concurrent research units to prevent resource exhaustion
-            const allowedConductResearchCalls = conductResearchCalls.slice(0, configurable.maxConcurrentResearchUnits)
-            const overflowConductResearchCalls = conductResearchCalls.slice(configurable.maxConcurrentResearchUnits)
-            
-            // Execute research tasks in parallel
-            const researchTasks = allowedConductResearchCalls.map((toolCall: any) =>
-                researcherSubgraph.invoke({
-                    researcherMessages: [
-                        new HumanMessage({ content: toolCall.args.researchTopic })
-                    ],
-                    researchTopic: toolCall.args.researchTopic
-                }, config)
-            )
-            
-            const toolResults = await Promise.all(researchTasks)
-            
-            // Create tool messages with research results
-            for (let i = 0; i < toolResults.length; i++) {
-                const observation = toolResults[i]
-                const toolCall = allowedConductResearchCalls[i]
-                allToolMessages.push(new ToolMessage({
-                    content: observation.compressedResearch || "Error synthesizing research report: Maximum retries exceeded",
-                    name: toolCall.name,
-                    tool_call_id: toolCall.id
-                }))
-            }
-            
-            // Handle overflow research calls with error messages
-            for (const overflowCall of overflowConductResearchCalls) {
-                allToolMessages.push(new ToolMessage({
-                    content: `Error: Did not run this research as you have already exceeded the maximum number of concurrent research units. Please try again with ${configurable.maxConcurrentResearchUnits} or fewer research units.`,
-                    name: "ConductResearch",
-                    tool_call_id: overflowCall.id
-                }))
-            }
-            
-            // Aggregate raw notes from all research results
-            const rawNotesConcat = toolResults
-                .map(observation => observation.rawNotes?.join("\n") || "")
-                .join("\n")
-            
-            if (rawNotesConcat) {
-                updatePayload.rawNotes = [rawNotesConcat]
-            }
+        const reflectionContent = toolCall.args.reflection;
+        allToolMessages.push(
+            createMessageFromMessageType(
+            "tool",
+            `Reflection recorded: ${reflectionContent}`,
+            {
+                name: "thinkTool",
+                tool_call_id: toolCall.id,
+                tool_calls: [toolCall]
+            })
+        );
+        const conductResearchCalls = (mostRecentMessage as any).toolCalls?.filter(
+            (toolCall: any) => toolCall.name === "ConductResearch"
+        ) || []
+        
+        if (conductResearchCalls.length > 0) {
+            try {
+                // Limit concurrent research units to prevent resource exhaustion
+                const allowedConductResearchCalls = conductResearchCalls.slice(0, configurable.maxConcurrentResearchUnits)
+                const overflowConductResearchCalls = conductResearchCalls.slice(configurable.maxConcurrentResearchUnits)
                 
-        } catch (e: any) {
-            // Handle research execution errors
-            if (isTokenLimitExceeded(e, configurable.researchModel) || true) {
-                // Token limit exceeded or other error - end research phase
-                return new Command({
-                    goto: END,
-                    graph: Command.PARENT,
-                    update: {
-                        notes: getNotesFromToolCalls(supervisorMessages),
-                        researchBrief: state.researchBrief || ""
-                    }
-                });
+                // Execute research tasks in parallel
+                const researchTasks = allowedConductResearchCalls.map((toolCall: any) =>
+                    researcherSubgraph.invoke({
+                        researcherMessages: [
+                            createMessageFromMessageType("human", toolCall.args.researchTopic)
+                        ],
+                        researchTopic: toolCall.args.researchTopic
+                    }, config)
+                )
+                
+                const toolResults = await Promise.all(researchTasks)
+                
+                // Create tool messages with research results
+                for (let i = 0; i < toolResults.length; i++) {
+                    const observation = toolResults[i]
+                    const toolCall = allowedConductResearchCalls[i]
+                    allToolMessages.push(
+                        createMessageFromMessageType("tool",
+                            observation.compressedResearch || "Error synthesizing research report: Maximum retries exceeded",
+                            {
+                            name: toolCall.name,
+                            tool_call_id: toolCall.id
+                            }
+                        )
+                    )
+                }
+                
+                // Handle overflow research calls with error messages
+                for (const overflowCall of overflowConductResearchCalls) {
+                    allToolMessages.push(
+                        createMessageFromMessageType(
+                            "tool",
+                            `Error: Did not run this research as you have already exceeded the maximum number of concurrent research units. Please try again with ${configurable.maxConcurrentResearchUnits} or fewer research units.`,
+                            {
+                            name: "ConductResearch",
+                            tool_call_id: overflowCall.id
+                            }
+                        )
+                    )
+                }
+                
+                // Aggregate raw notes from all research results
+                const rawNotesConcat = toolResults
+                    .map(observation => observation.rawNotes?.join("\n") || "")
+                    .join("\n")
+                
+                if (rawNotesConcat) {
+                    updatePayload.rawNotes = [rawNotesConcat]
+                }
+                    
+            } catch (e: any) {
+                // Handle research execution errors
+                if (isTokenLimitExceeded(e, configurable.researchModel) || true) {
+                    // Token limit exceeded or other error - end research phase
+                    return new Command({
+                        goto: END,
+                        graph: Command.PARENT,
+                        update: {
+                            notes: getNotesFromToolCalls(supervisorMessages),
+                            researchOutline: state.researchOutline || ""
+                        }
+                    });
+                }
             }
-        }
+        }   
     }
-    
-    // Step 3: Return command with all tool results
     updatePayload.supervisorMessages = allToolMessages
     return new Command({
         goto: "supervisor",

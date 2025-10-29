@@ -37,7 +37,7 @@ export default async function LandingPage() {
           <div className="flex flex-col items-center space-y-4">
             <div className="space-y-2">
               <p className="text-muted-foreground line-through whitespace-pre"> Regular: $99 </p>
-              <p className="heading text-success font-[Outfit]">Launch Special: $29 <span className="subtext text-muted-foreground">(Limited Time)</span></p>
+              <p className="heading text-success font-[Outfit]">Launch Special $29 <span className="subtext text-muted-foreground">(Limited Time)</span></p>
             </div>
             <Link href="/sign-up" legacyBehavior>
               <Button
@@ -378,13 +378,13 @@ export default async function LandingPage() {
             <h2 className="heading text-warning text-2xl sm:text-3xl whitespace-pre-line font-semibold">⚠️ {numJobsDisplaced} jobs will be displaced by {dateJobsDisplaced}
             </h2>
             <p className="subtitle max-w-xs sm:max-w-md mx-auto md:max-w-2xl">
-            Don't wait to AI-proof your career. Your future role is already waiting — get your personalized Career Path Report today.
+            Don’t wait and get left behind. Land a high-paying, resilient job that matches your current skills—take the first step toward a secure, fulfilling career today.
             </p>
           </div>
           <div className="flex flex-col items-center">
             <div className="space-y-2">
               <p className="text-muted-foreground line-through whitespace-pre"> Regular: $99 </p>
-              <p className="heading text-success font-[Outfit]">Launch Special: $29 <span className="subtext text-muted-foreground">(Limited Time)</span></p>
+              <p className="heading text-success font-[Outfit]">Launch Special $29 <span className="subtext text-muted-foreground">(Limited Time)</span></p>
             </div>
             <Link href="/sign-up" legacyBehavior>
               <Button
@@ -392,7 +392,7 @@ export default async function LandingPage() {
                 size="xl"
                 className="text-background items-center w-full max-w-xs"
               >
-                Get My Career Path Report – $29
+                Get My Career Path Report
               </Button>
             </Link>
             <div className="text-xs text-red-400 mt-2">

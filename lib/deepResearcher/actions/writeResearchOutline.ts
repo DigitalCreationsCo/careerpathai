@@ -1,6 +1,7 @@
 import {
   getTodayStr,
   getApiKeyForModel,
+  createMessageFromMessageType,
 } from '@/lib/deepResearcher/llmUtils'
 import {
   configurableModel,
@@ -21,15 +22,12 @@ import {
   researchOutlineGenerationPrompt,
 } from '../prompts';
 import { RunnableConfig } from '@langchain/core/runnables';
+import { generateUUID } from '@/lib/utils';
 
 export async function writeResearchOutline(
     state: AgentState,
     config: RunnableConfig
-  ): Promise<Partial<AgentState> | Command> {
-    console.log('writeResearchBrief: Starting', {
-      messageCount: state.messages?.length
-    }); 
-    
+  ): Promise<Partial<AgentState> | Command> {    
     const configurable = config.configurable as Configuration
 
     // research brief generation prompt
@@ -41,11 +39,11 @@ export async function writeResearchOutline(
       getTodayStr()
     )
   
-    const briefModel = (await configurableModel)
+    const outlineModel = (await configurableModel)
       .withRetry({ stopAfterAttempt: configurable.maxStructuredOutputRetries });
   
     try {
-      const response = await briefModel.invoke(researchOutlinePrompt, {
+      const response = await outlineModel.invoke(researchOutlinePrompt, {
         configurable: {
           model: configurable.researchModel,
           maxTokens: configurable.researchModelMaxTokens,
@@ -67,18 +65,13 @@ export async function writeResearchOutline(
       
       console.log('Research outline generated:', researchOutline.substring(0, 100));
       
-      // Add brief as message that supervisor will see
       return new Command({
         goto: 'researchSupervisor',
         update: {
           researchOutline,
           supervisorMessages: [
-            new SystemMessage({ 
-              content: supervisorSystemPrompt
-            }),
-            new HumanMessage({ 
-              content: `${researchOutline}` 
-            }),
+            createMessageFromMessageType("system", supervisorSystemPrompt, { id: generateUUID() }),
+            createMessageFromMessageType("human", `Research Outline: \n${researchOutline}`),
           ],
         }
       });
@@ -90,9 +83,10 @@ export async function writeResearchOutline(
         goto: END,
         update: {
           messages: [
-            new AIMessage({ 
-              content: "Error generating research brief. Please try rephrasing your question." 
-            })
+            createMessageFromMessageType(
+              "ai",
+              "Error generating research brief. Please try rephrasing your question."
+            )
           ]
         }
       });

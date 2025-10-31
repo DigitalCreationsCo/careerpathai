@@ -210,12 +210,15 @@ export function Chat({
     autoResume
   );
 
+  const hasSentInitialRef = useRef(false);
   useEffect(() => {
-    const sendInitial = async () => {
-      if (hasSentInitialMessage || willResume || query) {
-        return;
-      }
+    if (hasSentInitialRef.current || willResume || query) {
+      return;
+    }
 
+    hasSentInitialRef.current = true;
+
+    const sendInitial = async () => {
       if (initialMessages && initialMessages.length > 0) {
         await fetchResearchStream({ message: initialMessages[0] });
       } else {
@@ -226,11 +229,10 @@ export function Chat({
         } as any;
         await fetchResearchStream({ message: emptyMessage });
       }
-
-      setHasSentInitialMessage(true);
     };
+    
     sendInitial();
-  }, [hasSentInitialMessage, willResume, query, initialMessages, fetchResearchStream]);
+  }, [willResume, query, initialMessages]);
 
   const shouldShowResumeBanner = hasCheckpoint 
     && session?.status === 'active' 

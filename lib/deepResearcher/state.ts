@@ -129,31 +129,9 @@ export const ResearcherState = Annotation.Root({
   }),
 });
 
-export const PaymentState = Annotation.Root({
-  messages: Annotation<BaseMessage[]>({
-    reducer: (current, update) => {
-      if (!update) return current || [];
-      if (!current) return update;
-      return current.concat(update);
-    },
-    default: () => []
-  }),
-  paymentStatus: Annotation<"pending" | "paid" | "failed">({
-    reducer: (current, update) => update ?? current,
-    default: () => "pending"
-  }),
-  paymentSessionId: Annotation<string | undefined>({
-    reducer: (current, update) => update ?? current,
-    default: () => undefined
-  }),
-});
-
 export type AgentState = typeof AgentState.State;
 export type SupervisorState = typeof SupervisorState.State;
 export type ResearcherState = typeof ResearcherState.State;
-export type PaymentState = typeof PaymentState.State;
-
-
 
 export const AgentInputState = z.object({
   messages: z.array(MessageLike).optional(),

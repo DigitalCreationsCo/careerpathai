@@ -1,5 +1,3 @@
-import "server-only";
-
 import {
   and,
   asc,
@@ -12,8 +10,6 @@ import {
   lt,
   type SQL,
 } from "drizzle-orm";
-import { drizzle } from "drizzle-orm/postgres-js";
-import postgres from "postgres";
 import { ChatSDKError } from "@/lib/errors";
 import type { AppUsage } from "@/lib/usage";
 import { generateUUID } from "@/lib/utils";
@@ -24,7 +20,6 @@ import {
   stream as streamTable,
   users as usersTable,
 } from "../schema";
-import { hashPassword } from "@/lib/auth/session";
 import { db } from "../drizzle";
 
 /**
@@ -32,9 +27,9 @@ import { db } from "../drizzle";
  */
 export async function getOrCreateChat(
   userId: string,
-  chatId?: string,
+  chatId: string,
   title?: string
-): Promise<string> {
+): Promise<Chat> {
   // If chatId provided, verify it exists
   if (chatId) {
     const [existingChat] = await db
@@ -45,10 +40,10 @@ export async function getOrCreateChat(
 
     if (existingChat) {
       console.log('Found existing chat:', chatId);
-      return existingChat.id;
+      return existingChat;
     }
 
-    console.warn(`Chat ${chatId} not found for user ${userId}`);
+    console.warn(`Chat ${chatId} not found for user ${userId}. Creating chat record.`);
     // Fall through to create new chat
   }
 
@@ -60,7 +55,7 @@ export async function getOrCreateChat(
   });
 
   console.log('Created new chat:', newChat.id);
-  return newChat.id;
+  return newChat;
 }
 
 export async function saveChat({
@@ -73,9 +68,10 @@ export async function saveChat({
   title: string;
 }) {
   try {
+    console.log('saveChat called with:', { id, userId, title });
     if (!id) id = generateUUID();
 
-    const [newChat] = await db.insert(chatsTable).values({
+    const newChat = await db.insert(chatsTable).values({
       id,
       userId,
       title: title || 'Research Session',
@@ -83,8 +79,9 @@ export async function saveChat({
       visibility: 'private',
     }).returning();
 
-    return newChat;
+    return newChat[0];
   } catch (_error) {
+    console.error("Failed to save chat:", _error);
     throw new ChatSDKError("bad_request:database", "Failed to save chat");
   }
 }
@@ -183,9 +180,14 @@ export async function getChatsByUserId({
   }
 }
 
-export async function getChatById({ id }: { id: string }) {
+export async function getChatById(chatId: string, userId: string) {
   try {
-    const [selectedChat] = await db.select().from(chatsTable).where(eq(chatsTable.id, id));
+    const selectedChat = await db.query.chats.findFirst({
+      where: and(
+        eq(chatsTable.id, chatId),
+        eq(chatsTable.userId, userId)
+      )
+    });
     if (!selectedChat) {
       return null;
     }

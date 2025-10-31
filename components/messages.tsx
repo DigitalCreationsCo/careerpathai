@@ -5,8 +5,8 @@ import { memo, useEffect } from "react";
 import { useMessages } from "@/hooks/use-messages";
 import type { ChatMessage } from "@/lib/types";
 import { Conversation, ConversationContent } from "./conversation";
-import { Greeting } from "./greeting";
 import { PreviewMessage, ThinkingMessage } from "./message";
+import { useGoldenRatio } from "@/hooks/use-golden-ratio";
 
 type MessagesProps = {
   chatId: string;
@@ -32,6 +32,8 @@ function PureMessages({
   } = useMessages({
     status,
   });
+  const isShowingGreeting = messages.every((msg: any) => msg.isGreeting);
+  const greetingDelays = useGoldenRatio(1.0, 1.7, messages.length);
 
   useEffect(() => {
     if (status === "submitted") {
@@ -55,13 +57,17 @@ function PureMessages({
     >
       <Conversation className="mx-auto flex w-full min-w-0 flex-col gap-4 md:gap-6">
         <ConversationContent className="mx-auto flex flex-col max-w-4xl gap-4 px-2 py-4 md:gap-4 md:px-4">
-          <Greeting />
-          {messages.map((message, index) => (
+          {messages.map((message, index) => {
+            const greetingIndex = (message as any).greetingIndex ?? index;
+            return (
             <PreviewMessage
               chatId={chatId}
               isLoading={
                 status === "streaming" && messages.length - 1 === index
               }
+              msgIndex={index}
+              isGreeting={isShowingGreeting}
+              delay={greetingDelays[greetingIndex]}
               key={message.id}
               message={message}
               regenerate={regenerate}
@@ -69,8 +75,8 @@ function PureMessages({
                 hasSentMessage && index === messages.length - 1
               }
               setMessages={setMessages}
-            />
-          ))}
+            />);
+            })}
 
           {status === "submitted" &&
             messages.length > 0 &&

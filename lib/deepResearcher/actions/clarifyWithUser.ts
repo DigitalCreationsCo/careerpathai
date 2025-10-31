@@ -58,11 +58,7 @@ export async function clarifyWithUser(
           maxTokens: configurable.researchModelMaxTokens,
           apiKey: getApiKeyForModel(configurable.researchModel, config),
         }
-      }) as unknown as { 
-        needClarification: Boolean;
-        question: string;
-        verification: string;
-      };
+      }) as unknown as ClarifyWithUser;
     } catch(error) {
       console.error('[LLM ERROR] clarifyWithUser:', error);
       

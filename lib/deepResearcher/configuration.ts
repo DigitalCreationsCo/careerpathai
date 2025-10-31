@@ -1,3 +1,5 @@
+// lib/deepResearcher/configuration.ts
+
 import { z } from "zod";
 import { ChatGoogleGenerativeAI } from "@langchain/google-genai";
 import { ChatOpenAI } from "@langchain/openai";
@@ -8,10 +10,6 @@ import { MODEL_TOKEN_LIMITS } from "./llmUtils";
 
 export interface RunnableConfig {
   configurable?: Record<string, any>;
-}
-
-function getEnv(): Record<string, string | undefined> {
-  return process.env as Record<string, string | undefined>;
 }
 
 /**
@@ -118,10 +116,6 @@ export class Configuration {
     if (data?.finalReportModel !== undefined)
       this.finalReportModel = data.finalReportModel;
 
-    // Step 2: Resolve token limits using current model values (see note: order matters).
-    // These are subject to override by env/data/env again below.
-    const env = getEnv();
-
     // Read in order: ENV, config value, MODEL_TOKEN_LIMITS, fallback.
     const resolveLimit = (
       envKey: string,
@@ -129,7 +123,7 @@ export class Configuration {
       fallback: number,
       configValue?: number
     ) => {
-      if (env[envKey] !== undefined) return parseValue(envKey, env[envKey]);
+      if (process.env[envKey] !== undefined) return parseValue(envKey, process.env[envKey]);
       if (configValue !== undefined) return configValue;
       return getDefaultModelTokenLimitByFullMatch(modelKey, fallback);
     };
@@ -187,7 +181,7 @@ export class Configuration {
       if (Object.prototype.hasOwnProperty.call(this, k)) {
         const envKey = camelCaseToUpperCaseSnakeCase(k);
         if (
-          env[envKey] !== undefined &&
+          process.env[envKey] !== undefined &&
           ![
             "SUMMARIZATION_MODEL_MAX_TOKENS",
             "RESEARCH_MODEL_MAX_TOKENS",
@@ -195,34 +189,34 @@ export class Configuration {
             "FINAL_REPORT_MODEL_MAX_TOKENS",
           ].includes(envKey)
         ) {
-          (this as any)[k] = parseValue(k, env[envKey]);
+          (this as any)[k] = parseValue(k, process.env[envKey]);
         }
       }
     }
 
     // Step 5: Overlay ENV on *_MAX_TOKENS fields AGAIN (so ENV always has highest precedence)
-    if (env["SUMMARIZATION_MODEL_MAX_TOKENS"] !== undefined) {
+    if (process.env["SUMMARIZATION_MODEL_MAX_TOKENS"] !== undefined) {
       this.summarizationModelMaxTokens = parseValue(
         "summarizationModelMaxTokens",
-        env["SUMMARIZATION_MODEL_MAX_TOKENS"]
+        process.env["SUMMARIZATION_MODEL_MAX_TOKENS"]
       );
     }
-    if (env["RESEARCH_MODEL_MAX_TOKENS"] !== undefined) {
+    if (process.env["RESEARCH_MODEL_MAX_TOKENS"] !== undefined) {
       this.researchModelMaxTokens = parseValue(
         "researchModelMaxTokens",
-        env["RESEARCH_MODEL_MAX_TOKENS"]
+        process.env["RESEARCH_MODEL_MAX_TOKENS"]
       );
     }
-    if (env["COMPRESSION_MODEL_MAX_TOKENS"] !== undefined) {
+    if (process.env["COMPRESSION_MODEL_MAX_TOKENS"] !== undefined) {
       this.compressionModelMaxTokens = parseValue(
         "compressionModelMaxTokens",
-        env["COMPRESSION_MODEL_MAX_TOKENS"]
+        process.env["COMPRESSION_MODEL_MAX_TOKENS"]
       );
     }
-    if (env["FINAL_REPORT_MODEL_MAX_TOKENS"] !== undefined) {
+    if (process.env["FINAL_REPORT_MODEL_MAX_TOKENS"] !== undefined) {
       this.finalReportModelMaxTokens = parseValue(
         "finalReportModelMaxTokens",
-        env["FINAL_REPORT_MODEL_MAX_TOKENS"]
+        process.env["FINAL_REPORT_MODEL_MAX_TOKENS"]
       );
     }
   }
@@ -237,7 +231,7 @@ export class Configuration {
    */
   static fromRunnableConfig(config?: RunnableConfig): Configuration {
     const configurable = config?.configurable ?? {};
-    const env = getEnv();
+    const env = process.env;
 
     // Find all field names (from instance's own keys).
     const instance = new Configuration();
@@ -285,12 +279,12 @@ export class Configuration {
   }
 }
 
-// --- ModelSelector for config passthrough and config merging -------------
 export class ModelSelector {
   private structuredOutputSchema?: any;
   private retryConfig?: any;
   private additionalConfig?: Record<string, any>;
   private toolsBinding?: any;
+  private modelInstance?: BaseChatModel; // instantiated model property
 
   constructor(
     structuredOutputSchema?: any,
@@ -302,6 +296,7 @@ export class ModelSelector {
     this.retryConfig = retryConfig;
     this.additionalConfig = additionalConfig;
     this.toolsBinding = toolsBinding;
+    this.modelInstance = undefined;
   }
 
   withStructuredOutput(schema: any) {
@@ -331,7 +326,7 @@ export class ModelSelector {
     );
   }
 
-  bindTools(tools: any) {
+  bindTools(tools: any[]) {
     return new ModelSelector(
       this.structuredOutputSchema,
       this.retryConfig,
@@ -340,9 +335,6 @@ export class ModelSelector {
     );
   }
 
-  /**
-   * Merge configs: caller config always wins over .withConfig chain.
-   */
   private mergeConfigs(callerConfig?: RunnableConfig | Record<string, any>): Record<string, any> {
     let callerCfg: Record<string, any> = {};
     if (callerConfig && typeof callerConfig === "object") {
@@ -355,9 +347,6 @@ export class ModelSelector {
     return { ...(this.additionalConfig || {}), ...(callerCfg || {}) };
   }
 
-  /**
-   * Determine the actual model variant and settings, and construct an LLM instance.
-   */
   private createModelInstance(callerConfig?: RunnableConfig | Record<string, any>): BaseChatModel {
     const resolvedConfig = this.mergeConfigs(callerConfig);
 
@@ -373,7 +362,6 @@ export class ModelSelector {
       throw new Error("Model name must be provided in the config");
     }
 
-    // Use direct API keys or fall back to environment keys
     let model: BaseChatModel;
 
     if (
@@ -384,7 +372,7 @@ export class ModelSelector {
     ) {
       const cleanModel = modelName.replace(/^(google:|gemini:)/, "");
       model = new ChatGoogleGenerativeAI({
-        apiKey: apiKey || getEnv().GOOGLE_API_KEY,
+        apiKey: apiKey || process.env.GOOGLE_API_KEY,
         model: cleanModel,
         maxOutputTokens: maxTokens,
         ...(resolvedConfig.tags ? { tags: resolvedConfig.tags } : {}),
@@ -395,7 +383,7 @@ export class ModelSelector {
     ) {
       const cleanModel = modelName.replace(/^openai:/, "");
       model = new ChatOpenAI({
-        apiKey: apiKey || getEnv().OPENAI_API_KEY,
+        apiKey: apiKey || process.env.OPENAI_API_KEY,
         modelName: cleanModel,
         maxTokens,
         ...(resolvedConfig.tags ? { tags: resolvedConfig.tags } : {}),
@@ -406,7 +394,7 @@ export class ModelSelector {
     ) {
       const cleanModel = modelName.replace(/^anthropic:/, "");
       model = new ChatAnthropic({
-        apiKey: apiKey || getEnv().ANTHROPIC_API_KEY,
+        apiKey: apiKey || process.env.ANTHROPIC_API_KEY,
         modelName: cleanModel,
         maxTokens,
         ...(resolvedConfig.tags ? { tags: resolvedConfig.tags } : {}),
@@ -415,28 +403,26 @@ export class ModelSelector {
       throw new Error(`Unsupported model: ${modelName}`);
     }
 
-    if (this.structuredOutputSchema?.shape || this.structuredOutputSchema?._def) {
+    if (this.structuredOutputSchema) {
       model = model.withStructuredOutput(this.structuredOutputSchema) as any;
     }
-    
+
+    if (this.toolsBinding && this.toolsBinding.length > 0) {
+      console.log('Binding tools to model:', this.toolsBinding.map((t: any) => t.name || t.schema?.title));
+      model = model.bindTools?.(this.toolsBinding) as any;
+    }
+
     if (this.retryConfig) {
       model = model.withRetry(this.retryConfig) as any;
     }
 
-    if (
-      this.toolsBinding &&
-      typeof (model as any).bindTools === "function"
-    ) {
-      model = (model as any).bindTools(this.toolsBinding);
-    }
-
-    // Attach any other config (excluding known keys)
     if (this.additionalConfig) {
       const {
         model: _model,
         apiKey: _apiKey,
         maxTokens: _maxTokens,
         tags: _tags,
+        tools: _tools, 
         ...other
       } = this.additionalConfig;
       if (Object.keys(other).length > 0) {
@@ -450,10 +436,11 @@ export class ModelSelector {
         "configurable" in callerConfig &&
         callerConfig.configurable
       ) {
-        const { model, apiKey, maxTokens, tags, ...rest } = callerConfig.configurable;
+        const { model, apiKey, maxTokens, tags, tools, ...rest } =
+          callerConfig.configurable;
         extra = rest;
       } else if (typeof callerConfig === "object") {
-        const { model, apiKey, maxTokens, tags, ...rest } = callerConfig as any;
+        const { model, apiKey, maxTokens, tags, tools, ...rest } = callerConfig as any;
         extra = rest;
       }
       if (Object.keys(extra).length > 0) {
@@ -461,11 +448,19 @@ export class ModelSelector {
       }
     }
 
+    // Set the instantiated model as a property and return it
+    this.modelInstance = model;
     return model;
   }
 
   async invoke(input: any, config?: RunnableConfig) {
-    const model = this.createModelInstance(config);
+    // Use modelInstance property, re-create only if needed
+    let model: BaseChatModel;
+    if (!this.modelInstance) {
+      model = this.createModelInstance(config);
+    } else {
+      model = this.modelInstance;
+    }
     if (config && typeof config === "object" && "configurable" in config) {
       return await model.invoke(input, config);
     } else if (config) {
@@ -475,7 +470,13 @@ export class ModelSelector {
   }
 
   async stream(input: any, config?: RunnableConfig | Record<string, any>) {
-    const model = this.createModelInstance(config);
+    // Use modelInstance property, re-create only if needed
+    let model: BaseChatModel;
+    if (!this.modelInstance) {
+      model = this.createModelInstance(config);
+    } else {
+      model = this.modelInstance;
+    }
     if (config && typeof config === "object" && "configurable" in config) {
       return await model.stream(input, config);
     } else if (config) {
@@ -485,7 +486,13 @@ export class ModelSelector {
   }
 
   async batch(inputs: any[], config?: RunnableConfig | Record<string, any>) {
-    const model = this.createModelInstance(config);
+    // Use modelInstance property, re-create only if needed
+    let model: BaseChatModel;
+    if (!this.modelInstance) {
+      model = this.createModelInstance(config);
+    } else {
+      model = this.modelInstance;
+    }
     if (config && typeof config === "object" && "configurable" in config) {
       return await model.batch(inputs, config);
     } else if (config) {
@@ -493,10 +500,57 @@ export class ModelSelector {
     }
     return await model.batch(inputs);
   }
+
+  /**
+   * Estimate the number of tokens for a given input, using model configuration if possible.
+   * If the underlying model provides a getNumTokens or equivalent method, use it.
+   * Otherwise, falls back to approximate token counting.
+   *
+   * @param input The input string or messages to count tokens for.
+   * @param config (optional) Model configuration.
+   * @returns Number of tokens (approximate if model doesn't provide).
+   */
+  getNumTokens(input: any, config?: RunnableConfig | Record<string, any>): number {
+    let model: BaseChatModel;
+    if (!this.modelInstance) {
+      model = this.createModelInstance(config);
+    } else {
+      model = this.modelInstance;
+    }
+
+    // Try using model's getNumTokens if it exists
+    if (typeof (model as any).getNumTokens === "function") {
+      try {
+        // Some implementations are async; others are sync.
+        // But for simplicity, we use sync call here.
+        return (model as any).getNumTokens(input);
+      } catch (e) {
+        // Fallback to approximate counting below if model getNumTokens fails
+      }
+    }
+
+    // Rough fallback if no method on model
+    // Supports string or message-array inputs
+    if (typeof input === "string") {
+      // Estimate: approx 4 characters per token
+      return Math.ceil(input.length / 4);
+    } else if (Array.isArray(input)) {
+      // Try to use countTokensApproximately utility if available in llmUtils
+      if (typeof require !== "undefined") {
+        try {
+          const { countTokensApproximately } = require('./llmUtils');
+          return countTokensApproximately(input);
+        } catch (e) {
+          // Fallback below
+        }
+      }
+      // Fallback: concatenate message contents, estimate
+      const joined = input.map((m: any) => (typeof m === 'string' ? m : m.content || "")).join(" ");
+      return Math.ceil(joined.length / 4);
+    }
+    // Catch-all fallback
+    return 0;
+  }
 }
 
-/**
- * Export singleton model selector
- */
 export const configurableModel = new ModelSelector();
-

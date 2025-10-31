@@ -12,7 +12,7 @@ export interface StartResearchRequest {
     role: "user";
     parts: [{ type: "text", text: string }];
   };
-  chatId?: string;
+  chatId: string;
   configuration?: Record<string, any>;
   messageId?: string; 
 }
@@ -29,7 +29,7 @@ export async function POST(req: Request) {
 
   try {
     const body: StartResearchRequest = await req.json();
-    const validChatId = await getOrCreateChat(user.id, body.chatId);
+    const validChatId = (await getOrCreateChat(user.id, body.chatId)).id;
     const session = await sessionManager.getOrCreateSession(user.id, validChatId, body.configuration);
     const config = sessionManager.createRunnableConfig(session);
 
@@ -149,7 +149,6 @@ export async function POST(req: Request) {
                     // ...(nodeUpdate.researcherMessages || []),
                   ];
     
-
                   const serializedData = {
                     messages: aggregateMessages.length
                       ? aggregateMessages.map((msg: any) => ({
@@ -172,6 +171,13 @@ export async function POST(req: Request) {
                   };
     
                   controller.enqueue(encoder.encode(JSON.stringify(chunk) + "\n"));
+
+                  // try {
+                  //   await checkpointerManager.saveCheckpoint(config);
+                  //   console.debug(`[CHECKPOINT] Saved after node ${nodeName}`);
+                  // } catch (persistErr) {
+                  //   console.error("Checkpoint persistence failed:", persistErr);
+                  // }
                 }
                 break;
 
@@ -221,6 +227,10 @@ export async function POST(req: Request) {
             timestamp: new Date().toISOString(),
             userMessageId: persistantMessageId,
           };
+
+          // Do NOT send report email here.
+          // Instead, require the user to pay before receiving their report by email.
+          // The report will be emailed after payment is complete.
 
           controller.enqueue(encoder.encode(JSON.stringify(finalChunk) + "\n"));
 

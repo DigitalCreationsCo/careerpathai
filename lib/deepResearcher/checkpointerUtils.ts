@@ -1,10 +1,10 @@
-/**
- * Helper utilities for checkpoint management
- */
-
+import util from "util";
 import { checkpointerManager } from "@/lib/deepResearcher/checkpointer";
 import { sessionManager } from "@/lib/deepResearcher/sessionManager";
 import { ResearchSession } from "@/lib/types";
+import { UIMessage } from "ai";
+import { ChatMessage } from "@langchain/core/messages";
+import { roleMap } from "../utils";
 
 /**
  * Check if a session has an active checkpoint that can be resumed
@@ -53,10 +53,7 @@ export async function listSessionCheckpoints(session: ResearchSession) {
   try {
     const config = sessionManager.createRunnableConfig(session);
     const checkpoints: any[] = [];
-    
-    // The listCheckpoints method returns an async iterator
     await checkpointerManager.listCheckpoints(config);
-    
     return checkpoints;
   } catch (error) {
     console.error('Error listing checkpoints:', error);
@@ -78,29 +75,119 @@ export function formatGraphStateForUI(state: any) {
   };
 }
 
+export const getThreadId = (userId: string, chatId: string) => {
+  return `${userId}-${chatId}`;
+};
+
 /**
- * Convert LangGraph message format to ChatMessage format
+ * Get final saved state from completed graph
+ * This is NOT resuming execution - just reading saved data
  */
-export function convertToUIMessage(graphMessage: any): {
-  role: 'user' | 'assistant' | 'system';
-  content: string;
-  id?: string;
-} {
-  // Map LangGraph roles to UI roles
-  const roleMap: Record<string, 'user' | 'assistant' | 'system'> = {
-    human: 'user',
-    user: 'user',
-    ai: 'assistant',
-    assistant: 'assistant',
-    system: 'system',
-    tool: 'assistant', // Tool responses shown as assistant
+export async function getGraphFinalState(chatId: string, userId: string): Promise<CheckpointChannelValues | null> {
+  const checkpointer = await checkpointerManager.getCheckpointer();
+  
+  const config = {
+    configurable: {
+      thread_id: getThreadId(userId, chatId),
+      userId,
+      chatId,
+    }
   };
   
-  return {
-    role: roleMap[graphMessage.role] || 'assistant',
-    content: graphMessage.content || '',
-    id: graphMessage.id,
-  };
+  try {
+    const checkpoint = await checkpointer!.get(config);
+    console.log("getGraphFinalState loaded checkpoint:", JSON.stringify(checkpoint));
+
+    return (checkpoint?.channel_values) as any || null;
+  } catch (error) {
+    console.error('Error loading graph state:', error);
+    return null;
+  }
+}
+
+export type CheckpointChannelValues = {
+  messages?: ChatMessage[];
+  // Add other channels if present
+  [key: string]: any;
+};
+
+/**
+ * Convert graph channel_values.messages (serialized LC messages)
+ * into an array of UIMessage (for frontend/UI use).
+ * @param channelValues channel_values from checkpoint
+ * @returns Array<UIMessage>
+ */
+export function convertGraphMessagesToUIMessages(channelValues: CheckpointChannelValues): UIMessage[] {
+  if (!channelValues?.messages || !Array.isArray(channelValues.messages)) {
+    return [];
+  }
+  return channelValues.messages.map((raw) => {
+    // Determine role
+    let role: 'user' | 'assistant' | 'system' = "user";
+    if (raw.id && Array.isArray(raw.id)) {
+      const t = raw.id[2];
+      if (t === "AIMessage") {
+        role = "assistant";
+      } else if (t === "HumanMessage") {
+        role = "user";
+      } else if (typeof t === "string") {
+        if (t.toLowerCase().includes("system")) {
+          role = "system";
+        } else if (t.toLowerCase().includes("tool")) {
+          role = "assistant";
+        } else {
+          role = t.endsWith("Message")
+            ? (t.slice(0, -"Message".length).toLowerCase() as typeof role)
+            : (t.toLowerCase() as typeof role);
+        }
+      }
+    } else {
+      role = roleMap[raw.type];
+    }
+
+    const parts = [];
+    const tool_calls: any[] = [];
+
+    // Always push text part
+    parts.push({
+      type: 'text',
+      text: raw.lc_kwargs?.content ?? "",
+    });
+
+    // Future: handle experimental_attachments here if present in raw.kwargs
+
+    // Tool calls (OpenAI/function call format)
+    if (Array.isArray(raw.lc_kwargs?.tool_calls)) {
+      for (const toolCall of raw.lc_kwargs.tool_calls) {
+        tool_calls.push(toolCall);
+      }
+    }
+
+    // Always ensure metadata has the right shape, tool_calls/invalid_tool_calls as array, etc.
+    let metadata: Record<string, any> = {
+      response_metadata: raw.lc_kwargs?.response_metadata,
+      tool_calls: Array.isArray(raw.lc_kwargs?.tool_calls) ? raw.lc_kwargs?.tool_calls : [],
+      invalid_tool_calls: Array.isArray(raw.lc_kwargs?.invalid_tool_calls) ? raw.lc_kwargs?.invalid_tool_calls : [],
+      ...raw.lc_kwargs?.additional_kwargs
+    };
+
+    return {
+      role,
+      parts,
+      id: raw.lc_kwargs?.id!,
+      metadata
+    } as UIMessage;
+  });
+}
+
+/**
+ * Check if graph execution is complete
+ */
+export async function isGraphComplete(chatId: string, userId: string) {
+  const state = await getGraphFinalState(chatId, userId);
+  
+  // Graph is complete if finalReport exists
+  return !!state?.finalReport;
 }
 
 /**
@@ -108,7 +195,7 @@ export function convertToUIMessage(graphMessage: any): {
  */
 export async function initializeResearchSession(
   userId: string,
-  chatId?: string,
+  chatId: string,
   configuration?: Record<string, any>
 ) {
   // Create session (generates new threadId for checkpointing)

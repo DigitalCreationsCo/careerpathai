@@ -14,18 +14,24 @@ import { MessageReasoning } from "./message-reasoning";
 
 const PurePreviewMessage = ({
   chatId,
+  msgIndex,
   message,
   isLoading,
   setMessages,
   regenerate,
+  isGreeting,
   requiresScrollPadding,
+  delay = 0,
 }: {
   chatId: string;
+  msgIndex: number;
   message: ChatMessage;
   isLoading: boolean;
   setMessages: UseChatHelpers<ChatMessage>["setMessages"];
   regenerate: UseChatHelpers<ChatMessage>["regenerate"];
+  isGreeting: boolean;
   requiresScrollPadding: boolean;
+  delay: number;
 }) => {
   const [mode, setMode] = useState<"view" | "edit">("view");
 
@@ -35,9 +41,10 @@ const PurePreviewMessage = ({
 
   return (
     <motion.div
-      animate={{ opacity: 1, y: 0 }}
-      className="group/message w-full px-2"
       initial={{ opacity: 0, y: 10 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ delay, duration: 0.5 }}
+      className="group/message w-full px-2"
       data-role={message.role}
       data-testid={`message-${message.role}`}
       >
@@ -111,7 +118,13 @@ const PurePreviewMessage = ({
                           message.role === "user",
                         "bg-transparent px-0 py-0 text-left text-zinc-500":
                           message.role !== "user",
-                      })}
+                        },
+                        isGreeting && [
+                          msgIndex === 0 
+                            ? "text-xl text-foreground" 
+                            : ""
+                        ]
+                      )}
                       data-testid="message-content"
                       style={
                         message.role === "user"
@@ -247,7 +260,6 @@ const PurePreviewMessage = ({
             //     </Tool>
             //   );
             // }
-
             return null;
           })}
 
@@ -295,8 +307,8 @@ export const ThinkingMessage = () => {
       data-testid="message-assistant-loading"
       initial={{ opacity: 0 }}
     >
-      <div className="flex items-start justify-start gap-3">
-        <div className="-mt-1 flex size-8 shrink-0 items-center justify-center rounded-full bg-background ring-1 ring-border">
+      <div className="flex items-start justify-start gap-3 animate-pulse">
+        <div className="-mt-1 flex size-8 shrink-0 items-center justify-center rounded-full bg-background">
           <SparklesIcon size={14} />
         </div>
 

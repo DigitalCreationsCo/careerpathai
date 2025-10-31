@@ -33,24 +33,15 @@ export class CheckpointerManager {
   }
 
   /** Save checkpoint to database */
-//   async saveCheckpoint(threadId: string, state: Record<string, any>) {
-  async saveCheckpoint(config: RunnableConfig, checkPoint: Checkpoint) {
+  async saveCheckpoint(config: RunnableConfig) {
     if (!this.checkpointer) throw new Error("Checkpointer not initialized");
+    const existingCheckpoint = await this.checkpointer.get(config);
+    console.log('Existing checkpoint:', existingCheckpoint);
 
-    await this.checkpointer.put(config, checkPoint, {} as any, {})
-    //   .insertInto("checkpoints")
-    //   .values({
-    //     id: threadId,
-    //     state: JSON.stringify(state),
-    //     updatedAt: new Date(),
-    //     createdAt: new Date(),
-    //   })
-    //   .onConflict((oc) => oc.column("id").doUpdateSet({ state: JSON.stringify(state), updatedAt: new Date() }))
-    //   .execute();
+    await this.checkpointer.put(config, existingCheckpoint!, {} as any, {})
   }
 
   /** Load checkpoint state from database */
-//   async loadCheckpoint(threadId: string): Promise<CheckpointRecord | null> {
   async loadCheckpoint(config: RunnableConfig): Promise<Checkpoint | undefined> {
     if (!this.checkpointer) throw new Error("Checkpointer not initialized");
 

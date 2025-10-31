@@ -14,6 +14,7 @@ import {
 } from "@langchain/core/messages";
 import { RunnableConfig } from "@langchain/core/runnables";
 import { generateUUID } from "../utils";
+import z from "zod";
 
 // Get API key for a specific model from environment or config.
 export function getApiKeyForModel(
@@ -296,10 +297,18 @@ export async function getCurrentWeather(
   }
 }
 
-export function thinkTool(reflection: string): string {
-  // Simulates strategic reflection tool
-  return `Reflection recorded: ${reflection}`;
-}
+export const thinkTool = tool(
+  async ({ reflection }: { reflection: string }) => {
+    return `Reflection recorded: ${reflection}`;
+  },
+  {
+    name: "thinkTool",
+    description: "Strategic thinking and planning tool. Use this to reflect on research progress, plan next steps, or reason through complex research strategies before taking action.",
+    schema: z.object({
+      reflection: z.string().describe("Your strategic thoughts, plans, or reasoning about the research process")
+    })
+  }
+);
 
 // --- MCP utility functions: We'll need to use async/await and fetch (and implement storage as needed) ---
 

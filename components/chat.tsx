@@ -1,10 +1,9 @@
 // ============================================
 // components/chat.tsx
 // ============================================
-
 "use client";
 import { useSearchParams } from "next/navigation";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { toast } from "sonner";
 import { useAutoResumeFromCheckpoint } from "@/hooks/use-checkpoint";
 import { Messages } from "./messages";
@@ -12,6 +11,8 @@ import { MultimodalInput } from "./multimodal-input";
 import type { ChatMessage } from "@/lib/types";
 import type { AppUsage } from "@/lib/usage";
 import { generateUUID } from "@/lib/utils";
+import { greetingMessageParts } from "./greeting";
+import { useGoldenRatio } from "@/hooks/use-golden-ratio";
 
 export function Chat({
   chatId,
@@ -27,10 +28,39 @@ export function Chat({
   const [input, setInput] = useState<string>("");
   const [usage, setUsage] = useState<AppUsage | undefined>(initialLastContext);
   const [isResuming, setIsResuming] = useState(false);
-  const [messages, setMessages] = useState<ChatMessage[]>(initialMessages);
+  const [rawMessages, setRawMessages] = useState<ChatMessage[]>(initialMessages);
   const [status, setStatus] = useState<"submitted" | "streaming" | "error" | "ready">("ready");
   const abortControllerRef = useRef<AbortController | null>(null);
 
+  const [greetingComplete, setGreetingComplete] = useState(true);
+
+  const greetingDelays = useGoldenRatio(1.0, 1.7, greetingMessageParts.length);
+  const greetingAnimationDuration = greetingDelays[greetingDelays.length - 1] + 1;
+  
+  useEffect(() => {
+    if (greetingAnimationDuration > 0) {
+      const timer = setTimeout(() => {
+        setGreetingComplete(true);
+      }, greetingAnimationDuration * 1000);
+      return () => clearTimeout(timer);
+    }
+  }, [greetingAnimationDuration]);
+
+  const displayMessages = useMemo(() => {
+    const filtered = filterEmptyMessages(rawMessages);
+    const greetingMessages = createGreetingMessages(); 
+    
+    if (filtered.length === 0) {
+      return greetingMessages;
+    }
+
+    if (!greetingComplete) {
+      return greetingMessages;
+    }
+    
+    return [...greetingMessages, ...filtered];
+  }, [rawMessages, greetingComplete]);
+  
   const fetchResearchStream = useCallback(
     async ({ message, resume = false }: { message?: ChatMessage; resume?: boolean }) => {
       setStatus("submitted");
@@ -95,7 +125,7 @@ export function Chat({
                     }],
                     createdAt: msg.timestamp
                   }));
-                  setMessages((prevMessages) => [
+                  setRawMessages((prevMessages) => [
                     ...prevMessages,
                     ...convertedMessages.filter(
                       (msg) => !prevMessages.some((prev) => prev.id === msg.id)
@@ -105,21 +135,6 @@ export function Chat({
               }
 
               if (chunk.type === 'final') {
-                // if (chunk.messages && Array.isArray(chunk.messages)) {
-                //   const convertedMessages: ChatMessage[] = chunk.messages.map((msg: any) => ({
-                //     id: msg.id || generateUUID(),
-                //     role: msg.role === 'human' ? 'user' : msg.role === 'ai' ? 'assistant' : msg.role,
-                //     parts: [{
-                //       type: 'text',
-                //       text: msg.content || ''
-                //     }],
-                //     createdAt: msg.timestamp
-                //   }));
-                //   setMessages((prevMessages) => [
-                //     ...prevMessages,
-                //     convertedMessages[convertedMessages.length - 1]
-                //   ]);
-                // }
                 setStatus("ready");
               }
 
@@ -164,7 +179,7 @@ export function Chat({
         parts: msgInput.parts,
       };
 
-      setMessages((prev) => [...prev, userMsg]);
+      setRawMessages((prev) => [...prev, userMsg]);
       await fetchResearchStream({ message: userMsg });
     },
     [fetchResearchStream, status]
@@ -176,14 +191,14 @@ export function Chat({
   }, []);
 
   const regenerate = useCallback(async () => {
-    const lastUserMsg = [...messages].reverse().find((msg) => msg.role === "user");
+    const lastUserMsg = [...rawMessages].reverse().find((msg) => msg.role === "user");
     if (lastUserMsg) {
       // Remove messages after last user message
-      const lastUserIndex = messages.findIndex(m => m.id === lastUserMsg.id);
-      setMessages(messages.slice(0, lastUserIndex + 1));
+      const lastUserIndex = rawMessages.findIndex(m => m.id === lastUserMsg.id);
+      setRawMessages(rawMessages.slice(0, lastUserIndex + 1));
       fetchResearchStream({ message: lastUserMsg });
     }
-  }, [messages, fetchResearchStream]);
+  }, [rawMessages, fetchResearchStream]);
 
   const resumeStream = useCallback(async () => {
     await fetchResearchStream({ resume: true });
@@ -191,8 +206,7 @@ export function Chat({
 
   const searchParams = useSearchParams();
   const query = searchParams.get("query");
-  const [hasAppendedQuery, setHasAppendedQuery] = useState(false);
-  const [hasSentInitialEmptyMessage, setHasSentInitialEmptyMessage] = useState(false);
+  const [hasSentInitialMessage, setHasSentInitialMessage] = useState(false);
 
   const handleResume = useCallback(async () => {
     console.log('Resuming from checkpoint...');
@@ -214,43 +228,36 @@ export function Chat({
 
   useEffect(() => {
     const sendInitial = async () => {
-      if (!willResume && !query && !hasSentInitialEmptyMessage) {
-        if (initialMessages && initialMessages.length > 0) {
-          // If there are initialMessages, send the first one.
-          await fetchResearchStream({ message: initialMessages[0] });
-          setHasSentInitialEmptyMessage(true);
-        } else {
-          // Otherwise, send an empty message to begin the stream.
-          const emptyMessage = {
-            id: generateUUID(),
-            role: "user",
-            parts: [{ type: "text", text: "" }],
-          } as any;
-          await fetchResearchStream({ message: emptyMessage });
-          setHasSentInitialEmptyMessage(true);
-        }
+      if (hasSentInitialMessage || willResume || query) {
+        return;
       }
+
+      if (initialMessages && initialMessages.length > 0) {
+        await fetchResearchStream({ message: initialMessages[0] });
+      } else {
+        const emptyMessage = {
+          id: generateUUID(),
+          role: "user",
+          parts: [{ type: "text", text: "" }],
+        } as any;
+        await fetchResearchStream({ message: emptyMessage });
+      }
+      setHasSentInitialMessage(true);
     };
     sendInitial();
-  }, [willResume, query, hasSentInitialEmptyMessage, initialMessages, fetchResearchStream]);
+  }, [hasSentInitialMessage, willResume, query, initialMessages, fetchResearchStream]);
 
-  // // Existing: Send query from URL as a message if present (and not after resume)
-  // useEffect(() => {
-  //   if (query && !hasAppendedQuery && !willResume) {
-  //     sendMessage({
-  //       role: "user",
-  //       parts: [{ type: "text", text: query }],
-  //     });
-  //     setHasAppendedQuery(true);
-  //   }
-  // }, [query, sendMessage, hasAppendedQuery, willResume, chatId]);
+  const shouldShowResumeBanner = hasCheckpoint 
+    && session?.status === 'active' 
+    && !isResuming 
+    && rawMessages.length > 2;
 
   return (
     <div className="border overscroll-behavior-contain flex h-dvh min-w-0 touch-pan-y flex-col">
-      {hasCheckpoint && session?.status === 'active' && !isResuming && (
+      {shouldShowResumeBanner && (
         <div className="border-b border-blue-200 px-4 py-2 text-sm text-primary">
           <div className="max-w-4xl mx-auto flex items-center justify-between">
-            <span>Previous research session found. Resuming automatically...</span>
+            <span>Previous session found. Resuming...</span>
             {session.researchBrief && (
               <span className="text-xs text-blue-600 truncate ml-2 max-w-md">
                 {session.researchBrief}
@@ -262,9 +269,9 @@ export function Chat({
 
       <Messages
         chatId={chatId}
-        messages={messages}
+        messages={displayMessages}
         regenerate={regenerate}
-        setMessages={setMessages}
+        setMessages={setRawMessages}
         status={status}
       />
 
@@ -272,10 +279,10 @@ export function Chat({
         <MultimodalInput
           chatId={chatId}
           input={input}
-          messages={messages}
+          messages={displayMessages}
           sendMessage={sendMessage}
           setInput={setInput}
-          setMessages={setMessages}
+          setMessages={setRawMessages}
           status={status}
           stop={stop}
           usage={usage}
@@ -290,4 +297,30 @@ export function Chat({
       )}
     </div>
   );
+}
+
+export function isEmptyMessage(message: ChatMessage): boolean {
+  const text = message.parts
+    ?.map(part => part.type === "text" ? part.text : '')
+    .join('')
+    .trim();
+  return text === '' || text.length === 0;
+}
+
+export function filterEmptyMessages(messages: ChatMessage[]): ChatMessage[] {
+  return messages.filter(msg => !isEmptyMessage(msg));
+}
+
+function createGreetingMessages(): ChatMessage[] {
+  return greetingMessageParts.map((text, index) => ({
+    id: `greeting_synthetic_${index}`,
+    role: 'assistant' as const,
+    parts: [{
+      type: 'text' as const,
+      text
+    }],
+    createdAt: new Date().toISOString(),
+    isGreeting: true,
+    greetingIndex: index,
+  }));
 }

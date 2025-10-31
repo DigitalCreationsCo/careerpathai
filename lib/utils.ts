@@ -180,15 +180,36 @@ export function sanitizeText(text: string) {
   return text.replace('<has_function_call>', '');
 }
 
+export const roleMap: Record<string, 'user' | 'assistant' | 'system'> = {
+  human: 'user',
+  user: 'user',
+  ai: 'assistant',
+  assistant: 'assistant',
+  system: 'system',
+  tool: 'assistant', // Tool responses shown as assistant
+};
+
+export function convertToUIMessage(graphMessage: any): {
+  role: 'user' | 'assistant' | 'system';
+  parts: Array<{ type: 'text'; text: string }>;
+  id?: string;
+  metadata?: any;
+} {
+  return {
+    role: roleMap[graphMessage.role] || 'assistant',
+    parts: [
+      {
+        type: 'text',
+        text: graphMessage.content || '',
+      },
+    ],
+    id: graphMessage.id,
+    metadata: graphMessage.metadata, // Retain metadata object
+  };
+}
+
 export function convertToUIMessages(messages: any[]): Partial<ChatMessage>[] {
-  return messages.map((message) => ({
-    id: message.id,
-    role: message.role as 'user' | 'assistant' | 'system',
-    parts: message.parts as UIMessagePart<CustomUIDataTypes, ChatTools>[],
-    metadata: {
-      createdAt: formatISO(message.createdAt),
-    },
-  }));
+  return messages.map(convertToUIMessage)
 }
 
 export function getTextFromUIMessage(message: UIMessage): string {

@@ -1,26 +1,22 @@
-/**
- * Session lifecycle management for research sessions (Node/Next.js version)
- */
-
 import { researchSessions } from "@/lib/db/schema";
 import { db } from "@/lib/db/drizzle";
 import dayjs from "dayjs";
 import { configManager } from "./researchConfig";
 import { ResearchSession } from '@/lib/types';
 import { and, eq, desc, lt } from "drizzle-orm";
-import { generateUUID } from "../utils";
 import { RunnableConfig } from "@langchain/core/runnables";
+import { getThreadId } from "./checkpointerUtils";
 
 export class SessionManager {
   /** Create a new research session */
   async createSession(
     userId: string,
-    chatId?: string | null,
+    chatId: string,
     configuration?: Record<string, any>
   ): Promise<ResearchSession> {
     if (!userId) throw Error("User is no id. Unauthorized.");
 
-    const threadId = generateUUID();
+    const threadId = getThreadId(userId, chatId);
 
     if (!threadId) throw new Error("Failed to generate threadId");
       
@@ -88,13 +84,12 @@ export class SessionManager {
    */
   async getOrCreateSession(
     userId: string,
-    chatId?: string,
+    chatId: string,
     configuration?: Record<string, any>
   ) {
     if (!chatId) {
-      // No chatId provided, create new session
-      console.log('No chatId provided, creating new session');
-      return await this.createSession(userId, null, configuration);
+      console.error("`ChatId` is required but was not provided to getOrCreateSession. Arguments:", { userId, chatId, configuration });
+      throw new Error('chatId is required for getOrCreateSession');
     }
     
     // Try to find existing session by chatId

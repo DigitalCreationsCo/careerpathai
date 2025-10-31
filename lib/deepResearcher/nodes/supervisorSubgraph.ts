@@ -10,7 +10,7 @@ const supervisorBuilder = new StateGraph(SupervisorState, Configuration.getSchem
 
 // Add supervisor nodes
 supervisorBuilder.addNode("supervisor", supervisor, { ends:["supervisorTools"] })
-supervisorBuilder.addNode("supervisorTools", supervisorTools, { ends: ["supervisor"] })
+supervisorBuilder.addNode("supervisorTools", supervisorTools, { ends: ["supervisor", END] })
 
 // Define workflow
 supervisorBuilder.addEdge(START, "supervisor" as any)

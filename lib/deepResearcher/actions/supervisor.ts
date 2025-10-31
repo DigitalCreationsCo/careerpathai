@@ -5,14 +5,14 @@ import {
   thinkTool,
   getNotesFromToolCalls,
   createMessageFromMessageType,
+  getTodayStr,
 } from '@/lib/deepResearcher/llmUtils'
 import {
     configurableModel,
   Configuration,
 } from '../configuration'
 import {
-  AIMessage,
-  HumanMessage,
+    AIMessage,
   ToolMessage,
 } from '@langchain/core/messages'
 import { RunnableConfig } from '@langchain/core/runnables'
@@ -23,98 +23,103 @@ import {
   SupervisorState,
 } from '../state';
 import { researcherSubgraph } from '../nodes/researchSubgraph';
+import { supervisorSystemPrompt } from '../prompts'
 
-export async function supervisor(state: SupervisorState, config: RunnableConfig): Promise<Command> {
-    /**
-     * Lead research supervisor that plans research strategy and delegates to researchers.
-     * 
-     * The supervisor analyzes the research brief and decides how to break down the research
-     * into manageable tasks. It can use thinkTool for strategic planning, ConductResearch
-     * to delegate tasks to sub-researchers, or ResearchComplete when satisfied with findings.
-     * 
-     * Args:
-     *     state: Current supervisor state with messages and research context
-     *     config: Runtime configuration with model settings
-     *     
-     * Returns:
-     *     Command to proceed to supervisorTools for tool execution
-     */
-    // Step 1: Configure the supervisor model with available tools
+/**
+ * Lead research supervisor that plans research strategy and delegates to researchers.
+ * 
+ * The supervisor analyzes the research brief and decides how to break down the research
+ * into manageable tasks. It can use thinkTool for strategic planning, ConductResearch
+ * to delegate tasks to sub-researchers, or ResearchComplete when satisfied with findings.
+ * 
+ * Args:
+ *     state: Current supervisor state with messages and research context
+ *     config: Runtime configuration with model settings
+ *     
+ * Returns:
+ *     Command to proceed to supervisorTools for tool execution
+ */
+export async function supervisor(
+    state: SupervisorState, 
+    config: RunnableConfig
+): Promise<Command> {
     const configurable = Configuration.fromRunnableConfig(config)
     const researchModelConfig = {
         model: configurable.researchModel,
         maxTokens: configurable.researchModelMaxTokens,
         apiKey: getApiKeyForModel(configurable.researchModel, config),
         tags: ["langsmith:nostream"]
-    }
+    };
     
-    // Available tools: research delegation, completion signaling, and strategic thinking
-    const leadResearcherTools = [ConductResearch, ResearchComplete, thinkTool]
-    
-    // Configure model with tools, retry logic, and model settings
     const researchModel = (await configurableModel)
-        .bindTools(leadResearcherTools)
+        .bindTools([ConductResearch, ResearchComplete, thinkTool])
         .withRetry({ stopAfterAttempt: configurable.maxStructuredOutputRetries })
         .withConfig(researchModelConfig)
     
-    // Step 2: Generate supervisor response based on current context
-    const supervisorMessages = state.supervisorMessages || []
+    let supervisorMessages = state.supervisorMessages || []
     
+    if (supervisorMessages.length === 0) {
+        const systemPrompt = supervisorSystemPrompt(
+          state.researchBrief || "",
+          state.researchOutline || "",
+          configurable.maxResearcherIterations,
+          configurable.maxConcurrentResearchUnits,
+          getTodayStr()
+        );
+        
+        supervisorMessages = [
+          createMessageFromMessageType("system", systemPrompt)
+        ];
+    }
+
     const response = await researchModel.invoke(supervisorMessages)
-    console.log('breakpoint');
-    // Step 3: Update state and proceed to tool execution
+    console.log('Supervisor response:', {
+        hasToolCalls: !!response.tool_calls,
+        toolCallCount: response.tool_calls?.length || 0,
+        toolNames: response.tool_calls?.map((tc: any) => tc.name) || [],
+        contentPreview: response.content?.toString().substring(0, 100)
+    });
+
     return new Command({
         goto: "supervisorTools",
         update: {
-            supervisorMessages: [
-                createMessageFromMessageType("system", response.content)
-            ],
+            supervisorMessages: [response],
             researchIterations: (state.researchIterations || 0) + 1
         }
     });
-    // return {
-    //   messages: [
-    //     new AIMessage({
-    //       content: 'Supervisor: Coordinating research tasks...'
-    //     })
-    //   ],
-    //   // Add any notes found
-    //   notes: ['Research finding 1', 'Research finding 2']
-    // };
-     
 }
 
-export async function supervisorTools(state: SupervisorState, config: RunnableConfig): Promise<Command> {
-    /**
-     * Execute tools called by the supervisor, including research delegation and strategic thinking.
-     * 
-     * This function handles three types of supervisor tool calls:
-     * 1. thinkTool - Strategic reflection that continues the conversation
-     * 2. ConductResearch - Delegates research tasks to sub-researchers
-     * 3. ResearchComplete - Signals completion of research phase
-     * 
-     * Args:
-     *     state: Current supervisor state with messages and iteration count
-     *     config: Runtime configuration with research limits and model settings
-     *     
-     * Returns:
-     *     Command to either continue supervision loop or end research phase
-     */
-    // Step 1: Extract current state and check exit conditions
+/**
+ * Execute tools called by the supervisor, including research delegation and strategic thinking.
+ * 
+ * This function handles three types of supervisor tool calls:
+ * 1. thinkTool - Strategic reflection that continues the conversation
+ * 2. ConductResearch - Delegates research tasks to sub-researchers
+ * 3. ResearchComplete - Signals completion of research phase
+ * 
+ * Args:
+ *     state: Current supervisor state with messages and iteration count
+ *     config: Runtime configuration with research limits and model settings
+ *     
+ * Returns:
+ *     Command to either continue supervision loop or end research phase
+ */
+export async function supervisorTools(
+    state: SupervisorState, 
+    config: RunnableConfig
+): Promise<Command> {
     const configurable = Configuration.fromRunnableConfig(config)
     const supervisorMessages = state.supervisorMessages || []
     const researchIterations = state.researchIterations || 0
-    const mostRecentMessage = supervisorMessages[supervisorMessages.length - 1]
+    const lastMessage = supervisorMessages[supervisorMessages.length - 1] as AIMessage;
     
-    // Define exit criteria for research phase
-    const exceededAllowedIterations = researchIterations > configurable.maxResearcherIterations
-    const noToolCalls = mostRecentMessage.type !== "tool"
-    const researchCompleteToolCall = (mostRecentMessage as any).tool_calls?.some(
+    const exceededIterations = researchIterations > configurable.maxResearcherIterations
+    const noToolCalls = !lastMessage.tool_calls || lastMessage.tool_calls.length === 0
+    const isResearchComplete = lastMessage.tool_calls?.some(
         (toolCall: any) => toolCall.name === "ResearchComplete"
     ) || false
     
-    // Exit if any termination condition is met
-    if (exceededAllowedIterations || noToolCalls || researchCompleteToolCall) {
+    if (exceededIterations || noToolCalls || isResearchComplete) {
         return new Command({
             goto: END,
             graph: Command.PARENT,
@@ -122,45 +127,47 @@ export async function supervisorTools(state: SupervisorState, config: RunnableCo
                 researchOutline: state.researchOutline || "",
                 notes: getNotesFromToolCalls(supervisorMessages),
                 messages: [
-                  createMessageFromMessageType("ai", "Writing your career path report...",)
+                  createMessageFromMessageType("ai", "Research complete. Writing your report...",)
                 ],
             }
         });
     }
     
-    // Step 2: Process all tool calls together (both thinkTool and ConductResearch)
-    const allToolMessages: ToolMessage[] = []
+    const toolMessages: ToolMessage[] = []
     const updatePayload: any = { supervisorMessages: [] }
     
-    // Handle thinkTool calls (strategic reflection)
-    const thinkToolCalls = (mostRecentMessage as any).toolCalls?.filter(
+    const thinkToolCalls = lastMessage.tool_calls?.filter(
         (toolCall: any) => toolCall.name === "thinkTool"
+    ) || []
+    const conductResearchCalls = lastMessage.tool_calls?.filter(
+        (toolCall: any) => toolCall.name === "ConductResearch"
     ) || []
     
     for (const toolCall of thinkToolCalls) {
-        const reflectionContent = toolCall.args.reflection;
-        allToolMessages.push(
+        const reflection = toolCall.args.reflection;
+        console.log('Think tool reflection:', reflection.substring(0, 100));
+
+        toolMessages.push(
             createMessageFromMessageType(
-            "tool",
-            `Reflection recorded: ${reflectionContent}`,
-            {
-                name: "thinkTool",
-                tool_call_id: toolCall.id,
-                tool_calls: [toolCall]
-            })
+                "tool",
+                `Reflection recorded: ${reflection}`,
+                {
+                    name: "thinkTool",
+                    tool_call_id: toolCall.id,
+                }
+            )
         );
-        const conductResearchCalls = (mostRecentMessage as any).toolCalls?.filter(
-            (toolCall: any) => toolCall.name === "ConductResearch"
-        ) || []
         
         if (conductResearchCalls.length > 0) {
             try {
-                // Limit concurrent research units to prevent resource exhaustion
-                const allowedConductResearchCalls = conductResearchCalls.slice(0, configurable.maxConcurrentResearchUnits)
-                const overflowConductResearchCalls = conductResearchCalls.slice(configurable.maxConcurrentResearchUnits)
-                
-                // Execute research tasks in parallel
-                const researchTasks = allowedConductResearchCalls.map((toolCall: any) =>
+                const allowedCalls = conductResearchCalls.slice(0, configurable.maxConcurrentResearchUnits)
+                const overflowCalls = conductResearchCalls.slice(configurable.maxConcurrentResearchUnits)
+                console.log('Executing research tasks:', {
+                    allowed: allowedCalls.length,
+                    overflow: overflowCalls.length
+                });
+            
+                const researchTasks = allowedCalls.map((toolCall: any) =>
                     researcherSubgraph.invoke({
                         researcherMessages: [
                             createMessageFromMessageType("human", toolCall.args.researchTopic)
@@ -169,40 +176,46 @@ export async function supervisorTools(state: SupervisorState, config: RunnableCo
                     }, config)
                 )
                 
-                const toolResults = await Promise.all(researchTasks)
+                const results = await Promise.all(researchTasks)
                 
-                // Create tool messages with research results
-                for (let i = 0; i < toolResults.length; i++) {
-                    const observation = toolResults[i]
-                    const toolCall = allowedConductResearchCalls[i]
-                    allToolMessages.push(
-                        createMessageFromMessageType("tool",
-                            observation.compressedResearch || "Error synthesizing research report: Maximum retries exceeded",
+                for (let i = 0; i < results.length; i++) {
+                    const result = results[i]
+                    const toolCall = allowedCalls[i]
+                    console.log('Research result:', {
+                        topic: toolCall.args.researchTopic.substring(0, 50),
+                        hasCompressedResearch: !!result.compressedResearch,
+                        notesCount: result.rawNotes?.length || 0
+                    });
+
+                    toolMessages.push(
+                        createMessageFromMessageType(
+                            "tool",
+                            result.compressedResearch || "Error: No research findings",
                             {
-                            name: toolCall.name,
-                            tool_call_id: toolCall.id
+                                name: "ConductResearch",
+                                tool_call_id: toolCall.id
                             }
                         )
                     )
                 }
                 
                 // Handle overflow research calls with error messages
-                for (const overflowCall of overflowConductResearchCalls) {
-                    allToolMessages.push(
+                for (const overflowCall of overflowCalls) {
+                    toolMessages.push(
                         createMessageFromMessageType(
                             "tool",
-                            `Error: Did not run this research as you have already exceeded the maximum number of concurrent research units. Please try again with ${configurable.maxConcurrentResearchUnits} or fewer research units.`,
+                            `Error: Exceeded maximum concurrent research units (${configurable.maxConcurrentResearchUnits}). This task was not executed.`,
                             {
-                            name: "ConductResearch",
-                            tool_call_id: overflowCall.id
+                                name: "ConductResearch",
+                                tool_call_id: overflowCall.id
                             }
                         )
                     )
                 }
                 
                 // Aggregate raw notes from all research results
-                const rawNotesConcat = toolResults
-                    .map(observation => observation.rawNotes?.join("\n") || "")
+                const rawNotesConcat = results
+                    .map(r => r.rawNotes?.join("\n") || "")
                     .join("\n")
                 
                 if (rawNotesConcat) {
@@ -218,103 +231,20 @@ export async function supervisorTools(state: SupervisorState, config: RunnableCo
                         graph: Command.PARENT,
                         update: {
                             notes: getNotesFromToolCalls(supervisorMessages),
-                            researchOutline: state.researchOutline || ""
+                            researchOutline: state.researchOutline || "",
+                            messages: [
+                                createMessageFromMessageType("ai", "Token limit reached. Proceeding with available findings...")
+                            ]
                         }
                     });
                 }
             }
         }   
     }
-    updatePayload.supervisorMessages = allToolMessages
+    updatePayload.supervisorMessages = toolMessages;
+    
     return new Command({
         goto: "supervisor",
         update: updatePayload
     });
 }
-
-// ============================================
-// supervisor.ts - Example of how to update it
-// ============================================
-// import { AIMessage } from '@langchain/core/messages';
-// import { SupervisorState } from '../state';
-// import { RunnableConfig } from '@langchain/core/runnables';
-
-// export async function supervisor(
-//   state: SupervisorState,
-//   config: RunnableConfig
-// ): Promise<Partial<SupervisorState>> {
-//   console.log('supervisor: Starting', {
-//     messageCount: state.messages?.length,
-//     notesCount: state.notes?.length
-//   });
-  
-//   // Your supervisor logic here...
-//   // When supervisor makes decisions, add them as messages
-  
-//   return {
-//     messages: [
-//       new AIMessage({
-//         content: 'Supervisor: Coordinating research tasks...'
-//       })
-//     ],
-//     // Add any notes found
-//     notes: ['Research finding 1', 'Research finding 2']
-//   };
-// }
-
-// export async function supervisorTools(
-//   state: SupervisorState,
-//   config: RunnableConfig
-// ): Promise<Partial<SupervisorState>> {
-//   console.log('supervisorTools: Executing tools');
-  
-//   // Your tool execution logic here...
-//   // Add tool results as messages
-  
-//   return {
-//     messages: [
-//       new AIMessage({
-//         content: 'Tool execution completed. Found relevant information...'
-//       })
-//     ],
-//     notes: ['Tool finding 1']
-//   };
-// }
-
-// // ============================================
-// // supervisorSubgraph.ts - UPDATED
-// // ============================================
-// import { StateGraph, START, END } from '@langchain/langgraph'
-// import { Configuration } from '../configuration'
-// import { SupervisorState } from '../state';
-// import { supervisor, supervisorTools } from '../actions/supervisor';
-
-// const supervisorBuilder = new StateGraph(SupervisorState, Configuration.getSchema())
-
-// // Add supervisor nodes
-// supervisorBuilder.addNode("supervisor", supervisor)
-// supervisorBuilder.addNode("supervisorTools", supervisorTools)
-
-// // Define workflow
-// supervisorBuilder.addEdge(START, "supervisor")
-
-// // Add conditional routing from supervisor
-// supervisorBuilder.addConditionalEdges(
-//   "supervisor",
-//   (state: SupervisorState) => {
-//     // Your routing logic - when to use tools vs when to finish
-//     const shouldUseTool = state.notes?.length < 5; // Example condition
-//     return shouldUseTool ? "supervisorTools" : END;
-//   },
-//   {
-//     supervisorTools: "supervisorTools",
-//     [END]: END
-//   }
-// );
-
-// // Route from tools back to supervisor for next iteration
-// supervisorBuilder.addEdge("supervisorTools", "supervisor");
-
-// const supervisorSubgraph = supervisorBuilder.compile()
-
-// export { supervisorSubgraph }

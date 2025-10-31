@@ -174,6 +174,70 @@ describe('ModelSelector', () => {
       expect.arrayContaining(['needClarification', 'question', 'verification'])
     );
   });
+
+  it('can bind tools with bindTools and access them', () => {
+    const tools = [{ name: "foo" }, { name: "bar" }];
+    const ms = new ModelSelector();
+    const msWithTools = ms.bindTools(tools);
+
+    // The tools should be accessible via the private field (for test, check via hack)
+    // @ts-ignore
+    expect(msWithTools.toolsBinding).toBe(tools);
+
+    // Bind tools twice and check latest takes effect
+    const newTools = [{ name: "baz" }];
+    // @ts-ignore
+    const msWithNewTools = msWithTools.bindTools(newTools);
+    // @ts-ignore
+    expect(msWithNewTools.toolsBinding).toBe(newTools);
+  });
+
+  it('llm invocation with bindTools will have tools available in the call body', async () => {
+    process.env = { ...process.env, ...configDotenv({ path: '.env.local' }).parsed! }
+
+    // Use the correct tools structure to avoid Google's API error:
+    // Gemini tools expect { function_declarations: [{ ... }] }, not { name: ... }
+    // We use the right key & fake a generic function declaration array for testing
+    const fakeTools = [
+      { function_declarations: [{ name: "toolFn1", description: "desc1" }] },
+      { function_declarations: [{ name: "toolFn2", description: "desc2" }] }
+    ];
+
+    // Save the original ChatGoogleGenerativeAI
+    const { ChatGoogleGenerativeAI } = require("@langchain/google-genai");
+    const originalCtor = ChatGoogleGenerativeAI;
+
+    let receivedTools: any = undefined;
+    function FakeGoogleGenAI(options: any) {
+      receivedTools = options.tools;
+      return {
+        invoke: () => Promise.resolve({ result: "ok" }),
+        withStructuredOutput: function () { return this; },
+        withRetry: function () { return this; },
+        withConfig: function () { return this; },
+        bindTools: function () { return this; },
+      };
+    }
+
+    Object.defineProperty(require.cache?.[require.resolve("@langchain/google-genai")]?.exports, "ChatGoogleGenerativeAI", {
+      value: FakeGoogleGenAI,
+      writable: true,
+      configurable: true,
+    });
+
+    const configurable = new Configuration();
+
+    const ms = new ModelSelector().bindTools(fakeTools);
+    await ms['createModelInstance']({
+      model: configurable.researchModel,
+      apiKey: getApiKeyForModel(configurable.researchModel, configurable),
+    }).invoke("hello");
+
+    expect(receivedTools).toBe(fakeTools);
+
+    // @ts-expect-error
+    require.cache[require.resolve("@langchain/google-genai")].exports.ChatGoogleGenerativeAI = originalCtor;
+  });
 });
 
 
@@ -328,3 +392,4 @@ describe("Configuration", () => {
     expect(conf).toBeInstanceOf(Configuration);
   });
 });
+

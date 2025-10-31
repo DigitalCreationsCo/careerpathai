@@ -3,18 +3,18 @@ import { motion } from "framer-motion";
 import { Logo } from "./logo";
 import { cn } from "@/lib/utils";
 
-export const Greeting = () => {
-  const messages = [
-    "Welcome to GoCareerPath.",
-    "Work is changing fast—automation is transforming every field. \nFortunately, your skills matter, and they should lead to a stable, well-paid future.",
-    "Answer a few short questions to get your Career Path Report and find the paths most likely to stay strong in the years ahead.",
-  ];
+export const greetingMessageParts = [
+  "Welcome to GoCareerPath.",
+  "Work is changing fast—automation is transforming every field. \nFortunately, your skills matter, and they should lead to a stable, well-paid future.",
+  "Answer a few short questions to get your Career Path Report and find the paths most likely to stay strong in the years ahead.",
+];
 
-  const delays = useGoldenRatio(1.0, 1.7, messages.length);
+export const Greeting = () => {
+  const delays = useGoldenRatio(1.0, 1.7, greetingMessageParts.length);
 
   return (
     <div className="mx-auto mt-4 flex size-full flex-col justify-center px-2 space-y-4" key="overview">
-      {messages.map((text, i) => (
+      {greetingMessageParts.map((text, i) => (
         <motion.div
           key={i}
           animate={{ opacity: 1, y: 0 }}

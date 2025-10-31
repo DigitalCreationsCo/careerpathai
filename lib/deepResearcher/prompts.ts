@@ -395,6 +395,7 @@ Structure findings by subtopic with inline citations:
 // PHASE 3C: COMPRESSION (Token-Optimized)
 // ============================================
 export const compressResearchSystemPrompt = (
+  tokenLimit: number,
   date: DateString
 ): string => `
 Clean and consolidate research findings for final report generation.
@@ -403,7 +404,7 @@ Today: ${date}
 
 **Task:** Review researcher's findings and create a compressed, organized summary.
 
-**Token Budget: 5000 tokens maximum**
+**Token Budget: ${tokenLimit} tokens maximum**
 
 **Compression Strategy:**
 
@@ -495,7 +496,7 @@ Structure findings logically, not chronologically:
 - [ ] Specific certifications and providers listed
 - [ ] Top employers named (not just "tech companies")
 - [ ] Sources numbered sequentially without gaps
-- [ ] Total output < 5000 tokens
+- [ ] Total output < ${tokenLimit} tokens
 
 **Critical:** Preserve factual accuracy. Numbers, dates, company names, and sources must be exact. Only compress narrative and remove redundancy.
 `;
@@ -880,7 +881,7 @@ Today: ${date}
 // ============================================
 // HELPER: Simple Human Message for Compression
 // ============================================
-export const compressResearchSimpleHumanMessage = (): string => `
+export const compressResearchSimpleHumanMessage = (tokenLimit: number): string => `
 Clean up these research findings following the compression guidelines.
 
 **Remember:**
@@ -888,7 +889,7 @@ Clean up these research findings following the compression guidelines.
 - Preserve all unique data points and numbers
 - Keep citations for every claim
 - Organize by topic, not chronologically
-- Target 5000 tokens maximum
+- Target ${tokenLimit} tokens maximum
 - Number sources sequentially without gaps
 
 Do NOT summarize or lose factual information. Present findings clearly and concisely.

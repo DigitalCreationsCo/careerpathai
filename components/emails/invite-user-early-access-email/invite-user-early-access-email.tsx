@@ -38,7 +38,7 @@ export const InviteUserEarlyAccessEmail = ({
         <Body className="bg-white mx-auto font-sans px-2">
           <Container className="rounded my-[40px] mx-auto p-[20px] max-w-[465px] border border-[#eaeaea] shadow-sm">
 
-            {/* Logo */}
+            {/* LogoImage */}
             <Section className="mt-[8px] text-center flex items-center justify-center gap-2">
               <Img
                 src="https://www.gocareerpath.com/favicon.ico"
@@ -47,7 +47,7 @@ export const InviteUserEarlyAccessEmail = ({
                 alt="GoCareerPath"
                 className="inline"
               />
-              <Text className="inline m-0 font-bold text-lg">GoCareerPath</Text>
+              <Text className="inline ml-2 text-muted-foreground text-lg">GoCareerPath</Text>
             </Section>
 
             {/* Confirmation Badge */}

@@ -1,7 +1,7 @@
 import logoSm from '@/app/favicon-32x32.png'
 import logoLg from '@/app/android-chrome-192x192.png'
 
-export const Logo = ({size = "md"}) => {
+export const LogoImage = ({size = "md"}) => {
     switch(size) {
       case "sm":
         return <img src={logoSm.src} height={24} width={24} className='pt-1' />;
@@ -11,3 +11,14 @@ export const Logo = ({size = "md"}) => {
         return <img src={logoLg.src} height={60} width={60} className='pt-1' />;
     };
 };
+
+export const Logo = () => (
+  <>
+    <div className='hidden'>
+      <Logo />
+    </div>
+    <span className="ml-2 font-semibold text-muted-foreground text-lg">
+      GoCareerPath
+    </span>
+  </>
+)

@@ -1,6 +1,6 @@
 import { useGoldenRatio } from "@/hooks/use-golden-ratio";
 import { motion } from "framer-motion";
-import { Logo } from "./logo";
+import { LogoImage } from "./logo";
 import { cn } from "@/lib/utils";
 
 export const greetingMessageParts = [
@@ -27,7 +27,7 @@ export const Greeting = () => {
           ])}
         >
           <div className="flex items-center float-left gap-2">
-            {/* {i === 0 && <Logo />} */}
+            {/* {i === 0 && <LogoImage />} */}
             {text}
           </div>
         </motion.div>

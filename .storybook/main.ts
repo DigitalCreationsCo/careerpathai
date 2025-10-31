@@ -1,4 +1,5 @@
 import type { StorybookConfig } from '@storybook/nextjs-vite';
+import { configDotenv } from 'dotenv';
 
 const config: StorybookConfig = {
   "stories": [
@@ -14,7 +15,12 @@ const config: StorybookConfig = {
   ],
   "framework": {
     "name": '@storybook/nextjs-vite',
-    "options": {}
-  }
+    "options": {},
+  },
+  env: (() => {
+    const envPath = process.env.NODE_ENV === 'production' ? '../.env' : '../.env.local';
+    const result = configDotenv({ path: envPath });
+    return result.parsed || {};
+  })(),
 };
 export default config;

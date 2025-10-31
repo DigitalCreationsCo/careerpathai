@@ -690,285 +690,589 @@ export const finalReportGenerationPrompt = (
   findings: string,
   date: DateString
 ): string => `
-Generate a comprehensive 4-path career report from compiled research.
+You will generate TWO versions of a career report: a PREVIEW (free teaser) and a FULL REPORT (complete analysis).
 
-**Research Brief:**
-${research_brief}
+**CRITICAL: Return as structured JSON with two fields:**
+\`\`\`json
+{
+  "reportPreview": "...",
+  "finalReport": "..."
+}
+\`\`\`
 
-**Research Outline:**
-${research_outline}
+**Color Palette (Hex) - Use in ALL diagrams:**
+- Primary Blue: #4A90E2
+- Cyan: #50C8E8
+- Green: #5DD39E
+- Gold: #FFD700
+- Orange: #FF8C42
+- Purple: #9B59B6
+- Red: #E74C3C
+- Gray: #BDC3C7
 
-**User Messages:**
-${messages}
-
-**Compiled Research Findings:**
-${findings}
-
-Today: ${date}
+**Research Context:**
+- Research Brief: ${research_brief}  
+- Research Outline: ${research_outline}  
+- User Messages: ${messages}  
+- Compiled Findings: ${findings}  
+- Today: ${date}  
 
 ---
 
-## Report Structure Template
+## 📋 PART 1: REPORT PREVIEW (reportPreview field)
 
-# 🎯 Career Path Analysis: [User's Career Transition/Goal]
+**Purpose:** Free teaser to showcase value and drive purchase
+
+**Structure - EXACTLY THIS, NOTHING MORE:**
+
+### Preview Content:
+
+\`\`\`markdown
+# 🎯 Your Career Path Report - Preview
 
 ## Executive Summary
 
-[2-3 paragraph overview]
-- User profile recap (current role, experience, key skills)
-- Research approach (4-path analysis focused on automation-resistance and high-value)
-- Top recommendation preview with key differentiator
+[Write HALF the executive summary - cut at natural midpoint and add "..."]
+
+[Example: "Based on your 10+ years in software engineering and desire for $150k+ roles with low automation risk, we analyzed 4 high-potential career paths. Our research identified Cloud Solutions Architect as your optimal match, scoring 9.2/10 for compatibility with projected $140-180k salary within 18 months...
+
+**🔒 Unlock the full analysis to see:**
+- Complete ranking methodology and scoring breakdown
+- Detailed path-by-path analysis with market data
+- Learning roadmaps and certification guides
+- 90-day action plan to launch your transition"]
+
+\`\`\`mermaid
+flowchart TD
+    A["Your Current Profile<br/>Experience: [X years]<br/>Skills: [2-3 key skills]"] --> B{"4 Career Paths<br/>Analyzed"}
+    
+    B -->|"Score: X/10"| C["🥇 PATH #1<br/>$XXX-XXXk range"]
+    B -->|"Score: X/10"| D["🥈 PATH #2<br/>$XXX-XXXk range"]
+    B -->|"Score: X/10"| E["🥉 PATH #3<br/>$XXX-XXXk range"]
+    B -->|"Score: X/10"| F["4️⃣ PATH #4<br/>$XXX-XXXk range"]
+    
+    C -->|"Best Overall Match"| G["✅ TOP RECOMMENDATION<br/>Highest ROI + Fit<br/>Timeline: [X months]"]
+    
+    style A fill:#BDC3C7,stroke:#7F8C8D,stroke-width:2px,color:#2C3E50
+    style B fill:#4A90E2,stroke:#2E5C8A,stroke-width:3px,color:#FFFFFF
+    style C fill:#FFD700,stroke:#B8860B,stroke-width:3px,color:#2C3E50
+    style D fill:#BDC3C7,stroke:#7F8C8D,stroke-width:2px,color:#2C3E50
+    style E fill:#FF8C42,stroke:#C86A2F,stroke-width:2px,color:#FFFFFF
+    style F fill:#BDC3C7,stroke:#7F8C8D,stroke-width:2px,color:#2C3E50
+    style G fill:#5DD39E,stroke:#3AA76D,stroke-width:3px,color:#FFFFFF
+\`\`\`
 
 ---
 
-## 🏆 Career Path Rankings
+## 🚀 Unlock Your Complete Career Blueprint
+
+**What you'll get in the full report:**
+
+✅ **Deep Analysis of All 4 Paths** - Detailed breakdown of roles, salaries, automation risk, and market demand  
+✅ **Your Personal Fit Score** - Mind-mapped analysis showing exactly how your skills transfer to each path  
+✅ **Salary Progression Maps** - 5-10 year earning trajectories with real market data  
+✅ **Entry Roadmaps** - Certifications, courses, and exact requirements for each path  
+✅ **Top Employers List** - Companies actively hiring with application strategies  
+✅ **90-Day Action Plan** - Week-by-week steps to launch your career transition  
+✅ **Head-to-Head Comparison** - Matrix comparing all paths across 10+ critical factors  
+✅ **25+ Verified Sources** - Every claim backed by current labor market data  
+
+**🎯 Make your next career move with confidence - backed by data, not guesswork.**
+
+[Purchase Full Report - $XX.XX] → Get instant access to your complete personalized analysis
+
+---
+
+*Preview generated on ${date}. Full report includes 3,000+ words of analysis with 15+ interactive diagrams.*
+\`\`\`
+
+**CRITICAL PREVIEW RULES:**
+- ❌ NO role titles in the diagram (keep generic "PATH #1, #2, etc")
+- ✅ INCLUDE salary ranges in diagram nodes
+- ✅ Executive summary cut at 50% with ellipsis
+- ✅ End with compelling call-to-action
+- ✅ Total length: 400-500 words maximum
+- ✅ Use enticing "what you'll get" bullet points
+
+---
+
+## 📋 PART 2: FULL REPORT (finalReport field)
+
+Generate a **two-column, visual-first career report**.  
+Maintain a **50/50 text-to-visual balance**. Every visual must convey insights text alone cannot.  
+Use **dynamic, informative, beautiful Mermaid diagrams** with the hex color palette above.
+
+### Full Report Structure:
+
+\`\`\`markdown
+# 🎯 Your Career Path Report
+## Executive Summary
+
+[FULL executive summary - 1 paragraph covering: user profile, research approach, top recommendation, why it wins]
+
+\`\`\`mermaid
+flowchart TD
+    A["Your Current Profile<br/>Role: [Specific Role]<br/>Experience: X years"] --> B{"4 Career Paths<br/>Analyzed"}
+    
+    B -->|"Score: X/10"| C["🥇 Path #1<br/>[FULL Career Title]<br/>$XXX-XXXk"]
+    B -->|"Score: X/10"| D["🥈 Path #2<br/>[FULL Career Title]<br/>$XXX-XXXk"]
+    B -->|"Score: X/10"| E["🥉 Path #3<br/>[FULL Career Title]<br/>$XXX-XXXk"]
+    B -->|"Score: X/10"| F["4️⃣ Path #4<br/>[FULL Career Title]<br/>$XXX-XXXk"]
+    C -->|"Best Overall Match"| G["✅ RECOMMENDED<br/>Highest ROI + Fit<br/>Start: [Timeline]"]
+    style A fill:#BDC3C7,stroke:#7F8C8D,stroke-width:2px,color:#2C3E50
+    style B fill:#4A90E2,stroke:#2E5C8A,stroke-width:3px,color:#FFFFFF
+    style C fill:#FFD700,stroke:#B8860B,stroke-width:3px,color:#2C3E50
+    style D fill:#BDC3C7,stroke:#7F8C8D,stroke-width:2px,color:#2C3E50
+    style E fill:#FF8C42,stroke:#C86A2F,stroke-width:2px,color:#FFFFFF
+    style F fill:#BDC3C7,stroke:#7F8C8D,stroke-width:2px,color:#2C3E50
+    style G fill:#5DD39E,stroke:#3AA76D,stroke-width:3px,color:#FFFFFF
+\`\`\`
+
+## 🏆 Path Rankings at a Glance
+
+\`\`\`mermaid
+flowchart LR
+    A1["🥇 RANK #1: [Title]<br/>Compatibility: X/10<br/>Salary: $XXX-XXXk<br/>Automation Risk: LOW<br/>Entry Time: X months"]
+    A2["🥈 RANK #2: [Title]<br/>Compatibility: X/10<br/>Salary: $XXX-XXXk<br/>Automation Risk: LOW<br/>Entry Time: X months"]
+    A3["🥉 RANK #3: [Title]<br/>Compatibility: X/10<br/>Salary: $XXX-XXXk<br/>Automation Risk: MED<br/>Entry Time: X months"]
+    A4["4️⃣ RANK #4: [Title]<br/>Compatibility: X/10<br/>Salary: $XXX-XXXk<br/>Automation Risk: LOW<br/>Entry Time: X months"]
+    
+    A1 -.->|"Winner because"| B["Highest skill match<br/>+ Best salary effort ratio<br/>+ Strong future proofing"]
+    
+    style A1 fill:#FFD700,stroke:#B8860B,stroke-width:3px,color:#2C3E50
+    style A2 fill:#BDC3C7,stroke:#7F8C8D,stroke-width:2px,color:#2C3E50
+    style A3 fill:#FF8C42,stroke:#C86A2F,stroke-width:2px,color:#FFFFFF
+    style A4 fill:#BDC3C7,stroke:#7F8C8D,stroke-width:2px,color:#2C3E50
+    style B fill:#5DD39E,stroke:#3AA76D,stroke-width:2px,color:#FFFFFF
+\`\`\`
+
+---
+
+<div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem;">
+
+<div style="grid-column: span 2;">
 
 ### 🥇 Rank #1: [Career Title]
-**Overall Compatibility Score: X/10**
-**Key Strengths:** [3-4 word summary]
 
-#### 📋 Role Overview
-[2-3 paragraphs covering]:
-- Core responsibilities and day-to-day work
-- Work environment and typical team structures
-- Key projects and deliverables
-- Why this role matters in the industry
+**Role Overview**  
+[1 paragraph: core work, environment, why it matters]
 
-#### ✨ Why This Fits You
-[Personalized 2-3 paragraph analysis]:
-- Direct connections between user's current skills and role requirements
-- Transferable experience from their background
-- Alignment with stated career goals
-- Unique advantages they bring to this path
+**Your Fit Analysis**
 
-#### 📈 Market Outlook & Demand
-- **Job Growth:** X% projected growth over [timeframe] [Source]
-- **Current Demand:** [Hiring trends, job posting volume] [Source]
-- **Future Stability:** [Long-term outlook assessment] [Source]
-- **Geographic Hotspots:** [Top locations if relevant] [Source]
+\`\`\`mermaid
+mindmap
+  root(("💼 YOU TO ROLE<br/>Match: XX percent"))
+    ✅ Current Skills
+      Skill 1 Direct transfer
+      Skill 2 80 percent applicable
+      Skill 3 Strong foundation
+    🔄 Experience Leverage
+      Current role maps to XX percent
+      Past project X Relevant
+      Industry knowledge edge
+    🎯 Goal Alignment
+      Meets objective XXX
+      Timeline Realistic
+      Growth path Clear
+    ⚡ Unique Advantage
+      Your edge XXX
+      Rare combo X and Y
+\`\`\`
+</div>
 
-#### 💰 Salary Expectations
-- **Entry-level (0-2 years):** $X - $Y [Source]
-- **Mid-level (3-5 years):** $A - $B [Source]
-- **Senior (5+ years):** $C - $D [Source]
-- **Top 10%:** $E+ [Source if available]
-- **Location Adjustments:** [If significant variations] [Source]
+<div style="grid-column: span 2;">
 
-#### 🤖 Automation Resilience Analysis
-**Risk Assessment: [Low/Medium/High]**
+**Market & Salary Intelligence**
 
-[2-3 paragraph analysis]:
-- Specific tasks vulnerable to automation
-- Core competencies that remain human-centric
-- How AI might augment (not replace) this role
-- 5-10 year outlook for automation impact
+| Metric | Data | Source |
+|--------|------|--------|
+| **Job Growth 5yr** | +X percent vs X percent avg | [1] |
+| **Current Openings** | X XXX active | [2] |
+| **Entry Salary** | $XX XXX to $XX XXX | [3] |
+| **Mid Salary 3-5yr** | $XXX XXX to $XXX XXX | [3] |
+| **Senior Salary 5-8yr** | $XXX XXX to $XXX XXX | [3] |
+| **Top 10 percent Earners** | $XXX XXX+ | [3] |
+| **Remote Availability** | XX percent of roles | [4] |
+| **Geographic Hotspots** | City 1 City 2 City 3 | [5] |
 
-**Human-Essential Skills in This Role:**
-- [Skill 1]: [Why automation-resistant]
-- [Skill 2]: [Why automation-resistant]
-- [Skill 3]: [Why automation-resistant]
+</div>
 
-[Source citations for automation assessment]
+---
 
-#### 🎓 Entry Requirements & Path to Break In
-**Education:**
-- Required: [Specific degrees/levels]
-- Preferred: [Nice-to-haves]
-- Alternatives: [Bootcamps, self-study paths if viable]
+<div style="grid-column: span 2;">
 
-**Certifications & Credentials:**
-1. **[Certification Name]** - [Provider]
-   - Duration: [X weeks/months]
-   - Cost: [$X or range]
-   - Industry recognition: [High/Medium]
-2. [Repeat for 2-4 key certs]
+**Salary Progression Path**
 
-**Core Skills Required:**
-- Must-have: [List 5-7 with proficiency level]
-- Nice-to-have: [List 3-5]
+\`\`\`mermaid
+flowchart LR
+    A["🌱 ENTRY<br/>$XX to XXk<br/>Years 0-2<br/>Learning phase"] 
+    B["📈 MID-LEVEL<br/>$XXX to XXXk<br/>Years 3-5<br/>Independent contributor"]
+    C["🎯 SENIOR<br/>$XXX to XXXk<br/>Years 5-8<br/>Team leadership"]
+    D["🏆 PRINCIPAL or DIRECTOR<br/>$XXX to XXXk+<br/>Years 8+<br/>Strategic impact"]
+    
+    A -->|"+XX percent annual growth"| B
+    B -->|"+XX percent annual growth"| C
+    C -->|"+XX percent annual growth"| D
+    
+    style A fill:#50C8E8,stroke:#2E8BA6,stroke-width:2px,color:#FFFFFF
+    style B fill:#4A90E2,stroke:#2E5C8A,stroke-width:2px,color:#FFFFFF
+    style C fill:#9B59B6,stroke:#6C3483,stroke-width:2px,color:#FFFFFF
+    style D fill:#5DD39E,stroke:#3AA76D,stroke-width:3px,color:#FFFFFF
+\`\`\`
+</div>
 
-**Typical Entry Path:**
-[2-3 sentences on how people typically break into this role]
+<div style="grid-column: span 1;">
 
-**Your Skill Gap Analysis:**
-- ✅ Already have: [Skills from user profile]
-- 📚 Need to develop: [Gaps with learning priority]
-- ⏱️ Estimated prep time: [X months realistic timeline]
+**🤖 Automation Resilience: [LOW or MEDIUM or HIGH RISK]**
 
-#### 🚀 Career Progression Timeline
-**Typical Advancement Path:**
-- **Years 0-2:** [Entry role] → [Responsibilities growth]
-- **Years 3-5:** [Mid-level role] → [New capabilities]
-- **Years 5-8:** [Senior role] → [Leadership scope]
-- **Years 8+:** [Advanced roles: Principal, Director, VP paths]
+\`\`\`mermaid
+pie title "Task Vulnerability Over 5 Years"
+    "🛡️ Human Essential XX percent" : 70
+    "🤝 AI Augmented XX percent" : 20
+    "⚠️ At Risk XX percent" : 10
+\`\`\`
+</div>
 
-[Source for progression data]
+<div style="grid-column: span 1;">
 
-#### 🏢 Top Employers & Job Market
-**Companies Actively Hiring (with scale):**
-1. **[Company Name]** - [Why notable: size, culture, growth]
-2. **[Company Name]** - [Hiring volume, reputation]
-3. **[Company Name]** - [Unique advantages]
-4-10. [Additional companies]
+**Human-Essential Skills:**
+- 🧠 **[Skill 1]:** [Why AI cannot replicate - 1 sentence]
+- 💡 **[Skill 2]:** [Complex judgment requirement - 1 sentence]
+- 🤝 **[Skill 3]:** [Human relationship factor - 1 sentence]
 
-**Job Search Resources:**
-- Key job boards: [LinkedIn, Indeed, specialized sites]
-- Professional communities: [Slack groups, forums]
-- Networking events: [Conferences, meetups]
+[Sources: 6 7]
 
-[Sources]
+</div>
 
-#### 📚 Learning Resources & Development Path
-**Priority Certifications:**
-1. **[Cert Name]** ([Provider])
-   - Link: [URL if available]
-   - Timeline: [X weeks]
-   - Cost: [$X]
-   
-**Recommended Courses:**
-1. **[Course Title]** ([Platform])
-   - Focus: [What it covers]
-   - Duration: [X hours]
-   - Level: [Beginner/Intermediate/Advanced]
+---
 
-**Books & Resources:**
-- [Title] by [Author] - [Why recommended]
+<div style="grid-column: span 2;">
 
-**Communities & Networking:**
-- [Professional association]
-- [Online community]
-- [Local meetup group]
+**Entry Requirements & Path**
 
-[Sources for learning resources]
+\`\`\`mermaid
+flowchart TD
+    START["🎯 TARGET ROLE<br/>[Career Title]"] 
+    
+    START --> EDU{"📚 Education"}
+    EDU -->|"Required"| EDU1["Degree: Type or Level<br/>OR Equivalent experience"]
+    EDU -->|"Alternative"| EDU2["Bootcamp: X months<br/>Self study: Y months"]
+    
+    START --> SKILL{"💻 Skills"}
+    SKILL --> MUST["⭐ MUST HAVE<br/>• Skill 1<br/>• Skill 2<br/>• Skill 3"]
+    SKILL --> NICE["✨ NICE TO HAVE<br/>• Skill 4<br/>• Skill 5"]
+    
+    START --> CERT{"🏆 Certifications"}
+    CERT --> CERT1["🥇 Priority:<br/>Cert Name<br/>Cost: $XXX Time: X mo"]
+    CERT --> CERT2["🥈 Secondary:<br/>Cert Name<br/>Cost: $XXX Time: X mo"]
+    
+    EDU1 --> READY["✅ READY TO APPLY"]
+    EDU2 --> READY
+    MUST --> READY
+    CERT1 --> READY
+    
+    style START fill:#4A90E2,stroke:#2E5C8A,stroke-width:3px,color:#FFFFFF
+    style MUST fill:#E74C3C,stroke:#A93226,stroke-width:2px,color:#FFFFFF
+    style CERT1 fill:#FFD700,stroke:#B8860B,stroke-width:2px,color:#2C3E50
+    style READY fill:#5DD39E,stroke:#3AA76D,stroke-width:3px,color:#FFFFFF
+\`\`\`
+</div>
+
+<div style="grid-column: span 2;">
+
+**Your Skill Gap Analysis**
+
+| Category | ✅ You Have | 📚 To Develop | ⏱️ Timeline |
+|----------|-------------|---------------|------------|
+| **Technical** | Skill 1 2 | Skill 3 4 | X months |
+| **Domain** | Skill 5 | Skill 6 7 | X months |
+| **Soft Skills** | Skill 8 9 | Skill 10 | X months |
+| **TOTAL PREP** | — | — | **X to Y months** |
+
+[Source: 8]
+
+</div>
+
+---
+
+<div style="grid-column: span 2;">
+
+**Career Progression Timeline**
+
+\`\`\`mermaid
+timeline
+    title Typical Career Trajectory
+    section Years 0 to 2
+        Entry Role : $XX to XXk salary : Core skill mastery : First projects
+    section Years 3 to 5
+        Mid Level : $XXX to XXXk salary : Leadership begins : Specialization choice
+    section Years 5 to 8
+        Senior Role : $XXX to XXXk salary : Team leadership : Strategic input
+    section Years 8 plus
+        Principal or Director : $XXX to XXXk plus salary : Organizational impact : Mentorship and hiring
+\`\`\`
+</div>
+
+<div style="grid-column: span 2;">
+
+**Top Employers Hiring Now**
+
+| Company | Volume | Why Notable | Rating |
+|---------|--------|-------------|--------|
+| 🏢 **Company 1** | 🔥🔥🔥 High | Key advantage | ⭐ X.X out of 5 |
+| 🏢 **Company 2** | 🔥🔥 Medium | Key advantage | ⭐ X.X out of 5 |
+| 🏢 **Company 3** | 🔥🔥 Medium | Key advantage | ⭐ X.X out of 5 |
+| 🏢 **Company 4 to 10** | 🔥 Active | See full list | — |
+
+**Job Search Resources:**  
+📍 Boards: LinkedIn Indeed Niche board  
+👥 Communities: Slack or Discord group Forum  
+🎤 Events: Conference name Meetup group
+
+[Sources: 9 10]
+
+</div>
+
+---
+
+<div style="grid-column: span 2;">
+
+**Learning Roadmap**
+
+\`\`\`mermaid
+gantt
+    title Your 6 Month Learning Plan
+    dateFormat YYYY-MM-DD
+    
+    section Foundation Month 1 to 2
+    Priority Cert or Course       :cert1, 2025-01-01, 60d
+    
+    section Skill Building Month 2 to 4
+    Technical Skill Dev        :skill1, 2025-02-01, 60d
+    Portfolio Project Start    :proj1, after skill1, 30d
+    
+    section Market Entry Month 4 to 6
+    Resume and Portfolio Polish  :resume, 2025-04-01, 30d
+    Networking and Applications  :network, after resume, 60d
+\`\`\`
+
+</div>
+
+<div style="grid-column: span 2;">
+
+**Priority Learning Resources**
+
+1. 🏆 **Certification Name** (Provider)  
+   💰 Cost: $XXX | ⏱️ Duration: X weeks | 🔗 Link
+
+2. 📚 **Course Title** (Platform)  
+   ⏱️ X hours | 📊 Level: Beginner or Int or Adv | 🔗 Link
+
+3. 📖 **Book Title** by Author  
+   🎯 Focus: Why essential for this path
+
+4. 👥 **Community or Association Name**  
+   💬 Why join | 🔗 Link
+
+[Sources: 11 12 13]
+
+</div>
 
 ---
 
 ### 🥈 Rank #2: [Career Title]
-**Overall Compatibility Score: X/10**
-**Key Strengths:** [Summary]
 
-[Repeat full structure from Rank #1]
+[Repeat same structure: Overview paragraph mindmap fit salary market table salary progression graph automation pie requirements flowchart skill gap table timeline employers table learning gantt]
 
 ---
 
 ### 🥉 Rank #3: [Career Title]
-**Overall Compatibility Score: X/10**
-**Key Strengths:** [Summary]
 
-[Repeat full structure]
+[Repeat same structure]
 
 ---
 
 ### 4️⃣ Rank #4: [Career Title]
-**Overall Compatibility Score: X/10**
-**Key Strengths:** [Summary]
 
-[Repeat full structure]
+[Repeat same structure]
 
 ---
 
-## 📊 Comparative Analysis
+## 📊 Head-to-Head Comparison
 
-### Quick Comparison Matrix
+### Complete Matrix
 
-| Criteria | Path #1: [Title] | Path #2: [Title] | Path #3: [Title] | Path #4: [Title] |
-|----------|------------------|------------------|------------------|------------------|
-| **Salary Range** | $X-$Y | $A-$B | $C-$D | $E-$F |
-| **Entry Salary** | $X | $A | $C | $E |
-| **Growth Rate** | X% | Y% | Z% | W% |
-| **Automation Risk** | Low | Low | Medium | Low |
-| **Entry Barrier** | Medium | High | Low | Medium |
-| **Work-Life Balance** | Good | Excellent | Fair | Good |
-| **Remote Flexibility** | High | Medium | High | Low |
-| **Skill Match** | 90% | 75% | 85% | 80% |
+| Criteria | 🥇 #1 | 🥈 #2 | 🥉 #3 | 4️⃣ #4 |
+|----------|-------|-------|-------|-------|
+| **Compatibility Score** | X out of 10 | X out of 10 | X out of 10 | X out of 10 |
+| **Entry Salary** | $XX XXX | $XX XXX | $XX XXX | $XX XXX |
+| **5 Year Salary** | $XXX XXX | $XXX XXX | $XXX XXX | $XXX XXX |
+| **Job Growth Rate** | +X percent | +X percent | +X percent | +X percent |
+| **Automation Risk** | 🟢 Low | 🟢 Low | 🟡 Med | 🟢 Low |
+| **Entry Barrier** | 🟡 Medium | 🔴 High | 🟢 Low | 🟡 Medium |
+| **Remote Flexibility** | XX percent | XX percent | XX percent | XX percent |
+| **Skill Match** | XX percent | XX percent | XX percent | XX percent |
+| **Work Life Balance** | ⭐⭐⭐⭐ | ⭐⭐⭐⭐⭐ | ⭐⭐⭐ | ⭐⭐⭐⭐ |
+| **Prep Time Needed** | X months | X months | X months | X months |
 
-### Head-to-Head Insights
+### Winner by Priority
 
-**Highest Salary Potential:** [Path X] with senior roles reaching $Y [Source]
+\`\`\`mermaid
+flowchart TD
+    A["❓ WHAT MATTERS MOST TO YOU"]
+    
+    A -->|"💰 Highest Salary"| B["🥇 Path X<br/>$XXX XXX at 5 years<br/>Top 10 percent: $XXX XXX plus"]
+    A -->|"⚡ Fastest Entry"| C["🥇 Path Y<br/>X months prep time<br/>Lower barriers"]
+    A -->|"⚖️ Best Work Life"| D["🥇 Path Z<br/>⭐⭐⭐⭐⭐ rating<br/>XX percent remote roles"]
+    A -->|"🛡️ Future Proof"| E["🥇 Path W<br/>XX percent human essential<br/>Low automation risk"]
+    A -->|"🎯 Best Overall Fit"| F["🥇 Path #1<br/>Highest compatibility<br/>Balanced on all factors"]
+    
+    style A fill:#4A90E2,stroke:#2E5C8A,stroke-width:3px,color:#FFFFFF
+    style B fill:#FFD700,stroke:#B8860B,stroke-width:2px,color:#2C3E50
+    style C fill:#5DD39E,stroke:#3AA76D,stroke-width:2px,color:#FFFFFF
+    style D fill:#50C8E8,stroke:#2E8BA6,stroke-width:2px,color:#FFFFFF
+    style E fill:#9B59B6,stroke:#6C3483,stroke-width:2px,color:#FFFFFF
+    style F fill:#FFD700,stroke:#B8860B,stroke-width:3px,color:#2C3E50
+\`\`\`
 
-**Easiest Entry:** [Path Y] requires [fewer barriers] [Source]
+### Trade off Visualization
 
-**Most Future-Proof:** [Path Z] due to [automation resistance factors] [Source]
-
-**Best Work-Life Balance:** [Path W] with [specific factors] [Source]
-
-**Fastest Growth:** [Path V] growing at X% vs industry average of Y% [Source]
-
-### Trade-off Analysis
-
-**If you prioritize salary:** Choose [Path], but expect [trade-off]
-
-**If you prioritize work-life balance:** Choose [Path], with [consideration]
-
-**If you want fastest entry:** Choose [Path], noting [preparation needed]
-
-**If you want maximum future-proofing:** Choose [Path] because [reasoning]
-
----
-
-## 🎯 Personalized Recommendations
-
-### Your Best Fit: [Path #1]
-[2-3 paragraphs explaining why this is the top recommendation specifically for this user, referencing their goals, skills, and constraints]
-
-### Alternative Scenarios:
-- **If [condition]:** Consider [Path #2] because [reasoning]
-- **If [condition]:** Consider [Path #3] because [reasoning]
-
----
-
-## 🚀 Action Plan: Next 30/60/90 Days
-
-### Month 1 (Immediate Actions)
-1. **Week 1-2:** [Specific action with path #1]
-   - Example: "Enroll in [Certification] on [Platform]"
-   - Expected time: [X hours/week]
-
-2. **Week 3-4:** [Skill development task]
-   - Example: "Complete [Course Module] focusing on [Skill]"
-
-### Month 2 (Skill Building)
-1. [Continued learning milestone]
-2. [Networking action]
-3. [Portfolio/project development]
-
-### Month 3 (Market Entry Prep)
-1. [Resume/portfolio finalization]
-2. [Application strategy]
-3. [Interview preparation]
+\`\`\`mermaid
+quadrantChart
+    title Salary vs Entry Difficulty
+    x-axis Low Salary --> High Salary
+    y-axis Difficult Entry --> Easy Entry
+    quadrant-1 Sweet Spot
+    quadrant-2 High Reward High Effort
+    quadrant-3 Challenging Lower Pay
+    quadrant-4 Quick Wins
+    
+    Path 1: [0.75, 0.65]
+    Path 2: [0.85, 0.35]
+    Path 3: [0.55, 0.80]
+    Path 4: [0.65, 0.55]
+\`\`\`
 
 ---
 
-## 📚 Comprehensive Source List
+## 🎯 Your Best Move: [Path #1]
 
-[Numbered list of ALL sources cited in report, organized by topic]
+[1 paragraph: Why this path wins for your specific situation referencing goals skills constraints from user profile]
 
-### Market Data & Statistics
-[1] Bureau of Labor Statistics - Occupational Outlook Handbook: [URL]
-[2] LinkedIn Economic Graph - 2025 Trends: [URL]
-
-### Salary Information
-[3] Glassdoor Salary Report 2025: [URL]
-[4] PayScale Career Data: [URL]
-
-### Industry Analysis
-[5] Gartner Future of Work Report: [URL]
-
-[Continue for all sources, no gaps in numbering]
+**Alternative Scenarios:**
+- 💼 **If condition like you need income ASAP:** Choose **Path #3**—1 sentence reasoning
+- ⏰ **If condition like you can invest 12 plus months:** Choose **Path #2**—1 sentence reasoning
+- 🏡 **If condition like remote work is essential:** Choose **Path #4**—1 sentence reasoning
 
 ---
 
-**Report Quality Standards:**
-- **Length:** 6000-8000 words total (1500-2000 per path)
-- **Sources:** Minimum 25 unique citations
-- **Data Currency:** Prioritize 2023-2025 sources
-- **Tone:** Professional yet conversational, encouraging but realistic
-- **Personalization:** Reference user's specific situation 5+ times
-- **Actionability:** Every section should enable concrete next steps
+## 🚀 Your 90 Day Action Plan
 
-**Language:** Write in the same language as user messages (${messages}).
+\`\`\`mermaid
+gantt
+    title Launch Timeline for Path #1
+    dateFormat YYYY-MM-DD
+    
+    section Month 1 Foundation
+    Enroll in Priority Cert    :done, cert, 2025-01-01, 7d
+    Complete Module 1 to 2         :active, mod1, after cert, 14d
+    Join Professional Community :done, comm, 2025-01-10, 3d
+    Start Skill Project         :proj, after mod1, 14d
+    
+    section Month 2 Building
+    Complete Certification      :cert2, 2025-02-01, 28d
+    Build Portfolio Project     :port, 2025-02-10, 28d
+    Network 5 Coffee Chats     :net, 2025-02-15, 20d
+    
+    section Month 3 Market Prep
+    Polish Resume and Portfolio   :resume, 2025-03-01, 14d
+    Apply to 10 plus Positions      :apply, after resume, 14d
+    Interview Prep and Practice   :interview, 2025-03-15, 15d
+\`\`\`
 
-**Critical:** Every salary figure, growth percentage, and factual claim MUST have citation. Avoid generic advice - make it specific and actionable with the research data provided.
+**Week by Week Actions**
+
+| Week | Key Actions | Time | Deliverable |
+|------|-------------|------|-------------|
+| **1 to 2** | • Enroll in Cert<br/>• Join Community<br/>• Study X hours | X hrs per wk | Cert Module 1 ✅ |
+| **3 to 4** | • Complete Module 2 to 3<br/>• Start portfolio project | X hrs per wk | Project foundation ✅ |
+| **5 to 8** | • Finish certification<br/>• Build 2 to 3 portfolio pieces<br/>• Network 5 plus contacts | X hrs per wk | Cert complete ✅<br/>Portfolio 50 percent ✅ |
+| **9 to 12** | • Resume and LinkedIn refresh<br/>• Apply 10 to 15 roles<br/>• Interview prep | X hrs per wk | Applications sent ✅<br/>Interviews booked ✅ |
+
+---
+
+## 📚 Complete Source List
+
+### 📊 Market Intelligence and Statistics
+[1] Bureau of Labor Statistics Occupational Outlook Handbook 2024: URL  
+[2] LinkedIn Global Hiring Report 2025: URL  
+[3] Glassdoor Salary Database 2024 to 2025 data: URL  
+[4] PayScale Remote Work Trends 2025: URL  
+[5] Indeed Job Market Analysis Q4 2024: URL  
+
+### 🤖 Automation and Future of Work
+[6] Gartner Future of Work Report 2025: URL  
+[7] MIT Technology Review AI Impact on Careers: URL  
+
+### 🎓 Education and Skill Development
+[8] Industry Skills Gap Analysis 2024: URL  
+[9] Certification Body Official Requirements: URL  
+[10] Platform Course Database: URL  
+
+[Continue numbered list for all 25 plus unique sources]
+
+---
+\`\`\`
+
+**Full Report Delivery Standards:**
+- **Length:** 3,000-4,000 words + 15-20 diagrams
+- **Text Visual Ratio:** 50/50 measured by information density
+- **Diagram Types:** Flowcharts timelines pies mindmaps quadrants gantt charts
+- **Color Consistency:** Use hex palette throughout all diagrams
+- **Mermaid Syntax:** All diagrams tested and validated
+- **Sources:** 25 plus unique citations every claim cited
+- **Language:** Match user messages (${messages})
+- **Tone:** Direct data driven actionable encouraging
+
+**Critical Mermaid Rules:**
+1. Never use parentheses in node text use brackets or plain text
+2. Never use special characters like percent symbol spell out "percent"
+3. Never use slashes in node text use "or" or "and" or "to" instead
+4. Always quote edge labels that contain special characters
+5. Use simple section titles in gantt and timeline diagrams no colons in section names
+6. Pie chart format: \`pie title "Title Text"\` followed by quoted labels with colon and number
+7. Quadrant chart: Use simple text for quadrant labels no emojis in quadrant names
+8. All hex colors must be valid 6 digit format with # prefix
+9. Mindmap nodes use plain text without special markdown characters
+10. Timeline sections should use spaces not hyphens in names
+11. Replace "plus" with "plus" and hyphen ranges with "to" everywhere
+
+**Color Encoding Consistency:**
+- Gold #FFD700 equals Rank #1 best choice winner
+- Blue #4A90E2 equals Primary main path important
+- Green #5DD39E equals Success positive recommended
+- Gray #BDC3C7 equals Neutral lower ranks
+- Orange #FF8C42 equals Bronze rank caution
+- Red #E74C3C equals Critical must have risk
+- Purple #9B59B6 equals Senior level advanced
+- Cyan #50C8E8 equals Entry level beginning
+
+---
+
+## 🎯 OUTPUT FORMAT REQUIREMENT
+
+Return ONLY valid JSON with these two fields:
+
+\`\`\`json
+{
+  "reportPreview": "[Complete preview markdown here - 400-500 words max, truncated summary + first diagram without role titles + CTA]",
+  "finalReport": "[Complete full report markdown here - 3000-4000 words with all 15-20 diagrams and full analysis]"
+}
+\`\`\`
+
+DO NOT include any text outside the JSON structure.
+DO NOT use markdown code fences around the JSON.
+Return raw JSON only.
 `;
 
 // ============================================

@@ -36,8 +36,7 @@ export function Chat({
   const abortControllerRef = useRef<AbortController | null>(null);
 
   const isNewChat = initialMessages.length === 0;
-  const [showGreeting, setShowGreeting] = useState(true);
-  const [greetingComplete, setGreetingComplete] = useState(!isNewChat);
+  const [greetingComplete, setGreetingComplete] = useState(false);
   
   const greetingDelays = useGoldenRatio(1.0, 1.7, greetingMessageParts.length);
   const greetingAnimationDuration = greetingDelays[greetingDelays.length - 1] + 1;
@@ -45,27 +44,13 @@ export function Chat({
   const [hasSentInitialMessage, setHasSentInitialMessage] = useState(false);
   
   useEffect(() => {
-    if (showGreeting && greetingAnimationDuration > 0) {
+    if (greetingAnimationDuration > 0) {
       const timer = setTimeout(() => {
         setGreetingComplete(true);
       }, greetingAnimationDuration * 1000);
       return () => clearTimeout(timer);
     }
-  }, [showGreeting, greetingAnimationDuration]);
-
-  // const displayMessages = useMemo(() => {
-  //   const filtered = filterEmptyMessages(rawMessages);
-  //   const greetingMessages = createGreetingMessages(); 
-    
-  //   if (isNewChat) {
-  //     if (!greetingComplete) {
-  //       return greetingMessages;
-  //     }
-      
-  //     return [...greetingMessages, ...filtered];
-  //   }
-  //   return filtered;
-  // }, [rawMessages, setRawMessages, isNewChat, greetingComplete]);
+  }, [greetingAnimationDuration]);
   
   const fetchResearchStream = useCallback(
     async ({ message, resume = false }: { message?: ChatMessage; resume?: boolean }) => {
@@ -273,6 +258,7 @@ export function Chat({
         regenerate={regenerate}
         setMessages={setRawMessages}
         status={status}
+        isShowingGreeting={!greetingComplete}
       />
 
       <div className="sticky bottom-0 z-1 mx-auto flex w-full max-w-4xl gap-2 px-2 pb-3 md:px-4 md:pb-4">

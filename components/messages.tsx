@@ -14,6 +14,7 @@ type MessagesProps = {
   messages: ChatMessage[];
   setMessages: UseChatHelpers<ChatMessage>["setMessages"];
   regenerate: UseChatHelpers<ChatMessage>["regenerate"];
+  isShowingGreeting: boolean;
 };
 
 function PureMessages({
@@ -22,6 +23,7 @@ function PureMessages({
   messages,
   setMessages,
   regenerate,
+  isShowingGreeting
 }: MessagesProps) {
   const {
     containerRef: messagesContainerRef,
@@ -32,7 +34,6 @@ function PureMessages({
   } = useMessages({
     status,
   });
-  const isShowingGreeting = messages.every((msg: any) => msg.isGreeting);
   const greetingDelays = useGoldenRatio(1.0, 1.7, messages.length);
 
   useEffect(() => {

@@ -46,7 +46,7 @@ export default async function ChatPage({
   let initialMessages: ChatMessage[] = [];
   if (savedState && typeof savedState === "object") {
     initialMessages = convertGraphMessagesToUIMessages(savedState as any) as any;
-    console.log('initialMessages: ', JSON.stringify(initialMessages));
+    console.debug('initialMessages: ', JSON.stringify(initialMessages));
   }
 
   return (

@@ -43,7 +43,7 @@ const PurePreviewMessage = ({
     <motion.div
       initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ delay, duration: 0.5 }}
+      transition={{ delay, duration: 0.2 }}
       className="group/message w-full px-2"
       data-role={message.role}
       data-testid={`message-${message.role}`}

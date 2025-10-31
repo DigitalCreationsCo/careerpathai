@@ -49,7 +49,7 @@ export default function ClientChatWrapper({
 
   return (
     <Chat
-      autoResume={false}
+      autoResume={true}
       chatId={chatId}
       initialMessages={initialMessages}
       key={chatId}

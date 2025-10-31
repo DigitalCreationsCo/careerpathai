@@ -58,7 +58,7 @@ function PureMessages({
       <Conversation className="mx-auto flex w-full min-w-0 flex-col gap-4 md:gap-6">
         <ConversationContent className="mx-auto flex flex-col max-w-4xl gap-4 px-2 py-4 md:gap-4 md:px-4">
           {messages.map((message, index) => {
-            const greetingIndex = (message as any).greetingIndex ?? index;
+            const delay = isShowingGreeting ? greetingDelays[index] : 0;
             return (
             <PreviewMessage
               chatId={chatId}
@@ -66,8 +66,8 @@ function PureMessages({
                 status === "streaming" && messages.length - 1 === index
               }
               msgIndex={index}
-              isGreeting={isShowingGreeting}
-              delay={greetingDelays[greetingIndex]}
+              isGreeting={(message as any).isGreeting}
+              delay={delay}
               key={message.id}
               message={message}
               regenerate={regenerate}

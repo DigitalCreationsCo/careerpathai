@@ -25,41 +25,47 @@ export function Chat({
   autoResume: boolean;
   initialLastContext?: AppUsage;
 }) {
+  
   const [input, setInput] = useState<string>("");
   const [usage, setUsage] = useState<AppUsage | undefined>(initialLastContext);
   const [isResuming, setIsResuming] = useState(false);
-  const [rawMessages, setRawMessages] = useState<ChatMessage[]>(initialMessages);
+
+  const allInitialMessages = createGreetingMessages().concat(filterEmptyMessages(initialMessages));
+  const [rawMessages, setRawMessages] = useState<ChatMessage[]>(allInitialMessages);
   const [status, setStatus] = useState<"submitted" | "streaming" | "error" | "ready">("ready");
   const abortControllerRef = useRef<AbortController | null>(null);
 
-  const [greetingComplete, setGreetingComplete] = useState(true);
-
+  const isNewChat = initialMessages.length === 0;
+  const [showGreeting, setShowGreeting] = useState(true);
+  const [greetingComplete, setGreetingComplete] = useState(!isNewChat);
+  
   const greetingDelays = useGoldenRatio(1.0, 1.7, greetingMessageParts.length);
   const greetingAnimationDuration = greetingDelays[greetingDelays.length - 1] + 1;
   
+  const [hasSentInitialMessage, setHasSentInitialMessage] = useState(false);
+  
   useEffect(() => {
-    if (greetingAnimationDuration > 0) {
+    if (showGreeting && greetingAnimationDuration > 0) {
       const timer = setTimeout(() => {
         setGreetingComplete(true);
       }, greetingAnimationDuration * 1000);
       return () => clearTimeout(timer);
     }
-  }, [greetingAnimationDuration]);
+  }, [showGreeting, greetingAnimationDuration]);
 
-  const displayMessages = useMemo(() => {
-    const filtered = filterEmptyMessages(rawMessages);
-    const greetingMessages = createGreetingMessages(); 
+  // const displayMessages = useMemo(() => {
+  //   const filtered = filterEmptyMessages(rawMessages);
+  //   const greetingMessages = createGreetingMessages(); 
     
-    if (filtered.length === 0) {
-      return greetingMessages;
-    }
-
-    if (!greetingComplete) {
-      return greetingMessages;
-    }
-    
-    return [...greetingMessages, ...filtered];
-  }, [rawMessages, greetingComplete]);
+  //   if (isNewChat) {
+  //     if (!greetingComplete) {
+  //       return greetingMessages;
+  //     }
+      
+  //     return [...greetingMessages, ...filtered];
+  //   }
+  //   return filtered;
+  // }, [rawMessages, setRawMessages, isNewChat, greetingComplete]);
   
   const fetchResearchStream = useCallback(
     async ({ message, resume = false }: { message?: ChatMessage; resume?: boolean }) => {
@@ -160,11 +166,6 @@ export function Chat({
     [chatId]
   );
 
-  /**
-   * Sends a new user message via the streaming API, ensuring that only one stream
-   * is open at a time. If a stream is already in progress (status === "streaming" or "submitted"),
-   * this function does not send another request.
-   */
   const sendMessage = useCallback(
     async (msgInput: { role: "user"; parts: { type: "text"; text: string }[] }) => {
       // Prevent sending if a stream is already active
@@ -193,7 +194,6 @@ export function Chat({
   const regenerate = useCallback(async () => {
     const lastUserMsg = [...rawMessages].reverse().find((msg) => msg.role === "user");
     if (lastUserMsg) {
-      // Remove messages after last user message
       const lastUserIndex = rawMessages.findIndex(m => m.id === lastUserMsg.id);
       setRawMessages(rawMessages.slice(0, lastUserIndex + 1));
       fetchResearchStream({ message: lastUserMsg });
@@ -206,7 +206,6 @@ export function Chat({
 
   const searchParams = useSearchParams();
   const query = searchParams.get("query");
-  const [hasSentInitialMessage, setHasSentInitialMessage] = useState(false);
 
   const handleResume = useCallback(async () => {
     console.log('Resuming from checkpoint...');
@@ -242,6 +241,7 @@ export function Chat({
         } as any;
         await fetchResearchStream({ message: emptyMessage });
       }
+
       setHasSentInitialMessage(true);
     };
     sendInitial();
@@ -269,7 +269,7 @@ export function Chat({
 
       <Messages
         chatId={chatId}
-        messages={displayMessages}
+        messages={rawMessages}
         regenerate={regenerate}
         setMessages={setRawMessages}
         status={status}
@@ -279,7 +279,7 @@ export function Chat({
         <MultimodalInput
           chatId={chatId}
           input={input}
-          messages={displayMessages}
+          messages={rawMessages}
           sendMessage={sendMessage}
           setInput={setInput}
           setMessages={setRawMessages}

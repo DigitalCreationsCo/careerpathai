@@ -199,7 +199,7 @@ For each of the top 4 selected paths, delegate comprehensive research:
 // ============================================
 // PHASE 3A: SUPERVISOR (RESEARCH ORCHESTRATION)
 // ============================================
-export const leadResearcherPrompt = (
+export const supervisorSystemPrompt = (
   max_researcher_iterations: number,
   max_concurrent_research_units: number,
   date: DateString

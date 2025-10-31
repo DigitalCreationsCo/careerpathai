@@ -60,8 +60,6 @@ export async function supervisor(
     
     if (supervisorMessages.length === 0) {
         const systemPrompt = supervisorSystemPrompt(
-          state.researchBrief || "",
-          state.researchOutline || "",
           configurable.maxResearcherIterations,
           configurable.maxConcurrentResearchUnits,
           getTodayStr()

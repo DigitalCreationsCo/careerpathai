@@ -1,5 +1,5 @@
 import { describe, it, expect, vi } from "vitest";
-import { convertGraphChannelValuesToUIMessages } from "@/lib/deepResearcher/checkpointerUtils";
+import { convertGraphMessagesToUIMessages } from "@/lib/deepResearcher/checkpointerUtils";
 import type { CheckpointChannelValues } from "@/lib/deepResearcher/checkpointerUtils";
 
 
@@ -9,7 +9,7 @@ vi.mock("@/lib/db/drizzle", () => ({
 
 describe("convertGraphChannelValuesToUIMessages", () => {
   it("should convert serialized LC messages to UIMessage format", () => {
-    const input: CheckpointChannelValues = {
+    const input: any = {
       messages: [
         {
           lc: 1,
@@ -66,7 +66,7 @@ describe("convertGraphChannelValuesToUIMessages", () => {
       ]
     };
 
-    const uiMessages = convertGraphChannelValuesToUIMessages(input);
+    const uiMessages = convertGraphMessagesToUIMessages(input);
 
     expect(Array.isArray(uiMessages)).toBe(true);
     expect(uiMessages.length).toBe(4);
@@ -125,8 +125,8 @@ describe("convertGraphChannelValuesToUIMessages", () => {
   });
 
   it("returns [] if input is invalid", () => {
-    expect(convertGraphChannelValuesToUIMessages(undefined as any)).toEqual([]);
-    expect(convertGraphChannelValuesToUIMessages({} as any)).toEqual([]);
-    expect(convertGraphChannelValuesToUIMessages({ messages: "not-an-array" } as any)).toEqual([]);
+    expect(convertGraphMessagesToUIMessages(undefined as any)).toEqual([]);
+    expect(convertGraphMessagesToUIMessages({} as any)).toEqual([]);
+    expect(convertGraphMessagesToUIMessages({ messages: "not-an-array" } as any)).toEqual([]);
   });
 });

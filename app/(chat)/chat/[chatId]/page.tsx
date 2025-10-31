@@ -8,7 +8,7 @@ import { convertGraphMessagesToUIMessages, getGraphFinalState } from "@/lib/deep
 export default async function ChatPage({
   params 
 }: { 
-  params: { chatId: string } 
+  params: Promise<{ chatId: string }>
 }) {
   const user = (await auth())?.user;
   if (!user?.id) {

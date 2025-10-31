@@ -119,7 +119,7 @@ export async function researcherTools(state: ResearcherState, config: RunnableCo
     const mostRecentMessage = researcherMessages[researcherMessages.length - 1]
     
     // Early exit if no tool calls were made (including native web search)
-    const hasToolCalls = Boolean(mostRecentMessage.toolCalls)
+    const hasToolCalls = Boolean((mostRecentMessage as any).toolCalls)
     const hasNativeSearch = (
         openaiWebsearchCalled(mostRecentMessage) || 
         anthropicWebsearchCalled(mostRecentMessage)
@@ -138,7 +138,7 @@ export async function researcherTools(state: ResearcherState, config: RunnableCo
     }
     
     // Execute all tool calls in parallel
-    const toolCalls = mostRecentMessage.toolCalls || []
+    const toolCalls = (mostRecentMessage as any).toolCalls || []
     const toolExecutionTasks = toolCalls.map((toolCall: any) =>
         executeToolSafely(toolsByName[toolCall.name], toolCall.args, config)
     )
@@ -244,7 +244,7 @@ export async function compressResearch(state: ResearcherState, config: RunnableC
             
             // Handle token limit exceeded by removing older messages
             if (isTokenLimitExceeded(e, configurable.researchModel)) {
-                researcherMessages = removeUpToLastAIMessage(researcherMessages as any)
+                researcherMessages = removeUpToLastAIMessage(researcherMessages as any) as any
                 continue
             }
             

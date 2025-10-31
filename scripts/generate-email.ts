@@ -185,9 +185,8 @@ function main() {
     process.exit(1);
   }
 
-  // Resolve root directory from where the script is located
-  const scriptDir = path.dirname(new URL(import.meta.url).pathname);
-  const rootDir = path.resolve(scriptDir, "..");
+  // Resolve paths relative to project root (where package.json is)
+  const rootDir = process.cwd();
   const emailDir = path.join(rootDir, "components", "emails", emailName);
   const libEmailDir = path.join(rootDir, "lib", "email");
 

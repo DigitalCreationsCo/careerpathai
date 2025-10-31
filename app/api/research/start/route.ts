@@ -17,6 +17,8 @@ export interface StartResearchRequest {
   messageId?: string; 
 }
 
+export const runtime = 'nodejs';
+
 export async function POST(req: Request) {
   const user = (await auth())?.user;
 
@@ -228,10 +230,6 @@ export async function POST(req: Request) {
             userMessageId: persistantMessageId,
           };
 
-          // Do NOT send report email here.
-          // Instead, require the user to pay before receiving their report by email.
-          // The report will be emailed after payment is complete.
-
           controller.enqueue(encoder.encode(JSON.stringify(finalChunk) + "\n"));
 
           await sessionManager.updateSessionStatus(
@@ -270,6 +268,8 @@ export async function POST(req: Request) {
       "X-Content-Type-Options": "nosniff",
       "X-Session-Id": session.id,
       "X-Thread-Id": session.threadId,
+      "X-Accel-Buffering": "no", 
+      "Transfer-Encoding": "chunked",
       "X-Resume-Mode": shouldResume ? "true" : "false",
     };
     if (persistantMessageId) headers["X-User-Message-Id"] = persistantMessageId;

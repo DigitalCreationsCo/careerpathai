@@ -13,6 +13,7 @@ import type { AppUsage } from "@/lib/usage";
 import { generateUUID } from "@/lib/utils";
 import { greetingMessageParts } from "./greeting";
 import { useGoldenRatio } from "@/hooks/use-golden-ratio";
+import { DownloadReportButton } from "./download-report-button";
 
 export function Chat({
   chatId,
@@ -42,6 +43,7 @@ export function Chat({
   const greetingAnimationDuration = greetingDelays[greetingDelays.length - 1] + 1;
   
   const [hasSentInitialMessage, setHasSentInitialMessage] = useState(false);
+  const [finalReport, setFinalReport] = useState<string | null>(null);
   
   useEffect(() => {
     if (greetingAnimationDuration > 0) {
@@ -126,6 +128,9 @@ export function Chat({
               }
 
               if (chunk.type === 'final') {
+                if (chunk.data.finalReport) {
+                  setFinalReport(chunk.data.finalReport);
+                }
                 setStatus("ready");
               }
 
@@ -254,6 +259,12 @@ export function Chat({
         </div>
       )}
 
+      {finalReport && (
+        <div className="fixed top-4 right-4 px-4 py-2 rounded-md shadow-lg flex items-center gap-2">
+          <DownloadReportButton markdownContent={finalReport} />
+        </div>
+      )}
+
       <Messages
         chatId={chatId}
         messages={rawMessages}
@@ -277,8 +288,8 @@ export function Chat({
         />
       </div>
 
-      {isResuming && (
-        <div className="fixed top-4 right-4 text-white px-4 py-2 rounded-md shadow-lg flex items-center gap-2">
+      {isResuming && !finalReport && (
+        <div className="fixed top-4 right-4 px-4 py-2 rounded-md shadow-lg flex items-center gap-2">
           <div className="animate-spin h-4 w-4 border-2 border-white border-t-transparent rounded-full" />
           <span>Resuming research...</span>
         </div>

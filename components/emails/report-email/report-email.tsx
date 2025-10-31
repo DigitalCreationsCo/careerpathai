@@ -42,8 +42,8 @@ export const ReportEmail = ({
       <Head />
       <Preview>{previewText}</Preview>
       <Tailwind>
-        <Body className="bg-white mx-auto font-sans px-2">
-          <Container className="rounded my-[40px] mx-auto p-[20px] max-w-[650px] border border-[#eaeaea] shadow-sm">
+        <Body className="border bg-white mx-auto font-sans px-2">
+          <Container className="rounded my-[40px] mx-auto p-[20px] max-w-[650px]">
             <Section>
               <div className="prose prose-sm max-w-none">
                 <ReactMarkdown skipHtml={false}>

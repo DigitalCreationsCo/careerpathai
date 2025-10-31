@@ -7,7 +7,7 @@ const config: StorybookConfig = {
     "../components/**/*.stories.@(js|jsx|mjs|ts|tsx)",
   ],
   "addons": [
-    "@chromatic-com/storybook",
+    // "@chromatic-com/storybook",
     "@storybook/addon-docs",
     "@storybook/addon-a11y",
     "@storybook/addon-vitest"

@@ -19,6 +19,7 @@ export default function ClientChatWrapper({
   const router = useRouter();
   const params = useParams();
   const [chatId, setChatId] = useState<string | null>(null);
+  const shouldAutoResume = initialMessages[initialMessages.length - 1]?.role === 'user';
 
   useEffect(() => {
     // Get chatId from param and from localStorage
@@ -49,7 +50,7 @@ export default function ClientChatWrapper({
 
   return (
     <Chat
-      autoResume={true}
+      autoResume={shouldAutoResume}
       chatId={chatId}
       initialMessages={initialMessages}
       key={chatId}

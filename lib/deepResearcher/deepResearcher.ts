@@ -9,6 +9,7 @@ import { writeResearchBrief } from './actions/writeResearchBrief';
 import { supervisorSubgraph } from './nodes/supervisorSubgraph';
 import { finalReportGeneration } from './actions/finalReportGeneration';
 import { writeResearchOutline } from './actions/writeResearchOutline';
+import { faqAgent } from './actions/faqAgent';
 
 const deepResearcherBuilder = new StateGraph(AgentState, Configuration.getSchema())
 
@@ -17,10 +18,12 @@ deepResearcherBuilder.addNode('writeResearchBrief', writeResearchBrief, { ends: 
 deepResearcherBuilder.addNode('writeResearchOutline', writeResearchOutline, { ends: ["researchSupervisor"] });
 deepResearcherBuilder.addNode('researchSupervisor', supervisorSubgraph as any)
 deepResearcherBuilder.addNode("finalReportGeneration", finalReportGeneration)
+deepResearcherBuilder.addNode("faqAgent", faqAgent);
 
 deepResearcherBuilder.addEdge(START, 'clarifyWithUser' as any)
 deepResearcherBuilder.addEdge('researchSupervisor' as any, 'finalReportGeneration' as any)
-deepResearcherBuilder.addEdge('finalReportGeneration' as any, END)
+deepResearcherBuilder.addEdge('finalReportGeneration' as any, 'faqAgent' as any)
+deepResearcherBuilder.addEdge('faqAgent' as any, END)
 
 const deepResearcherGraph = deepResearcherBuilder.compile();
 

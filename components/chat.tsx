@@ -150,13 +150,11 @@ export function Chat({
               }
 
               if (chunk.type === 'final') {
-                if (chunk.finalReport) {
-                  if ((chunk.finalReport as string).startsWith("Error")) {
-                    throw new Error("An unexpected finalReport was received.");
-                  } else {
-                    console.log('[Chat/fetchResearchStream] Received final report:', chunk.finalReport);
-                    setFinalReport(chunk.finalReport);
-                  }
+                if (chunk.finalReport && (chunk.finalReport as string).startsWith("Error")) {
+                  throw new Error("An unexpected finalReport was received.");
+                } else {
+                  console.log('[Chat/fetchResearchStream] Received final report:', chunk.finalReport);
+                  setFinalReport(chunk.finalReport);
                 }
                 setStatus("ready");
                 console.log('[Chat/fetchResearchStream] Status set to ready');

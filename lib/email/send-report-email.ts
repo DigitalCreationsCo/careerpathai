@@ -1,7 +1,7 @@
 import { getResend, EmailState, adminEmailAddress } from "./resend";
 import { ReportEmail } from "@/components/emails/report-email/report-email";
 
-export async function sendCareerPathReportEmail(formData: FormData) {
+export async function sendReportEmail(formData: FormData) {
   const email = formData.get("email") as string;
   const username = formData.get("username") as string;
   const markdownContent = formData.get("markdownContent")! as string;
@@ -13,7 +13,7 @@ export async function sendCareerPathReportEmail(formData: FormData) {
   const { data, error } = await getResend().emails.send({
     from: `GoCareerPath <${adminEmailAddress}>`,
     to: [email],
-    subject: "Your Personalized Career Path Report is Ready! (Early Access: $29, 48 Hours Only)",
+    subject: "Your personalized career path report is ready!",
     react: ReportEmail({ markdownContent }),
   });
 

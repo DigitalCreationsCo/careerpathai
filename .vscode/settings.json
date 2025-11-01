@@ -1,3 +1,5 @@
 {
-    "python.defaultInterpreterPath": ".venv"
+    "python.defaultInterpreterPath": ".venv",
+    "files.autoSave": "afterDelay",
+    "files.autoSaveWhenNoErrors": true
 }

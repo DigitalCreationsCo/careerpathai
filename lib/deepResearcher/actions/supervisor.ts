@@ -58,17 +58,20 @@ export async function supervisor(
     
     let supervisorMessages = state.supervisorMessages || []
     
-    if (supervisorMessages.length === 0) {
-        const systemPrompt = supervisorSystemPrompt(
-          configurable.maxResearcherIterations,
-          configurable.maxConcurrentResearchUnits,
-          getTodayStr()
-        );
-        
-        supervisorMessages = [
-          createMessageFromMessageType("system", systemPrompt)
-        ];
-    }
+    // Google GenAI needs system message as first
+    // const hasSystemMessage = supervisorMessages.length > 0 && supervisorMessages[0].constructor.name === 'SystemMessage';
+
+    // if (!hasSystemMessage) {
+    //     const systemPrompt = supervisorSystemPrompt(
+    //         state.researchBrief || "",
+    //         state.researchOutline || "",
+    //         configurable.maxResearcherIterations,
+    //         configurable.maxConcurrentResearchUnits,
+    //         getTodayStr()
+    //     );
+    //     const systemMessage = createMessageFromMessageType("system", systemPrompt);
+    //     supervisorMessages = [systemMessage, ...supervisorMessages];
+    // }
 
     const response = await researchModel.invoke(supervisorMessages)
     console.log('Supervisor response:', {
@@ -155,90 +158,92 @@ export async function supervisorTools(
                 }
             )
         );
-        
-        if (conductResearchCalls.length > 0) {
-            try {
-                const allowedCalls = conductResearchCalls.slice(0, configurable.maxConcurrentResearchUnits)
-                const overflowCalls = conductResearchCalls.slice(configurable.maxConcurrentResearchUnits)
-                console.log('Executing research tasks:', {
-                    allowed: allowedCalls.length,
-                    overflow: overflowCalls.length
-                });
-            
-                const researchTasks = allowedCalls.map((toolCall: any) =>
-                    researcherSubgraph.invoke({
-                        researcherMessages: [
-                            createMessageFromMessageType("human", toolCall.args.researchTopic)
-                        ],
-                        researchTopic: toolCall.args.researchTopic
-                    }, config)
-                )
-                
-                const results = await Promise.all(researchTasks)
-                
-                for (let i = 0; i < results.length; i++) {
-                    const result = results[i]
-                    const toolCall = allowedCalls[i]
-                    console.log('Research result:', {
-                        topic: toolCall.args.researchTopic.substring(0, 50),
-                        hasCompressedResearch: !!result.compressedResearch,
-                        notesCount: result.rawNotes?.length || 0
-                    });
-
-                    toolMessages.push(
-                        createMessageFromMessageType(
-                            "tool",
-                            result.compressedResearch || "Error: No research findings",
-                            {
-                                name: "ConductResearch",
-                                tool_call_id: toolCall.id
-                            }
-                        )
-                    )
-                }
-                
-                // Handle overflow research calls with error messages
-                for (const overflowCall of overflowCalls) {
-                    toolMessages.push(
-                        createMessageFromMessageType(
-                            "tool",
-                            `Error: Exceeded maximum concurrent research units (${configurable.maxConcurrentResearchUnits}). This task was not executed.`,
-                            {
-                                name: "ConductResearch",
-                                tool_call_id: overflowCall.id
-                            }
-                        )
-                    )
-                }
-                
-                // Aggregate raw notes from all research results
-                const rawNotesConcat = results
-                    .map(r => r.rawNotes?.join("\n") || "")
-                    .join("\n")
-                
-                if (rawNotesConcat) {
-                    updatePayload.rawNotes = [rawNotesConcat]
-                }
-                    
-            } catch (e: any) {
-                // Handle research execution errors
-                if (isTokenLimitExceeded(e, configurable.researchModel) || true) {
-                    // Token limit exceeded or other error - end research phase
-                    return new Command({
-                        goto: END,
-                        graph: Command.PARENT,
-                        update: {
-                            notes: getNotesFromToolCalls(supervisorMessages),
-                            researchOutline: state.researchOutline || "",
-                            messages: [
-                                createMessageFromMessageType("ai", "Token limit reached. Proceeding with available findings...")
-                            ]
-                        }
-                    });
-                }
-            }
-        }   
     }
+        
+    if (conductResearchCalls.length > 0) {
+        try {
+            const allowedCalls = conductResearchCalls.slice(0, configurable.maxConcurrentResearchUnits)
+            const overflowCalls = conductResearchCalls.slice(configurable.maxConcurrentResearchUnits)
+            console.log('Executing research tasks:', {
+                allowed: allowedCalls.length,
+                overflow: overflowCalls.length
+            });
+        
+            const researchTasks = allowedCalls.map((toolCall: any) =>
+                researcherSubgraph.invoke({
+                    researcherMessages: [
+                        createMessageFromMessageType("human", toolCall.args.researchTopic)
+                    ],
+                    researchTopic: toolCall.args.researchTopic
+                }, config)
+            )
+            
+            const results = await Promise.all(researchTasks)
+            
+            for (let i = 0; i < results.length; i++) {
+                const result = results[i]
+                const toolCall = allowedCalls[i]
+                console.log('Research result:', {
+                    topic: toolCall.args.researchTopic.substring(0, 50),
+                    hasCompressedResearch: !!result.compressedResearch,
+                    notesCount: result.rawNotes?.length || 0
+                });
+
+                toolMessages.push(
+                    createMessageFromMessageType(
+                        "tool",
+                        result.compressedResearch || "Error: No research findings",
+                        {
+                            name: "ConductResearch",
+                            tool_call_id: toolCall.id
+                        }
+                    )
+                )
+            }
+            
+            // Handle overflow research calls with error messages
+            for (const overflowCall of overflowCalls) {
+                toolMessages.push(
+                    createMessageFromMessageType(
+                        "tool",
+                        `Error: Exceeded maximum concurrent research units (${configurable.maxConcurrentResearchUnits}). This task was not executed.`,
+                        {
+                            name: "ConductResearch",
+                            tool_call_id: overflowCall.id
+                        }
+                    )
+                )
+            }
+            
+            // Aggregate raw notes from all research results
+            const rawNotesConcat = results
+                .map(r => r.rawNotes?.join("\n") || "")
+                .join("\n")
+            
+            if (rawNotesConcat) {
+                updatePayload.rawNotes = [rawNotesConcat]
+            }
+                
+        } catch (e: any) {
+            // Handle research execution errors
+            if (isTokenLimitExceeded(e, configurable.researchModel) || true) {
+                // Token limit exceeded or other error - end research phase
+                return new Command({
+                    goto: END,
+                    graph: Command.PARENT,
+                    update: {
+                        notes: getNotesFromToolCalls(supervisorMessages),
+                        researchOutline: state.researchOutline || "",
+                        messages: [
+                            createMessageFromMessageType("ai", "Token limit reached. Proceeding with available findings...")
+                        ]
+                    }
+                });
+            }
+
+            throw e;
+        }
+    }   
     updatePayload.supervisorMessages = toolMessages;
     
     return new Command({

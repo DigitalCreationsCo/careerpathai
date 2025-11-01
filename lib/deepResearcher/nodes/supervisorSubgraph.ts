@@ -1,5 +1,5 @@
 // ============================================
-// supervisorSubgraph.ts - UPDATED
+// supervisorSubgraph.ts
 // ============================================
 import { StateGraph, START, END } from '@langchain/langgraph'
 import { Configuration } from '../configuration'
@@ -8,11 +8,9 @@ import { supervisor, supervisorTools } from '../actions/supervisor';
 
 const supervisorBuilder = new StateGraph(SupervisorState, Configuration.getSchema())
 
-// Add supervisor nodes
 supervisorBuilder.addNode("supervisor", supervisor, { ends:["supervisorTools"] })
 supervisorBuilder.addNode("supervisorTools", supervisorTools, { ends: ["supervisor", END] })
 
-// Define workflow
 supervisorBuilder.addEdge(START, "supervisor" as any)
 
 // Add conditional routing from supervisor

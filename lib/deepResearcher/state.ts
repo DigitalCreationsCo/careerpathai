@@ -57,6 +57,10 @@ export const AgentState = Annotation.Root({
     reducer: (current, update) => update ?? current,
     default: () => ""
   }),
+  reportPreview: Annotation<string>({
+    reducer: (current, update) => update ?? current,
+    default: () => ""
+  }),
 });
 
 export const SupervisorState = Annotation.Root({

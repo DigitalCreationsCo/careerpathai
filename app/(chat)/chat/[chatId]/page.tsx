@@ -4,6 +4,7 @@ import { auth } from "@/auth";
 import { redirect } from "next/navigation";
 import { getChatById, saveChat } from "@/lib/db/queries/chat";
 import { convertGraphMessagesToUIMessages, getGraphFinalState } from "@/lib/deepResearcher/checkpointerUtils";
+import { generateUUID } from "@/lib/utils";
 
 export default async function ChatPage({
   params 
@@ -27,27 +28,31 @@ export default async function ChatPage({
 
   const savedState = await getGraphFinalState(chatId, user.id);
 
-  //   let initialMessages: ChatMessage[] = [
-//     //     {
-//     //       id: generateUUID(),
-//     //       role: "user",
-//     //       parts: [{ 
-//     //         type: "text", 
-//     //         text: `SOFTWARE ENGINEER.
-//     // 5 years in financial services, ecommerce, and tech enablement.
-//     // Leadership and mentoring, project management, full stack web development, agentic AI development, cloud infrastructure, LLM use.
-//     // San Francisco, NYC, Seattle, or Europe.
-//     // 169k salary.
-//     // Growth, ownership, equity shares, in-office work, account management.
-//     // `
-//     //       }]
-//     //     }
-//   ];
   let initialMessages: ChatMessage[] = [];
   if (savedState && typeof savedState === "object") {
     initialMessages = convertGraphMessagesToUIMessages(savedState as any) as any;
     console.debug('initialMessages: ', JSON.stringify(initialMessages));
   }
+
+  // initialMessages = [
+    // {
+    //   id: generateUUID(),
+    //   role: "user",
+    //   parts: [{ 
+    //     type: "text", 
+    //     text: `SOFTWARE ENGINEER. 
+    //     5 years in financial services, ecommerce, and tech enablement.
+    //     Leadership and mentoring, project management, full stack web development, agentic AI development, cloud infrastructure, LLM use.
+    //     San Francisco, NYC, Seattle, or Europe.
+    //     169k salary.
+    //     Growth, ownership, equity shares, in-office work, account management.
+    //     `
+    //   }]
+    // }
+
+    // test message content
+    // SOFTWARE ENGINEER. 5 years in financial services, ecommerce, and tech enablement. Leadership and mentoring, project management, full stack web development, agentic AI development, cloud infrastructure, LLM use. San Francisco, NYC, Seattle, or Europe. 169k salary. Growth, ownership, equity shares, in-office work, account management.
+  // ];
 
   return (
     <div className="relative bg-gradient-primary-glow">

@@ -173,13 +173,6 @@ export async function POST(req: Request) {
                   };
     
                   controller.enqueue(encoder.encode(JSON.stringify(chunk) + "\n"));
-
-                  // try {
-                  //   await checkpointerManager.saveCheckpoint(config);
-                  //   console.debug(`[CHECKPOINT] Saved after node ${nodeName}`);
-                  // } catch (persistErr) {
-                  //   console.error("Checkpoint persistence failed:", persistErr);
-                  // }
                 }
                 break;
 

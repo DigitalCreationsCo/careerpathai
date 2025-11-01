@@ -54,6 +54,8 @@ export async function writeResearchOutline(
             createMessageFromMessageType(
               "system", 
               supervisorSystemPrompt(
+                state.researchBrief || "",
+                state.researchOutline || "",
                 configurable.maxResearcherIterations,
                 configurable.maxConcurrentResearchUnits, 
                 getTodayStr(),

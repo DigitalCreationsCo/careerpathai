@@ -87,7 +87,7 @@ export async function finalReportGeneration(
             });
         
             return new Command({
-                goto: END,
+                goto: 'faqAgent',
                 update: {
                     finalReport: reportOutput.finalReport,
                     reportPreview: reportOutput.reportPreview,
@@ -95,7 +95,11 @@ export async function finalReportGeneration(
                         createMessageFromMessageType(
                             "ai",
                             `# 📝 Report Preview\n\n${reportOutput.reportPreview}`
-                        )
+                        ),
+                        createMessageFromMessageType(
+                            "ai", 
+                            "Do you have any questions about your career path report? How can I assist?"
+                        ),
                     ],
                     notes: []
                 }

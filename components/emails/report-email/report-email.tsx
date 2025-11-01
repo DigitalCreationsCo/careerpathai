@@ -21,7 +21,7 @@ interface ReportEmailProps {
 }
 
 export const ReportEmail = ({
-  markdownContent = "",
+  markdownContent,
   pdfDownloadUrl, 
 }: ReportEmailProps) => {
   const previewText = "Your Personalized Career Report is Ready!";

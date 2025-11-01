@@ -151,8 +151,12 @@ export function Chat({
 
               if (chunk.type === 'final') {
                 if (chunk.finalReport) {
-                  console.debug('[Chat/fetchResearchStream] Received final report:', chunk.finalReport);
-                  setFinalReport(chunk.finalReport);
+                  if ((chunk.finalReport as string).startsWith("Error")) {
+                    throw new Error("An unexpected finalReport was received.");
+                  } else {
+                    console.debug('[Chat/fetchResearchStream] Received final report:', chunk.finalReport);
+                    setFinalReport(chunk.finalReport);
+                  }
                 }
                 setStatus("ready");
                 console.debug('[Chat/fetchResearchStream] Status set to ready');
@@ -300,7 +304,7 @@ export function Chat({
       )}
 
       {finalReport && (
-        <div className="fixed top-4 right-4 px-4 py-2 rounded-md shadow-lg flex items-center gap-2">
+        <div className="fixed top-4 right-4 z-10 bg-background rounded-md">
           <DownloadReportButton markdownContent={finalReport} />
         </div>
       )}

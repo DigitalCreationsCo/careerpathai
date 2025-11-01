@@ -87,7 +87,7 @@ export async function POST(req: Request) {
           const streamConfig = {
             ...config,
             subgraphs: true,
-            streamMode: process.env.NODE_ENV !== "production" ? [
+            streamMode: process.env.NODE_ENV === "production" ? ["values", "updates", "messages"] : [
               "values",
               "updates",
               "debug",
@@ -95,7 +95,7 @@ export async function POST(req: Request) {
               "custom",
               "checkpoints",
               "tasks"
-            ] : ["values" as const],
+            ],
           };
 
           const graphStream = await graph.stream(input, streamConfig as any);
@@ -262,7 +262,7 @@ export async function POST(req: Request) {
     });
     
     const headers: Record<string, string> = {
-      "Content-Type": "application/x-ndjson",
+      "Content-Type": "application/x-ndjson; charset=utf-8",
       "Cache-Control": "no-cache, no-transform",
       "Connection": "keep-alive",
       "X-Content-Type-Options": "nosniff",

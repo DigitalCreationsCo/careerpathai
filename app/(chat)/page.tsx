@@ -2,7 +2,7 @@ import './landing.css'
 import { CheckSquareIcon, Star } from 'lucide-react';
 import { Browser } from '@/components/browser';
 import { copyright, dateJobsDisplaced, numJobsDisplaced } from '@/lib/utils';
-import { LogoImage } from '@/components/logo';
+import { Logo } from '@/components/logo';
 import { Button } from '@/components/ui/button/button';
 import Link from 'next/link';
 import { auth } from '@/auth';
@@ -20,7 +20,7 @@ export default async function LandingPage() {
           <div className="relative z-10 max-w-md sm:max-w-[80%] mx-auto text-center space-y-8 animate-slide-up mt-20 md:mt-0">
             <div className="space-y-4 md:pt-4">
               <div className="hidden md:inline-flex items-center px-4 py-2 text-warning mb-0 gap-2">
-                <LogoImage size="md" />
+                <Logo size="md" />
                 <p className="shiny-text text-lg">{`AI is eliminating over ${numJobsDisplaced} jobs by ${dateJobsDisplaced} — Are you prepared?`}</p>
               </div>
               <h1 className="text-5xl lg:text-7xl leading-tight tracking-tight">

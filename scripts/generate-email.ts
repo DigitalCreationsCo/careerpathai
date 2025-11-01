@@ -73,7 +73,7 @@ export const ${componentName} = ({
         <Body className="bg-white mx-auto font-sans px-2">
           <Container className="rounded my-[40px] mx-auto p-[20px] max-w-[465px] border border-[#eaeaea] shadow-sm">
 
-            {/* LogoImage */}
+            {/* Logo */}
             <Section className="mt-[8px] text-center flex items-center justify-center gap-2">
               <Img
                 src="https://www.gocareerpath.com/favicon.ico"

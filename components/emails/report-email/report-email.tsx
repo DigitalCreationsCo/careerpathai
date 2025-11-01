@@ -14,18 +14,15 @@ import {
   Text,
 } from "@react-email/components";
 import * as React from "react";
-import ReactMarkdown from "react-markdown";
 
 interface ReportEmailProps {
-  markdownContent?: string;
-  username?: string;
+  markdownContent: string;
   pdfDownloadUrl?: string;
 }
 
 export const ReportEmail = ({
   markdownContent = "",
-  username = "Alex",
-  pdfDownloadUrl, // optional override, otherwise generated below
+  pdfDownloadUrl, 
 }: ReportEmailProps) => {
   const previewText = "Your Personalized Career Report is Ready!";
   const encodedMarkdown =
@@ -47,7 +44,7 @@ export const ReportEmail = ({
         <Body className="bg-white mx-auto font-sans px-2">
           <Container className="rounded my-[40px] mx-auto p-[20px] max-w-[465px] shadow-sm">
 
-            {/* LogoImage */}
+            {/* Logo */}
             <Section className="mt-[8px] text-center flex items-center justify-center gap-2">
               <Img
                 src="https://www.gocareerpath.com/favicon.ico"

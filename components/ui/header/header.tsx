@@ -86,7 +86,10 @@ export function Header({ session }: any) {
     <header className="absolute hidden md:block w-full z-10 transition-all duration-300">
       <div className="mx-auto py-2 px-3 flex justify-between items-center">
         <Link href="/" className="flex items-center">
-          <Logo />
+          <div className='hidden'>
+            <Logo />
+          </div>
+          <span className="ml-2 font-semibold text-muted-foreground text-lg">GoCareerPath</span>
         </Link>
         <div className="flex items-center space-x-4">
           <Suspense fallback={<div className="h-9" />}>

@@ -48,7 +48,7 @@ export function Chat({
 
   const [hasSentInitialMessage, setHasSentInitialMessage] = useState(false);
   const [finalReport, setFinalReport] = useState<string | null>(null);
-  const isSellingReport = process.env.NEXT_PUBLIC_IS_REPORT_PURCHASABLE === "true";
+  const isReportFree = process.env.NEXT_PUBLIC_IS_REPORT_PURCHASABLE === "false";
 
   useEffect(() => {
     console.log('[Chat/useEffect:greetingAnimationDuration] effect fired');
@@ -302,7 +302,7 @@ export function Chat({
         </div>
       )}
 
-      {isSellingReport && finalReport && (
+      {isReportFree && finalReport && (
         <div className="fixed top-4 right-4 z-10 bg-background rounded-md">
           <DownloadReportButton markdownContent={finalReport} />
         </div>

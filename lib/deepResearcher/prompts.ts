@@ -910,7 +910,7 @@ flowchart LR
 ## 📚 Skills Gap Analysis
 See exactly which skills to **upgrade** (and which to **skip**) — no wasted time or money.
 
-| Category | ✅ You Have | 📚 To Develop | ⏱️ Timeline (Generous) |
+| Category | ✅ You Have | 📚 To Develop | ⏱️ Timeline |
 |----------|-------------|---------------|----------------|
 | **Technical** | Skill 1, Skill 2 | Skill 3, Skill 4 | 6 months |
 | **Domain** | Skill 5 | Skill 6, Skill 7 | 12 months |
@@ -949,7 +949,7 @@ flowchart TD
     style E fill:#5DD39E,stroke:#3AA76D,color:#FFFFFF
 ~~~
 
-| Step | Description | Timeline (Generous) | Key Output |
+| Step | Description | Timeline | Key Output |
 |------|--------------|--------------------|-------------|
 | Self-Assessment | Identify ideal paths | 1 month | Role shortlist |
 | Skills Upgrade | Learn top 2 missing skills | 6 months | Certification |

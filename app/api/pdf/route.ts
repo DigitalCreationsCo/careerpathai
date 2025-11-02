@@ -55,6 +55,7 @@ pdf_options:
       },
     });
   } catch (error: any) {
+    console.error('PDF generation error:', error);
     return NextResponse.json({ error: error?.message || 'Unexpected error.' }, { status: 500 });
   }
 }

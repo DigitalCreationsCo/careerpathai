@@ -73,6 +73,12 @@ export async function finalReportGeneration(
             if (!reportOutput.reportPreview || !reportOutput.finalReport) {
                 throw new Error('Invalid report structure: missing reportPreview or finalReport');
             }
+
+            const isSellingReport = process.env.NEXT_PUBLIC_IS_REPORT_PURCHASABLE === "true";
+            if (!isSellingReport) {
+                // reveal full report for free
+                reportOutput.reportPreview = reportOutput.finalReport;
+            }
             
             const previewTokenCount = reportOutput.reportPreview ? reportModel.getNumTokens(reportOutput.reportPreview) : 0;
             const finalReportTokenCount = reportOutput.finalReport ? reportModel.getNumTokens(reportOutput.finalReport) : 0;
@@ -94,11 +100,11 @@ export async function finalReportGeneration(
                     messages: [
                         createMessageFromMessageType(
                             "ai",
-                            `# 📝 Report Preview\n\n${reportOutput.reportPreview}`
+                            `${reportOutput.reportPreview}`
                         ),
                         createMessageFromMessageType(
                             "ai", 
-                            "Do you have any questions about your career path report? How can I assist?"
+                            "--- \nDo you have any questions about your career path report? How can I assist you?"
                         ),
                     ],
                     notes: []

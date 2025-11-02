@@ -1,4 +1,4 @@
-import { Command } from "@langchain/langgraph"
+import { Command, END } from "@langchain/langgraph"
 import { configurableModel, Configuration, RunnableConfig } from "../configuration"
 import { AgentState } from "../state"
 import { createMessageFromMessageType, getApiKeyForModel, getTodayStr } from "../llmUtils"
@@ -12,21 +12,23 @@ export async function faqAgent(
 
     const configurable = Configuration.fromRunnableConfig(config);
     const messages = state.messages || [];
-
-    const lastUserMessage = filterMessages(messages, { includeTypes: ["human"] });
     
-    if (!lastUserMessage) {
-        console.log('No user question found, ending FAQ');
-        return {};
-    }
-
-    const userQuestion = getBufferString(lastUserMessage);
+    // if (messages[messages.length - 1]?.type !== "human") {
+    //     return new Command({
+    //         goto: END
+    //     });
+    // };
     
-    // Build context-aware prompt
+    const lastUserMessage = messages.slice().reverse().find(msg => msg.type === "human")!;
+    const userQuestion = getBufferString([lastUserMessage]);
+    
+    const isSellingReport = process.env.NEXT_PUBLIC_IS_REPORT_PURCHASABLE === "true";
+
     const faqPrompt = buildFAQPrompt(
         userQuestion,
         state.researchBrief || "",
         state.reportPreview || "",
+        isSellingReport,
         getTodayStr()
     );
 
@@ -47,6 +49,7 @@ export async function faqAgent(
         ]) as AIMessage;
 
         return new Command ({
+            goto: "faqAgent",
             update: {
                 messages: [response]
             }

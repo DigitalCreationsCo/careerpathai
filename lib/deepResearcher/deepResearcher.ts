@@ -23,7 +23,6 @@ deepResearcherBuilder.addNode("faqAgent", faqAgent);
 deepResearcherBuilder.addEdge(START, 'clarifyWithUser' as any)
 deepResearcherBuilder.addEdge('researchSupervisor' as any, 'finalReportGeneration' as any)
 deepResearcherBuilder.addEdge('finalReportGeneration' as any, 'faqAgent' as any)
-deepResearcherBuilder.addEdge('faqAgent' as any, END)
 
 const deepResearcherGraph = deepResearcherBuilder.compile();
 

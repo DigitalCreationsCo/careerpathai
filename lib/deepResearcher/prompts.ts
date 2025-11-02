@@ -731,7 +731,7 @@ Return ONLY the raw JSON object.
 
 **Structure - EXACTLY THIS:**
 
-# 🎯 Your Career Path Report - Preview
+# 📌 Your Career Path Report - Preview
 
 ## Executive Summary
 
@@ -778,9 +778,9 @@ flowchart TD
 ✅ **Head-to-Head Comparison** - Matrix comparing all paths across 10+ critical factors  
 ✅ **25+ Verified Sources** - Every claim backed by current labor market data  
 
-**🎯 Make your next career move with confidence - backed by data, not guesswork.**
+🎯 Make your next career move with confidence - backed by data, not guesswork.
 
-[Purchase Full Report - $29.99] → Get instant access to your complete personalized analysis
+[Purchase Full Report - $29.99] **→ Get instant access to your complete personalized analysis**
 
 ---
 
@@ -1131,6 +1131,7 @@ export const buildFAQPrompt = (
   userQuestion: UserMessageArray,
   researchBrief: string,
   reportPreview: string,
+  isSellingReport: boolean,
   date: string
 ): string => `You are a Career Advisor AI assistant helping users understand their personalized career path report.
 
@@ -1151,7 +1152,7 @@ export const buildFAQPrompt = (
 - Be conversational and supportive
 - If the question is outside the scope of the report, politely redirect
 - Don't make up information not in the research
-- Encourage users to purchase the full report if they're asking about details only in the full version
+${isSellingReport ? "- Encourage users to purchase the full report if they're asking about details only in the full version" : ""}
 
 **User Question:** ${userQuestion}
 
